@@ -1,9 +1,74 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>edit-developer</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/all-developers"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Developer</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
 
+<ion-content class="ion-padding" class="form-content">
+  <form [formGroup]="developerForm" (ngSubmit)="onSubmit(developerForm.value)">
+    <ion-item>
+      <ion-label position="floating" color="primary">Name</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.name">
+        <div class="error-message"
+          *ngIf="developerForm.get('name').hasError(validation.type) && (developerForm.get('name').dirty || developerForm.get('name').touched)">
+          <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Role</ion-label>
+      <ion-input type="text" formControlName="role"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.role">
+        <div class="error-message"
+          *ngIf="developerForm.get('role').hasError(validation.type) && (developerForm.get('role').dirty || developerForm.get('role').touched)">
+          <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Gender</ion-label>
+      <ion-select formControlName="gender" cancelText="Cancel" okText="OK">
+        <ion-select-option *ngFor="let gender of genders">{{gender}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.gender">
+        <div class="error-message"
+          *ngIf="developerForm.get('gender').hasError(validation.type) && (developerForm.get('gender').dirty || developerForm.get('gender').touched)">
+          <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-item>
+      <ion-label color="primary">I accept terms and conditions</ion-label>
+      <ion-checkbox color="primary" formControlName="terms"></ion-checkbox>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validation_messages.terms">
+        <div class="error-message"
+          *ngIf="developerForm.get('terms').hasError(validation.type) && (developerForm.get('terms').dirty || developerForm.get('terms').touched)">
+          <ion-icon name="information-circle-outline"></ion-icon> {{
+            validation.message }}
+        </div>
+      </ng-container>
+    </div>
+
+    <ion-button color="primary" class="submit-btn" expand="full" type="submit" [disabled]="!developerForm.valid">Submit
+      data</ion-button>
+  </form>
 </ion-content>

@@ -14,7 +14,8 @@ export class HomePage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.developersCount = this.api.totalDevelopers;
-    console.log(this.developersCount);
+    let allDevelopers = this.api.getAllDevelopers();
+    this.developersCount = allDevelopers.length;
+    // console.log(this.developersCount);
   }
 }

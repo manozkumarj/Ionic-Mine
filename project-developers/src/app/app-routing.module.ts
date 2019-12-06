@@ -15,6 +15,13 @@ const routes: Routes = [
       )
   },
   {
+    path: "all-developers/:done",
+    loadChildren: () =>
+      import("./pages/all-developers/all-developers.module").then(
+        m => m.AllDevelopersPageModule
+      )
+  },
+  {
     path: "add-developer",
     loadChildren: () =>
       import("./pages/add-developer/add-developer.module").then(
@@ -29,7 +36,7 @@ const routes: Routes = [
       )
   },
   {
-    path: "edit-developer",
+    path: "edit-developer/:id",
     loadChildren: () =>
       import("./pages/edit-developer/edit-developer.module").then(
         m => m.EditDeveloperPageModule
@@ -43,4 +50,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

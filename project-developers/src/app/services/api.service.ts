@@ -49,4 +49,8 @@ export class ApiService {
   addDeveloper(developer) {
     return this.developers.unshift(developer);
   }
+
+  deleteDeveloper(currentDeveloperId) {
+    return this.developers = this.developers.filter(developer => developer.id != currentDeveloperId);
+  }
 }

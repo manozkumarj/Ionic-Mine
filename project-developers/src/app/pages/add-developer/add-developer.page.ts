@@ -55,7 +55,7 @@ export class AddDeveloperPage implements OnInit {
 
     this.api.addDeveloper(newDeveloper);
 
-    console.log(newDeveloper);
-    this.router.navigate(["/home"]);
+    // console.log(newDeveloper);
+    this.router.navigate(["/all-developers/done"]);
   }
 }

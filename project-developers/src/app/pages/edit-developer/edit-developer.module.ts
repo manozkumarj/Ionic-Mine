@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { IonicModule } from '@ionic/angular';
 
@@ -12,9 +12,10 @@ import { EditDeveloperPage } from './edit-developer.page';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     EditDeveloperPageRoutingModule
   ],
   declarations: [EditDeveloperPage]
 })
-export class EditDeveloperPageModule {}
+export class EditDeveloperPageModule { }
