@@ -36,8 +36,10 @@ karma.conf.js
 project-developers/node_modules
 project-developers/dist
 project-developers/platforms
+project-developers/resources/
 project-developers/plugins
 project-developers/www
 project-developers/package-lock.json
 project-developers/tsconfig.spec.json
 project-developers/karma.conf.js
+project-developers/config.xml
