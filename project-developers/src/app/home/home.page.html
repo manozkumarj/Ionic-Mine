@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item [routerLink]="['/', 'all-developers']">
+      <ion-icon name="contacts"></ion-icon>
+      <ion-label>All Developers</ion-label>
+      <ion-badge slot="end">{{developersCount}}</ion-badge>
+    </ion-item>
+    <ion-item [routerLink]="['/', 'add-developer']">
+      <ion-icon name="add"></ion-icon> <ion-label>Add new Developer</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
