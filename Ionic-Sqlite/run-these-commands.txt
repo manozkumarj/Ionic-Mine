@@ -1,0 +1,9 @@
+* npm i
+* npm i -g cordova-res
+* ionic cordova platform add android
+* ionic cordova build android
+
+
+
+---------------------------- To check requirements ----------------------------
+* cordova requirements android --verbose
