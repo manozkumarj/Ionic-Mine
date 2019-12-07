@@ -25,6 +25,7 @@ export class AllDevelopersPage implements OnInit {
 
     setTimeout(() => {
       console.log('Async operation has ended');
+      this.presentToast();
       event.target.complete();
     }, 2000);
   }
@@ -32,7 +33,7 @@ export class AllDevelopersPage implements OnInit {
   async presentToast() {
     const toast = await this.toastController.create({
       color: 'primary',
-      message: 'Saved successfully.',
+      message: 'Success.',
       duration: 2000
     });
     toast.present();
