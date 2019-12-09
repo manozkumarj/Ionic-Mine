@@ -9,7 +9,7 @@
 
 
 <ion-content class="ion-padding" class="form-content">
-  <form [formGroup]="developerForm" (ngSubmit)="onSubmit(developerForm.value)">
+  <form [formGroup]="developerForm" (ngSubmit)="onSubmit(developerForm.value)" style="margin-bottom: 50px;">
     <ion-item>
       <ion-label position="floating" color="primary">Name</ion-label>
       <ion-input type="text" formControlName="name"></ion-input>
@@ -54,6 +54,10 @@
       </ng-container>
     </div>
 
+      <div *ngIf="capturedSnapURL" style="width: 80%; margin: 10px auto; text-align: center;">
+        <img [src]="capturedSnapURL" />
+      </div>
+
     <ion-item>
       <ion-label color="primary">I accept terms and conditions</ion-label>
       <ion-checkbox color="primary" formControlName="terms"></ion-checkbox>
@@ -68,7 +72,6 @@
       </ng-container>
     </div>
 
-    <ion-button color="primary" class="submit-btn" expand="full" type="submit" [disabled]="!developerForm.valid">Submit
-      data</ion-button>
+    <ion-button color="primary" class="submit-btn" expand="full" type="submit" [disabled]="!developerForm.valid" style="margin: 30px 10px;"> Save Changes </ion-button>
   </form>
 </ion-content>

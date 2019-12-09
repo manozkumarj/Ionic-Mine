@@ -17,6 +17,7 @@ export class EditDeveloperPage implements OnInit {
   developer;
   developerForm: FormGroup;
   genders;
+  capturedSnapURL;
 
   constructor(private router: Router, private api: ApiService, public activatedRoute: ActivatedRoute) {
     this.developerForm = new FormGroup({
@@ -37,6 +38,7 @@ export class EditDeveloperPage implements OnInit {
     this.developerForm.get('name').setValue(this.developer.name);
     this.developerForm.get('role').setValue(this.developer.role);
     this.developerForm.get('gender').setValue(this.developer.gender);
+    this.capturedSnapURL = this.developer.img;
   }
 
   validation_messages = {
@@ -55,12 +57,14 @@ export class EditDeveloperPage implements OnInit {
     let name: string = (this.developerForm.get('name').value).toUpperCase();
     let role = this.developerForm.get('role').value;
     let gender = this.developerForm.get('gender').value;
+    let img = this.capturedSnapURL;
 
     let newDeveloper = {
       id: currentDeveloperId,
       name,
       role,
-      gender
+      gender,
+      img
     }
 
     this.api.deleteDeveloper(this.developer.id);

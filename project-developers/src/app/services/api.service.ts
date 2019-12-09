@@ -13,25 +13,29 @@ export class ApiService {
         id: 1,
         name: "Manoj Kumar",
         role: "Software Developer",
-        gender: "Male"
+        gender: "Male",
+        img: 'https://picsum.photos/200'
       },
       {
         id: 2,
         name: "Mahesh Kumar",
         role: "PHP Developer",
-        gender: "Male"
+        gender: "Male",
+        img: 'https://picsum.photos/200'
       },
       {
         id: 3,
         name: "Mallesh",
         role: "JAVA Developer",
-        gender: "Male"
+        gender: "Male",
+        img: 'https://picsum.photos/200'
       },
       {
         id: 4,
         name: "Archana",
         role: "Designer",
-        gender: "Female"
+        gender: "Female",
+        img: 'https://picsum.photos/200'
       }
     ];
 
