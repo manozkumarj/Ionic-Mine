@@ -1,7 +1,7 @@
 * npm i
 * npm i -g cordova-res
 * ionic cordova platform add android
-* ionic cordova build android
+* ionic cordova build android --device
 
 
 
