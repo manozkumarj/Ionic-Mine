@@ -5,7 +5,6 @@
 </ion-header>
 
 <ion-content padding>
-
   <ion-segment [(ngModel)]="selectedView">
     <ion-segment-button value="devs">
       <ion-label>Developer</ion-label>
@@ -19,22 +18,49 @@
     <div *ngSwitchCase="'devs'">
       <ion-item>
         <ion-label position="stacked">What\'s your name?</ion-label>
-        <ion-input [(ngModel)]="developer.name" placeholder="Developer Name"></ion-input>
+        <ion-input
+          [(ngModel)]="developer.name"
+          placeholder="Developer Name"
+        ></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="stacked">What are your special skills (comma separated)?</ion-label>
-        <ion-input [(ngModel)]="developer.skills" placeholder="Special Skills"></ion-input>
+        <ion-label position="stacked"
+          >What are your special skills (comma separated)?</ion-label
+        >
+        <ion-input
+          [(ngModel)]="developer.skills"
+          placeholder="Special Skills"
+        ></ion-input>
       </ion-item>
-      <ion-item>
+
+      <!-- <ion-item>
         <ion-label position="stacked">Your image URL</ion-label>
-        <ion-input [(ngModel)]="developer.img" placeholder="https://..."></ion-input>
-      </ion-item>
-      <ion-button expand="block" (click)="addDeveloper()">Add Developer Info</ion-button>
+        <ion-input
+          [(ngModel)]="developer.img"
+          placeholder="https://..."
+        ></ion-input>
+      </ion-item> -->
+
+      <div style="margin: auto;text-align: center;">  
+        <ion-button (click)="takeSnap()" center> Take Snapshot </ion-button> 
+      </div>
+
+      <div *ngIf="capturedSnapURL">
+        <img [src]="capturedSnapURL" />
+      </div>
+
+      <ion-button expand="block" [disabled]="!developer.name || !developer.skills || !capturedSnapURL" (click)="addDeveloper()"
+        >Add Developer Info</ion-button
+      >
 
       <ion-list>
-        <ion-item button *ngFor="let dev of developers" [routerLink]="['/', 'developers', dev.id]">
+        <ion-item
+          button
+          *ngFor="let dev of developers"
+          [routerLink]="['/', 'developers', dev.id]"
+        >
           <ion-avatar slot="start">
-            <img [src]="dev.img">
+            <img [src]="dev.img" />
           </ion-avatar>
           <ion-label>
             <h2>{{ dev.name }}</h2>
@@ -52,7 +78,9 @@
       <ion-item>
         <ion-label position="stacked">Creator?</ion-label>
         <ion-select [(ngModel)]="product.creator">
-          <ion-select-option *ngFor="let dev of developers" [value]="dev.id">{{ dev.name }}</ion-select-option>
+          <ion-select-option *ngFor="let dev of developers" [value]="dev.id"
+            >{{ dev.name }}</ion-select-option
+          >
         </ion-select>
       </ion-item>
       <ion-button expand="block" (click)="addProduct()">Add Product</ion-button>
@@ -67,5 +95,4 @@
       </ion-list>
     </div>
   </div>
-
 </ion-content>

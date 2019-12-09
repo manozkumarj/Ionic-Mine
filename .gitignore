@@ -43,3 +43,14 @@ project-developers/package-lock.json
 project-developers/tsconfig.spec.json
 project-developers/karma.conf.js
 project-developers/config.xml
+
+Ionic-Sqlite/node_modules
+Ionic-Sqlite/dist
+Ionic-Sqlite/platforms
+Ionic-Sqlite/resources/
+Ionic-Sqlite/plugins
+Ionic-Sqlite/www
+Ionic-Sqlite/package-lock.json
+Ionic-Sqlite/tsconfig.spec.json
+Ionic-Sqlite/karma.conf.js
+Ionic-Sqlite/config.xml
