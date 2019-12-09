@@ -2,7 +2,6 @@ CREATE TABLE IF NOT EXISTS developer(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	name TEXT,
 	role TEXT,
-	skills TEXT,
 	gender TEXT,
 	img TEXT
 	);

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { AlertController } from '@ionic/angular';
 
 import { ApiService } from "./../../services/api.service";
+import { DatabaseService } from './../../services/database.service';
 
 @Component({
   selector: "app-view-developer",
@@ -11,12 +12,16 @@ import { ApiService } from "./../../services/api.service";
 })
 export class ViewDeveloperPage implements OnInit {
   developer;
-  thumbnail = "https://picsum.photos/200";
-  constructor(public api: ApiService, public activatedRoute: ActivatedRoute, private router: Router, private alertCtrl: AlertController) { }
+  constructor(public api: ApiService, public activatedRoute: ActivatedRoute, private router: Router, private alertCtrl: AlertController, private db: DatabaseService) { }
 
   ngOnInit() {
     let id = this.activatedRoute.snapshot.paramMap.get("id");
-    this.developer = this.api.getDeveloper(id);
+
+    this.db.getDeveloper(id).then(data => {
+      this.developer = data;
+    }).catch(error => {
+      alert("Something went wrong while fetching developer details.");
+    });
   }
 
   deleteDeveloper() {
@@ -33,8 +38,11 @@ export class ViewDeveloperPage implements OnInit {
         {
           text: 'Delete',
           handler: () => {
-            this.api.deleteDeveloper(currentDeveloperId);
-            this.router.navigate(['./all-developers/done']);
+            this.db.deleteDeveloper(currentDeveloperId).then(() => {
+              this.router.navigate(['./all-developers/done']);
+            }).catch(error => {
+              alert("Something went wrong while deleting.");
+            });
           }
         }
       ]

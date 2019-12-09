@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "./../../services/api.service";
+import { DatabaseService } from './../../services/database.service';
 import {
   Validators,
   FormBuilder,
@@ -19,7 +20,7 @@ export class EditDeveloperPage implements OnInit {
   genders;
   capturedSnapURL;
 
-  constructor(private router: Router, private api: ApiService, public activatedRoute: ActivatedRoute) {
+  constructor(private router: Router, private api: ApiService, public activatedRoute: ActivatedRoute, private db: DatabaseService) {
     this.developerForm = new FormGroup({
       name: new FormControl("", Validators.required),
       role: new FormControl("", Validators.required),
@@ -30,8 +31,14 @@ export class EditDeveloperPage implements OnInit {
 
   ngOnInit() {
     this.genders = ["Male", "Female"];
+
     let id = this.activatedRoute.snapshot.paramMap.get("id");
-    this.developer = this.api.getDeveloper(id);
+
+    this.db.getDeveloper(id).then(data => {
+      this.developer = data;
+    }).catch(error => {
+      alert("Something went wrong while fetching developer details.");
+    });
   }
 
   ionViewDidEnter() {
@@ -67,11 +74,13 @@ export class EditDeveloperPage implements OnInit {
       img
     }
 
-    this.api.deleteDeveloper(this.developer.id);
-    this.api.addDeveloper(newDeveloper);
-
-    // console.log(newDeveloper);
-    this.router.navigate(["/all-developers/done"]);
+    this.db.updateDeveloper(newDeveloper)
+      .then(_ => {
+        this.capturedSnapURL = null;
+        this.router.navigate(["/all-developers/done"]);
+      }).catch(error => {
+        alert("Developer updation was failed.");
+      });
   }
 
 }

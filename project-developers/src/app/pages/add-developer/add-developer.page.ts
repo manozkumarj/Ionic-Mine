@@ -8,6 +8,7 @@ import {
 } from "@angular/forms";
 import { Router } from "@angular/router";
 import { ApiService } from './../../services/api.service';
+import { DatabaseService } from './../../services/database.service';
 
 @Component({
   selector: "app-add-developer",
@@ -28,7 +29,7 @@ export class AddDeveloperPage implements OnInit {
   };
 
 
-  constructor(private router: Router, private api: ApiService, private camera: Camera) {
+  constructor(private router: Router, private api: ApiService, private camera: Camera, private db: DatabaseService) {
     this.developerForm = new FormGroup({
       name: new FormControl("", Validators.required),
       role: new FormControl("", Validators.required),
@@ -77,18 +78,13 @@ export class AddDeveloperPage implements OnInit {
     let gender = this.developerForm.get('gender').value;
     let img = this.capturedSnapURL;
 
-    let newDeveloper = {
-      id: ++this.api.totalDevelopers,
-      name,
-      role,
-      gender,
-      img
-    }
-
-    this.api.addDeveloper(newDeveloper);
-    this.capturedSnapURL = null;
-
-    // console.log(newDeveloper);
-    this.router.navigate(["/all-developers/done"]);
+    this.db
+      .addDeveloper(name, role, gender, img)
+      .then(_ => {
+        this.capturedSnapURL = null;
+        this.router.navigate(["/all-developers/done"]);
+      }).catch(error => {
+        alert("Developer insertion was failed.");
+      });
   }
 }

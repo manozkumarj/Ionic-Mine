@@ -9,7 +9,6 @@ export interface Dev {
   id: number;
   name: string;
   role: string;
-  skills: any[];
   gender: string;
   img: string;
 }
@@ -28,7 +27,7 @@ export class DatabaseService {
     private sqlitePorter: SQLitePorter,
     private sqlite: SQLite,
     private http: HttpClient
-  ) {}
+  ) { }
 
   createDatabase() {
     console.log("Creating new Db");
@@ -75,16 +74,11 @@ export class DatabaseService {
 
         if (data.rows.length > 0) {
           for (var i = 0; i < data.rows.length; i++) {
-            let skills = [];
-            if (data.rows.item(i).skills != "") {
-              skills = JSON.parse(data.rows.item(i).skills);
-            }
 
             developers.push({
               id: data.rows.item(i).id,
               name: data.rows.item(i).name,
               role: data.rows.item(i).role,
-              skills: skills,
               gender: data.rows.item(i).gender,
               img: data.rows.item(i).img
             });
@@ -94,11 +88,11 @@ export class DatabaseService {
       });
   }
 
-  addDeveloper(name, role, skills, gender, img) {
-    let data = [name, role, JSON.stringify(skills), gender, img];
+  addDeveloper(name, role, gender, img) {
+    let data = [name, role, gender, img];
     return this.database
       .executeSql(
-        "INSERT INTO developer (name, role, skills, gender, img) VALUES (?, ?, ?, ?, ?)",
+        "INSERT INTO developer (name, role, gender, img) VALUES (?, ?, ?, ?)",
         data
       )
       .then(data => {
@@ -110,16 +104,11 @@ export class DatabaseService {
     return this.database
       .executeSql("SELECT * FROM developer WHERE id = ?", [id])
       .then(data => {
-        let skills = [];
-        if (data.rows.item(0).skills != "") {
-          skills = JSON.parse(data.rows.item(0).skills);
-        }
 
         return {
           id: data.rows.item(0).id,
           name: data.rows.item(0).name,
           role: data.rows.item(0).role,
-          skills: skills,
           gender: data.rows.item(0).gender,
           img: data.rows.item(0).img
         };
@@ -135,10 +124,10 @@ export class DatabaseService {
   }
 
   updateDeveloper(dev: Dev) {
-    let data = [dev.name, dev.role, JSON.stringify(dev.skills), dev.gender, dev.img];
+    let data = [dev.name, dev.role, dev.gender, dev.img];
     return this.database
       .executeSql(
-        `UPDATE developer SET name = ?, role = ?, skills = ?, gender = ?, img = ? WHERE id = ${dev.id}`,
+        `UPDATE developer SET name = ?, role = ?, gender = ?, img = ? WHERE id = ${dev.id}`,
         data
       )
       .then(data => {

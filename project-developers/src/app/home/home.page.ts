@@ -46,7 +46,7 @@ export class HomePage implements OnInit {
           let allDevelopers = devs;
           this.developersCount = allDevelopers.length;
         });
-        this.presentToastSuccess();
+        // this.presentToastSuccess();
 
         console.log("Listing the Developers");
       } else {
