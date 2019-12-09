@@ -4,6 +4,7 @@
       <ion-menu-button menu="first" autoHide="false"> </ion-menu-button>
     </ion-buttons>
     <ion-title>All Developers</ion-title>
+    <ion-badge slot="end">{{developersCount}}</ion-badge>
     <ion-buttons slot="end">
       <ion-back-button [routerLink]="['/', 'home']"></ion-back-button>
     </ion-buttons>
@@ -15,11 +16,8 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <ion-list *ngIf="developersCount; else noDevelopers">
-    <ion-item
-      class="hover"
-      *ngFor="let developer of allDevelopers"
-      [routerLink]="['/', 'view-developer', developer.id]"
-    >
+    <ion-item class="hover" *ngFor="let developer of allDevelopers"
+      [routerLink]="['/', 'view-developer', developer.id]">
       #{{developer.id}} - {{developer.name}}
     </ion-item>
   </ion-list>
