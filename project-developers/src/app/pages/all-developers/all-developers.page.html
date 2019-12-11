@@ -11,14 +11,13 @@
 </ion-header>
 
 <ion-content>
-  <!-- <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
-  </ion-refresher> -->
+  </ion-refresher>
   <ion-list *ngIf="developersCount; else noDevelopers">
     <ion-item
-      class="hover"
       *ngFor="let developer of allDevelopers"
-      [routerLink]="['/', 'view-developer', developer.id]"
+      [routerLink]="['/view-developer/' + developer.id]"
     >
       #{{developer.id}} - {{developer.name}}
     </ion-item>
