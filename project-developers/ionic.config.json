@@ -1,7 +1,8 @@
 {
   "name": "project-max",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }

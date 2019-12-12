@@ -5,42 +5,27 @@ const routes: Routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
   {
     path: "home",
-    loadChildren: () => import("./home/home.module").then(m => m.HomePageModule)
+    loadChildren: "./home/home.module#HomePageModule"
   },
   {
     path: "all-developers",
-    loadChildren: () =>
-      import("./pages/all-developers/all-developers.module").then(
-        m => m.AllDevelopersPageModule
-      )
+    loadChildren: "./pages/all-developers/all-developers.module#AllDevelopersPageModule"
   },
   {
     path: "all-developers/:done",
-    loadChildren: () =>
-      import("./pages/all-developers/all-developers.module").then(
-        m => m.AllDevelopersPageModule
-      )
+    loadChildren: "./pages/all-developers/all-developers.module#AllDevelopersPageModule"
   },
   {
     path: "add-developer",
-    loadChildren: () =>
-      import("./pages/add-developer/add-developer.module").then(
-        m => m.AddDeveloperPageModule
-      )
+    loadChildren: "./pages/add-developer/add-developer.module#AddDeveloperPageModule"
   },
   {
     path: "view-developer/:id",
-    loadChildren: () =>
-      import("./pages/view-developer/view-developer.module").then(
-        m => m.ViewDeveloperPageModule
-      )
+    loadChildren: './pages/view-developer/view-developer.module#ViewDeveloperPageModule'
   },
   {
     path: "edit-developer/:id",
-    loadChildren: () =>
-      import("./pages/edit-developer/edit-developer.module").then(
-        m => m.EditDeveloperPageModule
-      )
+    loadChildren: "./pages/edit-developer/edit-developer.module#EditDeveloperPageModule"
   }
 ];
 

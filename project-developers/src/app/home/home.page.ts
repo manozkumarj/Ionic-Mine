@@ -13,6 +13,21 @@ export class HomePage implements OnInit {
   constructor(public api: ApiService, private toastController: ToastController, private db: DatabaseService) { }
 
   ngOnInit() {
+    this.db.getDatabaseState().subscribe(ready => {
+      if (ready) {
+        this.db.getDevs().subscribe(devs => {
+          let allDevelopers = devs;
+          this.developersCount = allDevelopers.length;
+        });
+        this.presentToastSuccess();
+
+        console.log("Listing the Developers");
+      } else {
+        this.presentToastWarning();
+        console.log("Database is not yet ready, need to create");
+      }
+    });
+
   }
 
 
@@ -34,26 +49,4 @@ export class HomePage implements OnInit {
     toast.present();
   }
 
-  ionViewWillEnter() {
-    // let allDevelopers = this.api.getAllDevelopers();
-    // this.developersCount = allDevelopers.length;
-    // console.log(this.developersCount);
-
-
-    this.db.getDatabaseState().subscribe(ready => {
-      if (ready) {
-        this.db.getDevs().subscribe(devs => {
-          let allDevelopers = devs;
-          this.developersCount = allDevelopers.length;
-        });
-        // this.presentToastSuccess();
-
-        console.log("Listing the Developers");
-      } else {
-        this.presentToastWarning();
-        console.log("Database is not yet ready, need to create");
-      }
-    });
-
-  }
 }

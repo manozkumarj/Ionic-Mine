@@ -40,7 +40,7 @@
     <ion-item>
       <ion-label position="floating" color="primary">Gender</ion-label>
       <ion-select formControlName="gender" cancelText="Cancel" okText="OK">
-        <ion-select-option *ngFor="let gender of genders" [value]="gender">{{gender}}</ion-select-option>
+        <ion-select-option *ngFor="let gender of genders" value="{{gender}}">{{gender}}</ion-select-option>
       </ion-select>
     </ion-item>
     <div class="validation-errors">
@@ -53,13 +53,13 @@
       </ng-container>
     </div>
 
-      <div style="width: 80%; margin: 15px auto; text-align: center;">  
-        <ion-button (click)="takeSnap()" center> Take Snapshot </ion-button> 
-      </div>
+    <div style="width: 80%; margin: 15px auto; text-align: center;">
+      <ion-button (click)="takeSnap()" center> Take Snapshot </ion-button>
+    </div>
 
-      <div *ngIf="capturedSnapURL" style="width: 80%; margin: 10px auto; text-align: center;">
-        <img [src]="capturedSnapURL" />
-      </div>
+    <div *ngIf="capturedSnapURL" style="width: 80%; margin: 10px auto; text-align: center;">
+      <img [src]="capturedSnapURL" />
+    </div>
 
     <ion-item>
       <ion-label color="primary">I accept terms and conditions</ion-label>
@@ -75,6 +75,7 @@
       </ng-container>
     </div>
 
-    <ion-button color="primary" class="submit-btn" expand="full" type="submit" [disabled]="!developerForm.valid || !capturedSnapURL" style="margin: 30px 10px;"> Add Developer </ion-button>
+    <ion-button color="primary" class="submit-btn" expand="full" type="submit"
+      [disabled]="!developerForm.valid || !capturedSnapURL" style="margin: 30px 10px;"> Add Developer </ion-button>
   </form>
 </ion-content>

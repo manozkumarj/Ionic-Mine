@@ -18,11 +18,11 @@ export class ViewDeveloperPage implements OnInit {
     private router: Router,
     private alertCtrl: AlertController,
     private db: DatabaseService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // alert("Alert from Developer View page");
-    let id = this.activatedRoute.snapshot.paramMap.get("id");
+    let id = parseInt(this.activatedRoute.snapshot.paramMap.get("id"));
 
     this.db
       .getDeveloper(id)
