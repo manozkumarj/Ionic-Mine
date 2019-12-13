@@ -53,3 +53,13 @@ Ionic-Sqlite/package-lock.json
 Ionic-Sqlite/tsconfig.spec.json
 Ionic-Sqlite/karma.conf.js
 Ionic-Sqlite/config.xml
+
+Default-Side-Menu-App/node_modules
+Default-Side-Menu-App/dist
+Default-Side-Menu-App/platforms
+Default-Side-Menu-App/plugins
+Default-Side-Menu-App/www
+Default-Side-Menu-App/package-lock.json
+Default-Side-Menu-App/tsconfig.spec.json
+Default-Side-Menu-App/karma.conf.js
+Default-Side-Menu-App/config.xml
