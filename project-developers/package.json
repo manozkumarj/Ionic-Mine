@@ -87,7 +87,8 @@
       "uk.co.workingedge.cordova.plugin.sqliteporter": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "browser"
     ]
   }
 }

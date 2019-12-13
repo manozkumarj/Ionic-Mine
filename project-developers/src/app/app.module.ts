@@ -44,7 +44,7 @@ export class AppModule {
         console.log("Database is ready...!");
       } else {
         console.log("Database is not yet ready, need to create one.");
-        this.db.createDatabase();
+        // this.db.createDatabase();
       }
     });
   }
