@@ -30,20 +30,116 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid>
-    <ion-row style="text-align: center; height: 500px;">
-      <ion-col style="text-align: center;border: 1px solid red;">
+<ion-content style="background-color: #e6e9f2;">
+  <!-- Parent Grid - starts here -->
+  <ion-grid style="padding: 0px;">
+    <ion-row style=" height: 565px;">
+      <ion-col>
         <div>
-          1 of 2
+          <!-- left side Grid - starts here -->
+          <ion-grid style="padding: 0 3%;">
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Date of Registration
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Beneficiary Name
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Surname
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Gender
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Age
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Date of Birth
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Family/Relative Number
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Caste
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Religion
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Number of Family Members
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                <button type="submit">Submit</button>
+              </ion-col>
+              <ion-col>
+                <button type="reset">Reset</button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <!-- left side Grid - starts here -->
         </div>
       </ion-col>
-      <ion-col size="4" style="text-align: center;border: 1px solid red;">
+      <ion-col
+        size="4"
+        style="text-align: center;border-left: 5px solid #3b4bad;"
+      >
         <div>
           2 of 2
         </div>
       </ion-col>
     </ion-row>
   </ion-grid>
+  <!-- Parent Grid - ends here -->
   <app-footer> </app-footer>
 </ion-content>

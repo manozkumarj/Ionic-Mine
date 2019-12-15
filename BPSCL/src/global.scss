@@ -25,15 +25,30 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-.primary {
-  background: #3b4bad !important;
-  color: #fff;
-}
-.primary-reverse {
-  background: #fff;
+.col-border-right {
+  // border-right: 2px solid #3b4bad;
+  padding: 0px;
+  height: 55px;
+  line-height: 55px;
+  font-weight: bold;
   color: #3b4bad;
 }
-.toolbar-container {
-  background: #3b4bad !important;
-  color: #fff;
+// .col-border,
+// .row-border {
+//   border-bottom: 2px solid #3b4bad;
+// }
+.row-height-45 {
+  height: 55px;
+}
+.field-input {
+  border: 2px solid #3b4bad;
+  border-radius: 5px;
+  width: 90%;
+}
+ion-content {
+  --ion-background-color: #dedede;
+}
+ion-toolbar {
+  --background: #3b4bad;
+  --color: #fff;
 }
