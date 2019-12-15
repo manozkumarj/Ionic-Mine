@@ -7,7 +7,8 @@ import { IonicModule } from "@ionic/angular";
 import { BeneficiaryRegistrationPageRoutingModule } from "./beneficiary-registration-routing.module";
 
 import { BeneficiaryRegistrationPage } from "./beneficiary-registration.page";
-import { FooterPage } from "../footer/footer.page";
+import { FooterPage } from "../common/footer/footer.page";
+import { UserDetailsPage } from "./../common/user-details/user-details.page";
 
 @NgModule({
   imports: [
@@ -16,6 +17,6 @@ import { FooterPage } from "../footer/footer.page";
     IonicModule,
     BeneficiaryRegistrationPageRoutingModule
   ],
-  declarations: [BeneficiaryRegistrationPage, FooterPage]
+  declarations: [BeneficiaryRegistrationPage, UserDetailsPage, FooterPage]
 })
 export class BeneficiaryRegistrationPageModule {}
