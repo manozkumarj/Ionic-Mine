@@ -1,19 +1,21 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from "@ionic/angular";
 
-import { AdminRegistrationPageRoutingModule } from './admin-registration-routing.module';
+import { AdminRegistrationPageRoutingModule } from "./admin-registration-routing.module";
 
-import { AdminRegistrationPage } from './admin-registration.page';
+import { AdminRegistrationPage } from "./admin-registration.page";
+import { ExporterModule } from "./../../modules/exporter.module";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AdminRegistrationPageRoutingModule
+    AdminRegistrationPageRoutingModule,
+    ExporterModule
   ],
   declarations: [AdminRegistrationPage]
 })
