@@ -35,6 +35,14 @@ const routes: Routes = [
   {
     path: 'doctor',
     loadChildren: () => import('./pages/doctor/doctor.module').then( m => m.DoctorPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'session-selection',
+    loadChildren: () => import('./pages/session-selection/session-selection.module').then( m => m.SessionSelectionPageModule)
   }
 
 ];

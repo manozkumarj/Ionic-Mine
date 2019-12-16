@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-grid>
+      <ion-row style="text-align: center;">
+        <ion-col>
+          <div>
+            Login
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="background-color: #e6e9f2;">
+  <!-- Parent Grid - starts here -->
+  <ion-grid style="padding: 0px;">
+    <ion-row style=" height: 600px;">
+      <ion-col>
+        <div>
+          <!-- left side Grid - starts here -->
+          <ion-grid style="margin: 15px 0;">
+            <ion-row class="row-border">
+              <ion-col class="col-border-right">
+                <div>
+                  <img src="assets/ilfs_abulance_logo.jpg" alt="user-avatar" />
+                </div>
+              </ion-col>
+              <ion-col style="border: 3px solid #3b4bad; padding: 33px 10px; margin: 0 15px;">
+                <ion-grid>
+                  <ion-row style="text-align: center;color: #3b4bad;font-weight: bold;font-size: 25px;">
+                    <ion-col>
+                      <div>
+                        Login
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-input style="border: 2px solid #3b4bad;border-radius: 5px;" value="" placeholder="Username">
+                      </ion-input>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <ion-input style="border: 2px solid #3b4bad;border-radius: 5px;" value="" placeholder="Password">
+                      </ion-input>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="row-border row-height-45">
+                    <ion-col class="col-border-right">
+                      <ion-button style="width: 99%; font-weight: bold;" type="submit" color="primary">Login
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <!-- left side Grid - starts here -->
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- Parent Grid - ends here -->
+  <app-footer> </app-footer>
+</ion-content>

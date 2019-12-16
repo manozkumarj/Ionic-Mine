@@ -1,0 +1,131 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-grid>
+      <ion-row style="text-align: center;">
+        <ion-col>
+          <div>
+            Session Selection
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="background-color: #e6e9f2;">
+  <!-- Parent Grid - starts here -->
+  <ion-grid style="padding: 0px;">
+    <ion-row style=" height: 600px;">
+      <ion-col>
+        <div>
+          <!-- left side Grid - starts here -->
+          <ion-grid style="margin: 15px 0;">
+            <ion-row class="row-border">
+              <ion-col style="margin: 120px 15px;" size="4">
+                <ion-grid style="padding: 8%;border: 3px solid #3b4bad;">
+                  <ion-row class="row-border" style="text-align: center;">
+                    <ion-col class="col-border-right">
+                      <h2> Select Session Type </h2>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="row-border" style="height: 38px;">
+                    <ion-col class="col-border-right" size="2">
+                      <ion-checkbox></ion-checkbox>
+                    </ion-col>
+                    <ion-col class="col-border-right">
+                      Morning Session
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="row-border" style="height: 38px;">
+                    <ion-col class="col-border-right" size="2">
+                      <ion-checkbox></ion-checkbox>
+                    </ion-col>
+                    <ion-col class="col-border-right">
+                      Evening Session
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-col>
+              <ion-col style="border: 3px solid #3b4bad; padding: 33px 10px; margin: 0 15px;">
+                <ion-grid style="padding: 0 3%;">
+                  <ion-row class="row-border row-height-45">
+                    <ion-col class="col-border-right">
+                      State
+                    </ion-col>
+                    <ion-col>
+                      <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                        background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                        <ion-select-option value="f">Female</ion-select-option>
+                        <ion-select-option value="m">Male</ion-select-option>
+                      </ion-select>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="row-border row-height-45">
+                    <ion-col class="col-border-right">
+                      Distrcit
+                    </ion-col>
+                    <ion-col>
+                      <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                        background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                        <ion-select-option value="f">Female</ion-select-option>
+                        <ion-select-option value="m">Male</ion-select-option>
+                      </ion-select>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="row-border row-height-45">
+                    <ion-col class="col-border-right">
+                      Mandal
+                    </ion-col>
+                    <ion-col>
+                      <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                        background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                        <ion-select-option value="f">Female</ion-select-option>
+                        <ion-select-option value="m">Male</ion-select-option>
+                      </ion-select>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="row-border row-height-45">
+                    <ion-col class="col-border-right">
+                      Village
+                    </ion-col>
+                    <ion-col>
+                      <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                        background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                        <ion-select-option value="f">Female</ion-select-option>
+                        <ion-select-option value="m">Male</ion-select-option>
+                      </ion-select>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="row-border row-height-45">
+                    <ion-col class="col-border-right">
+                      Service Point
+                    </ion-col>
+                    <ion-col>
+                      <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                        background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                        <ion-select-option value="f">Female</ion-select-option>
+                        <ion-select-option value="m">Male</ion-select-option>
+                      </ion-select>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="row-border row-height-45">
+                    <ion-col class="col-border-right">
+                      <ion-button style="width: 95%; font-weight: bold;" type="submit" color="primary">Start Application
+                      </ion-button>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <!-- left side Grid - starts here -->
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- Parent Grid - ends here -->
+  <app-footer> </app-footer>
+</ion-content>

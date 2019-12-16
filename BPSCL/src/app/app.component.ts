@@ -18,6 +18,16 @@ export class AppComponent {
       icon: "list"
     },
     {
+      title: "Login",
+      url: "/login",
+      icon: "list"
+    },
+    {
+      title: "Session Selection",
+      url: "/session-selection",
+      icon: "list"
+    },
+    {
       title: "Beneficiary Registration",
       url: "/beneficiary-registration",
       icon: "list"
