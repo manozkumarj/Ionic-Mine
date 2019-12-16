@@ -31,6 +31,16 @@ export class AppComponent {
       title: "Beneficiary Registration",
       url: "/beneficiary-registration",
       icon: "list"
+    },
+    {
+      title: "Vitals",
+      url: "/vitals",
+      icon: "list"
+    },
+    {
+      title: "Doctor",
+      url: "/doctor",
+      icon: "list"
     }
   ];
 

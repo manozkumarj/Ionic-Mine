@@ -1,0 +1,199 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-grid>
+      <ion-row style="text-align: center;">
+        <ion-col size="3">
+          <div>
+            Service Point : Gogikona
+          </div>
+        </ion-col>
+        <ion-col size="5">
+          <div>
+            Doctor
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>
+            Service Date: 2019-12-16
+          </div>
+        </ion-col>
+        <ion-col size="auto">
+          <div>
+            Logout
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="background-color: #e6e9f2;">
+  <!-- Parent Grid - starts here -->
+  <ion-grid style="padding: 0px;">
+    <ion-row style=" height: 640px;">
+      <ion-col>
+        <div>
+          <!-- left side Grid - starts here -->
+          <ion-grid style="padding: 0 3%;">
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Date of Registration
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Beneficiary Name
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Surname
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Gender
+              </ion-col>
+              <ion-col>
+                <ion-select
+                  class="field-input"
+                  style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)"
+                  placeholder="Select"
+                >
+                  <ion-select-option value="f">Female</ion-select-option>
+                  <ion-select-option value="m">Male</ion-select-option>
+                </ion-select>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Age
+              </ion-col>
+              <ion-col style="padding: 0;">
+                <ion-grid style="padding: 0; margin: 0;">
+                  <ion-row style="width: 95%;">
+                    <ion-col style="padding-left: 0;">
+                      <ion-input class="field-input" type="number" value="">
+                      </ion-input
+                    ></ion-col>
+                    <ion-col>
+                      <ion-select
+                        class="field-input"
+                        style="color: #000; font-weight: bold; background: #3b4bad; 
+                        background-image: linear-gradient(#3b4bad, #FFF)"
+                        placeholder="Select"
+                      >
+                        <ion-select-option value="years"
+                          >Years</ion-select-option
+                        >
+                        <ion-select-option value="months"
+                          >Months</ion-select-option
+                        >
+                        <ion-select-option value="days">Days</ion-select-option>
+                      </ion-select>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Date of Birth
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Family/Relative Number
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Caste
+              </ion-col>
+              <ion-col>
+                <ion-select
+                  class="field-input"
+                  style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)"
+                  placeholder="Select"
+                >
+                  <ion-select-option value="f">Female</ion-select-option>
+                  <ion-select-option value="m">Male</ion-select-option>
+                </ion-select>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Religion
+              </ion-col>
+              <ion-col>
+                <ion-select
+                  class="field-input"
+                  style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)"
+                  placeholder="Select"
+                >
+                  <ion-select-option value="f">Female</ion-select-option>
+                  <ion-select-option value="m">Male</ion-select-option>
+                </ion-select>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                Number of Family Members
+              </ion-col>
+              <ion-col>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right">
+                <ion-button
+                  style="width: 90%; font-weight: bold;"
+                  type="submit"
+                  color="primary"
+                  >Submit</ion-button
+                >
+              </ion-col>
+              <ion-col>
+                <ion-button
+                  style="width: 90%; font-weight: bold;"
+                  type="reset"
+                  color="primary"
+                  >Reset</ion-button
+                >
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <!-- left side Grid - starts here -->
+        </div>
+      </ion-col>
+      <ion-col size="4" style="border-left: 4px solid #3b4bad;">
+        <div>
+          <app-user-details></app-user-details>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- Parent Grid - ends here -->
+  <app-footer> </app-footer>
+</ion-content>

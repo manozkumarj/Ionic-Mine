@@ -28,7 +28,15 @@ const routes: Routes = [
       import(
         "./pages/beneficiary-registration/beneficiary-registration.module"
       ).then(m => m.BeneficiaryRegistrationPageModule)
+  },  {
+    path: 'vitals',
+    loadChildren: () => import('./pages/vitals/vitals.module').then( m => m.VitalsPageModule)
+  },
+  {
+    path: 'doctor',
+    loadChildren: () => import('./pages/doctor/doctor.module').then( m => m.DoctorPageModule)
   }
+
 ];
 
 @NgModule({

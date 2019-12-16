@@ -4,9 +4,9 @@ import { FormsModule } from "@angular/forms";
 
 import { IonicModule } from "@ionic/angular";
 
-import { BeneficiaryRegistrationPageRoutingModule } from "./beneficiary-registration-routing.module";
+import { DoctorPageRoutingModule } from "./doctor-routing.module";
 
-import { BeneficiaryRegistrationPage } from "./beneficiary-registration.page";
+import { DoctorPage } from "./doctor.page";
 import { ExporterModule } from "./../../modules/exporter.module";
 
 @NgModule({
@@ -14,10 +14,9 @@ import { ExporterModule } from "./../../modules/exporter.module";
     CommonModule,
     FormsModule,
     IonicModule,
-    BeneficiaryRegistrationPageRoutingModule,
+    DoctorPageRoutingModule,
     ExporterModule
   ],
-  declarations: [BeneficiaryRegistrationPage],
-  exports: []
+  declarations: [DoctorPage]
 })
-export class BeneficiaryRegistrationPageModule {}
+export class DoctorPageModule {}
