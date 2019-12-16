@@ -12,7 +12,7 @@
         </ion-col>
         <ion-col size="5" size="12" size-sm>
           <div>
-            Vitals
+            Staff Registration
           </div>
         </ion-col>
         <ion-col size="12" size-sm>
@@ -33,14 +33,38 @@
 <ion-content style="background-color: #e6e9f2;">
   <!-- Parent Grid - starts here -->
   <ion-grid style="padding: 0px;">
-    <ion-row style="min-height: 580px;">
+    <ion-row style="min-height: 640px;">
       <ion-col size="12" size-sm>
         <div>
           <!-- left side Grid - starts here -->
           <ion-grid style="padding: 0 3%;">
             <ion-row class="row-border row-height-45">
               <ion-col class="col-border-right" size="12" size-sm>
-                Beneficiary ID
+                First Name
+              </ion-col>
+              <ion-col size="12" size-sm>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right" size="12" size-sm>
+                Last Name
+              </ion-col>
+              <ion-col size="12" size-sm>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right" size="12" size-sm>
+                Father Name
+              </ion-col>
+              <ion-col size="12" size-sm>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right" size="12" size-sm>
+                Gender
               </ion-col>
               <ion-col size="12" size-sm>
                 <ion-select
@@ -56,67 +80,30 @@
             </ion-row>
             <ion-row class="row-border row-height-45">
               <ion-col class="col-border-right" size="12" size-sm>
-                Height (36-245 CM)
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Weight (1.5-200 KG)
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                BMI
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Temperature (92-105 F)
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Pulse (40-130)
-              </ion-col>
-              <ion-col>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Blood Pressure
+                Age
               </ion-col>
               <ion-col style="padding: 0;" size="12" size-sm>
                 <ion-grid style="padding: 0; margin: 0;">
                   <ion-row style="width: 95%;">
                     <ion-col style="padding-left: 0;">
-                      <ion-input
-                        class="field-input"
-                        type="text"
-                        placeholder="Systolic"
-                        value=""
-                      >
-                      </ion-input
-                    ></ion-col>
+                      <ion-input class="field-input" type="number" value="">
+                      </ion-input>
+                    </ion-col>
                     <ion-col>
-                      <ion-input
+                      <ion-select
                         class="field-input"
-                        type="text"
-                        value=""
-                        placeholder="Systolic"
-                      ></ion-input>
+                        style="color: #000; font-weight: bold; background: #3b4bad; 
+                        background-image: linear-gradient(#3b4bad, #FFF)"
+                        placeholder="Select"
+                      >
+                        <ion-select-option value="years"
+                          >Years</ion-select-option
+                        >
+                        <ion-select-option value="months"
+                          >Months</ion-select-option
+                        >
+                        <ion-select-option value="days">Days</ion-select-option>
+                      </ion-select>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
@@ -124,7 +111,55 @@
             </ion-row>
             <ion-row class="row-border row-height-45">
               <ion-col class="col-border-right" size="12" size-sm>
-                Respiratory Rate (10-60)
+                Date of Birth
+              </ion-col>
+              <ion-col size="12" size-sm>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right" size="12" size-sm>
+                Email
+              </ion-col>
+              <ion-col size="12" size-sm>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right" size="12" size-sm>
+                Role
+              </ion-col>
+              <ion-col size="12" size-sm>
+                <ion-select
+                  class="field-input"
+                  style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)"
+                  placeholder="Select"
+                >
+                  <ion-select-option value="f">Female</ion-select-option>
+                  <ion-select-option value="m">Male</ion-select-option>
+                </ion-select>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right" size="12" size-sm>
+                Username
+              </ion-col>
+              <ion-col size="12" size-sm>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right" size="12" size-sm>
+                Password
+              </ion-col>
+              <ion-col size="12" size-sm>
+                <ion-input class="field-input" value=""></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row class="row-border row-height-45">
+              <ion-col class="col-border-right" size="12" size-sm>
+                Confirm Password
               </ion-col>
               <ion-col size="12" size-sm>
                 <ion-input class="field-input" value=""></ion-input>
@@ -147,14 +182,6 @@
                   >Reset</ion-button
                 >
               </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-button
-                  style="width: 90%; font-weight: bold;"
-                  type="reset"
-                  color="primary"
-                  >Skip</ion-button
-                >
-              </ion-col>
             </ion-row>
           </ion-grid>
           <!-- left side Grid - starts here -->
@@ -162,7 +189,31 @@
       </ion-col>
       <ion-col size="4" style="border-left: 4px solid #3b4bad;">
         <div>
-          <app-user-details></app-user-details>
+          <ion-grid class="site-color" style="padding: 0 3%;">
+            <ion-row style="height: 162px; text-align: center;">
+              <ion-col size="12" size-sm>
+                <div>
+                  <img
+                    src="assets/profile_pic.jpg"
+                    alt="user-avatar"
+                    width="150px"
+                  />
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row style="text-align: center;">
+              <ion-col size="12" size-sm>
+                <div>
+                  <ion-button
+                    style="width: 90%; font-weight: bold;"
+                    type="submit"
+                    color="primary"
+                    >Take a Photo
+                  </ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </div>
       </ion-col>
     </ion-row>

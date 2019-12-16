@@ -41,6 +41,21 @@ export class AppComponent {
       title: "Doctor",
       url: "/doctor",
       icon: "list"
+    },
+    {
+      title: "Staff Registration",
+      url: "/staff-registration",
+      icon: "list"
+    },
+    {
+      title: "Edit Staff",
+      url: "/edit-staff",
+      icon: "list"
+    },
+    {
+      title: "Care Provided",
+      url: "/care-provided",
+      icon: "list"
     }
   ];
 

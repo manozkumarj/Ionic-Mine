@@ -43,6 +43,18 @@ const routes: Routes = [
   {
     path: 'session-selection',
     loadChildren: () => import('./pages/session-selection/session-selection.module').then( m => m.SessionSelectionPageModule)
+  },
+  {
+    path: 'staff-registration',
+    loadChildren: () => import('./pages/staff-registration/staff-registration.module').then( m => m.StaffRegistrationPageModule)
+  },
+  {
+    path: 'edit-staff',
+    loadChildren: () => import('./pages/edit-staff/edit-staff.module').then( m => m.EditStaffPageModule)
+  },
+  {
+    path: 'care-provided',
+    loadChildren: () => import('./pages/care-provided/care-provided.module').then( m => m.CareProvidedPageModule)
   }
 
 ];

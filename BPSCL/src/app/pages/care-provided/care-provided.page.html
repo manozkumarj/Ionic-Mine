@@ -5,9 +5,24 @@
     </ion-buttons>
     <ion-grid>
       <ion-row style="text-align: center;">
-        <ion-col>
+        <ion-col size="3" size="12" size-sm>
           <div>
-            Admin Registration
+            Service Point : Gogikona
+          </div>
+        </ion-col>
+        <ion-col size="5" size="12" size-sm>
+          <div>
+            Care Provided
+          </div>
+        </ion-col>
+        <ion-col size="12" size-sm>
+          <div>
+            Service Date: 2019-12-16
+          </div>
+        </ion-col>
+        <ion-col size="auto" size="12" size-sm>
+          <div>
+            Logout
           </div>
         </ion-col>
       </ion-row>
@@ -18,14 +33,14 @@
 <ion-content style="background-color: #e6e9f2;">
   <!-- Parent Grid - starts here -->
   <ion-grid style="padding: 0px;">
-    <ion-row style=" min-height: 640px;">
-      <ion-col>
+    <ion-row style="min-height: 580px;">
+      <ion-col size="12" size-sm>
         <div>
           <!-- left side Grid - starts here -->
           <ion-grid style="padding: 0 3%;">
             <ion-row class="row-border row-height-45">
               <ion-col class="col-border-right" size="12" size-sm>
-                State
+                Beneficiary ID
               </ion-col>
               <ion-col size="12" size-sm>
                 <ion-select
@@ -41,55 +56,7 @@
             </ion-row>
             <ion-row class="row-border row-height-45">
               <ion-col class="col-border-right" size="12" size-sm>
-                Distrcit
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-select
-                  class="field-input"
-                  style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)"
-                  placeholder="Select"
-                >
-                  <ion-select-option value="f">Female</ion-select-option>
-                  <ion-select-option value="m">Male</ion-select-option>
-                </ion-select>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Mandal
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-select
-                  class="field-input"
-                  style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)"
-                  placeholder="Select"
-                >
-                  <ion-select-option value="f">Female</ion-select-option>
-                  <ion-select-option value="m">Male</ion-select-option>
-                </ion-select>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Village
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-select
-                  class="field-input"
-                  style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)"
-                  placeholder="Select"
-                >
-                  <ion-select-option value="f">Female</ion-select-option>
-                  <ion-select-option value="m">Male</ion-select-option>
-                </ion-select>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Vehicle Registration Number
+                Provisional Diagnosis
               </ion-col>
               <ion-col size="12" size-sm>
                 <ion-input class="field-input" value=""></ion-input>
@@ -97,7 +64,7 @@
             </ion-row>
             <ion-row class="row-border row-height-45">
               <ion-col class="col-border-right" size="12" size-sm>
-                Parking place
+                Referral
               </ion-col>
               <ion-col size="12" size-sm>
                 <ion-input class="field-input" value=""></ion-input>
@@ -105,7 +72,7 @@
             </ion-row>
             <ion-row class="row-border row-height-45">
               <ion-col class="col-border-right" size="12" size-sm>
-                Username
+                Health Education/BCC
               </ion-col>
               <ion-col size="12" size-sm>
                 <ion-input class="field-input" value=""></ion-input>
@@ -113,7 +80,7 @@
             </ion-row>
             <ion-row class="row-border row-height-45">
               <ion-col class="col-border-right" size="12" size-sm>
-                Password
+                Guidance
               </ion-col>
               <ion-col size="12" size-sm>
                 <ion-input class="field-input" value=""></ion-input>
@@ -121,19 +88,35 @@
             </ion-row>
             <ion-row class="row-border row-height-45">
               <ion-col class="col-border-right" size="12" size-sm>
-                Confirm Password
+                Followup Cases
               </ion-col>
-              <ion-col size="12" size-sm>
+              <ion-col>
                 <ion-input class="field-input" value=""></ion-input>
               </ion-col>
             </ion-row>
             <ion-row class="row-border row-height-45">
               <ion-col class="col-border-right" size="12" size-sm>
                 <ion-button
-                  style="width: 95%; font-weight: bold;"
+                  style="width: 90%; font-weight: bold;"
                   type="submit"
                   color="primary"
-                  >Save</ion-button
+                  >Submit</ion-button
+                >
+              </ion-col>
+              <ion-col size="12" size-sm>
+                <ion-button
+                  style="width: 90%; font-weight: bold;"
+                  type="reset"
+                  color="primary"
+                  >Reset</ion-button
+                >
+              </ion-col>
+              <ion-col size="12" size-sm>
+                <ion-button
+                  style="width: 90%; font-weight: bold;"
+                  type="reset"
+                  color="primary"
+                  >Skip</ion-button
                 >
               </ion-col>
             </ion-row>
@@ -141,35 +124,13 @@
           <!-- left side Grid - starts here -->
         </div>
       </ion-col>
+      <ion-col size="4" style="border-left: 4px solid #3b4bad;">
+        <div>
+          <app-user-details></app-user-details>
+        </div>
+      </ion-col>
     </ion-row>
   </ion-grid>
   <!-- Parent Grid - ends here -->
-
-  <!--   
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" size-sm>
-        <div>
-          1 of 4
-        </div>
-      </ion-col>
-      <ion-col size="12" size-sm>
-        <div>
-          2 of 4
-        </div>
-      </ion-col>
-      <ion-col size="12" size-sm>
-        <div>
-          3 of 4
-        </div>
-      </ion-col>
-      <ion-col size="12" size-sm>
-        <div>
-          4 of 4
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
-
   <app-footer> </app-footer>
 </ion-content>
