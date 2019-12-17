@@ -5,10 +5,15 @@ import { RouteReuseStrategy } from "@angular/router";
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
+import { SQLitePorter } from "@ionic-native/sqlite-porter/ngx";
+import { SQLite } from "@ionic-native/sqlite/ngx";
+import { HttpClientModule } from "@angular/common/http";
 
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { ExporterModule } from "./modules/exporter.module";
+import { DatabaseService } from './services/database.service';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,13 +22,27 @@ import { ExporterModule } from "./modules/exporter.module";
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    HttpClientModule,
     ExporterModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    DatabaseService,
+    SQLite,
+    SQLitePorter,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private db: DatabaseService) {
+    let ready = this.db.getDatabaseState();
+    if (ready) {
+      alert("Database is already exist...!");
+    } else {
+      // alert("Database is not yet ready, need to create one.");
+      this.db.createDatabase();
+    }
+  }
+}

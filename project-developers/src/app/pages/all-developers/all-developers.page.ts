@@ -25,19 +25,12 @@ export class AllDevelopersPage implements OnInit {
       this.isDone = true;
     }
 
-    this.db.getDatabaseState().subscribe(ready => {
-      if (ready) {
-        this.db.getDevs().subscribe(devs => {
-          this.allDevelopers = devs;
-          this.developersCount = this.allDevelopers.length;
-        });
+      this.db.getDevs().subscribe(devs => {
+        this.allDevelopers = devs;
+        this.developersCount = this.allDevelopers.length;
+      });
 
-        console.log("Listing the Developers");
-      } else {
-        this.presentToastWarning();
-        console.log("Database is not yet ready, need to create");
-      }
-    });
+      console.log("Listing the Developers");
   }
 
   doRefresh(event) {

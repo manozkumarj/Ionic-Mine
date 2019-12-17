@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: "app-care-provided",
@@ -7,7 +8,10 @@ import { LoadingController } from "@ionic/angular";
   styleUrls: ["./care-provided.page.scss"]
 })
 export class CareProvidedPage implements OnInit {
-  constructor(public loadingController: LoadingController) {}
+  constructor(
+    public loadingController: LoadingController,
+    private db: DatabaseService
+  ) { }
 
   async presentLoading() {
     const loading = await this.loadingController.create({
@@ -15,9 +19,7 @@ export class CareProvidedPage implements OnInit {
       duration: 5000
     });
     await loading.present();
-
     const { role, data } = await loading.onDidDismiss();
-
     console.log("Loading dismissed!");
   }
 
@@ -34,5 +36,11 @@ export class CareProvidedPage implements OnInit {
 
   ngOnInit() {
     this.presentLoading();
+    this.db.getUsers().then(users => {
+      alert("Total No. of users = " + users.length);
+    }).catch(error => {
+      // this.presentToastWarning();
+      alert("Database Error " + JSON.stringify(error));
+    });
   }
 }
