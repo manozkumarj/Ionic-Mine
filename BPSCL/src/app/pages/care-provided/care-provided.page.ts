@@ -36,8 +36,9 @@ export class CareProvidedPage implements OnInit {
 
   ngOnInit() {
     this.presentLoading();
-    this.db.getUsers().then(users => {
-      alert("Total No. of users = " + users.length);
+    this.db.getTables().then(tables => {
+      alert("Total No. of tables ==> " + tables.length);
+      alert("Table names are ==> " + JSON.stringify(tables));
     }).catch(error => {
       // this.presentToastWarning();
       alert("Database Error " + JSON.stringify(error));

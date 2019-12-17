@@ -74,4 +74,9 @@ export class DatabaseService {
       .executeSql("SELECT * FROM du_User", []);
   }
 
+  getTables() {
+    return this.database
+      .executeSql("SELECT name FROM sqlite_master WHERE type ='table'", []);
+  }
+
 }
