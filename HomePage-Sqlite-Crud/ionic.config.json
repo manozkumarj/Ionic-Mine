@@ -1,0 +1,7 @@
+{
+  "name": "HomePage-Sqlite-Crud",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
