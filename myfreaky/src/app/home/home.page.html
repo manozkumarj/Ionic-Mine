@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Ionic Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item-divider>
+    <ion-input placeholder="Enter Name" [(ngModel)]="name_model"></ion-input>
+    <ion-button expand="block" (click)="insertName()">
+      Insert Name
+    </ion-button>
+  </ion-item-divider>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list *ngIf="(namesList.length > 0); else noNames">
+    <ion-item *ngFor="let item of namesList" detail>
+      #{{item.pid}} - {{item.name}}
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noNames>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> There are no Names </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+
+</ion-content>
