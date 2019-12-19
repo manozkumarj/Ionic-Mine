@@ -1,7 +1,8 @@
 {
   "name": "HomePage-Sqlite-Crud",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }

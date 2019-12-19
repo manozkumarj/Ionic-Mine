@@ -8,15 +8,15 @@
  
 <ion-content padding text-center>
  
-  <ion-button expand="block" (click)="createDB()">
+  <ion-button [disabled]="showCreateDbBtn" expand="block" (click)="createDB()">
     Create DataBase
   </ion-button>
  
-  <ion-button expand="block" (click)="createTable()">
+  <ion-button [disabled]="showCreateTableBtn" expand="block" (click)="createTable()">
     Create Table
   </ion-button>
  
-  <ion-button expand="block" (click)="getRows()">
+  <ion-button [disabled]="showGetRowsBtn" expand="block" (click)="getRows()">
     Get Rows
   </ion-button>
  

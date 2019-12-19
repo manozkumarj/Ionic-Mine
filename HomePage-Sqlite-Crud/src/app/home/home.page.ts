@@ -1,59 +1,49 @@
-import { DatabaseService } from './../services/database.service';
-import { Component, OnInit } from '@angular/core';
-
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
-import { Platform } from '@ionic/angular';
+import { Component } from "@angular/core";
+import { Platform } from "@ionic/angular";
+import { DatabaseService } from "./../services/database.service";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: "app-home",
+  templateUrl: "home.page.html",
+  styleUrls: ["home.page.scss"]
 })
-export class HomePage implements OnInit {
-
-  databaseObj: SQLiteObject;
-  name_model: string = "";
+export class HomePage {
   row_data: any = [];
-  readonly database_name: string = "freaky_datatable.db";
-  readonly table_name: string = "myfreakytable";
 
-  showCreateDBBtn: boolean = false;
+  showCreateDbBtn: boolean = false;
   showCreateTableBtn: boolean = false;
   showGetRowsBtn: boolean = true;
 
-  constructor(
-    private platform: Platform,
-    private db: DatabaseService
-  ) {
+  constructor(private platform: Platform, private db: DatabaseService) {
     this.platform.ready().then(() => {
-      this.db.getRows().then(data => {
-        this.row_data = data;
-        alert("Database is exist");
-      }).catch(error => {
-        this.showCreateDBBtn = true;
-        this.showCreateTableBtn = true;
-        this.db.createDB().then(data => {
-          this.db.createTable();
-        }).catch(error => {
-          alert(error);
+      this.db
+        .getRows()
+        .then(data => {
+          this.showCreateDbBtn = true;
+          this.showCreateTableBtn = true;
+          this.showGetRowsBtn = false;
+          this.row_data = data;
+          alert("Fetched Data");
+        })
+        .catch(error => {
+          alert("Data fetchint error " + JSON.stringify(error));
+          console.log(error);
         });
-        console.log(error);
-      });
     });
-  }
-
-  ngOnInit() {
-
   }
 
   getRows() {
-    this.db.getRows().then(data => {
-      this.row_data = data;
-      this.showCreateDBBtn = false;
-      this.showCreateTableBtn = false;
-    }).catch(error => {
-      console.log(error);
-    });
+    this.db
+      .getRows()
+      .then(data => {
+        this.row_data = data;
+        this.showCreateDbBtn = true;
+        this.showCreateTableBtn = true;
+        this.showGetRowsBtn = false;
+      })
+      .catch(error => {
+        alert("getRows error " + JSON.stringify(error));
+      });
   }
 
   insertRow(name_model) {
@@ -61,19 +51,27 @@ export class HomePage implements OnInit {
       alert("Enter Name");
       return;
     } else {
-      this.db.getRows().then(data => {
-        this.row_data = data;
-        alert('Row Inserted!');
-      });
+      this.db
+        .getRows()
+        .then(data => {
+          this.row_data = data;
+          alert("Row Inserted!");
+        })
+        .catch(error => {
+          alert("insertRow error " + JSON.stringify(error));
+        });
     }
   }
 
-
   deleteRow(item) {
-    this.db.getRows().then(data => {
-      this.row_data = data;
-      alert("Row Deleted!");
-    });
+    this.db
+      .getRows()
+      .then(data => {
+        this.row_data = data;
+        alert("Row Deleted!");
+      })
+      .catch(error => {
+        alert("deleteRow error " + JSON.stringify(error));
+      });
   }
-
 }
