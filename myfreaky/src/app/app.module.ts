@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SqliteDbCopy } from '@ionic-native/sqlite-db-copy/ngx';
 import { SQLite } from '@ionic-native/sqlite/ngx';
+import { DatabaseService } from './services/database.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,14 +21,17 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
     SplashScreen,
     SqliteDbCopy,
     SQLite,
+    DatabaseService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(private sqliteDbCopy: SqliteDbCopy) {
+  constructor(private sqliteDbCopy: SqliteDbCopy, private db: DatabaseService) {
     this.sqliteDbCopy.copy('ex.db', 0)
-      .then((res: any) => console.log("Copied DB -> " + JSON.stringify(res)))
+      .then((res: any) => {
+        console.log("Copied DB ->  " + JSON.stringify(res))
+      })
       .catch((error: any) => console.error("Error while coping DB -> " + JSON.stringify(error)));
   }
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { ToastController } from "@ionic/angular";
+import { DatabaseService } from './../services/database.service';
+import { AlertController } from "@ionic/angular";
 
 @Component({
   selector: 'app-home',
@@ -11,24 +12,17 @@ export class HomePage {
 
   namesList = [];
   name_model: string = ""; // Input field model
-  dbObject: SQLiteObject;
 
-  constructor(public sqlite: SQLite, private toastController: ToastController) {
-    this.sqlite.create({
-      name: 'ex.db',
-      location: 'default'
-    }).then((db: SQLiteObject) => {
-      this.dbObject = db;
-      // console.log("After create fun -> " + JSON.stringify(db));
-      this.printAllNames();
-    }).catch(error => {
-      console.log("Error After create fun -> " + JSON.stringify(error));
-    });
+  constructor(
+    private toastController: ToastController,
+    private db: DatabaseService,
+    private alertCtrl: AlertController
+  ) {
+    this.getNames();
   }
 
   doRefresh(event) {
     console.log("Begin async operation");
-
     setTimeout(() => {
       console.log("Async operation has ended");
       this.presentToastSuccess();
@@ -59,29 +53,56 @@ export class HomePage {
       alert("Enter Name");
       return;
     }
-    let sql = 'INSERT INTO myfreakytable (name) VALUES (?)';
-    this.dbObject.executeSql(sql, [this.name_model]).then(res => {
+    this.db.insertItem(this.name_model).then(res => {
       this.name_model = '';
-      this.printAllNames();
-      this.presentToastSuccess();
+      this.getNames();
+      console.log("Home - insertName - Success -> " + JSON.stringify(res));
+    }).catch(error => {
+      console.log("Home - insertName - error -> " + JSON.stringify(error));
     });
   }
 
-  printAllNames() {
-    let sql = 'SELECT * FROM myfreakytable';
-    this.dbObject.executeSql(sql, []).then(res => {
-      let names = [];
-      if (res.rows.length > 0) {
-        for (let i = 0; i < res.rows.length; i++) {
-          names.push(res.rows.item(i));
-        }
-        this.namesList = names;
-      }
+  getNames() {
+    this.db.getItems().then(names => {
+      this.namesList = names;
+      console.log("Home - getNames - Success -> " + JSON.stringify(names));
+    }).catch(error => {
+      console.log("Home - getNames - error -> " + JSON.stringify(error));
     });
   }
 
-  deleteRow(item) {
-    console.log("Delatable name -> " + item);
+  deleteName(name) {
+    console.log("Delatable name -> " + name);
+    if (!name) {
+      alert("Enter Name");
+      return;
+    }
+    this.alertCtrl
+      .create({
+        header: "Are you sure?",
+        message: "Do you want to delete this Name?",
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel"
+          },
+          {
+            text: "Delete",
+            handler: () => {
+              this.db.deleteItem(name).then(res => {
+                this.name_model = '';
+                this.getNames();
+                console.log("Home - insertName - Success -> " + JSON.stringify(res));
+              }).catch(error => {
+                console.log("Home - insertName - error -> " + JSON.stringify(error));
+              });
+            }
+          }
+        ]
+      })
+      .then(alertEl => {
+        alertEl.present();
+      });
   }
 
 }

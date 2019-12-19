@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Ionic Blank
+      Ionic Sqlite
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -21,6 +21,9 @@
   <ion-list *ngIf="(namesList.length > 0); else noNames">
     <ion-item *ngFor="let item of namesList" detail>
       #{{item.pid}} - {{item.name}}
+      <ion-button (click)="deleteName(item.pid)" slot="end" size="small" color="danger">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-list>
 
