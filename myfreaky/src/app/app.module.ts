@@ -30,7 +30,7 @@ export class AppModule {
   constructor(private sqliteDbCopy: SqliteDbCopy, private db: DatabaseService) {
     this.sqliteDbCopy.copy('ex.db', 0)
       .then((res: any) => {
-        console.log("Copied DB ->  " + JSON.stringify(res))
+        console.log("Copied DB -> " + JSON.stringify(res))
       })
       .catch((error: any) => console.error("Error while coping DB -> " + JSON.stringify(error)));
   }

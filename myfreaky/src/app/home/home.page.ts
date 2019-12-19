@@ -1,25 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ToastController } from "@ionic/angular";
 import { DatabaseService } from './../services/database.service';
 import { AlertController } from "@ionic/angular";
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit, OnDestroy, AfterViewInit {
 
+  backButtonSubscription; // for storing the returned subscription
   namesList = [];
   name_model: string = ""; // Input field model
 
   constructor(
+    private platform: Platform,
     private toastController: ToastController,
     private db: DatabaseService,
     private alertCtrl: AlertController
   ) {
     this.getNames();
   }
+
+  ngOnInit() { }
 
   doRefresh(event) {
     console.log("Begin async operation");
@@ -103,6 +108,16 @@ export class HomePage {
       .then(alertEl => {
         alertEl.present();
       });
+  }
+
+  ngAfterViewInit() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+      navigator['app'].exitApp();
+    });
+  }
+
+  ngOnDestroy() {
+    this.backButtonSubscription.unsubscribe();
   }
 
 }
