@@ -8,6 +8,7 @@ import { DatabaseService } from 'src/app/services/database.service';
   styleUrls: ["./care-provided.page.scss"]
 })
 export class CareProvidedPage implements OnInit {
+  sqliteTables: any[] = [];
   constructor(
     public loadingController: LoadingController,
     private db: DatabaseService
@@ -37,11 +38,12 @@ export class CareProvidedPage implements OnInit {
   ngOnInit() {
     this.presentLoading();
     this.db.getTables().then(tables => {
-      alert("Total No. of tables ==> " + tables.length);
-      alert("Table names are ==> " + JSON.stringify(tables));
+      this.sqliteTables = tables;
+      // alert("Total No. of tables ==> " + tables.length);
+      // alert("Table names are ==> " + JSON.stringify(tables));
     }).catch(error => {
       // this.presentToastWarning();
-      alert("Database Error " + JSON.stringify(error));
+      console.error("Database Error " + JSON.stringify(error));
     });
   }
 }

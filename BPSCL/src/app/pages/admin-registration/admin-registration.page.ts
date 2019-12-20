@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-admin-registration',
@@ -8,7 +9,8 @@ import { Platform } from '@ionic/angular';
 })
 export class AdminRegistrationPage implements OnInit {
 
-  constructor(public plt: Platform) {
+  adminUsers: any[] = [];
+  constructor(public plt: Platform, private db: DatabaseService) {
     if (this.plt.is('ios')) {
       // This will only print when on iOS
       console.log('I am an iOS device!');
@@ -21,7 +23,13 @@ export class AdminRegistrationPage implements OnInit {
   }
 
   ngOnInit() {
-    // alert(window.cordova.platformId);
+    this.db.getUsers().then(users => {
+      this.adminUsers = users;
+      // alert("Total No. of users = " + users.length);
+      // alert("Total users are ==> " + JSON.stringify(users));
+    }).catch(error => {
+      console.error("Database Error " + JSON.stringify(error));
+    });
   }
 
 }

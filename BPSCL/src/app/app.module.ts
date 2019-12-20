@@ -35,14 +35,4 @@ import { DatabaseService } from './services/database.service';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(private db: DatabaseService) {
-    let ready = this.db.getDatabaseState();
-    if (ready) {
-      alert("Database is already exist...!");
-    } else {
-      // alert("Database is not yet ready, need to create one.");
-      this.db.createDatabase();
-    }
-  }
-}
+export class AppModule { }
