@@ -76,3 +76,13 @@ BPSCL/package-lock.json
 BPSCL/tsconfig.spec.json
 BPSCL/karma.conf.js
 BPSCL/config.xml
+
+myfreaky/node_modules
+myfreaky/dist
+myfreaky/platforms
+myfreaky/resources
+myfreaky/plugins
+myfreaky/package-lock.json
+myfreaky/tsconfig.spec.json
+myfreaky/karma.conf.js
+myfreaky/config.xml

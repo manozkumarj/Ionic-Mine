@@ -9,29 +9,25 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SqliteDbCopy } from '@ionic-native/sqlite-db-copy/ngx';
+import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { DatabaseService } from './services/database.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [
     StatusBar,
     SplashScreen,
     SqliteDbCopy,
     SQLite,
+    SQLitePorter,
     DatabaseService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  constructor(private sqliteDbCopy: SqliteDbCopy, private db: DatabaseService) {
-    this.sqliteDbCopy.copy('ex.db', 0)
-      .then((res: any) => {
-        console.log("Copied DB -> " + JSON.stringify(res))
-      })
-      .catch((error: any) => console.error("Error while coping DB -> " + JSON.stringify(error)));
-  }
 }
