@@ -55,17 +55,6 @@ export class DatabaseService {
       });
   }
 
-  insertItem(name_model) {
-    let sql = 'INSERT INTO myfreakytable (name) VALUES (?)';
-    return this.dbObject.executeSql(sql, [name_model]).then(res => {
-      console.log("database - insertItem - Success -> " + JSON.stringify(res));
-      return true;
-    }).catch(error => {
-      console.warn("database - insertItem - Error -> " + JSON.stringify(error));
-      return false;
-    });
-  }
-
   checkTable() {
     return this.createDb().then(data => {
       let sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='myfreakytable'";
@@ -81,18 +70,27 @@ export class DatabaseService {
     });
   }
 
+  insertItem(name_model) {
+    let sql = 'INSERT INTO myfreakytable (name) VALUES (?)';
+    return this.dbObject.executeSql(sql, [name_model]).then(res => {
+      console.log("database - insertItem - Success -> " + JSON.stringify(res));
+      return true;
+    }).catch(error => {
+      console.warn("database - insertItem - Error -> " + JSON.stringify(error));
+      return false;
+    });
+  }
+
   getItems() {
-    return this.createDb().then(data => {
-      let sql = 'SELECT * FROM myfreakytable';
-      return this.dbObject.executeSql(sql, []).then(res => {
-        let names = [];
-        if (res.rows.length > 0) {
-          for (let i = 0; i < res.rows.length; i++) {
-            names.push(res.rows.item(i));
-          }
+    let sql = 'SELECT * FROM myfreakytable';
+    return this.dbObject.executeSql(sql, []).then(res => {
+      let names = [];
+      if (res.rows.length > 0) {
+        for (let i = 0; i < res.rows.length; i++) {
+          names.push(res.rows.item(i));
         }
-        return names;
-      });
+      }
+      return names;
     });
   }
 

@@ -18,17 +18,7 @@ export class AppComponent {
     private db: DatabaseService
   ) {
     this.initializeApp();
-    this.db.checkTable()
-      .then((res: any) => {
-        if (!res) {
-          this.db.seedSql();
-        }
-        console.log("Table is already exist :) -> " + JSON.stringify(res))
-      })
-      .catch((error: any) => {
-        console.error("Table doesn't exist -> " + JSON.stringify(error));
-        this.db.seedSql();
-      });
+    this.prepareDatabase();
   }
 
   initializeApp() {
@@ -37,4 +27,21 @@ export class AppComponent {
       this.splashScreen.hide();
     });
   }
+
+  prepareDatabase() {
+    this.db.checkTable()
+      .then((res: any) => {
+        if (!res) {
+          this.db.seedSql();
+          console.warn("Table doesn't exist, creating one :) -> " + JSON.stringify(res));
+        } else {
+          console.log("Table is already exist :) -> " + JSON.stringify(res));
+        }
+      })
+      .catch((error: any) => {
+        console.error("catch -> Table doesn't exist -> " + JSON.stringify(error));
+        this.db.seedSql();
+      });
+  }
+
 }

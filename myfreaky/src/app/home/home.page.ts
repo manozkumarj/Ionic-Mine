@@ -70,6 +70,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   getNames() {
     this.db.getItems().then(names => {
       this.namesList = names;
+      this.presentToastSuccess();
       console.log("Home - getNames - Success -> " + JSON.stringify(names));
     }).catch(error => {
       console.log("Home - getNames - error -> " + JSON.stringify(error));
