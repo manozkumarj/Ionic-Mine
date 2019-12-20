@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { LoadingController } from "@ionic/angular";
-import { DatabaseService } from 'src/app/services/database.service';
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-care-provided",
@@ -12,7 +12,7 @@ export class CareProvidedPage implements OnInit {
   constructor(
     public loadingController: LoadingController,
     private db: DatabaseService
-  ) { }
+  ) {}
 
   async presentLoading() {
     const loading = await this.loadingController.create({
@@ -36,14 +36,6 @@ export class CareProvidedPage implements OnInit {
   }
 
   ngOnInit() {
-    this.presentLoading();
-    this.db.getTables().then(tables => {
-      this.sqliteTables = tables;
-      // alert("Total No. of tables ==> " + tables.length);
-      // alert("Table names are ==> " + JSON.stringify(tables));
-    }).catch(error => {
-      // this.presentToastWarning();
-      console.error("Database Error " + JSON.stringify(error));
-    });
+    // this.presentLoading();
   }
 }

@@ -4,7 +4,7 @@ import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { MenuController } from "@ionic/angular";
-import { DatabaseService } from './services/database.service';
+import { DatabaseService } from "./services/database.service";
 
 @Component({
   selector: "app-root",
@@ -13,6 +13,11 @@ import { DatabaseService } from './services/database.service';
 })
 export class AppComponent {
   public appPages = [
+    {
+      title: "Home",
+      url: "/home",
+      icon: "list"
+    },
     {
       title: "Admin Registration",
       url: "/admin-registration",
@@ -68,7 +73,7 @@ export class AppComponent {
     private db: DatabaseService
   ) {
     this.initializeApp();
-    this.prepareDatabase();
+    // this.prepareDatabase();
   }
 
   closeMenu() {
@@ -84,19 +89,23 @@ export class AppComponent {
   }
 
   prepareDatabase() {
-    this.db.checkTable()
+    this.db
+      .checkTable()
       .then((res: any) => {
         if (!res) {
           this.db.seedSql();
-          console.warn("Table doesn't exist, creating one :) -> " + JSON.stringify(res));
+          console.warn(
+            "Table doesn't exist, creating one :) -> " + JSON.stringify(res)
+          );
         } else {
           console.log("Table is already exist :) -> " + JSON.stringify(res));
         }
       })
       .catch((error: any) => {
-        console.error("catch -> Table doesn't exist -> " + JSON.stringify(error));
+        console.error(
+          "catch -> Table doesn't exist -> " + JSON.stringify(error)
+        );
         this.db.seedSql();
       });
   }
-
 }

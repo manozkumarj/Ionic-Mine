@@ -23,21 +23,6 @@
         steps.
       </p>
     </ion-card-content>
-    Total Admin Users - ({{(adminUsers.length)}})
-    <ion-list *ngIf="(adminUsers.length > 0); else noNames">
-      <ion-item *ngFor="let item of adminUsers">
-        --> {{item.username}} - {{item.password}}
-      </ion-item>
-    </ion-list>
-
-    <ng-template #noNames>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title> There are User to show </ion-card-title>
-        </ion-card-header>
-      </ion-card>
-    </ng-template>
-
   </ion-card>
 
   <!-- <ion-list lines="none">
