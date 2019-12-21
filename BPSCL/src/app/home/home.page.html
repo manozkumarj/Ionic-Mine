@@ -1,11 +1,17 @@
-<ion-header class="primary">
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>
-      Home
-    </ion-title>
+    <ion-grid>
+      <ion-row style="text-align: center;">
+        <ion-col>
+          <div>
+            Home
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 
@@ -17,11 +23,19 @@
       <ion-card-title>Welcome to Ionic</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>
-        Now that your app has been created, you'll want to start building out
-        features and components. Check out some of the resources below for next
-        steps.
-      </p>
+      <ion-list *ngIf="(adminUsers.length > 0); else noUsers">
+        <ion-item *ngFor="let user of adminUsers" detail>
+          --> {{user.password}} - {{user.name}}
+        </ion-item>
+      </ion-list>
+
+      <ng-template #noUsers>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title> There are no users </ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ng-template>
     </ion-card-content>
   </ion-card>
 

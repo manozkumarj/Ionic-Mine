@@ -13,13 +13,16 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   constructor(private db: DatabaseService, private platform: Platform) {}
 
   ngOnInit() {
-    // this.db.getUsers().then(users => {
-    //   this.adminUsers = users;
-    //   alert("Total No. of users = " + users.length);
-    //   alert("Total users are ==> " + JSON.stringify(users));
-    // }).catch(error => {
-    //   console.error("Database Error " + JSON.stringify(error));
-    // });
+    this.db
+      .getUsers()
+      .then(users => {
+        this.adminUsers = users;
+        console.log("Total No. of users = " + users.length);
+        console.log("Total users are ==> " + JSON.stringify(users));
+      })
+      .catch(error => {
+        console.error("Database Error " + JSON.stringify(error));
+      });
   }
 
   ngAfterViewInit() {

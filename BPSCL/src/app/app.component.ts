@@ -73,7 +73,7 @@ export class AppComponent {
     private db: DatabaseService
   ) {
     this.initializeApp();
-    // this.prepareDatabase();
+    this.prepareDatabase();
   }
 
   closeMenu() {
