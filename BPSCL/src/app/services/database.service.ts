@@ -12,7 +12,7 @@ export class DatabaseService {
 
   database_name: string = "bpscl_dev.db";
 
-  table_adminUsers: string = "du_User";
+  table_users: string = "du_User";
   table_states: string = "m_State";
   table_districts: string = "m_District";
   table_mandals: string = "m_Mandal";
@@ -83,7 +83,7 @@ export class DatabaseService {
       let data = await res;
       let sql = "SELECT name FROM sqlite_master WHERE type='table' AND name=?";
       return this.dbObject
-        .executeSql(sql, [this.table_adminUsers])
+        .executeSql(sql, [this.table_users])
         .then(res => {
           console.log(
             "database - checkTable - Success -> " + JSON.stringify(res)
@@ -309,7 +309,7 @@ export class DatabaseService {
   }
 
   getUsers() {
-    let sql = `SELECT username, password FROM ${this.table_adminUsers}`;
+    let sql = `SELECT username, password FROM ${this.table_users}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let users = [];
       if (data.rows.length > 0) {
@@ -321,6 +321,14 @@ export class DatabaseService {
         }
       }
       return users;
+    });
+  }
+
+  login(username, password) {
+    let sql = `SELECT userId FROM ${this.table_users} WHERE username = ? AND password = ? AND isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, [username, password]).then(data => {
+      let userId = data.rows.item(0).userId;
+      return userId;
     });
   }
 

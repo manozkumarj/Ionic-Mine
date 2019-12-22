@@ -33,7 +33,24 @@ export class LoginPage implements OnInit {
   }
 
   onSubmit(values) {
+    let username = this.loginForm.get("username").value;
+    let password = this.loginForm.get("password").value;
     console.log("Login form is submitted, below are the values");
     console.log(values);
+    this.db
+      .login(username, password)
+      .then(data => {
+        if (data) {
+          console.log("User exist & the user ID is -> " + data);
+          // this.router.navigate(["/session-selection"]);
+        } else {
+          console.log("User didn't exist -> " + data);
+        }
+      })
+      .catch(error => {
+        console.error(
+          "Error -> onSubmit() function returned error." + JSON.stringify(error)
+        );
+      });
   }
 }
