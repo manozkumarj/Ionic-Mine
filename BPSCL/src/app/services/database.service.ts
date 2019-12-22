@@ -57,22 +57,27 @@ export class DatabaseService {
   }
 
   seedSql() {
-    this.http.get("assets/sql.sql", { responseType: "text" }).subscribe(sql => {
-      this.sqlitePorter
-        .importSqlToDb(this.dbObject, sql)
-        .then(_ => {
-          console.log("SQL file imported successfully... :)");
-          return true;
-        })
-        .catch(error => {
-          console.warn("SQL file import error => " + JSON.stringify(error));
-          return false;
-        });
-    });
+    return this.http
+      .get("assets/sql.sql", { responseType: "text" })
+      .toPromise()
+      .then(sql => {
+        this.sqlitePorter
+          .importSqlToDb(this.dbObject, sql)
+          .then(async res => {
+            let getRes = await res;
+            console.log("SQL file imported successfully... :)");
+            return true;
+          })
+          .catch(error => {
+            console.warn("SQL file import error => " + JSON.stringify(error));
+            return false;
+          });
+      });
   }
 
   checkTable() {
-    return this.createDb().then(data => {
+    return this.createDb().then(async res => {
+      let data = await res;
       let sql = "SELECT name FROM sqlite_master WHERE type='table' AND name=?";
       return this.dbObject
         .executeSql(sql, [this.table_adminUsers])
@@ -80,7 +85,11 @@ export class DatabaseService {
           console.log(
             "database - checkTable - Success -> " + JSON.stringify(res)
           );
-          if (res.rows.length <= 0) return false;
+          if (res.rows.length <= 0) {
+            this.seedSql().then(async data => {
+              return true;
+            });
+          }
           return true;
         })
         .catch(error => {

@@ -12,8 +12,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { ExporterModule } from "./modules/exporter.module";
-import { DatabaseService } from './services/database.service';
-
+import { DatabaseService } from "./services/database.service";
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,4 +34,4 @@ import { DatabaseService } from './services/database.service';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -77,7 +77,6 @@ export class AppComponent {
   }
 
   closeMenu() {
-    // alert("Close the Menu");
     this.menuCtrl.toggle();
   }
 
@@ -93,19 +92,17 @@ export class AppComponent {
       .checkTable()
       .then((res: any) => {
         if (!res) {
-          this.db.seedSql();
-          console.warn(
-            "Table doesn't exist, creating one :) -> " + JSON.stringify(res)
+          console.error(
+            "checkTable() -> Something went wrong -> " + JSON.stringify(res)
           );
         } else {
-          console.log("Table is already exist :) -> " + JSON.stringify(res));
+          console.log("Table is ready :) -> " + JSON.stringify(res));
         }
       })
       .catch((error: any) => {
         console.error(
           "catch -> Table doesn't exist -> " + JSON.stringify(error)
         );
-        this.db.seedSql();
       });
   }
 }
