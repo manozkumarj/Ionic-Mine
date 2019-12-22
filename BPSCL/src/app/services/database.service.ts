@@ -14,9 +14,10 @@ export class DatabaseService {
 
   table_adminUsers: string = "du_User";
   table_states: string = "m_State";
-  table_districts: string = "m_Disrict";
+  table_districts: string = "m_District";
   table_mandals: string = "m_Mandal";
-  table_villages: string = "m_Villages";
+  table_villages: string = "m_Village";
+  table_admins: string = "mv_VanDeviceApprove";
 
   stateId: number = 21;
   status = {
@@ -206,7 +207,7 @@ export class DatabaseService {
   }
 
   getMandals(stateId, districtId) {
-    let sql = `SELECT stateId, districtId, mandalId, mandalName, mandalCode FROM ${this.table_mandals} WHERE stateId = ? AND districtId AND isActive = ?`;
+    let sql = `SELECT stateId, districtId, mandalId, mandalName, mandalCode FROM ${this.table_mandals} WHERE stateId = ? AND districtId = ? AND isActive = ?`;
     return this.dbObject
       .executeSql(sql, [stateId, districtId, this.status.active])
       .then(data => {
@@ -226,7 +227,7 @@ export class DatabaseService {
   }
 
   getVillages(stateId, districtId, mandalId) {
-    let sql = `SELECT stateId, districtId, mandalId, villageId, villageName, villageCode FROM ${this.table_villages} WHERE stateId = ? AND districtId = ? AND stateId = ? AND isActive = ?`;
+    let sql = `SELECT stateId, districtId, mandalId, villageId, villageName, villageCode FROM ${this.table_villages} WHERE stateId = ? AND districtId = ? AND mandalId = ? AND isActive = ?`;
     return this.dbObject
       .executeSql(sql, [stateId, districtId, mandalId, this.status.active])
       .then(data => {
@@ -247,6 +248,23 @@ export class DatabaseService {
       });
   }
 
+  getAdmins() {
+    let sql = `SELECT userName, password, registrationNo FROM ${this.table_admins}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let admins = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          admins.push({
+            userName: data.rows.item(i).userName,
+            password: data.rows.item(i).password,
+            registrationNo: data.rows.item(i).registrationNo
+          });
+        }
+      }
+      return admins;
+    });
+  }
+
   getUsers() {
     let sql = `SELECT username, password FROM ${this.table_adminUsers}`;
     return this.dbObject.executeSql(sql, []).then(data => {
@@ -261,6 +279,36 @@ export class DatabaseService {
       }
       return users;
     });
+  }
+
+  registerAdmin(data) {
+    let sql = `INSERT INTO ${this.table_admins} (username, password, registrationNo, imeiNo, parkingPlace, villageId, mandalId, districtId, stateId, gcmToken, isActive, insertedDate, updatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,'datetime()','datetime()')`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.username,
+        data.password,
+        data.registrationNo,
+        data.imeiNo,
+        data.parkingPlace,
+        data.villageId,
+        data.mandalId,
+        data.districtId,
+        data.stateId,
+        data.gcmToken,
+        this.status.active
+      ])
+      .then(res => {
+        console.log(
+          "database - insertItem - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - insertItem - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
   }
 
   // -------------------------- BPSCL Queries - ends  -------------------------- //

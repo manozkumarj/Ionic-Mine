@@ -25,7 +25,7 @@
     <ion-card-content>
       <ion-list *ngIf="(adminUsers.length > 0); else noUsers">
         <ion-item *ngFor="let user of adminUsers" detail>
-          --> {{user.password}} - {{user.name}}
+          --> {{user.username}} - {{user.password}}
         </ion-item>
       </ion-list>
 

@@ -16,6 +16,21 @@
 </ion-header>
 
 <ion-content style="background-color: #e6e9f2;">
+  <ion-card-content>
+    <ion-list *ngIf="(admins.length > 0); else noUsers">
+      <ion-item *ngFor="let admin of admins" detail>
+        --> {{admin.userName}} - {{admin.password}} - {{admin.registrationNo}}
+      </ion-item>
+    </ion-list>
+
+    <ng-template #noUsers>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title> There are no Admins </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ng-template>
+  </ion-card-content>
   <!-- Parent Grid - starts here -->
   <ion-grid style="padding: 0px;">
     <ion-row style=" height: 600px;">

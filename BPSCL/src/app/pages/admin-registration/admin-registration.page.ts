@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Platform } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-admin-registration",
@@ -20,7 +21,11 @@ export class AdminRegistrationPage implements OnInit {
   mandalId: number = 2;
   villageId: number;
 
-  constructor(public plt: Platform, private db: DatabaseService) {
+  constructor(
+    public plt: Platform,
+    private db: DatabaseService,
+    private router: Router
+  ) {
     if (this.plt.is("ios")) {
       console.log("I am an iOS device!");
     } else if ("android") {
@@ -37,6 +42,8 @@ export class AdminRegistrationPage implements OnInit {
       vehicleRegistrationNumber: new FormControl("", Validators.required),
       parkingPlace: new FormControl("", Validators.required),
       username: new FormControl("", Validators.required),
+      imeiNo: new FormControl("", Validators.required),
+      gcmToken: new FormControl("", Validators.required),
       password: new FormControl("", Validators.required),
       confirmPassword: new FormControl("", Validators.required)
     });
@@ -61,9 +68,9 @@ export class AdminRegistrationPage implements OnInit {
       });
   }
 
-  getDistricts() {
+  getDistricts(selectedStateId) {
     this.db
-      .getDistricts(this.stateId)
+      .getDistricts(selectedStateId)
       .then(districts => {
         console.log("Fetched districts -> " + JSON.stringify(districts));
         this.districts = districts;
@@ -76,9 +83,9 @@ export class AdminRegistrationPage implements OnInit {
       });
   }
 
-  getMandals() {
+  getMandals(selectedStateId, selectedDistrictId) {
     this.db
-      .getMandals(this.stateId, this.districtId)
+      .getMandals(selectedStateId, selectedDistrictId)
       .then(mandals => {
         console.log("Fetched mandals -> " + JSON.stringify(mandals));
         this.mandals = mandals;
@@ -91,11 +98,11 @@ export class AdminRegistrationPage implements OnInit {
       });
   }
 
-  getVillags() {
+  getVillages(selectedStateId, selectedDistrictId, selectedMandalId) {
     this.db
-      .getVillages(this.stateId, this.districtId, this.mandalId)
+      .getVillages(selectedStateId, selectedDistrictId, selectedMandalId)
       .then(villages => {
-        console.log("Fetched districts -> " + JSON.stringify(villages));
+        console.log("Fetched villages -> " + JSON.stringify(villages));
         this.villages = villages;
       })
       .catch(error => {
@@ -108,9 +115,67 @@ export class AdminRegistrationPage implements OnInit {
 
   stateChanged() {
     console.log("State changed -> " + this.adminRegForm.get("stateId").value);
+    this.districts = [];
+    this.mandals = [];
+    this.villages = [];
+    this.stateId = this.adminRegForm.get("stateId").value;
+    this.getDistricts(this.stateId);
+  }
+
+  districtChanged() {
+    console.log(
+      "District changed -> " + this.adminRegForm.get("districtId").value
+    );
+    this.mandals = [];
+    this.villages = [];
+    this.districtId = this.adminRegForm.get("districtId").value;
+    this.getMandals(this.stateId, this.districtId);
+  }
+
+  mandalChanged() {
+    console.log("Mandal changed -> " + this.adminRegForm.get("mandalId").value);
+    this.villages = [];
+    this.mandalId = this.adminRegForm.get("mandalId").value;
+    this.getVillages(this.stateId, this.districtId, this.mandalId);
   }
 
   onSubmit(values) {
     console.log(values);
+    let stateId = this.adminRegForm.get("stateId").value;
+    let districtId = this.adminRegForm.get("districtId").value;
+    let mandalId = this.adminRegForm.get("mandalId").value;
+    let villageId = this.adminRegForm.get("villageId").value;
+    let registrationNo = this.adminRegForm.get("vehicleRegistrationNumber")
+      .value;
+    let parkingPlace = this.adminRegForm.get("parkingPlace").value;
+    let imeiNo = this.adminRegForm.get("imeiNo").value;
+    let gcmToken = this.adminRegForm.get("gcmToken").value;
+    let username = this.adminRegForm.get("username").value;
+    let password = this.adminRegForm.get("password").value;
+
+    let adminFormDetails = {
+      stateId,
+      districtId,
+      mandalId,
+      villageId,
+      registrationNo,
+      parkingPlace,
+      username,
+      password,
+      imeiNo,
+      gcmToken
+    };
+
+    this.db
+      .registerAdmin(adminFormDetails)
+      .then(res => {
+        console.log("Admin registered successfully...!" + JSON.stringify(res));
+        this.router.navigate(["/login"]);
+      })
+      .then(error => {
+        console.error(
+          "Error -> Admin registration failed - " + JSON.stringify(error)
+        );
+      });
   }
 }
