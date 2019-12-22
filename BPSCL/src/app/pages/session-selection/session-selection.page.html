@@ -17,141 +17,172 @@
 
 <ion-content style="background-color: #e6e9f2;">
   <!-- Parent Grid - starts here -->
-  <ion-grid style="padding: 0px;">
-    <ion-row style="min-height: 600px;">
-      <ion-col size="12" size-sm>
-        <div>
-          <!-- left side Grid - starts here -->
-          <ion-grid style="margin: 15px 0;">
-            <ion-row class="row-border">
-              <ion-col style="margin: 120px 15px;" size="4">
-                <ion-grid style="padding: 8%;border: 3px solid #3b4bad;">
-                  <ion-row class="row-border" style="text-align: center;">
-                    <ion-col class="col-border-right" size="12" size-sm>
-                      <h2>Select Session Type</h2>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row class="row-border" style="height: 38px;">
-                    <ion-col class="col-border-right" size="2">
-                      <ion-checkbox></ion-checkbox>
-                    </ion-col>
-                    <ion-col class="col-border-right">
-                      Morning Session
-                    </ion-col>
-                  </ion-row>
-                  <ion-row class="row-border" style="height: 38px;">
-                    <ion-col class="col-border-right" size="2">
-                      <ion-checkbox></ion-checkbox>
-                    </ion-col>
-                    <ion-col class="col-border-right">
-                      Evening Session
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-col>
-              <ion-col
-                style="border: 3px solid #3b4bad; padding: 33px 10px; margin: 0 15px;"
-              >
-                <ion-grid style="padding: 0 3%;">
-                  <ion-row class="row-border row-height-45">
-                    <ion-col class="col-border-right" size="12" size-sm>
-                      State
-                    </ion-col>
-                    <ion-col size="12" size-sm>
-                      <ion-select
-                        class="field-input"
-                        style="color: #000; font-weight: bold; background: #3b4bad; 
+  <form
+    [formGroup]="sessionForm"
+    (ngSubmit)="onSubmit(sessionForm.value)"
+    style="margin-bottom: 25px;"
+  >
+    <ion-grid style="padding: 0px;">
+      <ion-row style="min-height: 600px;">
+        <ion-col size="12" size-sm>
+          <div>
+            <!-- left side Grid - starts here -->
+            <ion-grid style="margin: 15px 0;">
+              <ion-row class="row-border">
+                <ion-col style="margin: 120px 15px;" size="4">
+                  <ion-grid style="padding: 8%;border: 3px solid #3b4bad;">
+                    <ion-row class="row-border" style="text-align: center;">
+                      <ion-col class="col-border-right" size="12" size-sm>
+                        <h2>Select Session Type</h2>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="row-border" style="height: 38px;">
+                      <ion-col class="col-border-right" size="2">
+                        <ion-checkbox></ion-checkbox>
+                      </ion-col>
+                      <ion-col class="col-border-right">
+                        Morning Session
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="row-border" style="height: 38px;">
+                      <ion-col class="col-border-right" size="2">
+                        <ion-checkbox></ion-checkbox>
+                      </ion-col>
+                      <ion-col class="col-border-right">
+                        Evening Session
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-col>
+                <ion-col
+                  style="border: 3px solid #3b4bad; padding: 33px 10px; margin: 0 15px;"
+                >
+                  <ion-grid style="padding: 0 3%;">
+                    <ion-row class="row-border row-height-45">
+                      <ion-col class="col-border-right" size="12" size-sm>
+                        State
+                      </ion-col>
+                      <ion-col size="12" size-sm>
+                        <ion-select
+                          formControlName="stateId"
+                          (ionChange)="stateChanged()"
+                          class="field-input"
+                          style="color: #000; font-weight: bold; background: #3b4bad; 
                         background-image: linear-gradient(#3b4bad, #FFF)"
-                        placeholder="Select"
-                      >
-                        <ion-select-option value="f">Female</ion-select-option>
-                        <ion-select-option value="m">Male</ion-select-option>
-                      </ion-select>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row class="row-border row-height-45">
-                    <ion-col class="col-border-right" size="12" size-sm>
-                      Distrcit
-                    </ion-col>
-                    <ion-col size="12" size-sm>
-                      <ion-select
-                        class="field-input"
-                        style="color: #000; font-weight: bold; background: #3b4bad; 
+                          placeholder="Select"
+                        >
+                          <ion-select-option
+                            *ngFor="let state of states"
+                            value="{{state.stateId}}"
+                            >{{state.stateName}}
+                          </ion-select-option>
+                          <ion-select-option value="m">Male</ion-select-option>
+                        </ion-select>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="row-border row-height-45">
+                      <ion-col class="col-border-right" size="12" size-sm>
+                        Distrcit
+                      </ion-col>
+                      <ion-col size="12" size-sm>
+                        <ion-select
+                          formControlName="districtId"
+                          (ionChange)="districtChanged()"
+                          class="field-input"
+                          style="color: #000; font-weight: bold; background: #3b4bad; 
                         background-image: linear-gradient(#3b4bad, #FFF)"
-                        placeholder="Select"
-                      >
-                        <ion-select-option value="f">Female</ion-select-option>
-                        <ion-select-option value="m">Male</ion-select-option>
-                      </ion-select>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row class="row-border row-height-45">
-                    <ion-col class="col-border-right" size="12" size-sm>
-                      Mandal
-                    </ion-col>
-                    <ion-col size="12" size-sm>
-                      <ion-select
-                        class="field-input"
-                        style="color: #000; font-weight: bold; background: #3b4bad; 
+                          placeholder="Select"
+                        >
+                          <ion-select-option
+                            *ngFor="let district of districts"
+                            value="{{district.districtId}}"
+                            >{{district.districtName}}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="row-border row-height-45">
+                      <ion-col class="col-border-right" size="12" size-sm>
+                        Mandal
+                      </ion-col>
+                      <ion-col size="12" size-sm>
+                        <ion-select
+                          formControlName="mandalId"
+                          (ionChange)="mandalChanged()"
+                          class="field-input"
+                          style="color: #000; font-weight: bold; background: #3b4bad; 
                         background-image: linear-gradient(#3b4bad, #FFF)"
-                        placeholder="Select"
-                      >
-                        <ion-select-option value="f">Female</ion-select-option>
-                        <ion-select-option value="m">Male</ion-select-option>
-                      </ion-select>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row class="row-border row-height-45">
-                    <ion-col class="col-border-right" size="12" size-sm>
-                      Village
-                    </ion-col>
-                    <ion-col size="12" size-sm>
-                      <ion-select
-                        class="field-input"
-                        style="color: #000; font-weight: bold; background: #3b4bad; 
+                          placeholder="Select"
+                        >
+                          <ion-select-option
+                            *ngFor="let mandal of mandals"
+                            value="{{mandal.mandalId}}"
+                            >{{mandal.mandalName}}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="row-border row-height-45">
+                      <ion-col class="col-border-right" size="12" size-sm>
+                        Village
+                      </ion-col>
+                      <ion-col size="12" size-sm>
+                        <ion-select
+                          formControlName="villageId"
+                          (ionChange)="villageChanged()"
+                          class="field-input"
+                          style="color: #000; font-weight: bold; background: #3b4bad; 
                         background-image: linear-gradient(#3b4bad, #FFF)"
-                        placeholder="Select"
-                      >
-                        <ion-select-option value="f">Female</ion-select-option>
-                        <ion-select-option value="m">Male</ion-select-option>
-                      </ion-select>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row class="row-border row-height-45">
-                    <ion-col class="col-border-right" size="12" size-sm>
-                      Service Point
-                    </ion-col>
-                    <ion-col size="12" size-sm>
-                      <ion-select
-                        class="field-input"
-                        style="color: #000; font-weight: bold; background: #3b4bad; 
+                          placeholder="Select"
+                        >
+                          <ion-select-option
+                            *ngFor="let village of villages"
+                            value="{{village.villageId}}"
+                            >{{village.villageName}}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="row-border row-height-45">
+                      <ion-col class="col-border-right" size="12" size-sm>
+                        Service Point
+                      </ion-col>
+                      <ion-col size="12" size-sm>
+                        <ion-select
+                          class="field-input"
+                          style="color: #000; font-weight: bold; background: #3b4bad; 
                         background-image: linear-gradient(#3b4bad, #FFF)"
-                        placeholder="Select"
-                      >
-                        <ion-select-option value="f">Female</ion-select-option>
-                        <ion-select-option value="m">Male</ion-select-option>
-                      </ion-select>
-                    </ion-col>
-                  </ion-row>
-                  <ion-row class="row-border row-height-45">
-                    <ion-col class="col-border-right" size="12" size-sm>
-                      <ion-button
-                        style="width: 95%; font-weight: bold;"
-                        type="submit"
-                        color="primary"
-                        >Start Application
-                      </ion-button>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-          <!-- left side Grid - starts here -->
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+                          placeholder="Select"
+                        >
+                          <ion-select-option
+                            *ngFor="let servicePoint of servicePoints"
+                            value="{{servicePoint.servicePointId}}"
+                            >{{servicePoint.servicePointName}}
+                          </ion-select-option>
+                        </ion-select>
+                      </ion-col>
+                    </ion-row>
+                    <ion-row class="row-border row-height-45">
+                      <ion-col class="col-border-right" size="12" size-sm>
+                        <ion-button
+                          [disabled]="!sessionForm.valid"
+                          style="width: 95%; font-weight: bold;"
+                          type="submit"
+                          color="primary"
+                          >Start Application
+                        </ion-button>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <!-- left side Grid - starts here -->
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
   <!-- Parent Grid - ends here -->
   <app-footer> </app-footer>
 </ion-content>

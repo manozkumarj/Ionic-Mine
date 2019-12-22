@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-login",
@@ -8,7 +10,14 @@ import { DatabaseService } from "src/app/services/database.service";
 })
 export class LoginPage implements OnInit {
   admins: any[] = [];
-  constructor(private db: DatabaseService) {}
+  loginForm: FormGroup;
+
+  constructor(private db: DatabaseService, private router: Router) {
+    this.loginForm = new FormGroup({
+      username: new FormControl("", Validators.required),
+      password: new FormControl("", Validators.required)
+    });
+  }
 
   ngOnInit() {
     this.db
@@ -21,5 +30,10 @@ export class LoginPage implements OnInit {
       .catch(error => {
         console.error("Database Error " + JSON.stringify(error));
       });
+  }
+
+  onSubmit(values) {
+    console.log("Login form is submitted, below are the values");
+    console.log(values);
   }
 }

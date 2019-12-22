@@ -16,9 +16,9 @@ export class AdminRegistrationPage implements OnInit {
   mandals: any[] = [];
   villages: any[] = [];
 
-  stateId: number = 21;
-  districtId: number = 28;
-  mandalId: number = 2;
+  stateId: number;
+  districtId: number;
+  mandalId: number;
   villageId: number;
 
   constructor(
@@ -140,6 +140,7 @@ export class AdminRegistrationPage implements OnInit {
   }
 
   onSubmit(values) {
+    console.log("Admin Registration form is submitted, below are the values");
     console.log(values);
     let stateId = this.adminRegForm.get("stateId").value;
     let districtId = this.adminRegForm.get("districtId").value;

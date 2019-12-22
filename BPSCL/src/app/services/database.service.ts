@@ -17,6 +17,8 @@ export class DatabaseService {
   table_districts: string = "m_District";
   table_mandals: string = "m_Mandal";
   table_villages: string = "m_Village";
+  table_servicePoints: string = "mv_ServicePoint";
+  table_sessionTypes: string = "mu_SessionType";
   table_admins: string = "mv_VanDeviceApprove";
 
   stateId: number = 21;
@@ -246,6 +248,47 @@ export class DatabaseService {
         }
         return villages;
       });
+  }
+
+  getServicePoints(stateId, districtId, mandalId, villageId) {
+    let sql = `SELECT servicePointId, servicePointName, servicePointCode FROM ${this.table_servicePoints} WHERE stateId = ? AND districtId = ? AND mandalId = ? AND villageId = ? AND isActive = ?`;
+    return this.dbObject
+      .executeSql(sql, [
+        stateId,
+        districtId,
+        mandalId,
+        villageId,
+        this.status.active
+      ])
+      .then(data => {
+        let servicePoints = [];
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
+            servicePoints.push({
+              servicePointId: data.rows.item(i).servicePointId,
+              servicePointName: data.rows.item(i).servicePointName,
+              servicePointCode: data.rows.item(i).servicePointCode
+            });
+          }
+        }
+        return servicePoints;
+      });
+  }
+
+  getSessionTypes() {
+    let sql = `SELECT sessionTypeId, sessionTypeName FROM ${this.table_sessionTypes} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let sessionTypes = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          sessionTypes.push({
+            sessionTypeId: data.rows.item(i).sessionTypeId,
+            sessionTypeName: data.rows.item(i).sessionTypeName
+          });
+        }
+      }
+      return sessionTypes;
+    });
   }
 
   getAdmins() {
