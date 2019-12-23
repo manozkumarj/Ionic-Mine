@@ -16,13 +16,13 @@ export class SessionSelectionPage implements OnInit {
   districts: any[] = [];
   mandals: any[] = [];
   villages: any[] = [];
-  sessionTypeId;
-  sessionPeriodId;
+  sessionTypeId: number;
+  sessionPeriodId: number;
   sessionTypes: any[] = [];
 
-  userId;
-  vanId;
-  deviceId;
+  userId: number;
+  vanId: number;
+  deviceId: number;
 
   stateId: number;
   districtId: number;
@@ -189,6 +189,7 @@ export class SessionSelectionPage implements OnInit {
   mandalChanged() {
     console.log("Mandal changed -> " + this.sessionForm.get("mandalId").value);
     this.villages = [];
+    this.servicePoints = [];
     this.mandalId = this.sessionForm.get("mandalId").value;
     this.getVillages(this.stateId, this.districtId, this.mandalId);
   }
