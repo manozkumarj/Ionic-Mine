@@ -29,27 +29,24 @@
             <!-- left side Grid - starts here -->
             <ion-grid style="margin: 15px 0;">
               <ion-row class="row-border">
-                <ion-col style="margin: 120px 15px;" size="4">
+                <ion-col style="margin: 120px 15px;">
                   <ion-grid style="padding: 8%;border: 3px solid #3b4bad;">
                     <ion-row class="row-border" style="text-align: center;">
                       <ion-col class="col-border-right" size="12" size-sm>
-                        <h2>Select Session Type</h2>
-                      </ion-col>
-                    </ion-row>
-                    <ion-row class="row-border" style="height: 38px;">
-                      <ion-col class="col-border-right" size="2">
-                        <ion-checkbox></ion-checkbox>
-                      </ion-col>
-                      <ion-col class="col-border-right">
-                        Morning Session
-                      </ion-col>
-                    </ion-row>
-                    <ion-row class="row-border" style="height: 38px;">
-                      <ion-col class="col-border-right" size="2">
-                        <ion-checkbox></ion-checkbox>
-                      </ion-col>
-                      <ion-col class="col-border-right">
-                        Evening Session
+                        <ion-list>
+                          <ion-list-header>
+                            <ion-label><h2>Select Session Type</h2></ion-label>
+                          </ion-list-header>
+                          <ion-item *ngFor="let sessionType of sessionTypes">
+                            <ion-label
+                              >{{sessionType.sessionTypeName}}</ion-label
+                            >
+                            <ion-radio
+                              [value]="sessionType.sessionTypeId"
+                              (ionSelect)="sessionChange(sessionType.sessionTypeId)"
+                            ></ion-radio>
+                          </ion-item>
+                        </ion-list>
                       </ion-col>
                     </ion-row>
                   </ion-grid>
@@ -76,7 +73,6 @@
                             value="{{state.stateId}}"
                             >{{state.stateName}}
                           </ion-select-option>
-                          <ion-select-option value="m">Male</ion-select-option>
                         </ion-select>
                       </ion-col>
                     </ion-row>

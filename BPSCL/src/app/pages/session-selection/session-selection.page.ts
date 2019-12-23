@@ -10,11 +10,34 @@ import { Router } from "@angular/router";
 })
 export class SessionSelectionPage implements OnInit {
   sessionForm: FormGroup;
+  servicePoints: any[] = [];
   states: any[] = [];
   districts: any[] = [];
   mandals: any[] = [];
   villages: any[] = [];
-  servicePoints: any[] = [];
+  sessionTypeId;
+  sessionTypes: any[] = [
+    {
+      id: 1,
+      name: "Hyderabad"
+    },
+    {
+      id: 2,
+      name: "Chennai"
+    },
+    {
+      id: 3,
+      name: "Banglore"
+    },
+    {
+      id: 4,
+      name: "Mumbai"
+    },
+    {
+      id: 5,
+      name: "Delhi"
+    }
+  ];
 
   stateId: number;
   districtId: number;
@@ -32,7 +55,23 @@ export class SessionSelectionPage implements OnInit {
   }
 
   ngOnInit() {
+    this.getSessionTypes();
     this.getStates();
+  }
+
+  getSessionTypes() {
+    this.db
+      .getSessionTypes()
+      .then(sessionTypes => {
+        console.log("Fetched states -> " + JSON.stringify(sessionTypes));
+        this.sessionTypes = sessionTypes;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getSessionTypes() function returned error." +
+            JSON.stringify(error)
+        );
+      });
   }
 
   getStates() {
@@ -154,7 +193,6 @@ export class SessionSelectionPage implements OnInit {
     console.log(
       "Village changed -> " + this.sessionForm.get("villageId").value
     );
-    this.villages = [];
     this.servicePoints = [];
     this.villageId = this.sessionForm.get("villageId").value;
     this.getServicePoints(
@@ -163,6 +201,12 @@ export class SessionSelectionPage implements OnInit {
       this.mandalId,
       this.villageId
     );
+  }
+
+  sessionChange(id) {
+    console.log("Session selected " + id);
+    this.sessionTypeId = id;
+    // this.sessionForm.patchValue({ sessionTypeId: id });
   }
 
   onSubmit(values) {
