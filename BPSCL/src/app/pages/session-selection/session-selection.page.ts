@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
+import { StorageService } from "./../../services/storage.service";
 import { Router } from "@angular/router";
 
 @Component({
@@ -16,35 +17,25 @@ export class SessionSelectionPage implements OnInit {
   mandals: any[] = [];
   villages: any[] = [];
   sessionTypeId;
-  sessionTypes: any[] = [
-    {
-      id: 1,
-      name: "Hyderabad"
-    },
-    {
-      id: 2,
-      name: "Chennai"
-    },
-    {
-      id: 3,
-      name: "Banglore"
-    },
-    {
-      id: 4,
-      name: "Mumbai"
-    },
-    {
-      id: 5,
-      name: "Delhi"
-    }
-  ];
+  sessionPeriodId;
+  sessionTypes: any[] = [];
+
+  userId;
+  vanId;
+  deviceId;
 
   stateId: number;
   districtId: number;
   mandalId: number;
   villageId: number;
 
-  constructor(private db: DatabaseService, private router: Router) {
+  constructor(
+    private db: DatabaseService,
+    private router: Router,
+    private storageService: StorageService
+  ) {
+    this.assignUserDetails();
+
     this.sessionForm = new FormGroup({
       stateId: new FormControl("", Validators.required),
       districtId: new FormControl("", Validators.required),
@@ -57,6 +48,19 @@ export class SessionSelectionPage implements OnInit {
   ngOnInit() {
     this.getSessionTypes();
     this.getStates();
+  }
+
+  assignUserDetails() {
+    this.storageService
+      .getObject("user")
+      .then(data => {
+        this.userId = data.userId;
+        this.vanId = data.vanId;
+        this.deviceId = data.deviceId;
+      })
+      .catch(error => {
+        console.log("User details were not set");
+      });
   }
 
   getSessionTypes() {
@@ -206,11 +210,66 @@ export class SessionSelectionPage implements OnInit {
   sessionChange(id) {
     console.log("Session selected " + id);
     this.sessionTypeId = id;
-    // this.sessionForm.patchValue({ sessionTypeId: id });
+    this.db
+      .getStartingSessionPeriodId(id)
+      .then(sessionPeriodId => {
+        this.sessionPeriodId = sessionPeriodId;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getStartingSessionPeriodId() function returned error." +
+            JSON.stringify(error)
+        );
+      });
   }
 
   onSubmit(values) {
     console.log("Session form is submitted, below are the values");
     console.log(values);
+    let userId = this.userId;
+    let sessionPeriodId = this.sessionPeriodId;
+    let sessionTypeId = this.sessionTypeId;
+    let deviceId = this.deviceId;
+    let vanId = this.vanId;
+    let servicePointId = this.sessionForm.get("servicePointId").value;
+
+    let sessionDetails = {
+      userId,
+      sessionPeriodId,
+      sessionTypeId,
+      deviceId,
+      vanId
+    };
+
+    let servicePointDetails = {
+      deviceId,
+      vanId,
+      servicePointId,
+      userId
+    };
+
+    this.db
+      .saveSessionDetails(sessionDetails)
+      .then(data => {
+        console.log("Success - saveSessionDetails -> " + data);
+        this.db
+          .saveServicePointLog(servicePointDetails)
+          .then(data => {
+            console.log("Success - saveServicePointLog -> " + data);
+            // this.router.navigate(["/beneficiary-registration"]);
+          })
+          .catch(error => {
+            console.error(
+              "Error -> saveServicePointLog() function returned error." +
+                JSON.stringify(error)
+            );
+          });
+      })
+      .catch(error => {
+        console.error(
+          "Error -> saveSessionDetails() function returned error." +
+            JSON.stringify(error)
+        );
+      });
   }
 }

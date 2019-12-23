@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { Router } from "@angular/router";
+import { StorageService } from "./../../services/storage.service";
 
 @Component({
   selector: "app-login",
@@ -12,7 +13,11 @@ export class LoginPage implements OnInit {
   admins: any[] = [];
   loginForm: FormGroup;
 
-  constructor(private db: DatabaseService, private router: Router) {
+  constructor(
+    private db: DatabaseService,
+    private router: Router,
+    private storageService: StorageService
+  ) {
     this.loginForm = new FormGroup({
       username: new FormControl("", Validators.required),
       password: new FormControl("", Validators.required)
@@ -39,12 +44,20 @@ export class LoginPage implements OnInit {
     console.log(values);
     this.db
       .login(username, password)
-      .then(data => {
-        if (data) {
-          console.log("User exist & the user ID is -> " + data);
+      .then(userDetails => {
+        if (userDetails.length > 0) {
+          console.log(
+            "User exist & the user details -> " + JSON.stringify(userDetails)
+          );
+          this.storageService.setObject("user", {
+            userId: userDetails["userId"],
+            roleId: userDetails["roleId"],
+            deviceId: userDetails["deviceId"],
+            vanId: userDetails["vanId"]
+          });
           // this.router.navigate(["/session-selection"]);
         } else {
-          console.log("User didn't exist -> " + data);
+          console.log("User didn't exist -> " + userDetails);
         }
       })
       .catch(error => {

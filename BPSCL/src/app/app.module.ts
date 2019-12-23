@@ -13,6 +13,7 @@ import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { ExporterModule } from "./modules/exporter.module";
 import { DatabaseService } from "./services/database.service";
+import { IonicStorageModule } from "@ionic/storage";
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +23,8 @@ import { DatabaseService } from "./services/database.service";
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    ExporterModule
+    ExporterModule,
+    IonicStorageModule.forRoot()
   ],
   providers: [
     StatusBar,

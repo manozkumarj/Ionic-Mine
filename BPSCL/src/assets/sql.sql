@@ -225,7 +225,8 @@ CREATE TABLE IF NOT EXISTS "du_Attendance" (
 	"sessionStart"	datetime DEFAULT NULL,
 	"sessionEnd"	datetime DEFAULT NULL,
 	FOREIGN KEY("vanid") REFERENCES "mv_Van"("vanId"),
-	FOREIGN KEY("deviceId") REFERENCES "mv_Device"("deviceId")
+	FOREIGN KEY("deviceId") REFERENCES "mv_Device"("deviceId"),
+	PRIMARY KEY("attendanceId" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "dp_Registration" (
 	"patientId"	int NOT NULL,

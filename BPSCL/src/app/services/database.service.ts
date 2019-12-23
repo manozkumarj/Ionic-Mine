@@ -19,6 +19,9 @@ export class DatabaseService {
   table_villages: string = "m_Village";
   table_servicePoints: string = "mv_ServicePoint";
   table_sessionTypes: string = "mu_SessionType";
+  table_sessionPeriod: string = "mu_SessionPeriod";
+  table_saveSessionDetails: string = "du_Attendance";
+  table_servicePointLog: string = "du_ServicePointLog";
   table_admins: string = "mv_VanDeviceApprove";
 
   stateId: number = 21;
@@ -325,10 +328,29 @@ export class DatabaseService {
   }
 
   login(username, password) {
-    let sql = `SELECT userId FROM ${this.table_users} WHERE username = ? AND password = ? AND isActive = ${this.status.active}`;
+    let sql = `SELECT userId, roleId, deviceId, vanId FROM ${this.table_users} WHERE username = ? AND password = ? AND isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, [username, password]).then(data => {
-      let userId = data.rows.item(0).userId;
-      return userId;
+      let userDetails = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          userDetails.push({
+            userId: data.rows.item(i).userId,
+            roleId: data.rows.item(i).roleId,
+            deviceId: data.rows.item(i).deviceId,
+            vanId: data.rows.item(i).vanId
+          });
+        }
+      }
+      return userDetails;
+    });
+  }
+
+  getStartingSessionPeriodId(sessionTypeId) {
+    let sql = `SELECT sessionPeriodId FROM ${this.table_sessionPeriod} WHERE sessionTypeId = ? AND isActive = ${this.status.active} LIMIT 1`;
+    return this.dbObject.executeSql(sql, [sessionTypeId]).then(data => {
+      let id: number;
+      id = data.rows.item(0).sessionPeriodId;
+      return id;
     });
   }
 
@@ -357,6 +379,53 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - insertItem - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  saveSessionDetails(sessionDetails) {
+    let sql = `INSERT INTO ${this.table_saveSessionDetails} (userId, sessionPeriodId, sessionTypeId, deviceId, vanId, insertedDate, sessionStart, sessionEnd) VALUES (?,?,?,?,?, 'datetime()','datetime()', 'datetime()')`;
+    return this.dbObject
+      .executeSql(sql, [
+        sessionDetails.userId,
+        sessionDetails.sessionPeriodId,
+        sessionDetails.sessionTypeId,
+        sessionDetails.deviceId,
+        sessionDetails.vanId
+      ])
+      .then(res => {
+        console.log(
+          "database - saveSessionDetails - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.error(
+          "database - saveSessionDetails - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  saveServicePointLog(details) {
+    let sql = `INSERT INTO ${this.table_servicePointLog} (deviceId, vanId, servicePointId, userId, insertedDate) VALUES (?,?,?,?, 'datetime()')`;
+    return this.dbObject
+      .executeSql(sql, [
+        details.deviceId,
+        details.vanId,
+        details.servicePointId,
+        details.userId
+      ])
+      .then(res => {
+        console.log(
+          "database - saveServicePointLog - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.error(
+          "database - saveServicePointLog - Error -> " + JSON.stringify(error)
         );
         return false;
       });
