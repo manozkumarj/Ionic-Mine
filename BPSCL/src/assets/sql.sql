@@ -215,7 +215,7 @@ CREATE TABLE IF NOT EXISTS "du_User" (
 	PRIMARY KEY("userId" AUTOINCREMENT)
 );
 CREATE TABLE IF NOT EXISTS "du_Attendance" (
-	"attendanceId"	INT NOT NULL,
+	"attendanceId"	INTEGER,
 	"userId"	int NOT NULL,
 	"sessionPeriodId"	int NOT NULL,
 	"sessionTypeId"	int NOT NULL,

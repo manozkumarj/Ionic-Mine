@@ -54,12 +54,13 @@ export class SessionSelectionPage implements OnInit {
     this.storageService
       .getObject("user")
       .then(data => {
+        console.log("User details are -> " + JSON.stringify(data));
         this.userId = data.userId;
         this.vanId = data.vanId;
         this.deviceId = data.deviceId;
       })
       .catch(error => {
-        console.log("User details were not set");
+        console.error("User details were not set -> " + JSON.stringify(error));
       });
   }
 
@@ -73,7 +74,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionTypes() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -88,7 +89,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getStates() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -115,7 +116,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getServicePoints() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -130,7 +131,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getDistricts() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -145,7 +146,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getMandals() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -160,7 +161,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getVillages() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -219,7 +220,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getStartingSessionPeriodId() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -262,14 +263,14 @@ export class SessionSelectionPage implements OnInit {
           .catch(error => {
             console.error(
               "Error -> saveServicePointLog() function returned error." +
-                JSON.stringify(error)
+              JSON.stringify(error)
             );
           });
       })
       .catch(error => {
         console.error(
           "Error -> saveSessionDetails() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }

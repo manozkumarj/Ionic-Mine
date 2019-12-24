@@ -312,13 +312,13 @@ export class DatabaseService {
   }
 
   getUsers() {
-    let sql = `SELECT username, password FROM ${this.table_users}`;
+    let sql = `SELECT userName, password FROM ${this.table_users}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let users = [];
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
           users.push({
-            username: data.rows.item(i).username,
+            username: data.rows.item(i).userName,
             password: data.rows.item(i).password
           });
         }
@@ -328,7 +328,7 @@ export class DatabaseService {
   }
 
   login(username, password) {
-    let sql = `SELECT userId, roleId, deviceId, vanId FROM ${this.table_users} WHERE username = ? AND password = ? AND isActive = ${this.status.active}`;
+    let sql = `SELECT userId, roleId, deviceId, vanId FROM ${this.table_users} WHERE userName = ? AND password = ? AND isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, [username, password]).then(data => {
       let userDetails = [];
       if (data.rows.length > 0) {
