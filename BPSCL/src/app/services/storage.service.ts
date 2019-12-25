@@ -8,6 +8,33 @@ export class StorageService {
     console.log("Your storage provider is working here !");
   }
 
+  // set a key/value
+  async set(key: string, value: any): Promise<any> {
+    try {
+      const result = await this.storage.set(key, value);
+      console.log("set string in storage: " + result);
+      return true;
+    } catch (reason) {
+      console.log(reason);
+      return false;
+    }
+  }
+
+  // to get a key/value pair
+  async get(key: string): Promise<any> {
+    try {
+      const result = await this.storage.get(key);
+      console.log("storageGET: " + key + ": " + result);
+      if (result != null) {
+        return result;
+      }
+      return null;
+    } catch (reason) {
+      console.log(reason);
+      return null;
+    }
+  }
+
   // set a key/value object
   async setObject(key: string, object: Object) {
     console.log("Storable key -> " + key);

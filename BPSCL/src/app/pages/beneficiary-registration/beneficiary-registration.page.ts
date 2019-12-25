@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
+import { StorageService } from "./../../services/storage.service";
 import { Router } from "@angular/router";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 
@@ -16,14 +17,19 @@ export class BeneficiaryRegistrationPage implements OnInit {
   castes: any[] = [];
   religions: any[] = [];
 
+  servicePointName: string;
+  dateTime: string = this.getDateTime();
   isPhotoCaptured: boolean = false;
   benPhoto: string = "assets/profile_pic.jpg";
 
   constructor(
     private db: DatabaseService,
     private router: Router,
-    private camera: Camera
+    private camera: Camera,
+    private storageService: StorageService
   ) {
+    this.getServicePointName();
+
     this.benRegForm = new FormGroup({
       benificiaryName: new FormControl("", Validators.required),
       surname: new FormControl("", Validators.required),
@@ -44,6 +50,20 @@ export class BeneficiaryRegistrationPage implements OnInit {
     encodingType: this.camera.EncodingType.JPEG,
     mediaType: this.camera.MediaType.PICTURE
   };
+
+  getServicePointName() {
+    this.storageService
+      .get("servicePointName")
+      .then(data => {
+        console.log("servicePointName is  -> " + JSON.stringify(data));
+        this.servicePointName = data;
+      })
+      .catch(error => {
+        console.error(
+          "servicePointName was not set -> " + JSON.stringify(error)
+        );
+      });
+  }
 
   ngOnInit() {
     this.loadGenders();
@@ -66,6 +86,21 @@ export class BeneficiaryRegistrationPage implements OnInit {
         console.log("Error - takeSnap() returned error --> " + error);
       }
     );
+  }
+
+  getDateTime() {
+    var myDate = new Date();
+    return (
+      myDate.getFullYear() +
+      "-" +
+      this.padDatePart(myDate.getMonth() + 1) +
+      "-" +
+      this.padDatePart(myDate.getDate())
+    );
+  }
+
+  padDatePart(part) {
+    return ("0" + part).slice(-2);
   }
 
   loadGenders() {
@@ -131,5 +166,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
   onSubmit(values) {
     console.log("Ben Registration form is submitted, below are the values");
     console.log(values);
+
+    // this.router.navigate(["/vitals"]);
   }
 }

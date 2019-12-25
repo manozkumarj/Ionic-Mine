@@ -236,6 +236,18 @@ export class SessionSelectionPage implements OnInit {
     this.servicePointName = this.servicePoints[getIndex]["servicePointName"];
     console.log("Selected servicePoint index is --> " + getIndex);
     console.log("Storable servicePoint name is --> " + this.servicePointName);
+
+    this.storageService
+      .set("servicePointName", this.servicePointName)
+      .then(result => {
+        console.log("servicePointName is saved in localstorage-->" + result);
+      })
+      .catch(e => {
+        console.error(
+          "servicePointName is not saved in localstorage -->: " + e
+        );
+      });
+
     let userId = this.userId;
     let sessionPeriodId = this.sessionPeriodId;
     let sessionTypeId = this.sessionTypeId;
