@@ -81,9 +81,9 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
   loadServicePointName() {
     this.storageService
-      .getObject("servicePointDetails")
+      .getObject("sessionDetails")
       .then(data => {
-        console.log("servicePointDetails are  -> " + JSON.stringify(data));
+        console.log("sessionDetails are  -> " + JSON.stringify(data));
         this.stateId = data.stateId;
         this.districtId = data.districtId;
         this.mandalId = data.mandalId;
@@ -93,7 +93,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       })
       .catch(error => {
         console.error(
-          "servicePointDetails were not set -> " + JSON.stringify(error)
+          "sessionDetails were not set -> " + JSON.stringify(error)
         );
       });
   }

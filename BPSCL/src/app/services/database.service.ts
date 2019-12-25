@@ -16,7 +16,7 @@ export class DatabaseService {
   table_genders: string = "mp_Gender";
   table_ageUnits: string = "mp_AgeUnit";
   table_religions: string = "mp_Religion";
-  table_castes: string = "mp_Communities";
+  table_castes: string = "mp_Community";
   table_states: string = "m_State";
   table_districts: string = "m_District";
   table_mandals: string = "m_Mandal";

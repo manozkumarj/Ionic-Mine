@@ -238,7 +238,7 @@ export class SessionSelectionPage implements OnInit {
     console.log("Storable servicePoint name is --> " + this.servicePointName);
 
     this.storageService
-      .setObject("servicePointDetails", {
+      .setObject("sessionDetails", {
         stateId: this.stateId,
         districtId: this.districtId,
         mandalId: this.mandalId,
@@ -247,14 +247,10 @@ export class SessionSelectionPage implements OnInit {
         servicePointName: this.servicePointName
       })
       .then(result => {
-        console.log(
-          "servicePointDetails are saved in localstorage-->" + result
-        );
+        console.log("sessionDetails are saved in localstorage -->" + result);
       })
       .catch(e => {
-        console.error(
-          "servicePointDetails are not saved in localstorage -->: " + e
-        );
+        console.error("sessionDetails are not saved in localstorage -->: " + e);
       });
 
     let userId = this.userId;
