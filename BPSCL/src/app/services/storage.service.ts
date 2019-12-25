@@ -10,6 +10,7 @@ export class StorageService {
 
   // set a key/value object
   async setObject(key: string, object: Object) {
+    console.log("Storable key -> " + key);
     console.log("Storable object -> " + JSON.stringify(object));
     try {
       const result = await this.storage.set(key, JSON.stringify(object));

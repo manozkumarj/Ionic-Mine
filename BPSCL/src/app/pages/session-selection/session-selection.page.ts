@@ -17,6 +17,7 @@ export class SessionSelectionPage implements OnInit {
   mandals: any[] = [];
   villages: any[] = [];
   sessionTypeId: number;
+  servicePointName: string;
   sessionPeriodId: number;
   sessionTypes: any[] = [];
 
@@ -74,7 +75,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionTypes() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -89,7 +90,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getStates() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -116,7 +117,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getServicePoints() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -131,7 +132,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getDistricts() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -146,7 +147,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getMandals() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -161,7 +162,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getVillages() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -220,14 +221,21 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getStartingSessionPeriodId() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
 
   onSubmit(values) {
     console.log("Session form is submitted, below are the values");
+    let selectedServicePointId = this.sessionForm.get("servicePointId").value;
     console.log(values);
+    let getIndex = this.servicePoints.findIndex(
+      i => (i.servicePointId = selectedServicePointId)
+    );
+    this.servicePointName = this.servicePoints[getIndex]["servicePointName"];
+    console.log("Selected servicePoint index is --> " + getIndex);
+    console.log("Storable servicePoint name is --> " + this.servicePointName);
     let userId = this.userId;
     let sessionPeriodId = this.sessionPeriodId;
     let sessionTypeId = this.sessionTypeId;
@@ -258,19 +266,19 @@ export class SessionSelectionPage implements OnInit {
           .saveServicePointLog(servicePointDetails)
           .then(data => {
             console.log("Success - saveServicePointLog -> " + data);
-            // this.router.navigate(["/beneficiary-registration"]);
+            this.router.navigate(["/beneficiary-registration"]);
           })
           .catch(error => {
             console.error(
               "Error -> saveServicePointLog() function returned error." +
-              JSON.stringify(error)
+                JSON.stringify(error)
             );
           });
       })
       .catch(error => {
         console.error(
           "Error -> saveSessionDetails() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }

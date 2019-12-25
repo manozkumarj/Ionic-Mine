@@ -26,7 +26,7 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.db
-      .getAdmins()
+      .getUsers()
       .then(users => {
         this.admins = users;
         console.log("Total No. of users = " + users.length);
@@ -44,14 +44,19 @@ export class LoginPage implements OnInit {
     console.log(values);
     this.db
       .login(username, password)
-      .then(userDetails => {
-        if (userDetails.length > 0) {
+      .then(res => {
+        if (res.length > 0) {
+          let userDetails = res[0];
           console.log(
             "User exist & the user details -> " + JSON.stringify(userDetails)
           );
           console.log("Storable userId -> " + userDetails["userId"]);
           this.storageService
             .setObject("user", {
+              firstName: userDetails["firstName"],
+              lastName: userDetails["lastName"],
+              fullName:
+                userDetails["firstName"] + " " + userDetails["lastName"],
               userId: userDetails["userId"],
               roleId: userDetails["roleId"],
               deviceId: userDetails["deviceId"],
@@ -67,7 +72,7 @@ export class LoginPage implements OnInit {
             });
           this.router.navigate(["/session-selection"]);
         } else {
-          console.warn("User didn't exist -> " + userDetails);
+          console.warn("User didn't exist -> " + res);
         }
       })
       .catch(error => {
