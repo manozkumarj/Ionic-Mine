@@ -32,8 +32,8 @@ export class BeneficiaryRegistrationPage implements OnInit {
   isPhotoCaptured: boolean = false;
   benPhoto: string = "assets/profile_pic.jpg";
 
-  randomNumber: string =
-    "SP0002000002B00" + Math.floor(Math.random() * 1000 + 1);
+  randomPatientId: string =
+    "SP0002000002BA00" + Math.floor(Math.random() * 1000 + 1);
 
   constructor(
     private db: DatabaseService,
@@ -200,7 +200,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
     console.log("Ben Registration form is submitted, below are the values");
     console.log(values);
 
-    let patientId = this.randomNumber;
+    let patientId = "SP0002000010B000500";
     let deviceId = this.deviceId;
     let vanId = this.vanId;
     let routeVillageId = this.villageId;
@@ -250,6 +250,11 @@ export class BeneficiaryRegistrationPage implements OnInit {
       imageUrl,
       userId
     };
+
+    console.log(
+      "Object which is gonna be sent to Database service file -> " +
+        JSON.stringify(benRegFormDetails)
+    );
 
     this.db
       .registerBeneficiary(benRegFormDetails)

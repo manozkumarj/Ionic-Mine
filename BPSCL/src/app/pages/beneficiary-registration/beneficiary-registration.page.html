@@ -141,8 +141,9 @@
                   Date of Birth
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-datetime style="border: 2px solid #3b4bad"
-                    displayFormat="MM/DD/YYYY"
+                  <ion-datetime
+                    class="field-input"
+                    displayFormat="YYYY-MM-DD"
                     value=""
                     formControlName="dateOfBirth"
                   ></ion-datetime>
@@ -251,7 +252,7 @@
                     <ion-button
                       (click)="takeSnap()"
                       style="width: 90%; font-weight: bold;"
-                      type="submit"
+                      type="button"
                       color="primary"
                       >Take a Photo
                     </ion-button>
