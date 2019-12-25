@@ -13,6 +13,10 @@ export class DatabaseService {
   database_name: string = "bpscl_dev.db";
 
   table_users: string = "du_User";
+  table_genders: string = "mp_Gender";
+  table_ageUnits: string = "mp_AgeUnit";
+  table_religions: string = "mp_Religion";
+  table_castes: string = "mp_Communities";
   table_states: string = "m_State";
   table_districts: string = "m_District";
   table_mandals: string = "m_Mandal";
@@ -188,6 +192,70 @@ export class DatabaseService {
         }
       }
       return states;
+    });
+  }
+
+  getGenders() {
+    let sql = `SELECT genderId, gender FROM ${this.table_genders} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let genders = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          genders.push({
+            genderId: data.rows.item(i).genderId,
+            gender: data.rows.item(i).gender
+          });
+        }
+      }
+      return genders;
+    });
+  }
+
+  getAgeUnits() {
+    let sql = `SELECT ageUnitId, ageUnitName FROM ${this.table_ageUnits} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let ageUnits = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          ageUnits.push({
+            ageUnitId: data.rows.item(i).ageUnitId,
+            ageUnitName: data.rows.item(i).ageUnitName
+          });
+        }
+      }
+      return ageUnits;
+    });
+  }
+
+  getReligions() {
+    let sql = `SELECT religionId, religionName FROM ${this.table_religions} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let religions = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          religions.push({
+            religionId: data.rows.item(i).religionId,
+            religionName: data.rows.item(i).religionName
+          });
+        }
+      }
+      return religions;
+    });
+  }
+
+  getCastes() {
+    let sql = `SELECT communityId, communityName FROM ${this.table_castes} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let communities = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          communities.push({
+            communityId: data.rows.item(i).communityId,
+            communityName: data.rows.item(i).communityName
+          });
+        }
+      }
+      return communities;
     });
   }
 

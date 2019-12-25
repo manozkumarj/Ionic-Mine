@@ -49,16 +49,22 @@ export class LoginPage implements OnInit {
           console.log(
             "User exist & the user details -> " + JSON.stringify(userDetails)
           );
-          this.storageService.setObject("user", {
-            userId: userDetails["userId"],
-            roleId: userDetails["roleId"],
-            deviceId: userDetails["deviceId"],
-            vanId: userDetails["vanId"]
-          }).then(data => {
-            console.log("User details are stored in localStorage -> " + data);
-          }).catch(error => {
-            console.error("User details are not stored in localStorage -> " + error);
-          });
+          console.log("Storable userId -> " + userDetails["userId"]);
+          this.storageService
+            .setObject("user", {
+              userId: userDetails["userId"],
+              roleId: userDetails["roleId"],
+              deviceId: userDetails["deviceId"],
+              vanId: userDetails["vanId"]
+            })
+            .then(data => {
+              console.log("User details are stored in localStorage -> " + data);
+            })
+            .catch(error => {
+              console.error(
+                "User details are not stored in localStorage -> " + error
+              );
+            });
           this.router.navigate(["/session-selection"]);
         } else {
           console.warn("User didn't exist -> " + userDetails);
