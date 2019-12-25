@@ -17,10 +17,23 @@ export class BeneficiaryRegistrationPage implements OnInit {
   castes: any[] = [];
   religions: any[] = [];
 
+  userId: number;
+  vanId: number;
+  deviceId: number;
+
+  stateId: number;
+  districtId: number;
+  mandalId: number;
+  villageId: number;
+  servicePointId: number;
   servicePointName: string;
+
   dateTime: string = this.getDateTime();
   isPhotoCaptured: boolean = false;
   benPhoto: string = "assets/profile_pic.jpg";
+
+  randomNumber: string =
+    "SP0002000002B00" + Math.floor(Math.random() * 1000 + 1);
 
   constructor(
     private db: DatabaseService,
@@ -28,7 +41,8 @@ export class BeneficiaryRegistrationPage implements OnInit {
     private camera: Camera,
     private storageService: StorageService
   ) {
-    this.getServicePointName();
+    this.loadUserDetails();
+    this.loadServicePointName();
 
     this.benRegForm = new FormGroup({
       benificiaryName: new FormControl("", Validators.required),
@@ -51,16 +65,35 @@ export class BeneficiaryRegistrationPage implements OnInit {
     mediaType: this.camera.MediaType.PICTURE
   };
 
-  getServicePointName() {
+  loadUserDetails() {
     this.storageService
-      .get("servicePointName")
+      .getObject("userDetails")
       .then(data => {
-        console.log("servicePointName is  -> " + JSON.stringify(data));
-        this.servicePointName = data;
+        console.log("User details are -> " + JSON.stringify(data));
+        this.userId = data.userId;
+        this.vanId = data.vanId;
+        this.deviceId = data.deviceId;
+      })
+      .catch(error => {
+        console.error("User details were not set -> " + JSON.stringify(error));
+      });
+  }
+
+  loadServicePointName() {
+    this.storageService
+      .getObject("servicePointDetails")
+      .then(data => {
+        console.log("servicePointDetails are  -> " + JSON.stringify(data));
+        this.stateId = data.stateId;
+        this.districtId = data.districtId;
+        this.mandalId = data.mandalId;
+        this.villageId = data.villageId;
+        this.servicePointId = data.servicePointId;
+        this.servicePointName = data.servicePointName;
       })
       .catch(error => {
         console.error(
-          "servicePointName was not set -> " + JSON.stringify(error)
+          "servicePointDetails were not set -> " + JSON.stringify(error)
         );
       });
   }
@@ -167,6 +200,69 @@ export class BeneficiaryRegistrationPage implements OnInit {
     console.log("Ben Registration form is submitted, below are the values");
     console.log(values);
 
-    // this.router.navigate(["/vitals"]);
+    let patientId = this.randomNumber;
+    let deviceId = this.deviceId;
+    let vanId = this.vanId;
+    let routeVillageId = this.villageId;
+    let servicePointId = this.servicePointId;
+    let compoundPatientId = "N/A";
+    let fatherName = "N/A";
+    let spouseName = "N/A";
+    let motherName = "N/A";
+    let aadharNo = "N/A";
+    let mctsId = "N/A";
+    let name = this.benRegForm.get("benificiaryName").value;
+    let surname = this.benRegForm.get("surname").value;
+    let genderId = this.benRegForm.get("gender").value;
+    let dob = this.benRegForm.get("dateOfBirth").value;
+    let communityId = this.benRegForm.get("caste").value;
+    let religionId = this.benRegForm.get("religion").value;
+    let userId = this.userId;
+
+    let stateId = this.stateId;
+    let districtId = this.districtId;
+    let mandalId = this.mandalId;
+    let villageId = this.villageId;
+    let imageUrl = this.benPhoto;
+
+    let benRegFormDetails = {
+      patientId,
+      deviceId,
+      vanId,
+      routeVillageId,
+      servicePointId,
+      compoundPatientId,
+      name,
+      surname,
+      genderId,
+      dob,
+      communityId,
+      religionId,
+      fatherName,
+      spouseName,
+      motherName,
+      aadharNo,
+      mctsId,
+      villageId,
+      mandalId,
+      districtId,
+      stateId,
+      imageUrl,
+      userId
+    };
+
+    this.db
+      .registerBeneficiary(benRegFormDetails)
+      .then(res => {
+        console.log(
+          "Beneficiary registered successfully...!" + JSON.stringify(res)
+        );
+        // this.router.navigate(["/vitals"]);
+      })
+      .then(error => {
+        console.error(
+          "Error -> Beneficiary registration failed - " + JSON.stringify(error)
+        );
+      });
   }
 }

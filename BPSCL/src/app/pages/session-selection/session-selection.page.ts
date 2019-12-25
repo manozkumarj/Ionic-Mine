@@ -35,7 +35,7 @@ export class SessionSelectionPage implements OnInit {
     private router: Router,
     private storageService: StorageService
   ) {
-    this.assignUserDetails();
+    this.loadUserDetails();
 
     this.sessionForm = new FormGroup({
       stateId: new FormControl("", Validators.required),
@@ -51,9 +51,9 @@ export class SessionSelectionPage implements OnInit {
     this.getStates();
   }
 
-  assignUserDetails() {
+  loadUserDetails() {
     this.storageService
-      .getObject("user")
+      .getObject("userDetails")
       .then(data => {
         console.log("User details are -> " + JSON.stringify(data));
         this.userId = data.userId;
@@ -238,13 +238,22 @@ export class SessionSelectionPage implements OnInit {
     console.log("Storable servicePoint name is --> " + this.servicePointName);
 
     this.storageService
-      .set("servicePointName", this.servicePointName)
+      .setObject("servicePointDetails", {
+        stateId: this.stateId,
+        districtId: this.districtId,
+        mandalId: this.mandalId,
+        villageId: this.villageId,
+        servicePointId: selectedServicePointId,
+        servicePointName: this.servicePointName
+      })
       .then(result => {
-        console.log("servicePointName is saved in localstorage-->" + result);
+        console.log(
+          "servicePointDetails are saved in localstorage-->" + result
+        );
       })
       .catch(e => {
         console.error(
-          "servicePointName is not saved in localstorage -->: " + e
+          "servicePointDetails are not saved in localstorage -->: " + e
         );
       });
 

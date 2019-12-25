@@ -27,6 +27,7 @@ export class DatabaseService {
   table_saveSessionDetails: string = "du_Attendance";
   table_servicePointLog: string = "du_ServicePointLog";
   table_admins: string = "mv_VanDeviceApprove";
+  table_beneficiaries: string = "dp_Registration";
 
   stateId: number = 21;
   status = {
@@ -449,6 +450,51 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - insertItem - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  registerBeneficiary(data) {
+    let sql = `INSERT INTO ${this.table_beneficiaries} (patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, registrationDate, name, surname, genderId, dob, communityId, religionId, fatherName, spouseName, motherName, aadharNo, mctsId, villageId, mandalId, districtId, stateId, imageUrl, insertedBy, insertedDate, updatedBy, updatedDate, imageUploadStatus, uploadStatus) VALUES (?,?,?,?,?,?,'datetime()',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'datetime()',?,'datetime()',?,?)`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.patientId,
+        data.deviceId,
+        data.vanId,
+        data.routeVillageId,
+        data.servicePointId,
+        data.compoundPatientId,
+        data.name,
+        data.surname,
+        data.genderId,
+        data.dob,
+        data.communityId,
+        data.religionId,
+        data.fatherName,
+        data.spouseName,
+        data.motherName,
+        data.aadharNo,
+        data.mctsId,
+        data.villageId,
+        data.mandalId,
+        data.districtId,
+        data.stateId,
+        data.imageUrl,
+        data.userId,
+        data.userId,
+        this.status.active,
+        this.status.active
+      ])
+      .then(res => {
+        console.log(
+          "database - registerBeneficiary() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - registerBeneficiary() - Error -> " + JSON.stringify(error)
         );
         return false;
       });

@@ -52,7 +52,7 @@ export class LoginPage implements OnInit {
           );
           console.log("Storable userId -> " + userDetails["userId"]);
           this.storageService
-            .setObject("user", {
+            .setObject("userDetails", {
               firstName: userDetails["firstName"],
               lastName: userDetails["lastName"],
               fullName:
