@@ -33,7 +33,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
   benPhoto: string = "assets/profile_pic.jpg";
 
   randomPatientId: string =
-    "SP0002000002BA00" + Math.floor(Math.random() * 1000 + 1);
+    "SP0002000002B000" + Math.floor(Math.random() * (599 - 500) + 500);
 
   constructor(
     private db: DatabaseService,
@@ -146,7 +146,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -161,7 +161,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getCastes() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -176,7 +176,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getReligions() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -191,16 +191,15 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
 
   onSubmit(values) {
-    console.log("Ben Registration form is submitted, below are the values");
-    console.log(values);
 
-    let patientId = "SP0002000010B000500";
+    // let patientId = "SP0002000010B000500";
+    let patientId = this.randomPatientId;
     let deviceId = this.deviceId;
     let vanId = this.vanId;
     let routeVillageId = this.villageId;
@@ -253,8 +252,12 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
     console.log(
       "Object which is gonna be sent to Database service file -> " +
-        JSON.stringify(benRegFormDetails)
+      JSON.stringify(benRegFormDetails)
     );
+
+    console.log("Ben Registration form is submitted, below are the values");
+    console.log(values);
+    console.log("Ben patientId -> " + patientId);
 
     this.db
       .registerBeneficiary(benRegFormDetails)
@@ -262,7 +265,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
         console.log(
           "Beneficiary registered successfully...!" + JSON.stringify(res)
         );
-        // this.router.navigate(["/vitals"]);
+        this.router.navigate(["/vitals"]);
       })
       .then(error => {
         console.error(
