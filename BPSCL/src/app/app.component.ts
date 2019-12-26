@@ -62,6 +62,11 @@ export class AppComponent {
       title: "Care Provided",
       url: "/care-provided",
       icon: "list"
+    },
+    {
+      title: "Search Beneficiary",
+      url: "/search-beneficiary",
+      icon: "list"
     }
   ];
 

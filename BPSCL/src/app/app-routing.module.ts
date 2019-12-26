@@ -55,6 +55,10 @@ const routes: Routes = [
   {
     path: 'care-provided',
     loadChildren: () => import('./pages/care-provided/care-provided.module').then( m => m.CareProvidedPageModule)
+  },
+  {
+    path: 'search-beneficiary',
+    loadChildren: () => import('./pages/search-beneficiary/search-beneficiary.module').then( m => m.SearchBeneficiaryPageModule)
   }
 
 ];

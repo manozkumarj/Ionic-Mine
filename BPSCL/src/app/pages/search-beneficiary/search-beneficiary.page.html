@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-grid>
+      <ion-row style="text-align: center;">
+        <ion-col size="3" size="12" size-sm>
+          <div>
+            Service Point :
+          </div>
+        </ion-col>
+        <ion-col size="5" size="12" size-sm>
+          <div>
+            Beneficiary Registration
+          </div>
+        </ion-col>
+        <ion-col size="12" size-sm>
+          <div>
+            Service Date :
+          </div>
+        </ion-col>
+        <ion-col size="auto" size="12" size-sm>
+          <div>
+            Logout
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="searchBenForm" (ngSubmit)="onSubmit(searchBenForm.value)" style="margin-bottom: 25px;">
+    <ion-grid style="padding: 0px;">
+      <ion-row style="min-height: 640px;">
+        <ion-col size-sm>
+          <ion-input placeholder="Beneficiary ID" class="field-input"></ion-input>
+        </ion-col>
+        <ion-col size-sm>
+          <ion-input placeholder="Enter Beneficiary Name" class="field-input" value="">
+          </ion-input>
+        </ion-col>
+        <ion-col size-sm>
+          <ion-input placeholder="Enter Surname" class="field-input" value=""></ion-input>
+        </ion-col>
+        <ion-col size-sm>
+          <ion-input placeholder="Enter Surname" class="field-input" value=""></ion-input>
+        </ion-col>
+        <ion-col size-sm>
+          <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+          background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+            <ion-select-option value="Male">Male
+            </ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col size-sm>
+          <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+          background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+            <ion-select-option value="Male">Male
+            </ion-select-option>
+          </ion-select>
+        </ion-col>
+        <ion-col class="col-border-right" size-sm>
+          <ion-button style="width: 90%; font-weight: bold; margin-top: -10px;" type="button" color="primary">Submit
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+
+  <app-footer> </app-footer>
+</ion-content>
