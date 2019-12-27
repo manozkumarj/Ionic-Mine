@@ -12,11 +12,21 @@ import { Router } from "@angular/router";
 export class SearchBeneficiaryPage implements OnInit {
 
   searchBenForm: FormGroup;
+  beneficiaries: any[] = [
+    {
+      imageUrl: 'assets/profile_pic.jpg',
+      patientId: 'SP0002000002B00TEST',
+      name: 'test',
+      surname: 'jumbo',
+      gender: 'Female',
+      age: 25
+    }
+  ];
+
   constructor(
     private db: DatabaseService,
     private router: Router,
     private storageService: StorageService) {
-
     this.searchBenForm = new FormGroup({
       benificiaryName: new FormControl("", Validators.required),
       numberOfFamilyMembers: new FormControl("", Validators.required)
@@ -24,6 +34,22 @@ export class SearchBeneficiaryPage implements OnInit {
   }
 
   ngOnInit() {
+    // this.loadBeneficiaries();
+  }
+
+  loadBeneficiaries() {
+    this.db
+      .getBeneficiaries()
+      .then(beneficiaries => {
+        console.log("Fetched beneficiaries -> " + JSON.stringify(beneficiaries));
+        this.beneficiaries = beneficiaries;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getBeneficiaries() function returned error." +
+          JSON.stringify(error)
+        );
+      });
   }
 
 }
