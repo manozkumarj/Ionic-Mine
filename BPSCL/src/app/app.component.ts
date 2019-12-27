@@ -67,6 +67,11 @@ export class AppComponent {
       title: "Search Beneficiary",
       url: "/search-beneficiary",
       icon: "list"
+    },
+    {
+      title: "Beneficiary History",
+      url: "/beneficiary-history",
+      icon: "list"
     }
   ];
 

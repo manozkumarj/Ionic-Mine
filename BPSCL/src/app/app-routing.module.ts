@@ -59,6 +59,10 @@ const routes: Routes = [
   {
     path: 'search-beneficiary',
     loadChildren: () => import('./pages/search-beneficiary/search-beneficiary.module').then( m => m.SearchBeneficiaryPageModule)
+  },
+  {
+    path: 'beneficiary-history',
+    loadChildren: () => import('./pages/beneficiary-history/beneficiary-history.module').then( m => m.BeneficiaryHistoryPageModule)
   }
 
 ];
