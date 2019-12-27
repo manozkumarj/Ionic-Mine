@@ -14,6 +14,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
   benRegForm: FormGroup;
   genders: any[] = [];
   ageUnits: any[] = [];
+  ageCategories: any[] = [];
   castes: any[] = [];
   religions: any[] = [];
 
@@ -103,6 +104,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
     this.loadCastes();
     this.loadReligions();
     this.loadAgeUnits();
+    this.loadAgeCategories();
   }
 
   takeSnap() {
@@ -191,6 +193,21 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
+          JSON.stringify(error)
+        );
+      });
+  }
+
+  loadAgeCategories() {
+    this.db
+      .getAgeCategories()
+      .then(ageCategories => {
+        console.log("Fetched AgeCategories -> " + JSON.stringify(ageCategories));
+        this.ageCategories = ageCategories;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getAgeCategories() function returned error." +
           JSON.stringify(error)
         );
       });

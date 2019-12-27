@@ -15,6 +15,7 @@ export class DatabaseService {
   table_users: string = "du_User";
   table_genders: string = "mp_Gender";
   table_ageUnits: string = "mp_AgeUnit";
+  table_ageCategories: string = "mp_AgeCategory";
   table_religions: string = "mp_Religion";
   table_castes: string = "mp_Community";
   table_states: string = "m_State";
@@ -225,6 +226,22 @@ export class DatabaseService {
         }
       }
       return ageUnits;
+    });
+  }
+
+  getAgeCategories() {
+    let sql = `SELECT ageCategoryId, ageCategoryName FROM ${this.table_ageCategories} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let ageCategories = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          ageCategories.push({
+            ageCategoryId: data.rows.item(i).ageCategoryId,
+            ageCategoryName: data.rows.item(i).ageCategoryName
+          });
+        }
+      }
+      return ageCategories;
     });
   }
 
