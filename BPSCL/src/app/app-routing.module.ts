@@ -63,6 +63,10 @@ const routes: Routes = [
   {
     path: 'beneficiary-history',
     loadChildren: () => import('./pages/beneficiary-history/beneficiary-history.module').then( m => m.BeneficiaryHistoryPageModule)
+  },
+  {
+    path: 'consumable-dispense',
+    loadChildren: () => import('./pages/consumable-dispense/consumable-dispense.module').then( m => m.ConsumableDispensePageModule)
   }
 
 ];

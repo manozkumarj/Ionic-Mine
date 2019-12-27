@@ -34,6 +34,11 @@ export class AppComponent {
       icon: "list"
     },
     {
+      title: "Search Beneficiary",
+      url: "/search-beneficiary",
+      icon: "list"
+    },
+    {
       title: "Beneficiary Registration",
       url: "/beneficiary-registration",
       icon: "list"
@@ -46,6 +51,16 @@ export class AppComponent {
     {
       title: "Doctor",
       url: "/doctor",
+      icon: "list"
+    },
+    {
+      title: "Consumable Dispense",
+      url: "/consumable-dispense",
+      icon: "list"
+    },
+    {
+      title: "Beneficiary History",
+      url: "/beneficiary-history",
       icon: "list"
     },
     {
@@ -63,16 +78,6 @@ export class AppComponent {
       url: "/care-provided",
       icon: "list"
     },
-    {
-      title: "Search Beneficiary",
-      url: "/search-beneficiary",
-      icon: "list"
-    },
-    {
-      title: "Beneficiary History",
-      url: "/beneficiary-history",
-      icon: "list"
-    }
   ];
 
   constructor(
