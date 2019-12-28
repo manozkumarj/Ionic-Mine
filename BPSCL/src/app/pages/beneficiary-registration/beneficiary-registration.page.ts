@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { StorageService } from "./../../services/storage.service";
+import { ConstantsService } from "../../services/constants.service";
 import { Router } from "@angular/router";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 
@@ -40,7 +41,8 @@ export class BeneficiaryRegistrationPage implements OnInit {
     private db: DatabaseService,
     private router: Router,
     private camera: Camera,
-    private storageService: StorageService
+    private storageService: StorageService,
+    public constants: ConstantsService
   ) {
     this.loadUserDetails();
     this.loadServicePointName();
@@ -256,6 +258,36 @@ export class BeneficiaryRegistrationPage implements OnInit {
   ageUnitChange() {
     let enteredAge = this.benRegForm.get("age").value;
     let selectedAgeUnit = this.benRegForm.get("ageUnit").value;
+
+    let today = new Date();
+    let dob;
+
+    if (selectedAgeUnit == this.constants.age_unit_years) {
+      if (enteredAge > 100) {
+        alert("Years should be between 1-100");
+        // return false;
+      }
+      let currentYear = today.getFullYear();
+      let dobYear = currentYear - enteredAge;
+      dob = new Date(dobYear, today.getMonth(), today.getDate());
+    } else if (selectedAgeUnit == this.constants.age_unit_months) {
+      if (enteredAge > 100) {
+        alert("Months should be between 1-11");
+        // return false;
+      }
+      let currentMonth = today.getMonth();
+      let dobMonth = currentMonth - enteredAge;
+      dob = new Date(today.getFullYear(), dobMonth, today.getDate());
+    } else if (selectedAgeUnit == this.constants.age_unit_days) {
+      if (enteredAge > 100) {
+        alert("Days should be between 1-30");
+        // return false;
+      }
+      let currentDate = today.getDate();
+      let dobDate = currentDate - enteredAge;
+      dob = new Date(today.getFullYear(), today.getMonth(), dobDate);
+    }
+    console.log("Set calender value as -> " + dob);
   }
 
   onSubmit(values) {
