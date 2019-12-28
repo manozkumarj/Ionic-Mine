@@ -30,7 +30,12 @@ export class BeneficiaryRegistrationPage implements OnInit {
   servicePointId: number;
   servicePointName: string;
 
-  dateTime: string = this.getDateTime();
+  disablePersonalNumber: boolean = false;
+  disableFamilyOrRelativeNumber: boolean = false;
+
+  newDate = new Date();
+
+  dateTime: string = this.getDateTime(this.newDate);
   isPhotoCaptured: boolean = false;
   benPhoto: string = "assets/profile_pic.jpg";
 
@@ -127,8 +132,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
     );
   }
 
-  getDateTime() {
-    var myDate = new Date();
+  getDateTime(myDate) {
     return (
       myDate.getFullYear() +
       "-" +
@@ -220,27 +224,31 @@ export class BeneficiaryRegistrationPage implements OnInit {
   }
 
   personalNumberCheckbox(e) {
-    if (e.checked) {
-      this.benRegForm.get("personalNumber").value("N/A");
+    if (e.target.checked) {
+      this.disablePersonalNumber = true;
+      this.benRegForm.patchValue({ personalNumber: "N/A" });
       console.log("personalNumberCheckbox is checked");
     } else {
-      this.benRegForm.get("personalNumber").value("");
+      this.disablePersonalNumber = false;
+      this.benRegForm.patchValue({ personalNumber: "" });
       console.log("personalNumberCheckbox is unchecked");
     }
   }
 
   familyOrRelativeNumberCheckbox(e) {
-    if (e.checked) {
-      this.benRegForm.get("familyOrRelativeNumber").value("N/A");
+    if (e.target.checked) {
+      this.disableFamilyOrRelativeNumber = true;
+      this.benRegForm.patchValue({ familyOrRelativeNumber: "N/A" });
       console.log("familyOrRelativeNumberCheckbox is checked");
     } else {
-      this.benRegForm.get("familyOrRelativeNumber").value("");
+      this.disableFamilyOrRelativeNumber = false;
+      this.benRegForm.patchValue({ familyOrRelativeNumber: "" });
       console.log("familyOrRelativeNumberCheckbox is unchecked");
     }
   }
 
   bplCheckbox(e) {
-    if (e.checked) {
+    if (e.target.checked) {
       console.log("bplCheckbox is checked");
     } else {
       console.log("bplCheckbox is unchecked");
@@ -248,46 +256,72 @@ export class BeneficiaryRegistrationPage implements OnInit {
   }
 
   handiCappedCheckbox(e) {
-    if (e.checked) {
+    if (e.target.checked) {
       console.log("handiCappedCheckbox is checked");
     } else {
       console.log("handiCappedCheckbox is unchecked");
     }
   }
 
+  ageChange() {
+    let enteredAge = this.benRegForm.get("age").value;
+    console.log("ageChange() - enteredAge -> " + enteredAge);
+
+    this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+  }
+
   ageUnitChange() {
     let enteredAge = this.benRegForm.get("age").value;
     let selectedAgeUnit = this.benRegForm.get("ageUnit").value;
 
-    let today = new Date();
-    let dob;
+    console.log("enteredAge -> " + enteredAge);
+    console.log("selectedAgeUnit -> " + selectedAgeUnit);
 
-    if (selectedAgeUnit == this.constants.age_unit_years) {
-      if (enteredAge > 100) {
-        alert("Years should be between 1-100");
-        // return false;
+    if (enteredAge == "" || selectedAgeUnit == "") {
+      if (enteredAge == "") {
+        alert("Enter Age");
+        return false;
       }
-      let currentYear = today.getFullYear();
-      let dobYear = currentYear - enteredAge;
-      dob = new Date(dobYear, today.getMonth(), today.getDate());
-    } else if (selectedAgeUnit == this.constants.age_unit_months) {
-      if (enteredAge > 100) {
-        alert("Months should be between 1-11");
-        // return false;
+      if (selectedAgeUnit == "") {
+        alert("Select Age Unit");
+        return false;
       }
-      let currentMonth = today.getMonth();
-      let dobMonth = currentMonth - enteredAge;
-      dob = new Date(today.getFullYear(), dobMonth, today.getDate());
-    } else if (selectedAgeUnit == this.constants.age_unit_days) {
-      if (enteredAge > 100) {
-        alert("Days should be between 1-30");
-        // return false;
+    } else {
+      let today = new Date();
+      let dob;
+
+      if (selectedAgeUnit == this.constants.age_unit_years) {
+        if (enteredAge > 100) {
+          alert("Years should be between 1-100");
+          this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+          return false;
+        }
+        let currentYear = today.getFullYear();
+        let dobYear = currentYear - enteredAge;
+        dob = new Date(dobYear, today.getMonth(), today.getDate());
+      } else if (selectedAgeUnit == this.constants.age_unit_months) {
+        if (enteredAge > 11) {
+          alert("Months should be between 1-11");
+          this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+          return false;
+        }
+        let currentMonth = today.getMonth();
+        let dobMonth = currentMonth - enteredAge;
+        dob = new Date(today.getFullYear(), dobMonth, today.getDate());
+      } else if (selectedAgeUnit == this.constants.age_unit_days) {
+        if (enteredAge > 30) {
+          alert("Days should be between 1-30");
+          this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+          return false;
+        }
+        let currentDate = today.getDate();
+        let dobDate = currentDate - enteredAge;
+        dob = new Date(today.getFullYear(), today.getMonth(), dobDate);
       }
-      let currentDate = today.getDate();
-      let dobDate = currentDate - enteredAge;
-      dob = new Date(today.getFullYear(), today.getMonth(), dobDate);
+      console.log("Set calender value as -> " + dob);
+      let assignDob = this.getDateTime(dob);
+      this.benRegForm.patchValue({ dateOfBirth: assignDob });
     }
-    console.log("Set calender value as -> " + dob);
   }
 
   onSubmit(values) {

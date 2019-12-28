@@ -114,6 +114,7 @@
                           class="field-input"
                           type="number"
                           value=""
+                          (ionChange)="ageChange()"
                         >
                         </ion-input>
                       </ion-col>
@@ -187,6 +188,7 @@
                           class="field-input"
                           value=""
                           style="width: 100%;"
+                          [disabled]="disablePersonalNumber"
                         ></ion-input>
                       </ion-col>
                       <ion-col size="auto" size-sm>
@@ -216,6 +218,7 @@
                           class="field-input"
                           value=""
                           style="width: 100%;"
+                          [disabled]="disableFamilyOrRelativeNumber"
                         ></ion-input>
                       </ion-col>
                       <ion-col size="auto" size-sm>
