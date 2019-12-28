@@ -217,6 +217,47 @@ export class BeneficiaryRegistrationPage implements OnInit {
       });
   }
 
+  personalNumberCheckbox(e) {
+    if (e.checked) {
+      this.benRegForm.get("personalNumber").value("N/A");
+      console.log("personalNumberCheckbox is checked");
+    } else {
+      this.benRegForm.get("personalNumber").value("");
+      console.log("personalNumberCheckbox is unchecked");
+    }
+  }
+
+  familyOrRelativeNumberCheckbox(e) {
+    if (e.checked) {
+      this.benRegForm.get("familyOrRelativeNumber").value("N/A");
+      console.log("familyOrRelativeNumberCheckbox is checked");
+    } else {
+      this.benRegForm.get("familyOrRelativeNumber").value("");
+      console.log("familyOrRelativeNumberCheckbox is unchecked");
+    }
+  }
+
+  bplCheckbox(e) {
+    if (e.checked) {
+      console.log("bplCheckbox is checked");
+    } else {
+      console.log("bplCheckbox is unchecked");
+    }
+  }
+
+  handiCappedCheckbox(e) {
+    if (e.checked) {
+      console.log("handiCappedCheckbox is checked");
+    } else {
+      console.log("handiCappedCheckbox is unchecked");
+    }
+  }
+
+  ageUnitChange() {
+    let enteredAge = this.benRegForm.get("age").value;
+    let selectedAgeUnit = this.benRegForm.get("ageUnit").value;
+  }
+
   onSubmit(values) {
     // let patientId = "SP0002000010B000500";
     let patientId = this.randomPatientId;
