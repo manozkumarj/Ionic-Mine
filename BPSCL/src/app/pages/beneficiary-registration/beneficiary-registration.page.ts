@@ -52,6 +52,8 @@ export class BeneficiaryRegistrationPage implements OnInit {
       age: new FormControl("", Validators.required),
       ageUnit: new FormControl("", Validators.required),
       dateOfBirth: new FormControl("", Validators.required),
+      ageCategory: new FormControl("", Validators.required),
+      personalNumber: new FormControl("", Validators.required),
       familyOrRelativeNumber: new FormControl("", Validators.required),
       caste: new FormControl("", Validators.required),
       religion: new FormControl("", Validators.required),
@@ -148,7 +150,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -163,7 +165,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getCastes() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -178,7 +180,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getReligions() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -193,7 +195,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -202,19 +204,20 @@ export class BeneficiaryRegistrationPage implements OnInit {
     this.db
       .getAgeCategories()
       .then(ageCategories => {
-        console.log("Fetched AgeCategories -> " + JSON.stringify(ageCategories));
+        console.log(
+          "Fetched AgeCategories -> " + JSON.stringify(ageCategories)
+        );
         this.ageCategories = ageCategories;
       })
       .catch(error => {
         console.error(
           "Error -> getAgeCategories() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
 
   onSubmit(values) {
-
     // let patientId = "SP0002000010B000500";
     let patientId = this.randomPatientId;
     let deviceId = this.deviceId;
@@ -269,7 +272,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
     console.log(
       "Object which is gonna be sent to Database service file -> " +
-      JSON.stringify(benRegFormDetails)
+        JSON.stringify(benRegFormDetails)
     );
 
     console.log("Ben Registration form is submitted, below are the values");

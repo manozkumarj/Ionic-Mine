@@ -151,14 +151,78 @@
               </ion-row>
               <ion-row class="row-border row-height-45">
                 <ion-col class="col-border-right" size="12" size-sm>
+                  Age Group
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-select
+                    formControlName="ageCategory"
+                    class="field-input"
+                    style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)"
+                    placeholder="Select"
+                  >
+                    <ion-select-option
+                      *ngFor="let ageCategory of ageCategories"
+                      value="{{ageCategory.ageCategoryId}}"
+                      >{{ageCategory.ageCategoryName}}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Personal Number
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-grid style="padding: 0; margin: 0;">
+                    <ion-row
+                      style="width: 95%;"
+                      align-items-center
+                      justify-content-center
+                    >
+                      <ion-col size="10" style="padding-left: 0;">
+                        <ion-input
+                          formControlName="personalNumber"
+                          class="field-input"
+                          value=""
+                          style="width: 100%;"
+                        ></ion-input>
+                      </ion-col>
+                      <ion-col size="auto" size-sm>
+                        <ion-checkbox
+                          style="height: 20px; width: 20px;"
+                        ></ion-checkbox>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
                   Family/Relative Number
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input
-                    formControlName="familyOrRelativeNumber"
-                    class="field-input"
-                    value=""
-                  ></ion-input>
+                  <ion-grid style="padding: 0; margin: 0;">
+                    <ion-row
+                      style="width: 95%;"
+                      align-items-center
+                      justify-content-center
+                    >
+                      <ion-col size="10" style="padding-left: 0;">
+                        <ion-input
+                          formControlName="familyOrRelativeNumber"
+                          class="field-input"
+                          value=""
+                          style="width: 100%;"
+                        ></ion-input>
+                      </ion-col>
+                      <ion-col size="auto" size-sm>
+                        <ion-checkbox
+                          style="height: 20px; width: 20px;"
+                        ></ion-checkbox>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -213,8 +277,40 @@
                   ></ion-input>
                 </ion-col>
               </ion-row>
-              <ion-row class="row-border row-height-45">
+              <ion-row
+                class="row-border row-height-45"
+                align-items-center
+                justify-content-center
+              >
                 <ion-col class="col-border-right" size="12" size-sm>
+                  BPL
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-checkbox
+                    style="height: 20px; width: 20px;"
+                  ></ion-checkbox>
+                </ion-col>
+              </ion-row>
+              <ion-row
+                class="row-border row-height-45"
+                align-items-center
+                justify-content-center
+              >
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Handicapped
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-checkbox
+                    style="height: 20px; width: 20px;"
+                  ></ion-checkbox>
+                </ion-col>
+              </ion-row>
+              <ion-row
+                class="row-border row-height-45"
+                align-items-center
+                justify-content-center
+              >
+                <ion-col size="12" size-sm>
                   <ion-button
                     [disabled]="!benRegForm.valid || !isPhotoCaptured"
                     style="width: 90%; font-weight: bold;"
