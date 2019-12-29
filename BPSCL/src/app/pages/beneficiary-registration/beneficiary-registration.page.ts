@@ -266,61 +266,81 @@ export class BeneficiaryRegistrationPage implements OnInit {
   ageChange() {
     let enteredAge = this.benRegForm.get("age").value;
     console.log("ageChange() - enteredAge -> " + enteredAge);
+    this.ageUnitChange();
 
-    this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+    // this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
   }
 
   ageUnitChange() {
     let enteredAge = this.benRegForm.get("age").value;
     let selectedAgeUnit = this.benRegForm.get("ageUnit").value;
+    let managaAction = false;
 
     console.log("enteredAge -> " + enteredAge);
     console.log("selectedAgeUnit -> " + selectedAgeUnit);
 
-    if (enteredAge == "" || selectedAgeUnit == "") {
-      if (enteredAge == "") {
-        alert("Enter Age");
-        return false;
-      }
-      if (selectedAgeUnit == "") {
-        alert("Select Age Unit");
-        return false;
-      }
-    } else {
-      let today = new Date();
-      let dob;
+    let today = new Date();
+    let dob;
 
-      if (selectedAgeUnit == this.constants.age_unit_years) {
-        if (enteredAge > 100) {
-          alert("Years should be between 1-100");
-          this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
-          return false;
-        }
-        let currentYear = today.getFullYear();
-        let dobYear = currentYear - enteredAge;
-        dob = new Date(dobYear, today.getMonth(), today.getDate());
-      } else if (selectedAgeUnit == this.constants.age_unit_months) {
-        if (enteredAge > 11) {
-          alert("Months should be between 1-11");
-          this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
-          return false;
-        }
-        let currentMonth = today.getMonth();
-        let dobMonth = currentMonth - enteredAge;
-        dob = new Date(today.getFullYear(), dobMonth, today.getDate());
-      } else if (selectedAgeUnit == this.constants.age_unit_days) {
-        if (enteredAge > 30) {
-          alert("Days should be between 1-30");
-          this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
-          return false;
-        }
-        let currentDate = today.getDate();
-        let dobDate = currentDate - enteredAge;
-        dob = new Date(today.getFullYear(), today.getMonth(), dobDate);
+    if (selectedAgeUnit == this.constants.age_unit_years) {
+      managaAction = true;
+      if (enteredAge > 100) {
+        alert("Years should be between 1-100");
+        this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+        return false;
       }
+      let currentYear = today.getFullYear();
+      let dobYear = currentYear - enteredAge;
+      dob = new Date(dobYear, today.getMonth(), today.getDate());
+    } else if (selectedAgeUnit == this.constants.age_unit_months) {
+      managaAction = true;
+      if (enteredAge > 11) {
+        alert("Months should be between 1-11");
+        this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+        return false;
+      }
+      let currentMonth = today.getMonth();
+      let dobMonth = currentMonth - enteredAge;
+      dob = new Date(today.getFullYear(), dobMonth, today.getDate());
+    } else if (selectedAgeUnit == this.constants.age_unit_days) {
+      managaAction = true;
+      if (enteredAge > 30) {
+        alert("Days should be between 1-30");
+        this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+        return false;
+      }
+      let currentDate = today.getDate();
+      let dobDate = currentDate - enteredAge;
+      dob = new Date(today.getFullYear(), today.getMonth(), dobDate);
+    }
+
+    if (managaAction) {
       console.log("Set calender value as -> " + dob);
       let assignDob = this.getDateTime(dob);
       this.benRegForm.patchValue({ dateOfBirth: assignDob });
+    }
+  }
+
+  dateOfBirthChange() {
+    let selectedDob = this.benRegForm.get("dateOfBirth").value;
+    console.log("dateOfBirthChange() - selectedDob -> " + selectedDob);
+
+    if (selectedDob != "") {
+      var timeDiff = Math.abs(Date.now() - selectedDob);
+      var diffDays = Math.floor(timeDiff / (1000 * 3600 * 24));
+      if (diffDays < 30) {
+        this.benRegForm.patchValue({ ageUnit: 1, age: diffDays });
+      } else if (diffDays < 365) {
+        this.benRegForm.patchValue({
+          ageUnit: 2,
+          age: Math.floor(diffDays / 30)
+        });
+      } else {
+        this.benRegForm.patchValue({
+          ageUnit: 3,
+          age: Math.floor(diffDays / 365)
+        });
+      }
     }
   }
 
