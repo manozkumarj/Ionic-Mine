@@ -130,6 +130,7 @@
                           <ion-select-option
                             *ngFor="let ageUnit of ageUnits"
                             value="{{ageUnit.ageUnitId}}"
+                            selected="{{ageUnit.isSelected}}"
                             >{{ageUnit.ageUnitName}}
                           </ion-select-option>
                         </ion-select>
