@@ -156,7 +156,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -171,7 +171,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getCastes() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -186,7 +186,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getReligions() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -204,7 +204,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -221,7 +221,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeCategories() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -330,28 +330,39 @@ export class BeneficiaryRegistrationPage implements OnInit {
     console.log("dateOfBirthChange() - selectedDob -> " + selectedDobSeconds);
     console.log("Date.now() is -> " + Date.now());
 
-    // if (selectedDobSeconds && selectedDobSeconds > 0) {
-    //   var timeDiff = Math.abs(Date.now() - selectedDobSeconds);
-    //   var diffDays = Math.floor(timeDiff / (1000 * 3600 * 24));
-    //   if (diffDays < 30) {
-    //     this.benRegForm.patchValue({ ageUnit: 1, age: diffDays });
-    //   } else if (diffDays < 365) {
-    //     this.benRegForm.patchValue({
-    //       ageUnit: 2,
-    //       age: Math.floor(diffDays / 30)
-    //     });
-    //   } else {
-    //     this.benRegForm.patchValue({
-    //       ageUnit: 3,
-    //       age: Math.floor(diffDays / 365)
-    //     });
-    //     this.benRegForm.get("ageUnit").setValue(3);
-    //     console.log("asigning ageUnit & age here ");
-    //   }
-    //   console.log(
-    //     "ageUnit was set and value is " + this.benRegForm.get("ageUnit").value
-    //   );
-    // }
+    if (selectedDobSeconds && selectedDobSeconds > 0) {
+      var timeDiff = Math.abs(Date.now() - selectedDobSeconds);
+      var diffDays = Math.floor(timeDiff / (1000 * 3600 * 24));
+      if (diffDays < 30) {
+        this.benRegForm.patchValue({ ageUnit: 1, age: diffDays });
+        this.ageUnits[2]['isSelected'] = false;
+        this.ageUnits[1]['isSelected'] = false;
+        this.ageUnits[0]['isSelected'] = true;
+        console.log("asigning year to ageUnit & age here ");
+      } else if (diffDays < 365) {
+        this.benRegForm.patchValue({
+          ageUnit: 2,
+          age: Math.floor(diffDays / 30)
+        });
+        this.ageUnits[2]['isSelected'] = false;
+        this.ageUnits[0]['isSelected'] = false;
+        this.ageUnits[1]['isSelected'] = true;
+        console.log("asigning year to ageUnit & age here ");
+      } else {
+        this.benRegForm.patchValue({
+          ageUnit: 3,
+          age: Math.floor(diffDays / 365)
+        });
+        //  this.benRegForm.get("ageUnit").setValue(3);
+        this.ageUnits[0]['isSelected'] = false;
+        this.ageUnits[1]['isSelected'] = false;
+        this.ageUnits[2]['isSelected'] = true;
+        console.log("asigning year to ageUnit & age here ");
+      }
+      console.log(
+        "ageUnit was set and value is " + this.benRegForm.get("ageUnit").value
+      );
+    }
   }
 
   onSubmit(values) {
@@ -409,7 +420,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
     console.log(
       "Object which is gonna be sent to Database service file -> " +
-        JSON.stringify(benRegFormDetails)
+      JSON.stringify(benRegFormDetails)
     );
 
     console.log("Ben Registration form is submitted, below are the values");
