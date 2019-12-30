@@ -98,11 +98,11 @@ export class DatabaseService {
             "database - checkTable - Success -> " + JSON.stringify(res)
           );
           if (res.rows.length <= 0) {
-            this.seedSql().then(async data => {
+            this.seedSql().then(async res => {
+              let data = await res;
               return true;
             });
           }
-          return true;
         })
         .catch(error => {
           console.warn(

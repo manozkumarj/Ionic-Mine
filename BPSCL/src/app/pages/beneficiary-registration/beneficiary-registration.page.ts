@@ -32,6 +32,13 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
   disablePersonalNumber: boolean = false;
   disableFamilyOrRelativeNumber: boolean = false;
+  isBpl: boolean = false;
+  isHandicapped: boolean = false;
+
+  familyOrRelativeChecked: boolean = false;
+  personalNumberChecked: boolean = false;
+  bplChecked: boolean = true;
+  handicappedChecked: boolean = false;
 
   newDate = new Date();
 
@@ -114,6 +121,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
     this.loadReligions();
     this.loadAgeUnits();
     this.loadAgeCategories();
+    // this.resetValues();
   }
 
   takeSnap() {
@@ -252,16 +260,20 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
   bplCheckbox(e) {
     if (e.target.checked) {
+      this.isBpl = true;
       console.log("bplCheckbox is checked");
     } else {
+      this.isBpl = false;
       console.log("bplCheckbox is unchecked");
     }
   }
 
   handiCappedCheckbox(e) {
     if (e.target.checked) {
+      this.isHandicapped = true;
       console.log("handiCappedCheckbox is checked");
     } else {
+      this.isHandicapped = false;
       console.log("handiCappedCheckbox is unchecked");
     }
   }
@@ -326,7 +338,10 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
   dateOfBirthChange() {
     let selectedDob = new Date(this.benRegForm.get("dateOfBirth").value);
+    let selectedGender = this.benRegForm.get("gender").value;
     let selectedDobSeconds = selectedDob.getTime();
+    let ageWillBe;
+    let ageUnitWillBe;
     console.log("dateOfBirthChange() - selectedDob -> " + selectedDobSeconds);
     console.log("Date.now() is -> " + Date.now());
 
@@ -334,35 +349,93 @@ export class BeneficiaryRegistrationPage implements OnInit {
       var timeDiff = Math.abs(Date.now() - selectedDobSeconds);
       var diffDays = Math.floor(timeDiff / (1000 * 3600 * 24));
       if (diffDays < 30) {
-        this.benRegForm.patchValue({ ageUnit: 1, age: diffDays });
+        ageWillBe = diffDays;
+        ageUnitWillBe = 1;
         this.ageUnits[2]['isSelected'] = false;
         this.ageUnits[1]['isSelected'] = false;
         this.ageUnits[0]['isSelected'] = true;
-        console.log("asigning year to ageUnit & age here ");
       } else if (diffDays < 365) {
-        this.benRegForm.patchValue({
-          ageUnit: 2,
-          age: Math.floor(diffDays / 30)
-        });
+        ageWillBe = Math.floor(diffDays / 30);
+        ageUnitWillBe = 2;
         this.ageUnits[2]['isSelected'] = false;
         this.ageUnits[0]['isSelected'] = false;
         this.ageUnits[1]['isSelected'] = true;
-        console.log("asigning year to ageUnit & age here ");
       } else {
-        this.benRegForm.patchValue({
-          ageUnit: 3,
-          age: Math.floor(diffDays / 365)
-        });
-        //  this.benRegForm.get("ageUnit").setValue(3);
+        ageWillBe = Math.floor(diffDays / 365);
+        ageUnitWillBe = 3;
         this.ageUnits[0]['isSelected'] = false;
         this.ageUnits[1]['isSelected'] = false;
         this.ageUnits[2]['isSelected'] = true;
-        console.log("asigning year to ageUnit & age here ");
       }
+
+      this.benRegForm.patchValue({ ageUnit: ageUnitWillBe, age: ageWillBe });
+      console.log("asigning year to ageUnit & age here ");
       console.log(
-        "ageUnit was set and value is " + this.benRegForm.get("ageUnit").value
+        "ageUnit was set and value is " + ageUnitWillBe
       );
+      this.selectAgeCategory(ageWillBe, ageUnitWillBe, selectedGender);
     }
+  }
+
+  selectAgeCategory(ageValue, ageType, gender) {
+    if (gender == 0 || ageType == 0 || ageValue == 0) {
+      return false;
+    }
+
+    if (ageType == 1) {
+      if (ageValue >= 0 && ageValue <= 28) {
+        this.benRegForm.patchValue({ ageCategory: 5 });
+      } else if (ageValue > 28 && ageValue <= 31) {
+        this.benRegForm.patchValue({ ageCategory: 6 });
+      }
+    } else if (ageType == 2) {
+      if (ageValue >= 1 && ageValue <= 12) {
+        this.benRegForm.patchValue({ ageCategory: 6 });
+      }
+    } else if (ageType == 3) {
+      if (ageValue == 1) {
+        this.benRegForm.patchValue({ ageCategory: 6 });
+      } else if (ageValue > 1 && ageValue <= 5) {
+        this.benRegForm.patchValue({ ageCategory: 7 });
+      } else if (ageValue > 5 && ageValue <= 10) {
+        this.benRegForm.patchValue({ ageCategory: 8 });
+      } else if (ageValue > 15 && ageValue < 45 && gender == 2) {
+        this.benRegForm.patchValue({ ageCategory: 4 });
+      } else if (ageValue > 10 && ageValue < 20) {
+        this.benRegForm.patchValue({ ageCategory: 9 });
+      } else if (ageValue > 19) {
+        this.benRegForm.patchValue({ ageCategory: 10 });
+      }
+    }
+  }
+
+
+  resetValues() {
+    this.benRegForm.patchValue({
+      benificiaryName: '',
+      surname: '',
+      gender: '',
+      dateOfBirth: '',
+      age: '',
+      ageUnit: '',
+      ageCategory: '',
+      personalNumber: '',
+      familyOrRelativeNumber: '',
+      caste: '',
+      religion: '',
+      numberOfFamilyMembers: ''
+    });
+
+    this.isPhotoCaptured = false;
+    this.benPhoto = "assets/profile_pic.jpg";
+    this.isBpl = false;
+    this.isHandicapped = false;
+    this.disablePersonalNumber = false;
+    this.disableFamilyOrRelativeNumber = false;
+    this.familyOrRelativeChecked = false;
+    this.personalNumberChecked = false;
+    this.bplChecked = false;
+    this.handicappedChecked = false;
   }
 
   onSubmit(values) {
@@ -378,13 +451,22 @@ export class BeneficiaryRegistrationPage implements OnInit {
     let motherName = "N/A";
     let aadharNo = "N/A";
     let mctsId = "N/A";
-    let name = this.benRegForm.get("benificiaryName").value;
-    let surname = this.benRegForm.get("surname").value;
-    let genderId = this.benRegForm.get("gender").value;
-    let dob = this.benRegForm.get("dateOfBirth").value;
-    let communityId = this.benRegForm.get("caste").value;
-    let religionId = this.benRegForm.get("religion").value;
+    let name = this.benRegForm.get("benificiaryName").value.trim();
+    let surname = this.benRegForm.get("surname").value.trim();
+    let genderId = this.benRegForm.get("gender").value.trim();
+    let dob = this.benRegForm.get("dateOfBirth").value.trim();
+    let age = +this.benRegForm.get("age").value;
+    let ageUnit = this.benRegForm.get("ageUnit").value.trim();
+    let ageCategory = this.benRegForm.get("ageCategory").value.trim();
+    let personalNumber = this.benRegForm.get("personalNumber").value.trim();
+    let familyOrRelativeNumber = this.benRegForm.get("familyOrRelativeNumber").value.trim();
+    let communityId = this.benRegForm.get("caste").value.trim();
+    let religionId = this.benRegForm.get("religion").value.trim();
+    let numberOfFamilyMembers = this.benRegForm.get("numberOfFamilyMembers").value.trim();
     let userId = this.userId;
+
+    let isBpl = this.isBpl;
+    let isHandicapped = this.isHandicapped;
 
     let stateId = this.stateId;
     let districtId = this.districtId;
@@ -426,6 +508,56 @@ export class BeneficiaryRegistrationPage implements OnInit {
     console.log("Ben Registration form is submitted, below are the values");
     console.log(values);
     console.log("Ben patientId -> " + patientId);
+
+    if (!name || name == null) {
+      alert("Enter Beneficiary Name");
+      return false;
+    }
+    if (!surname || surname == null) {
+      alert("Enter Beneficiary Surname");
+      return false;
+    }
+    if (!genderId || genderId == null) {
+      alert("Please Select gender");
+      return false;
+    }
+    if (!age || age == null || age <= 0) {
+      alert("Please Enter age");
+      return false;
+    }
+    if (!ageUnit || ageUnit == null) {
+      alert("Please Select age unit ");
+      return false;
+    }
+    if (!dob || dob == null) {
+      alert("Please Select Date of birth ");
+      return false;
+    }
+    if (!personalNumber || personalNumber == null) {
+      alert("Please Enter personal number ");
+      return false;
+    }
+    if (!familyOrRelativeNumber || familyOrRelativeNumber == null) {
+      alert("Please Enter Family Or Relative number ");
+      return false;
+    }
+    if (!communityId || communityId == null) {
+      alert("Please Select Caste");
+      return false;
+    }
+    if (!religionId || religionId == null) {
+      alert("Please Select Religion");
+      return false;
+    }
+    if (!numberOfFamilyMembers || numberOfFamilyMembers == null) {
+      alert("Please Enter Number of Family Members");
+      return false;
+    }
+    if (!this.isPhotoCaptured) {
+      alert("Please Capture photo");
+      return false;
+    }
+
 
     this.db
       .registerBeneficiary(benRegFormDetails)

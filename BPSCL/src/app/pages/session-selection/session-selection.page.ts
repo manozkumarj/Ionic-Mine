@@ -75,7 +75,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionTypes() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -90,7 +90,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getStates() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -117,7 +117,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getServicePoints() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -132,7 +132,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getDistricts() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -147,7 +147,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getMandals() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -162,7 +162,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getVillages() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -221,7 +221,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getStartingSessionPeriodId() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -260,6 +260,31 @@ export class SessionSelectionPage implements OnInit {
     let vanId = this.vanId;
     let servicePointId = this.sessionForm.get("servicePointId").value;
 
+    if (!this.sessionTypeId || this.sessionTypeId == null) {
+      alert("Please Select Session");
+      return false;
+    }
+    if (!this.stateId || this.stateId == null) {
+      alert("Please Select State");
+      return false;
+    }
+    if (!this.districtId || this.districtId == null) {
+      alert("Please Select District");
+      return false;
+    }
+    if (!this.mandalId || this.mandalId == null) {
+      alert("Please Select Mandal");
+      return false;
+    }
+    if (!this.villageId || this.villageId == null) {
+      alert("Please Select Village");
+      return false;
+    }
+    if (!servicePointId || servicePointId == null) {
+      alert("Please Select Service point");
+      return false;
+    }
+
     let sessionDetails = {
       userId,
       sessionPeriodId,
@@ -288,14 +313,14 @@ export class SessionSelectionPage implements OnInit {
           .catch(error => {
             console.error(
               "Error -> saveServicePointLog() function returned error." +
-                JSON.stringify(error)
+              JSON.stringify(error)
             );
           });
       })
       .catch(error => {
         console.error(
           "Error -> saveSessionDetails() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }

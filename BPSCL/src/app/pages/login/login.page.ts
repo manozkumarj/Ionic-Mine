@@ -42,6 +42,16 @@ export class LoginPage implements OnInit {
     let password = this.loginForm.get("password").value;
     console.log("Login form is submitted, below are the values");
     console.log(values);
+
+    if (!username || username == null) {
+      alert("Please enter Username");
+      return false;
+    }
+    if (!password || password == null) {
+      alert("Please enter Password");
+      return false;
+    }
+
     this.db
       .login(username, password)
       .then(res => {
