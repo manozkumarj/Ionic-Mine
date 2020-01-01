@@ -415,7 +415,7 @@ export class DatabaseService {
   }
 
   getBeneficiaries() {
-    let sql = `patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, registrationDate, name, surname, genderId, dob, communityId, religionId, fatherName, spouseName, motherName, aadharNo, mctsId, villageId, mandalId, districtId, stateId, imageUrl, insertedBy, insertedDate, updatedBy, updatedDate, imageUploadStatus, uploadStatus FROM ${this.table_beneficiaries}`;
+    let sql = `SELECT patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, registrationDate, name, surname, genderId, dob, communityId, religionId, fatherName, spouseName, motherName, aadharNo, mctsId, villageId, mandalId, districtId, stateId, imageUrl, insertedBy, insertedDate, updatedBy, updatedDate, imageUploadStatus, uploadStatus FROM ${this.table_beneficiaries}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let beneficiaries = [];
       if (data.rows.length > 0) {
@@ -455,6 +455,39 @@ export class DatabaseService {
         }
       }
       return beneficiaries;
+    });
+  }
+
+  getVisits() {
+    let sql = `SELECT patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, visitDate, age, ageTypeId, ageGroupId, contactNo, familyContactNo, economicStatusId, educationStatusId, maritalStatusId, noOfFamilyNumbers, isHandicaped FROM ${this.table_visits}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let visits = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          visits.push({
+            patientId: data.rows.item(i).patientId,
+            deviceId: data.rows.item(i).deviceId,
+            vanId: data.rows.item(i).vanId,
+            routeVillageId: data.rows.item(i).routeVillageId,
+            registrationDate: data.rows.item(i).registrationDate,
+            servicePointId: data.rows.item(i).servicePointId,
+            compoundPatientId: data.rows.item(i).compoundPatientId,
+            visitCount: data.rows.item(i).visitCount,
+            visitDate: data.rows.item(i).visitDate,
+            age: data.rows.item(i).age,
+            ageTypeId: data.rows.item(i).ageTypeId,
+            ageGroupId: data.rows.item(i).ageGroupId,
+            contactNo: data.rows.item(i).contactNo,
+            familyContactNo: data.rows.item(i).familyContactNo,
+            economicStatusId: data.rows.item(i).economicStatusId,
+            educationStatusId: data.rows.item(i).educationStatusId,
+            maritalStatusId: data.rows.item(i).maritalStatusId,
+            noOfFamilyNumbers: data.rows.item(i).noOfFamilyNumbers,
+            isHandicaped: data.rows.item(i).isHandicaped
+          });
+        }
+      }
+      return visits;
     });
   }
 

@@ -36,6 +36,20 @@
           </ion-card-header>
         </ion-card>
       </ng-template>
+
+      <ion-list *ngIf="(beneficiaries.length > 0); else noBeneficiaries">
+        <ion-item *ngFor="let beneficiary of beneficiaries" detail>
+          --> {{beneficiary.beneficiaryname}} - {{beneficiary.password}}
+        </ion-item>
+      </ion-list>
+
+      <ng-template #noBeneficiaries>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title> There are no Beneficiaries </ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ng-template>
     </ion-card-content>
   </ion-card>
 
