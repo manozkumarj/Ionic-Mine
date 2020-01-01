@@ -29,6 +29,7 @@ export class DatabaseService {
   table_servicePointLog: string = "du_ServicePointLog";
   table_admins: string = "mv_VanDeviceApprove";
   table_beneficiaries: string = "dp_Registration";
+  table_visits: string = "du_Visit";
 
   stateId: number = 21;
   status = {
@@ -415,48 +416,46 @@ export class DatabaseService {
 
   getBeneficiaries() {
     let sql = `patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, registrationDate, name, surname, genderId, dob, communityId, religionId, fatherName, spouseName, motherName, aadharNo, mctsId, villageId, mandalId, districtId, stateId, imageUrl, insertedBy, insertedDate, updatedBy, updatedDate, imageUploadStatus, uploadStatus FROM ${this.table_beneficiaries}`;
-    return this.dbObject
-      .executeSql(sql, [])
-      .then(data => {
-        let beneficiaries = [];
-        if (data.rows.length > 0) {
-          for (var i = 0; i < data.rows.length; i++) {
-            beneficiaries.push({
-              patientId: data.rows.item(i).patientId,
-              deviceId: data.rows.item(i).deviceId,
-              vanId: data.rows.item(i).vanId,
-              routeVillageId: data.rows.item(i).routeVillageId,
-              registrationDate: data.rows.item(i).registrationDate,
-              servicePointId: data.rows.item(i).servicePointId,
-              compoundPatientId: data.rows.item(i).compoundPatientId,
-              name: data.rows.item(i).name,
-              surname: data.rows.item(i).surname,
-              genderId: data.rows.item(i).genderId,
-              dob: data.rows.item(i).dob,
-              communityId: data.rows.item(i).communityId,
-              religionId: data.rows.item(i).religionId,
-              fatherName: data.rows.item(i).fatherName,
-              spouseName: data.rows.item(i).spouseName,
-              motherName: data.rows.item(i).motherName,
-              aadharNo: data.rows.item(i).aadharNo,
-              mctsId: data.rows.item(i).mctsId,
-              villageId: data.rows.item(i).villageId,
-              mandalId: data.rows.item(i).mandalId,
-              mandalName: data.rows.item(i).mandalName,
-              districtId: data.rows.item(i).districtId,
-              stateId: data.rows.item(i).stateId,
-              imageUrl: data.rows.item(i).imageUrl,
-              insertedBy: data.rows.item(i).insertedBy,
-              insertedDate: data.rows.item(i).insertedDate,
-              updatedBy: data.rows.item(i).updatedBy,
-              updatedDate: data.rows.item(i).updatedDate,
-              imageUploadStatus: data.rows.item(i).imageUploadStatus,
-              uploadStatus: data.rows.item(i).uploadStatus
-            });
-          }
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let beneficiaries = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          beneficiaries.push({
+            patientId: data.rows.item(i).patientId,
+            deviceId: data.rows.item(i).deviceId,
+            vanId: data.rows.item(i).vanId,
+            routeVillageId: data.rows.item(i).routeVillageId,
+            registrationDate: data.rows.item(i).registrationDate,
+            servicePointId: data.rows.item(i).servicePointId,
+            compoundPatientId: data.rows.item(i).compoundPatientId,
+            name: data.rows.item(i).name,
+            surname: data.rows.item(i).surname,
+            genderId: data.rows.item(i).genderId,
+            dob: data.rows.item(i).dob,
+            communityId: data.rows.item(i).communityId,
+            religionId: data.rows.item(i).religionId,
+            fatherName: data.rows.item(i).fatherName,
+            spouseName: data.rows.item(i).spouseName,
+            motherName: data.rows.item(i).motherName,
+            aadharNo: data.rows.item(i).aadharNo,
+            mctsId: data.rows.item(i).mctsId,
+            villageId: data.rows.item(i).villageId,
+            mandalId: data.rows.item(i).mandalId,
+            mandalName: data.rows.item(i).mandalName,
+            districtId: data.rows.item(i).districtId,
+            stateId: data.rows.item(i).stateId,
+            imageUrl: data.rows.item(i).imageUrl,
+            insertedBy: data.rows.item(i).insertedBy,
+            insertedDate: data.rows.item(i).insertedDate,
+            updatedBy: data.rows.item(i).updatedBy,
+            updatedDate: data.rows.item(i).updatedDate,
+            imageUploadStatus: data.rows.item(i).imageUploadStatus,
+            uploadStatus: data.rows.item(i).uploadStatus
+          });
         }
-        return beneficiaries;
-      });
+      }
+      return beneficiaries;
+    });
   }
 
   login(username, password) {
@@ -558,6 +557,52 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - registerBeneficiary() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  insertVisit(data) {
+    let sql = `INSERT INTO ${this.table_visits} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, visitDate, age, ageTypeId, ageGroupId, contactNo, familyContactNo, economicStatusId, educationStatusId, maritalStatusId, occupationStatusId, serviceProvidedId, pregnancyStatus, benTypeId, noOfFamilyNumbers, isHandicaped, provisonalDiagnosis, impClinicalFindings, insertedBy, insertedDate, updatedBy, updatedDate, uploadStatus) VALUES (?,?,?,?,?,?,?,?,'datetime()',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'datetime()',?,'datetime()',?)`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.patientId,
+        data.visitId,
+        data.deviceId,
+        data.vanId,
+        data.routeVillageId,
+        data.servicePointId,
+        data.compoundPatientId,
+        data.visitCount,
+        data.age,
+        data.ageUnit,
+        data.ageCategory,
+        data.personalNumber,
+        data.familyOrRelativeNumber,
+        data.economicStatusId,
+        data.educationStatusId,
+        data.maritalStatusId,
+        data.occupationStatusId,
+        data.serviceProvidedId,
+        data.pregnancyStatus,
+        data.benTypeId,
+        data.noOfFamilyNumbers,
+        data.isHandicaped,
+        data.provisonalDiagnosis,
+        data.impClinicalFindings,
+        data.userId,
+        data.userId,
+        this.status.active
+      ])
+      .then(res => {
+        console.log(
+          "database - insertVisit() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - insertVisit() - Error -> " + JSON.stringify(error)
         );
         return false;
       });

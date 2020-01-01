@@ -49,6 +49,8 @@ export class BeneficiaryRegistrationPage implements OnInit {
   randomPatientId: string =
     "SP0002000002B000" + Math.floor(Math.random() * (599 - 500) + 500);
 
+  visitId: string = this.randomPatientId + "V000001";
+
   constructor(
     private db: DatabaseService,
     private router: Router,
@@ -164,7 +166,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -179,7 +181,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getCastes() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -194,7 +196,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getReligions() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -212,7 +214,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -229,7 +231,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeCategories() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -351,28 +353,26 @@ export class BeneficiaryRegistrationPage implements OnInit {
       if (diffDays < 30) {
         ageWillBe = diffDays;
         ageUnitWillBe = 1;
-        this.ageUnits[2]['isSelected'] = false;
-        this.ageUnits[1]['isSelected'] = false;
-        this.ageUnits[0]['isSelected'] = true;
+        this.ageUnits[2]["isSelected"] = false;
+        this.ageUnits[1]["isSelected"] = false;
+        this.ageUnits[0]["isSelected"] = true;
       } else if (diffDays < 365) {
         ageWillBe = Math.floor(diffDays / 30);
         ageUnitWillBe = 2;
-        this.ageUnits[2]['isSelected'] = false;
-        this.ageUnits[0]['isSelected'] = false;
-        this.ageUnits[1]['isSelected'] = true;
+        this.ageUnits[2]["isSelected"] = false;
+        this.ageUnits[0]["isSelected"] = false;
+        this.ageUnits[1]["isSelected"] = true;
       } else {
         ageWillBe = Math.floor(diffDays / 365);
         ageUnitWillBe = 3;
-        this.ageUnits[0]['isSelected'] = false;
-        this.ageUnits[1]['isSelected'] = false;
-        this.ageUnits[2]['isSelected'] = true;
+        this.ageUnits[0]["isSelected"] = false;
+        this.ageUnits[1]["isSelected"] = false;
+        this.ageUnits[2]["isSelected"] = true;
       }
 
       this.benRegForm.patchValue({ ageUnit: ageUnitWillBe, age: ageWillBe });
       console.log("asigning year to ageUnit & age here ");
-      console.log(
-        "ageUnit was set and value is " + ageUnitWillBe
-      );
+      console.log("ageUnit was set and value is " + ageUnitWillBe);
       this.selectAgeCategory(ageWillBe, ageUnitWillBe, selectedGender);
     }
   }
@@ -409,21 +409,20 @@ export class BeneficiaryRegistrationPage implements OnInit {
     }
   }
 
-
   resetValues() {
     this.benRegForm.patchValue({
-      benificiaryName: '',
-      surname: '',
-      gender: '',
-      dateOfBirth: '',
-      age: '',
-      ageUnit: '',
-      ageCategory: '',
-      personalNumber: '',
-      familyOrRelativeNumber: '',
-      caste: '',
-      religion: '',
-      numberOfFamilyMembers: ''
+      benificiaryName: "",
+      surname: "",
+      gender: "",
+      dateOfBirth: "",
+      age: "",
+      ageUnit: "",
+      ageCategory: "",
+      personalNumber: "",
+      familyOrRelativeNumber: "",
+      caste: "",
+      religion: "",
+      numberOfFamilyMembers: ""
     });
 
     this.isPhotoCaptured = false;
@@ -441,6 +440,8 @@ export class BeneficiaryRegistrationPage implements OnInit {
   onSubmit(values) {
     // let patientId = "SP0002000010B000500";
     let patientId = this.randomPatientId;
+    let visitId = this.visitId;
+    let visitCount = 1;
     let deviceId = this.deviceId;
     let vanId = this.vanId;
     let routeVillageId = this.villageId;
@@ -459,20 +460,35 @@ export class BeneficiaryRegistrationPage implements OnInit {
     let ageUnit = this.benRegForm.get("ageUnit").value.trim();
     let ageCategory = this.benRegForm.get("ageCategory").value.trim();
     let personalNumber = this.benRegForm.get("personalNumber").value.trim();
-    let familyOrRelativeNumber = this.benRegForm.get("familyOrRelativeNumber").value.trim();
+    let familyOrRelativeNumber = this.benRegForm
+      .get("familyOrRelativeNumber")
+      .value.trim();
     let communityId = this.benRegForm.get("caste").value.trim();
     let religionId = this.benRegForm.get("religion").value.trim();
-    let numberOfFamilyMembers = this.benRegForm.get("numberOfFamilyMembers").value.trim();
+    let noOfFamilyNumbers = this.benRegForm
+      .get("numberOfFamilyMembers")
+      .value.trim();
     let userId = this.userId;
 
-    let isBpl = this.isBpl;
-    let isHandicapped = this.isHandicapped;
+    let isBpl = this.isBpl ? 1 : 0;
+    let isHandicapped = this.isHandicapped ? 1 : 0;
 
     let stateId = this.stateId;
     let districtId = this.districtId;
     let mandalId = this.mandalId;
     let villageId = this.villageId;
     let imageUrl = this.benPhoto;
+
+    // Visit tabe related data
+    let economicStatusId = 0;
+    let educationStatusId = -1;
+    let maritalStatusId = -1;
+    let occupationStatusId = -1;
+    let serviceProvidedId = -1;
+    let pregnancyStatus = 0;
+    let benTypeId = 0;
+    let provisonalDiagnosis = "N/A";
+    let impClinicalFindings = "N/A";
 
     let benRegFormDetails = {
       patientId,
@@ -500,9 +516,37 @@ export class BeneficiaryRegistrationPage implements OnInit {
       userId
     };
 
+    let visitDetails = {
+      patientId,
+      visitId,
+      deviceId,
+      vanId,
+      routeVillageId,
+      servicePointId,
+      compoundPatientId,
+      visitCount,
+      age,
+      ageUnit,
+      ageCategory,
+      personalNumber,
+      familyOrRelativeNumber,
+      economicStatusId,
+      educationStatusId,
+      maritalStatusId,
+      occupationStatusId,
+      serviceProvidedId,
+      pregnancyStatus,
+      benTypeId,
+      noOfFamilyNumbers,
+      isHandicapped,
+      provisonalDiagnosis,
+      impClinicalFindings,
+      userId
+    };
+
     console.log(
       "Object which is gonna be sent to Database service file -> " +
-      JSON.stringify(benRegFormDetails)
+        JSON.stringify(benRegFormDetails)
     );
 
     console.log("Ben Registration form is submitted, below are the values");
@@ -549,7 +593,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       alert("Please Select Religion");
       return false;
     }
-    if (!numberOfFamilyMembers || numberOfFamilyMembers == null) {
+    if (!noOfFamilyNumbers || noOfFamilyNumbers == null) {
       alert("Please Enter Number of Family Members");
       return false;
     }
@@ -557,7 +601,6 @@ export class BeneficiaryRegistrationPage implements OnInit {
       alert("Please Capture photo");
       return false;
     }
-
 
     this.db
       .registerBeneficiary(benRegFormDetails)
