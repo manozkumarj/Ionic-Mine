@@ -604,11 +604,34 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
     this.db
       .registerBeneficiary(benRegFormDetails)
-      .then(res => {
+      .then(async res => {
         console.log(
           "Beneficiary registered successfully...!" + JSON.stringify(res)
         );
-        this.router.navigate(["/vitals"]);
+        let status = await res;
+        // insertVisit functionality - starts
+        if (status) {
+          this.db
+            .insertVisit(visitDetails)
+            .then(res => {
+              console.log(
+                "Beneficiary Visit details inserted successfully...!" +
+                  JSON.stringify(res)
+              );
+              this.router.navigate(["/vitals"]);
+            })
+            .then(error => {
+              console.error(
+                "Error -> Beneficiary Visit details insertion failed - " +
+                  JSON.stringify(error)
+              );
+            });
+        } else {
+          console.log(
+            "insertVisit() function not triggered... :(" + JSON.stringify(res)
+          );
+        }
+        // insertVisit functionality - ends
       })
       .then(error => {
         console.error(
