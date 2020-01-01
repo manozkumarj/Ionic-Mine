@@ -23,6 +23,43 @@
       <ion-card-title>Welcome to Ionic</ion-card-title>
     </ion-card-header>
     <ion-card-content>
+      <ion-list *ngIf="(userId > 0); else noUsersDetails">
+        <ion-item detail>
+          --> userId -> {{userId}}
+        </ion-item>
+        <ion-item detail>
+          --> vanId -> {{vanId}}
+        </ion-item>
+      </ion-list>
+
+      <ng-template #noUsersDetails>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title> User details were not set </ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ng-template>
+
+      
+      <ion-list *ngIf="(stateId > 0); else noSessionDetails">
+        <ion-item detail>
+          --> stateId -> {{stateId}}
+        </ion-item>
+        <ion-item detail>
+          --> servicePointName -> {{servicePointName}}
+        </ion-item>
+      </ion-list>
+
+      <ng-template #noSessionDetails>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title> Session details were not set </ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ng-template>
+
+
+    <ion-card-content>
       <ion-list *ngIf="(adminUsers.length > 0); else noUsers">
         <ion-item *ngFor="let user of adminUsers" detail>
           --> {{user.username}} - {{user.password}}
@@ -37,9 +74,10 @@
         </ion-card>
       </ng-template>
 
+
       <ion-list *ngIf="(beneficiaries.length > 0); else noBeneficiaries">
         <ion-item *ngFor="let beneficiary of beneficiaries" detail>
-          --> {{beneficiary.beneficiaryname}} - {{beneficiary.password}}
+          --> {{beneficiary.patientId}} - {{beneficiary.name}}
         </ion-item>
       </ion-list>
 
@@ -50,28 +88,22 @@
           </ion-card-header>
         </ion-card>
       </ng-template>
+
+
+      <ion-list *ngIf="(visits.length > 0); else noVisits">
+        <ion-item *ngFor="let visit of visits" detail>
+          --> {{visit.patientId}} - {{visit.visitId}}
+        </ion-item>
+      </ion-list>
+
+      <ng-template #noVisits>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title> There are no visits </ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ng-template>
+      
     </ion-card-content>
   </ion-card>
-
-  <!-- <ion-list lines="none">
-    <ion-list-header>
-      <ion-label>Resources</ion-label>
-    </ion-list-header>
-    <ion-item href="https://ionicframework.com/docs/">
-      <ion-icon slot="start" color="medium" name="book"></ion-icon>
-      <ion-label>Ionic Documentation</ion-label>
-    </ion-item>
-    <ion-item href="https://ionicframework.com/docs/building/scaffolding">
-      <ion-icon slot="start" color="medium" name="build"></ion-icon>
-      <ion-label>Scaffold Out Your App</ion-label>
-    </ion-item>
-    <ion-item href="https://ionicframework.com/docs/layout/structure">
-      <ion-icon slot="start" color="medium" name="grid"></ion-icon>
-      <ion-label>Change Your App Layout</ion-label>
-    </ion-item>
-    <ion-item href="https://ionicframework.com/docs/theming/basics">
-      <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
-      <ion-label>Theme Your App</ion-label>
-    </ion-item>
-  </ion-list> -->
 </ion-content>

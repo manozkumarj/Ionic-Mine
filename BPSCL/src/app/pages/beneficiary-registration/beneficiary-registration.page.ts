@@ -59,7 +59,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
     public constants: ConstantsService
   ) {
     this.loadUserDetails();
-    this.loadServicePointName();
+    this.loadSessionDetails();
 
     this.benRegForm = new FormGroup({
       benificiaryName: new FormControl("", Validators.required),
@@ -98,7 +98,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       });
   }
 
-  loadServicePointName() {
+  loadSessionDetails() {
     this.storageService
       .getObject("sessionDetails")
       .then(data => {

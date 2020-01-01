@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from "@angular/core";
 import { DatabaseService } from "./../services/database.service";
+import { StorageService } from "./../services/storage.service";
 import { Platform } from "@ionic/angular";
 
 @Component({
@@ -12,9 +13,27 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   adminUsers: any[] = [];
   beneficiaries: any[] = [];
   visits: any[] = [];
-  constructor(private db: DatabaseService, private platform: Platform) {}
+
+  userId: number = 0;
+  vanId: number = 0;
+  deviceId: number = 0;
+
+  stateId: number = 0;
+  districtId: number = 0;
+  mandalId: number;
+  villageId: number;
+  servicePointId: number;
+  servicePointName: string;
+
+  constructor(
+    private db: DatabaseService,
+    private platform: Platform,
+    private storageService: StorageService
+  ) {}
 
   ngOnInit() {
+    this.loadUserDetails();
+    this.loadSessionDetails();
     this.loadUsers();
     this.loadBeneficiaries();
     this.loadVisits();
@@ -24,6 +43,39 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
       navigator["app"].exitApp();
     });
+  }
+
+  loadUserDetails() {
+    this.storageService
+      .getObject("userDetails")
+      .then(data => {
+        console.log("User details are -> " + JSON.stringify(data));
+        this.userId = data.userId;
+        this.vanId = data.vanId;
+        this.deviceId = data.deviceId;
+      })
+      .catch(error => {
+        console.error("User details were not set -> " + JSON.stringify(error));
+      });
+  }
+
+  loadSessionDetails() {
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("sessionDetails are  -> " + JSON.stringify(data));
+        this.stateId = data.stateId;
+        this.districtId = data.districtId;
+        this.mandalId = data.mandalId;
+        this.villageId = data.villageId;
+        this.servicePointId = data.servicePointId;
+        this.servicePointName = data.servicePointName;
+      })
+      .catch(error => {
+        console.error(
+          "sessionDetails were not set -> " + JSON.stringify(error)
+        );
+      });
   }
 
   loadUsers() {
