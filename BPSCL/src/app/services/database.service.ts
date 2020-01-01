@@ -29,7 +29,7 @@ export class DatabaseService {
   table_servicePointLog: string = "du_ServicePointLog";
   table_admins: string = "mv_VanDeviceApprove";
   table_beneficiaries: string = "dp_Registration";
-  table_visits: string = "du_Visit";
+  table_visits: string = "dp_Visit";
 
   stateId: number = 21;
   status = {
@@ -620,7 +620,7 @@ export class DatabaseService {
         data.pregnancyStatus,
         data.benTypeId,
         data.noOfFamilyNumbers,
-        data.isHandicaped,
+        data.isHandicapped,
         data.provisonalDiagnosis,
         data.impClinicalFindings,
         data.userId,

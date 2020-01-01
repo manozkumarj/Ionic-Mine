@@ -39,8 +39,9 @@
           </ion-card-header>
         </ion-card>
       </ng-template>
+    </ion-card-content>
 
-      
+    <ion-card-content>
       <ion-list *ngIf="(stateId > 0); else noSessionDetails">
         <ion-item detail>
           --> stateId -> {{stateId}}
@@ -57,7 +58,7 @@
           </ion-card-header>
         </ion-card>
       </ng-template>
-
+    </ion-card-content>
 
     <ion-card-content>
       <ion-list *ngIf="(adminUsers.length > 0); else noUsers">
@@ -73,8 +74,9 @@
           </ion-card-header>
         </ion-card>
       </ng-template>
+    </ion-card-content>
 
-
+    <ion-card-content>
       <ion-list *ngIf="(beneficiaries.length > 0); else noBeneficiaries">
         <ion-item *ngFor="let beneficiary of beneficiaries" detail>
           --> {{beneficiary.patientId}} - {{beneficiary.name}}
@@ -88,8 +90,9 @@
           </ion-card-header>
         </ion-card>
       </ng-template>
+    </ion-card-content>
 
-
+    <ion-card-content>
       <ion-list *ngIf="(visits.length > 0); else noVisits">
         <ion-item *ngFor="let visit of visits" detail>
           --> {{visit.patientId}} - {{visit.visitId}}
@@ -103,7 +106,6 @@
           </ion-card-header>
         </ion-card>
       </ng-template>
-      
     </ion-card-content>
   </ion-card>
 </ion-content>

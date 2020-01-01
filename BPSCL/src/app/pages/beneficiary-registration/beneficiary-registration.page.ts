@@ -407,6 +407,9 @@ export class BeneficiaryRegistrationPage implements OnInit {
         this.benRegForm.patchValue({ ageCategory: 10 });
       }
     }
+
+    let selectedAgeCategory = this.benRegForm.get("ageCategory").value;
+    console.log("Picked selectedAgeCategory -> " + selectedAgeCategory);
   }
 
   resetValues() {
@@ -470,8 +473,8 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .value.trim();
     let userId = this.userId;
 
-    let isBpl = this.isBpl ? 1 : 0;
-    let isHandicapped = this.isHandicapped ? 1 : 0;
+    let isBpl = this.isBpl ? 1 : 2;
+    let isHandicapped = this.isHandicapped ? 1 : 2;
 
     let stateId = this.stateId;
     let districtId = this.districtId;
@@ -618,7 +621,9 @@ export class BeneficiaryRegistrationPage implements OnInit {
                 "Beneficiary Visit details inserted successfully...!" +
                   JSON.stringify(res)
               );
-              this.router.navigate(["/vitals"]);
+              if (res) {
+                this.router.navigate(["/vitals"]);
+              }
             })
             .then(error => {
               console.error(
