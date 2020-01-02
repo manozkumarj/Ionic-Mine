@@ -109,6 +109,10 @@ export class EditStaffPage implements OnInit {
     let password = this.editStaffForm.get("password").value.trim();
     let confirmPassword = this.editStaffForm.get("confirmPassword").value.trim();
 
+    if (!userName || userName == null) {
+      alert("Please Select Username");
+      return false;
+    }
     if (!firstName || firstName == null) {
       alert("Enter First Name");
       return false;
@@ -155,10 +159,6 @@ export class EditStaffPage implements OnInit {
     }
     if (!roleId || roleId == null) {
       alert("Please Select Role");
-      return false;
-    }
-    if (!userName || userName == null) {
-      alert("Please Enter Username");
       return false;
     }
     if (!password || password == null) {

@@ -32,187 +32,194 @@
 
 <ion-content style="background-color: #e6e9f2;">
   <!-- Parent Grid - starts here -->
-  <ion-grid style="padding: 0px;">
-    <ion-row style="min-height: 640px;">
-      <ion-col size="12" size-sm>
-        <div>
-          <!-- left side Grid - starts here -->
-          <ion-grid style="padding: 0 3%;">
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Username
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+  <form [formGroup]="editStaffForm" (ngSubmit)="onSubmit(editStaffForm.value)" style="margin-bottom: 25px;">
+    <ion-grid style="padding: 0px;">
+      <ion-row style="min-height: 640px;">
+        <ion-col size="12" size-sm>
+          <div>
+            <!-- left side Grid - starts here -->
+            <ion-grid style="padding: 0 3%;">
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Username
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-select formControlName="userName" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                  <ion-select-option value="f">Female</ion-select-option>
-                  <ion-select-option value="m">Male</ion-select-option>
-                </ion-select>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                First Name
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Last Name
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Father Name
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Gender
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                    <ion-select-option value="f">Female</ion-select-option>
+                    <ion-select-option value="m">Male</ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  First Name
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="firstName" class="field-input" value=""></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Last Name
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="lastName" class="field-input" value=""></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Father Name
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="fatherName" class="field-input" value=""></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Gender
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-select formControlName="gender" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                  <ion-select-option value="f">Female</ion-select-option>
-                  <ion-select-option value="m">Male</ion-select-option>
-                </ion-select>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Age
-              </ion-col>
-              <ion-col style="padding: 0;" size="12" size-sm>
-                <ion-grid style="padding: 0; margin: 0;">
-                  <ion-row style="width: 95%;">
-                    <ion-col style="padding-left: 0;">
-                      <ion-input class="field-input" type="number" value="">
-                      </ion-input>
-                    </ion-col>
-                    <ion-col>
-                      <ion-select class="field-input" style="color: #000; 
-                      font-weight: bold; background: #3b4bad; 
+                    <ion-select-option value="f">Female</ion-select-option>
+                    <ion-select-option value="m">Male</ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Age
+                </ion-col>
+                <ion-col style="padding: 0;" size="12" size-sm>
+                  <ion-grid style="padding: 0; margin: 0;">
+                    <ion-row style="width: 95%;">
+                      <ion-col style="padding-left: 0;">
+                        <ion-input formControlName="age" class="field-input" type="number" value="">
+                        </ion-input>
+                      </ion-col>
+                      <ion-col>
+                        <ion-select formControlName="ageType" class="field-input" style="color: #000;
+                         font-weight: bold; background: #3b4bad; 
                         background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                        <ion-select-option value="years">Years</ion-select-option>
-                        <ion-select-option value="months">Months</ion-select-option>
-                        <ion-select-option value="days">Days</ion-select-option>
-                      </ion-select>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Date of Birth
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Date Of Joining
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Present Address
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Phone Number
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Email
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Role
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                          <ion-select-option value="years">Years</ion-select-option>
+                          <ion-select-option value="months">Months</ion-select-option>
+                          <ion-select-option value="days">Days</ion-select-option>
+                        </ion-select>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Date of Birth
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="dob" class="field-input" value=""></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Date Of Joining
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="doj" class="field-input" value=""></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Present Address
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="address" class="field-input" value=""></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Phone Number
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="phone" class="field-input" value=""></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Email Address
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="email" class="field-input" value=""></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Role
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-select formControlName="roleId" class="field-input" style="color: #000; 
+                  font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                  <ion-select-option value="f">Female</ion-select-option>
-                  <ion-select-option value="m">Male</ion-select-option>
-                </ion-select>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Password
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col class="col-border-right" size="12" size-sm>
-                Confirm Password
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-input class="field-input" value=""></ion-input>
-              </ion-col>
-            </ion-row>
-            <ion-row class="row-border row-height-45">
-              <ion-col size="12" size-sm>
-                <ion-button style="width: 90%; font-weight: bold;" type="submit" color="primary">Submit</ion-button>
-              </ion-col>
-              <ion-col size="12" size-sm>
-                <ion-button style="width: 90%; font-weight: bold;" type="reset" color="primary">Reset</ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-          <!-- left side Grid - starts here -->
-        </div>
-      </ion-col>
-      <ion-col size="4" style="border-left: 4px solid #3b4bad;">
-        <div>
-          <ion-grid class="site-color" style="padding: 0 3%;">
-            <ion-row style="height: 162px; text-align: center;">
-              <ion-col size="12" size-sm>
-                <div>
-                  <img src="assets/profile_pic.jpg" alt="user-avatar" width="150px" />
-                </div>
-              </ion-col>
-            </ion-row>
-            <ion-row style="text-align: center;">
-              <ion-col size="12" size-sm>
-                <div>
-                  <ion-button style="width: 90%; font-weight: bold;" type="submit" color="primary">Take a Photo
-                  </ion-button>
-                </div>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+                    <ion-select-option value="f">Female</ion-select-option>
+                    <ion-select-option value="m">Male</ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Password
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="password" class="field-input" value=""></ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col class="col-border-right" size="12" size-sm>
+                  Confirm Password
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="confirmPassword" class="field-input" value="">
+                  </ion-input>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45">
+                <ion-col size="12" size-sm>
+                  <ion-button style="width: 90%; font-weight: bold;" type="submit" color="primary">Submit</ion-button>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-button (click)="resetValues()" style="width: 90%; font-weight: bold;" type="button"
+                    color="primary">Reset</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <!-- left side Grid - starts here -->
+          </div>
+        </ion-col>
+        <ion-col size="4" style="border-left: 4px solid #3b4bad;">
+          <div>
+            <ion-grid class="site-color" style="padding: 0 3%;">
+              <ion-row style="height: 162px; text-align: center;">
+                <ion-col size="12" size-sm>
+                  <div>
+                    <img [src]="benPhoto" alt="user-avatar" width="150px" />
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row style="text-align: center;">
+                <ion-col size="12" size-sm>
+                  <div>
+                    <ion-button (click)="takeSnap()" style="width: 90%; font-weight: bold;" type="button"
+                      color="primary">
+                      Take a Photo
+                    </ion-button>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
   <!-- Parent Grid - ends here -->
   <app-footer> </app-footer>
 </ion-content>
