@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { IonicModule } from "@ionic/angular";
 
@@ -15,9 +15,10 @@ import { ExporterModule } from "./../../modules/exporter.module";
     FormsModule,
     IonicModule,
     VitalsPageRoutingModule,
-    ExporterModule
+    ExporterModule,
+    ReactiveFormsModule
   ],
   declarations: [VitalsPage],
   exports: []
 })
-export class VitalsPageModule {}
+export class VitalsPageModule { }

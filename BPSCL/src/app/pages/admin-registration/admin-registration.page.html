@@ -17,11 +17,7 @@
 
 <ion-content style="background-color: #e6e9f2;">
   <!-- Parent Grid - starts here -->
-  <form
-    [formGroup]="adminRegForm"
-    (ngSubmit)="onSubmit(adminRegForm.value)"
-    style="margin-bottom: 25px;"
-  >
+  <form [formGroup]="adminRegForm" (ngSubmit)="onSubmit(adminRegForm.value)" style="margin-bottom: 25px;">
     <ion-grid style="padding: 0px;">
       <ion-row style=" min-height: 640px;">
         <ion-col>
@@ -33,18 +29,9 @@
                   State
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select
-                    formControlName="stateId"
-                    (ionChange)="stateChanged()"
-                    class="field-input"
-                    style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)"
-                    placeholder="Select"
-                  >
-                    <ion-select-option
-                      *ngFor="let state of states"
-                      value="{{state.stateId}}"
-                      >{{state.stateName}}
+                  <ion-select formControlName="stateId" (ionChange)="stateChanged()" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                    <ion-select-option *ngFor="let state of states" value="{{state.stateId}}">{{state.stateName}}
                     </ion-select-option>
                   </ion-select>
                 </ion-col>
@@ -54,18 +41,10 @@
                   District
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select
-                    formControlName="districtId"
-                    (ionChange)="districtChanged()"
-                    class="field-input"
-                    style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)"
-                    placeholder="Select"
-                  >
-                    <ion-select-option
-                      *ngFor="let district of districts"
-                      value="{{district.districtId}}"
-                      >{{district.districtName}}
+                  <ion-select formControlName="districtId" (ionChange)="districtChanged()" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                    <ion-select-option *ngFor="let district of districts" value="{{district.districtId}}">
+                      {{district.districtName}}
                     </ion-select-option>
                   </ion-select>
                 </ion-col>
@@ -75,18 +54,9 @@
                   Mandal
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select
-                    formControlName="mandalId"
-                    (ionChange)="mandalChanged()"
-                    class="field-input"
-                    style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)"
-                    placeholder="Select"
-                  >
-                    <ion-select-option
-                      *ngFor="let mandal of mandals"
-                      value="{{mandal.mandalId}}"
-                      >{{mandal.mandalName}}
+                  <ion-select formControlName="mandalId" (ionChange)="mandalChanged()" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                    <ion-select-option *ngFor="let mandal of mandals" value="{{mandal.mandalId}}">{{mandal.mandalName}}
                     </ion-select-option>
                   </ion-select>
                 </ion-col>
@@ -96,17 +66,10 @@
                   Village
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select
-                    formControlName="villageId"
-                    class="field-input"
-                    style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)"
-                    placeholder="Select"
-                  >
-                    <ion-select-option
-                      *ngFor="let village of villages"
-                      value="{{village.villageId}}"
-                      >{{village.villageName}}
+                  <ion-select formControlName="villageId" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                    <ion-select-option *ngFor="let village of villages" value="{{village.villageId}}">
+                      {{village.villageName}}
                     </ion-select-option>
                   </ion-select>
                 </ion-col>
@@ -116,12 +79,8 @@
                   Vehicle Registration Number
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input
-                    formControlName="vehicleRegistrationNumber"
-                    class="field-input"
-                    placeholder="Vehicle Registration Number"
-                    value=""
-                  ></ion-input>
+                  <ion-input formControlName="vehicleRegistrationNumber" class="field-input"
+                    placeholder="Vehicle Registration Number" value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -129,12 +88,8 @@
                   Parking place
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input
-                    formControlName="parkingPlace"
-                    class="field-input"
-                    placeholder="Parking place"
-                    value=""
-                  ></ion-input>
+                  <ion-input formControlName="parkingPlace" class="field-input" placeholder="Parking place" value="">
+                  </ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -142,12 +97,7 @@
                   Username
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input
-                    formControlName="username"
-                    class="field-input"
-                    placeholder="Username"
-                    value=""
-                  ></ion-input>
+                  <ion-input formControlName="username" class="field-input" placeholder="Username" value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -155,12 +105,8 @@
                   IMEI Number
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input
-                    formControlName="imeiNo"
-                    class="field-input"
-                    placeholder="IMEI Number"
-                    value=""
-                  ></ion-input>
+                  <ion-input formControlName="imeiNo" class="field-input" placeholder="IMEI Number" value="">
+                  </ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -168,12 +114,8 @@
                   GCM Token
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input
-                    formControlName="gcmToken"
-                    class="field-input"
-                    placeholder="GCM Token"
-                    value=""
-                  ></ion-input>
+                  <ion-input formControlName="gcmToken" class="field-input" placeholder="GCM Token" value="">
+                  </ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -181,36 +123,22 @@
                   Password
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input
-                    formControlName="password"
-                    class="field-input"
-                    placeholder="Password"
-                    value=""
-                  ></ion-input>
+                  <ion-input formControlName="password" class="field-input" placeholder="Password" value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
-                <ion-col class="col-border-right" size="12" size-sm>
+                <ion-col size="12" size-sm>
                   Confirm Password
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input
-                    formControlName="confirmPassword"
-                    class="field-input"
-                    placeholder="Confirm Password"
-                    value=""
-                  ></ion-input>
+                  <ion-input formControlName="confirmPassword" class="field-input" placeholder="Confirm Password"
+                    value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
                 <ion-col class="col-border-right" size="12" size-sm>
-                  <ion-button
-                    [disabled]="!adminRegForm.valid"
-                    style="width: 95%; font-weight: bold;"
-                    type="submit"
-                    color="primary"
-                    >Save</ion-button
-                  >
+                  <ion-button [disabled]="!adminRegForm.valid" style="width: 95%; font-weight: bold;" type="submit"
+                    color="primary">Save</ion-button>
                 </ion-col>
               </ion-row>
             </ion-grid>

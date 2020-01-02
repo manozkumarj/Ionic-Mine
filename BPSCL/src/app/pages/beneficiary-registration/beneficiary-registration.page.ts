@@ -547,6 +547,9 @@ export class BeneficiaryRegistrationPage implements OnInit {
       userId
     };
 
+    console.log("Ben Registration form is submitted, below are the values");
+    console.log(values);
+
     console.log(
       "Object of benRegFormDetails -> " +
       JSON.stringify(benRegFormDetails)
@@ -557,8 +560,6 @@ export class BeneficiaryRegistrationPage implements OnInit {
       JSON.stringify(visitDetails)
     );
 
-    console.log("Ben Registration form is submitted, below are the values");
-    console.log(values);
     console.log("Ben patientId -> " + patientId);
 
     if (!name || name == null) {
