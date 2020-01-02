@@ -459,13 +459,14 @@ export class DatabaseService {
   }
 
   getVisits() {
-    let sql = `SELECT patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, visitDate, age, ageTypeId, ageGroupId, contactNo, familyContactNo, economicStatusId, educationStatusId, maritalStatusId, noOfFamilyNumbers, isHandicaped FROM ${this.table_visits}`;
+    let sql = `SELECT patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, visitDate, age, ageTypeId, ageGroupId, contactNo, familyContactNo, economicStatusId, educationStatusId, maritalStatusId, noOfFamilyNumbers, isHandicaped FROM ${this.table_visits}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let visits = [];
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
           visits.push({
             patientId: data.rows.item(i).patientId,
+            visitId: data.rows.item(i).visitId,
             deviceId: data.rows.item(i).deviceId,
             vanId: data.rows.item(i).vanId,
             routeVillageId: data.rows.item(i).routeVillageId,

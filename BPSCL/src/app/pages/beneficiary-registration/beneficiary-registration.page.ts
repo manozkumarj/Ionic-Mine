@@ -166,7 +166,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -181,7 +181,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getCastes() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -196,7 +196,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getReligions() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -214,7 +214,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -231,7 +231,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeCategories() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -548,8 +548,13 @@ export class BeneficiaryRegistrationPage implements OnInit {
     };
 
     console.log(
-      "Object which is gonna be sent to Database service file -> " +
-        JSON.stringify(benRegFormDetails)
+      "Object of benRegFormDetails -> " +
+      JSON.stringify(benRegFormDetails)
+    );
+
+    console.log(
+      "Object of visitDetails -> " +
+      JSON.stringify(visitDetails)
     );
 
     console.log("Ben Registration form is submitted, below are the values");
@@ -619,7 +624,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
             .then(res => {
               console.log(
                 "Beneficiary Visit details inserted successfully...!" +
-                  JSON.stringify(res)
+                JSON.stringify(res)
               );
               if (res) {
                 this.router.navigate(["/vitals"]);
@@ -628,7 +633,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
             .then(error => {
               console.error(
                 "Error -> Beneficiary Visit details insertion failed - " +
-                  JSON.stringify(error)
+                JSON.stringify(error)
               );
             });
         } else {
