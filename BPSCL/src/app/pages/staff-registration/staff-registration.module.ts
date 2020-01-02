@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 import { IonicModule } from "@ionic/angular";
 
@@ -15,8 +15,9 @@ import { ExporterModule } from "./../../modules/exporter.module";
     FormsModule,
     IonicModule,
     StaffRegistrationPageRoutingModule,
-    ExporterModule
+    ExporterModule,
+    ReactiveFormsModule
   ],
   declarations: [StaffRegistrationPage]
 })
-export class StaffRegistrationPageModule {}
+export class StaffRegistrationPageModule { }
