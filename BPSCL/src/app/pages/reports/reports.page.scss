@@ -1,26 +1,22 @@
-.container {
-    width: 100%;
-    background-color: #CCC;
-    overflow: hidden; 
-    white-space: nowrap;
-    ::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .scroll {
-      padding: 20px;
-    overflow: auto;
-  }
-  .scroll > ion-col {
-      padding: 20px;
-      border-right: 1px solid red;
-  }
+.forecast_container {
+  overflow-x: visible !important;
+  overflow-y: hidden;
+  word-wrap: break-word;
+}
 
-  .forecast_container{
-    overflow-x: visible!important;
-    overflow-y: hidden;
-    word-wrap: break-word;
-    padding: 20px;
-    font-size:0.8em;
-    font-weight:300;
+.header > ion-col {
+  min-width: 250px !important;
+  background: #4d4d4d !important;
+  color: #fff;
+  padding: 10px 15px;
+  font-size: 18px;
+  font-weight: 300;
+  text-align: center;
+}
+
+.data > ion-col {
+  min-width: 250px !important;
+  padding: 10px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
 }

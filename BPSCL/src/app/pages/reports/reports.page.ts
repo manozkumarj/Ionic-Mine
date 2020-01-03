@@ -1,72 +1,67 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { StorageService } from "./../../services/storage.service";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-reports',
-  templateUrl: './reports.page.html',
-  styleUrls: ['./reports.page.scss'],
+  selector: "app-reports",
+  templateUrl: "./reports.page.html",
+  styleUrls: ["./reports.page.scss"]
 })
 export class ReportsPage implements OnInit {
-
   reportsForm: FormGroup;
 
-  items: any[] = ['one', 'two', 'three', 'four', 'six', 'seven', 'eight', 'nine', 'ten'];
+  items: any[] = [
+    "one",
+    "two",
+    "three",
+    "four",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten"
+  ];
 
   beneficiaries: any[] = [
     {
-      patientId: 'SP0002000002B00TEST',
+      patientId: "SP000200TEST"
     },
     {
-      patientId: 'SP0002000002B00TEST',
+      patientId: "SP000200TEST"
     },
     {
-      patientId: 'SP0002000002B00TEST',
+      patientId: "SP000200TEST"
     },
     {
-      patientId: 'SP0002000002B00TEST',
+      patientId: "SP000200TEST"
     },
     {
-      patientId: 'SP0002000002B00TEST',
+      patientId: "SP000200TEST"
     },
     {
-      patientId: 'SP0002000002B00TEST',
+      patientId: "SP000200TEST"
     },
     {
-      patientId: 'SP0002000002B00TEST',
+      patientId: "SP000200TEST"
     },
     {
-      patientId: 'SP0002000002B00TEST',
+      patientId: "SP000200TEST"
     },
     {
-      patientId: 'SP0002000002B00TEST',
+      patientId: "SP000200TEST"
     },
     {
-      patientId: 'SP0002000002B00TEST',
-    },
-    {
-      patientId: 'SP0002000002B00TEST',
-    },
-    {
-      patientId: 'SP0002000002B00TEST',
-    },
-    {
-      patientId: 'SP0002000002B00TEST',
-    },
-    {
-      patientId: 'SP0002000002B00TEST',
-    },
-    {
-      patientId: 'SP0002000002B00TEST',
+      patientId: "SP000200TEST"
     }
   ];
 
   constructor(
     private db: DatabaseService,
     private router: Router,
-    private storageService: StorageService) {
+    private storageService: StorageService
+  ) {
     this.reportsForm = new FormGroup({
       report: new FormControl("", Validators.required),
       fromDate: new FormControl("", Validators.required),
@@ -74,8 +69,7 @@ export class ReportsPage implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onSubmit(values, csv = false) {
     console.log("Reports form is submitted, below are the values");
@@ -104,7 +98,5 @@ export class ReportsPage implements OnInit {
     } else {
       alert("Show details");
     }
-
   }
-
 }
