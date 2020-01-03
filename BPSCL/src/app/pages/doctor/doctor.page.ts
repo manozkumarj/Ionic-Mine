@@ -109,6 +109,8 @@ export class DoctorPage implements OnInit {
       }
     }
 
+    alert("Form can be submitted");
+
   }
 
 }

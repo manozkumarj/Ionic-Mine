@@ -103,7 +103,7 @@ export class MedicineDispensePage implements OnInit {
       console.log("Error are below");
       console.log(getErrors);
       if (getErrors.length > 0) {
-        alert("Please Enter quantity for checked Consumable Dispenses");
+        alert("Please Enter quantity for checked Medicine Dispenses");
         return false;
       }
     } else {

@@ -54,13 +54,13 @@ export class AppComponent {
       icon: "list"
     },
     {
-      title: "Consumable Dispense",
-      url: "/consumable-dispense",
+      title: "Medicine Dispense",
+      url: "/medicine-dispense",
       icon: "list"
     },
     {
-      title: "Medicine Dispense",
-      url: "/medicine-dispense",
+      title: "Consumable Dispense",
+      url: "/consumable-dispense",
       icon: "list"
     },
     {
@@ -79,10 +79,20 @@ export class AppComponent {
       icon: "list"
     },
     {
-      title: "Care Provided",
-      url: "/care-provided",
+      title: "Staff Attendance",
+      url: "/staff-attendance",
       icon: "list"
     },
+    {
+      title: "Other Options",
+      url: "/reports",
+      icon: "list"
+    },
+    // {
+    //   title: "Care Provided",
+    //   url: "/care-provided",
+    //   icon: "list"
+    // },
   ];
 
   constructor(
