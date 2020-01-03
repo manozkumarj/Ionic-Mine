@@ -67,6 +67,10 @@ const routes: Routes = [
   {
     path: 'consumable-dispense',
     loadChildren: () => import('./pages/consumable-dispense/consumable-dispense.module').then( m => m.ConsumableDispensePageModule)
+  },
+  {
+    path: 'medicine-dispense',
+    loadChildren: () => import('./pages/medicine-dispense/medicine-dispense.module').then( m => m.MedicineDispensePageModule)
   }
 
 ];

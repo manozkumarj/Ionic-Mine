@@ -59,6 +59,11 @@ export class AppComponent {
       icon: "list"
     },
     {
+      title: "Medicine Dispense",
+      url: "/medicine-dispense",
+      icon: "list"
+    },
+    {
       title: "Beneficiary History",
       url: "/beneficiary-history",
       icon: "list"
