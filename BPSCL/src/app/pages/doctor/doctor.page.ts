@@ -22,7 +22,7 @@ export class DoctorPage implements OnInit {
     this.loadBeneficiaries();
 
     this.doctorForm = new FormGroup({
-      benificiaryId: new FormControl("", Validators.required),
+      beneficiaryId: new FormControl("", Validators.required),
       rch: new FormControl("", Validators.required),
       cd: new FormControl("", Validators.required),
       ncd: new FormControl("", Validators.required),
@@ -53,7 +53,7 @@ export class DoctorPage implements OnInit {
 
   resetValues() {
     this.doctorForm.patchValue({
-      benificiaryId: '',
+      beneficiaryId: '',
       rch: '',
       cd: '',
       ncd: '',
@@ -68,7 +68,7 @@ export class DoctorPage implements OnInit {
     console.log("Doctor form is submitted, below are the values");
     console.log(values);
 
-    let benificiaryId = this.doctorForm.get("benificiaryId").value;
+    let beneficiaryId = this.doctorForm.get("beneficiaryId").value;
     let rch = this.doctorForm.get("rch").value.trim();
     let cd = this.doctorForm.get("cd").value.trim();
     let ncd = this.doctorForm.get("ncd").value.trim();
@@ -76,7 +76,7 @@ export class DoctorPage implements OnInit {
     let remarks = this.doctorForm.get("remarks").value.trim();
     let refferedTo = this.doctorForm.get("refferedTo").value;
 
-    if (!benificiaryId || benificiaryId <= 0) {
+    if (!beneficiaryId || beneficiaryId <= 0) {
       alert("Please Select Beneficiary ID");
       return false;
     }

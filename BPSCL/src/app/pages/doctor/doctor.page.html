@@ -32,11 +32,7 @@
 
 <ion-content style="background-color: #e6e9f2;">
   <!-- Parent Grid - starts here -->
-  <form
-    [formGroup]="doctorForm"
-    (ngSubmit)="onSubmit(doctorForm.value)"
-    style="margin-bottom: 25px;"
-  >
+  <form [formGroup]="doctorForm" (ngSubmit)="onSubmit(doctorForm.value)" style="margin-bottom: 25px;">
     <ion-grid style="padding: 0px;">
       <ion-row style="min-height: 670px;">
         <ion-col size="12" size-sm>
@@ -48,13 +44,8 @@
                   Beneficiary ID
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select
-                    formControlName="benificiaryId"
-                    class="field-input"
-                    style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)"
-                    placeholder="Select"
-                  >
+                  <ion-select formControlName="beneficiaryId" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
                     <ion-select-option value="f">Female</ion-select-option>
                     <ion-select-option value="m">Male</ion-select-option>
                   </ion-select>
@@ -65,13 +56,8 @@
                   RCH
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select
-                    formControlName="rch"
-                    class="field-input"
-                    style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)"
-                    placeholder="Select"
-                  >
+                  <ion-select formControlName="rch" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
                     <ion-select-option value="1">Female</ion-select-option>
                     <ion-select-option value="2">Male</ion-select-option>
                   </ion-select>
@@ -82,12 +68,7 @@
                   CD(Chronic Illness)
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input
-                    [disabled]="showRemarks"
-                    formControlName="cd"
-                    class="field-input"
-                    value=""
-                  ></ion-input>
+                  <ion-input [disabled]="showRemarks" formControlName="cd" class="field-input" value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -95,12 +76,7 @@
                   NCD(Nutritional Diseases)
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input
-                    [disabled]="showRemarks"
-                    formControlName="ncd"
-                    class="field-input"
-                    value=""
-                  ></ion-input>
+                  <ion-input [disabled]="showRemarks" formControlName="ncd" class="field-input" value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -108,29 +84,19 @@
                   Minor Ailments
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input
-                    [disabled]="showRemarks"
-                    formControlName="minorAilments"
-                    class="field-input"
-                    value=""
-                  >
+                  <ion-input [disabled]="showRemarks" formControlName="minorAilments" class="field-input" value="">
                   </ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border" style="height: 85px;">
                 <ion-col class="col-border-right" size="12" size-sm>
-                  <ion-checkbox
-                    (ionChange)="remarksCheckbox($event)"
-                  ></ion-checkbox>
+                  <ion-checkbox (ionChange)="remarksCheckbox($event)"></ion-checkbox>
                   Remarks
                 </ion-col>
                 <ion-col>
                   <div [ngClass]="{'hider' : !showRemarks}">
-                    <ion-textarea
-                      formControlName="remarks"
-                      class="field-input"
-                      placeholder="Enter more information here..."
-                    ></ion-textarea>
+                    <ion-textarea formControlName="remarks" class="field-input"
+                      placeholder="Enter more information here..."></ion-textarea>
                   </div>
                 </ion-col>
               </ion-row>
@@ -139,14 +105,8 @@
                   Reffered To
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select
-                    [disabled]="showRemarks"
-                    formControlName="refferedTo"
-                    class="field-input"
-                    style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)"
-                    placeholder="Select"
-                  >
+                  <ion-select [disabled]="showRemarks" formControlName="refferedTo" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
                     <ion-select-option value="1">Female</ion-select-option>
                     <ion-select-option value="2">Male</ion-select-option>
                   </ion-select>
@@ -154,29 +114,15 @@
               </ion-row>
               <ion-row class="row-border row-height-45">
                 <ion-col size="12" size-sm>
-                  <ion-button
-                    style="width: 90%; font-weight: bold;"
-                    type="submit"
-                    color="primary"
-                    >Submit</ion-button
-                  >
+                  <ion-button style="width: 90%; font-weight: bold;" type="submit" color="primary">Submit</ion-button>
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-button
-                    (click)="resetValues()"
-                    style="width: 90%; font-weight: bold;"
-                    type="button"
-                    color="primary"
-                    >Reset
+                  <ion-button (click)="resetValues()" style="width: 90%; font-weight: bold;" type="button"
+                    color="primary">Reset
                   </ion-button>
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-button
-                    style="width: 90%; font-weight: bold;"
-                    type="button"
-                    color="primary"
-                    >Skip</ion-button
-                  >
+                  <ion-button style="width: 90%; font-weight: bold;" type="button" color="primary">Skip</ion-button>
                 </ion-col>
               </ion-row>
             </ion-grid>
