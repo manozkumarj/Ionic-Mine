@@ -12,7 +12,7 @@
         </ion-col>
         <ion-col size="5" size="12" size-sm>
           <div>
-            Beneficiary Registration
+            Search Beneficiary
           </div>
         </ion-col>
         <ion-col size="12" size-sm>
@@ -31,45 +31,82 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="searchBenForm" (ngSubmit)="onSubmit(searchBenForm.value)" style="margin-bottom: 25px;">
+  <form
+    [formGroup]="searchBenForm"
+    (ngSubmit)="onSubmit(searchBenForm.value)"
+    style="margin-bottom: 25px;"
+  >
     <ion-grid style="padding: 0px;">
       <ion-row>
         <ion-col size="12" size-sm>
-          <ion-input placeholder="Beneficiary ID" class="field-input"></ion-input>
+          <ion-input
+            formControlName="beneficiaryId"
+            placeholder="Beneficiary ID"
+            class="field-input"
+          ></ion-input>
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-input placeholder="Name" class="field-input" value="">
+          <ion-input
+            formControlName="beneficiaryName"
+            placeholder="Name"
+            class="field-input"
+            value=""
+          >
           </ion-input>
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-input placeholder="Surname" class="field-input" value=""></ion-input>
+          <ion-input
+            formControlName="beneficiarySurname"
+            placeholder="Surname"
+            class="field-input"
+            value=""
+          ></ion-input>
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-input placeholder="Age" class="field-input" value=""></ion-input>
+          <ion-input
+            formControlName="beneficiaryAge"
+            placeholder="Age"
+            class="field-input"
+            value=""
+          ></ion-input>
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
-          background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-            <ion-select-option value="Male">Male
-            </ion-select-option>
+          <ion-select
+            formControlName="beneficiaryAgeUnit"
+            class="field-input"
+            style="color: #000; font-weight: bold; background: #3b4bad; 
+          background-image: linear-gradient(#3b4bad, #FFF)"
+            placeholder="Select"
+          >
+            <ion-select-option value="Male">Male </ion-select-option>
           </ion-select>
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-select class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
-          background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-            <ion-select-option value="Male">Male
-            </ion-select-option>
+          <ion-select
+            formControlName="beneficiaryGender"
+            class="field-input"
+            style="color: #000; font-weight: bold; background: #3b4bad; 
+          background-image: linear-gradient(#3b4bad, #FFF)"
+            placeholder="Select"
+          >
+            <ion-select-option value="Male">Male </ion-select-option>
           </ion-select>
         </ion-col>
         <ion-col class="col-border-right" size="12" size-sm>
-          <ion-button style="width: 90%; font-weight: bold; margin-top: -10px;" type="submit" color="primary">Submit
+          <ion-button
+            style="width: 90%; font-weight: bold; margin-top: -10px;"
+            type="submit"
+            color="primary"
+            >Submit
           </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
     <ion-grid>
-      <ion-row style="text-align: center; padding: 5px; background-color: #3b4bad;
-       color: #FFF;">
+      <ion-row
+        style="text-align: center; padding: 5px; background-color: #3b4bad;
+       color: #FFF;"
+      >
         <ion-col size="12" size-sm>
           <div>Image</div>
         </ion-col>
@@ -90,11 +127,18 @@
         </ion-col>
       </ion-row>
       <div *ngIf="(beneficiaries.length > 0); else noBens">
-        <ion-row *ngFor="let ben of beneficiaries" align-items-center justify-content-center style="text-align: center;
+        <ion-row
+          *ngFor="let ben of beneficiaries"
+          align-items-center
+          justify-content-center
+          style="text-align: center;
        color: #3b4bad; border: 2px solid #3b4bad;
-         margin-top: 3px;">
+         margin-top: 3px;"
+        >
           <ion-col size="12" size-sm>
-            <div><img [src]="ben.imageUrl" alt="user-avatar" width="60px" /></div>
+            <div>
+              <img [src]="ben.imageUrl" alt="user-avatar" width="60px" />
+            </div>
           </ion-col>
           <ion-col size="12" size-sm>
             <div>{{ben.patientId}}</div>
@@ -116,20 +160,22 @@
 
       <ng-template #noBens>
         <ion-grid>
-          <ion-row align-items-center justify-content-center style="padding: 50px; text-align: center;
+          <ion-row
+            align-items-center
+            justify-content-center
+            style="padding: 50px; text-align: center;
          color: #3b4bad; border: 2px solid #3b4bad;
-           margin-top: 3px;">
+           margin-top: 3px;"
+          >
             <ion-col>
               No Beneficiaries found.
             </ion-col>
           </ion-row>
         </ion-grid>
       </ng-template>
-
     </ion-grid>
   </form>
   <div style="margin-bottom: 640px;"></div>
-
 
   <app-footer> </app-footer>
 </ion-content>
