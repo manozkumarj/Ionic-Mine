@@ -46,6 +46,7 @@ export class VitalsPage implements OnInit {
 
   resetValues() {
     this.vitalForm.patchValue({
+      benificiaryId: "",
       height: "",
       weight: "",
       bmi: "",

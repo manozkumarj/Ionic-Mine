@@ -30,6 +30,8 @@ export class DatabaseService {
   table_admins: string = "mv_VanDeviceApprove";
   table_beneficiaries: string = "dp_Registration";
   table_visits: string = "dp_Visit";
+  table_dispenses: string = "mi_Item";
+  table_roles: string = "mu_Role";
 
   stateId: number = 21;
   status = {
@@ -399,12 +401,13 @@ export class DatabaseService {
   }
 
   getUsers() {
-    let sql = `SELECT userName, password FROM ${this.table_users}`;
+    let sql = `SELECT userId, userName, password FROM ${this.table_users}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let users = [];
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
           users.push({
+            userId: data.rows.item(i).userId,
             username: data.rows.item(i).userName,
             password: data.rows.item(i).password
           });
@@ -455,6 +458,53 @@ export class DatabaseService {
         }
       }
       return beneficiaries;
+    });
+  }
+
+  getBeneficiaryIds() {
+    let sql = `SELECT patientId FROM ${this.table_beneficiaries} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let beneficiaryIds = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          beneficiaryIds.push({
+            patientId: data.rows.item(i).patientId
+          });
+        }
+      }
+      return beneficiaryIds;
+    });
+  }
+
+  getDispenses(itemTypeId) {
+    let sql = `SELECT itemId, genericName FROM ${this.table_dispenses} WHERE itemType = ${itemTypeId} AND isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let dispenses = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          dispenses.push({
+            itemId: data.rows.item(i).itemId,
+            genericName: data.rows.item(i).genericName
+          });
+        }
+      }
+      return dispenses;
+    });
+  }
+
+  getRoles() {
+    let sql = `SELECT roleId, roleName FROM ${this.table_roles} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let roles = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          roles.push({
+            roleId: data.rows.item(i).roleId,
+            roleName: data.rows.item(i).roleName
+          });
+        }
+      }
+      return roles;
     });
   }
 
