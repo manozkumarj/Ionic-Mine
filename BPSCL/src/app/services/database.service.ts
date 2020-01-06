@@ -417,21 +417,41 @@ export class DatabaseService {
     });
   }
 
-  getBeneficiaryId(servicePointId) {
-    let sql = `SELECT max(patientId) as beneficiaryId FROM ${this.table_beneficiaries} where servicePointId = ${servicePointId}`;
+  getMaxBeneficiaryId(servicePointId) {
+    let sql = `SELECT max(patientId) as maxbeneficiaryId FROM ${this.table_beneficiaries} where servicePointId = ${servicePointId}`;
     console.log('Query is -> ' + sql);
     return this.dbObject.executeSql(sql, []).then(data => {
-      let beneficiaryId = [];
+      let maxbeneficiaryId = [];
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
-          beneficiaryId.push({
-            beneficiaryId: data.rows.item(i).beneficiaryId
+          maxbeneficiaryId.push({
+            maxbeneficiaryId: data.rows.item(i).maxbeneficiaryId
           });
         }
       } else {
         return null;
       }
-      return beneficiaryId;
+      return maxbeneficiaryId;
+    }).catch(e => {
+      return null;
+    });
+  }
+
+  getMaxVisitId(servicePointId) {
+    let sql = `SELECT max(visitId) as maxVisitId FROM ${this.table_visits} where servicePointId = ${servicePointId}`;
+    console.log('Query is -> ' + sql);
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let maxVisitId = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          maxVisitId.push({
+            maxVisitId: data.rows.item(i).maxVisitId
+          });
+        }
+      } else {
+        return null;
+      }
+      return maxVisitId;
     }).catch(e => {
       return null;
     });

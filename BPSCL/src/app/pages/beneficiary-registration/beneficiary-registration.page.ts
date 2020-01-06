@@ -113,7 +113,8 @@ export class BeneficiaryRegistrationPage implements OnInit {
         this.servicePointName = data.servicePointName;
         this.servicePointCode = data.servicePointCode;
 
-        this.getBeneficiaryId(this.servicePointId);
+        this.getMaxBeneficiaryId(this.servicePointId);
+        this.getMaxVisitId(this.servicePointId);
 
       })
       .catch(error => {
@@ -130,21 +131,21 @@ export class BeneficiaryRegistrationPage implements OnInit {
     return str;
   }
 
-  getBeneficiaryId(servicePointId) {
+  getMaxBeneficiaryId(servicePointId) {
     console.log("Sending servicePointId is -> " + servicePointId);
     this.db
-      .getBeneficiaryId(servicePointId)
-      .then(beneficiaryId => {
+      .getMaxBeneficiaryId(servicePointId)
+      .then(maxbeneficiaryId => {
         let id;
-        console.log("Fetched beneficiaryId -> " + JSON.stringify(beneficiaryId));
-        console.log(beneficiaryId);
-        let receivedData = beneficiaryId[0]['beneficiaryId'];
+        console.log("Fetched maxbeneficiaryId -> " + JSON.stringify(maxbeneficiaryId));
+        console.log(maxbeneficiaryId);
+        let receivedData = maxbeneficiaryId[0]['maxbeneficiaryId'];
 
         if (receivedData) {
           console.log("Inside if");
 
           if (receivedData.length > 0) {
-            let benId = beneficiaryId[0]['beneficiaryId'];
+            let benId = receivedData;
             if (benId != null && benId != "") {
               id = parseInt(benId.substring(benId.indexOf("B") + 1)) + 1;
             } else {
@@ -175,6 +176,61 @@ export class BeneficiaryRegistrationPage implements OnInit {
         this.randomPatientId = createBeneficiaryId;
 
         console.log("Random patient ID is set dynamically -> " + this.randomPatientId);
+
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getBeneficiaryId() function returned error." +
+          JSON.stringify(error)
+        );
+      });
+  }
+
+  getMaxVisitId(servicePointId) {
+    console.log("Sending servicePointId is -> " + servicePointId);
+    this.db
+      .getMaxVisitId(servicePointId)
+      .then(maxVisitId => {
+        let id;
+        console.log("Fetched maxVisitId -> " + JSON.stringify(maxVisitId));
+        console.log(maxVisitId);
+        let receivedData = maxVisitId[0]['maxVisitId'];
+
+        if (receivedData) {
+          console.log("Inside if");
+
+          if (receivedData.length > 0) {
+            let visitId = receivedData;
+            if (visitId != null && visitId != "") {
+              id = parseInt(visitId.substring(visitId.indexOf("V") + 1)) + 1;
+            } else {
+              id = 1;
+            }
+          } else {
+            id = 1;
+          }
+        } else {
+          console.log("Inside else");
+          id = 1;
+        }
+
+        id = id.toString();
+
+        let createVisitId = '';
+
+        if (id.length >= 6) {
+          console.log("Inside if 2");
+          createVisitId = this.servicePointCode + 'V' + id;
+        } else {
+          console.log("Inside else 2");
+          console.log("this.servicePointCode -> " + this.servicePointCode);
+          let addLeadingZeros = this.padFunction(id, "0", 6);
+          createVisitId = this.servicePointCode + 'V' + addLeadingZeros;
+        }
+
+        this.visitId = createVisitId;
+
+        console.log("Visit ID is set dynamically -> " + this.visitId);
 
       })
       .catch(error => {
