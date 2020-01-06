@@ -1,3 +1,4 @@
+import { LoginPageRoutingModule } from './../login/login-routing.module';
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
@@ -29,6 +30,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
   villageId: number;
   servicePointId: number;
   servicePointName: string;
+  servicePointCode: string;
 
   disablePersonalNumber: boolean = false;
   disableFamilyOrRelativeNumber: boolean = false;
@@ -109,10 +111,76 @@ export class BeneficiaryRegistrationPage implements OnInit {
         this.villageId = data.villageId;
         this.servicePointId = data.servicePointId;
         this.servicePointName = data.servicePointName;
+        this.servicePointCode = data.servicePointCode;
+
+        this.getBeneficiaryId(this.servicePointId);
+
       })
       .catch(error => {
         console.error(
           "sessionDetails were not set -> " + JSON.stringify(error)
+        );
+      });
+  }
+
+
+  padFunction = function (str, padStr, len) {
+    while (str.length < len)
+      str = padStr + str;
+    return str;
+  }
+
+  getBeneficiaryId(servicePointId) {
+    console.log("Sending servicePointId is -> " + servicePointId);
+    this.db
+      .getBeneficiaryId(servicePointId)
+      .then(beneficiaryId => {
+        let id;
+        console.log("Fetched beneficiaryId -> " + JSON.stringify(beneficiaryId));
+        console.log(beneficiaryId);
+        let receivedData = beneficiaryId[0]['beneficiaryId'];
+
+        if (receivedData) {
+          console.log("Inside if");
+
+          if (receivedData.length > 0) {
+            let benId = beneficiaryId[0]['beneficiaryId'];
+            if (benId != null && benId != "") {
+              id = parseInt(benId.substring(benId.indexOf("B") + 1)) + 1;
+            } else {
+              id = 1;
+            }
+          } else {
+            id = 1;
+          }
+        } else {
+          console.log("Inside else");
+          id = 1;
+        }
+
+        id = id.toString();
+
+        let createBeneficiaryId = '';
+
+        if (id.length >= 6) {
+          console.log("Inside if 2");
+          createBeneficiaryId = this.servicePointCode + 'B' + id;
+        } else {
+          console.log("Inside else 2");
+          console.log("this.servicePointCode -> " + this.servicePointCode);
+          let addLeadingZeros = this.padFunction(id, "0", 6);
+          createBeneficiaryId = this.servicePointCode + 'B' + addLeadingZeros;
+        }
+
+        this.randomPatientId = createBeneficiaryId;
+
+        console.log("Random patient ID is set dynamically -> " + this.randomPatientId);
+
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getBeneficiaryId() function returned error." +
+          JSON.stringify(error)
         );
       });
   }

@@ -417,6 +417,26 @@ export class DatabaseService {
     });
   }
 
+  getBeneficiaryId(servicePointId) {
+    let sql = `SELECT max(patientId) as beneficiaryId FROM ${this.table_beneficiaries} where servicePointId = ${servicePointId}`;
+    console.log('Query is -> ' + sql);
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let beneficiaryId = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          beneficiaryId.push({
+            beneficiaryId: data.rows.item(i).beneficiaryId
+          });
+        }
+      } else {
+        return null;
+      }
+      return beneficiaryId;
+    }).catch(e => {
+      return null;
+    });
+  }
+
   getBeneficiaries() {
     let sql = `SELECT patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, registrationDate, name, surname, genderId, dob, communityId, religionId, fatherName, spouseName, motherName, aadharNo, mctsId, villageId, mandalId, districtId, stateId, imageUrl, insertedBy, insertedDate, updatedBy, updatedDate, imageUploadStatus, uploadStatus FROM ${this.table_beneficiaries}`;
     return this.dbObject.executeSql(sql, []).then(data => {

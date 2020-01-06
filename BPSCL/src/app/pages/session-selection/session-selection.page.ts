@@ -18,6 +18,7 @@ export class SessionSelectionPage implements OnInit {
   villages: any[] = [];
   sessionTypeId: number;
   servicePointName: string;
+  servicePointCode: string;
   sessionPeriodId: number;
   sessionTypes: any[] = [];
 
@@ -234,6 +235,7 @@ export class SessionSelectionPage implements OnInit {
       i => (i.servicePointId = selectedServicePointId)
     );
     this.servicePointName = this.servicePoints[getIndex]["servicePointName"];
+    this.servicePointCode = this.servicePoints[getIndex]["servicePointCode"];
     console.log("Selected servicePoint index is --> " + getIndex);
     console.log("Storable servicePoint name is --> " + this.servicePointName);
 
@@ -244,7 +246,8 @@ export class SessionSelectionPage implements OnInit {
         mandalId: this.mandalId,
         villageId: this.villageId,
         servicePointId: selectedServicePointId,
-        servicePointName: this.servicePointName
+        servicePointName: this.servicePointName,
+        servicePointCode: this.servicePointCode
       })
       .then(result => {
         console.log("sessionDetails are saved in localstorage -->" + result);
