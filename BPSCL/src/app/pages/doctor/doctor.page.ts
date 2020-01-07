@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { StorageService } from "./../../services/storage.service";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-doctor',
-  templateUrl: './doctor.page.html',
-  styleUrls: ['./doctor.page.scss'],
+  selector: "app-doctor",
+  templateUrl: "./doctor.page.html",
+  styleUrls: ["./doctor.page.scss"]
 })
 export class DoctorPage implements OnInit {
   doctorForm: FormGroup;
@@ -18,8 +18,9 @@ export class DoctorPage implements OnInit {
   constructor(
     private db: DatabaseService,
     private router: Router,
-    private storageService: StorageService) {
-    this.loadBeneficiaries();
+    private storageService: StorageService
+  ) {
+    // this.loadBeneficiaries();
 
     this.doctorForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -32,37 +33,58 @@ export class DoctorPage implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   loadBeneficiaries() {
-
+    this.db
+      .getBeneficiaries()
+      .then(beneficiaries => {
+        console.log(
+          "Fetched beneficiaries -> " + JSON.stringify(beneficiaries)
+        );
+        this.benIds = beneficiaries;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getBeneficiaries() function returned error." +
+            JSON.stringify(error)
+        );
+      });
   }
 
   remarksCheckbox(e) {
     if (e.target.checked) {
       this.showRemarks = true;
-      this.doctorForm.patchValue({ cd: "N/A", ncd: "N/A", minorAilments: "N/A", refferedTo: -1 });
+      this.doctorForm.patchValue({
+        cd: "N/A",
+        ncd: "N/A",
+        minorAilments: "N/A",
+        refferedTo: -1
+      });
       console.log("remarksCheckbox is checked");
     } else {
       this.showRemarks = false;
-      this.doctorForm.patchValue({ cd: "", ncd: "", minorAilments: "", refferedTo: "" });
+      this.doctorForm.patchValue({
+        cd: "",
+        ncd: "",
+        minorAilments: "",
+        refferedTo: ""
+      });
       console.log("remarksCheckbox is unchecked");
     }
   }
 
   resetValues() {
     this.doctorForm.patchValue({
-      beneficiaryId: '',
-      rch: '',
-      cd: '',
-      ncd: '',
-      minorAilments: '',
-      remarks: '',
-      refferedTo: ''
+      beneficiaryId: "",
+      rch: "",
+      cd: "",
+      ncd: "",
+      minorAilments: "",
+      remarks: "",
+      refferedTo: ""
     });
   }
-
 
   onSubmit(values) {
     console.log("Doctor form is submitted, below are the values");
@@ -110,7 +132,5 @@ export class DoctorPage implements OnInit {
     }
 
     alert("Form can be submitted");
-
   }
-
 }

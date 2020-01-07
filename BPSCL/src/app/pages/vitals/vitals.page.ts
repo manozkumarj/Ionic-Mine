@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { StorageService } from "./../../services/storage.service";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-vitals',
-  templateUrl: './vitals.page.html',
-  styleUrls: ['./vitals.page.scss'],
+  selector: "app-vitals",
+  templateUrl: "./vitals.page.html",
+  styleUrls: ["./vitals.page.scss"]
 })
 export class VitalsPage implements OnInit {
   vitalForm: FormGroup;
@@ -21,8 +21,9 @@ export class VitalsPage implements OnInit {
   constructor(
     private db: DatabaseService,
     private router: Router,
-    private storageService: StorageService) {
-    this.loadBeneficiaries();
+    private storageService: StorageService
+  ) {
+    // this.loadBeneficiaries();
 
     this.vitalForm = new FormGroup({
       benificiaryId: new FormControl("", Validators.required),
@@ -33,15 +34,27 @@ export class VitalsPage implements OnInit {
       pulse: new FormControl("", Validators.required),
       bpSystolic: new FormControl("", Validators.required),
       bpDiastolic: new FormControl("", Validators.required),
-      respiratoryRate: new FormControl("", Validators.required),
+      respiratoryRate: new FormControl("", Validators.required)
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   loadBeneficiaries() {
-
+    this.db
+      .getBeneficiaries()
+      .then(beneficiaries => {
+        console.log(
+          "Fetched beneficiaries -> " + JSON.stringify(beneficiaries)
+        );
+        this.benIds = beneficiaries;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getBeneficiaries() function returned error." +
+            JSON.stringify(error)
+        );
+      });
   }
 
   resetValues() {
@@ -58,7 +71,6 @@ export class VitalsPage implements OnInit {
     });
   }
 
-
   onSubmit(values) {
     console.log("Vital form is submitted, below are the values");
     console.log(values);
@@ -72,7 +84,6 @@ export class VitalsPage implements OnInit {
     let bpSystolic = this.vitalForm.get("bpSystolic").value.trim();
     let bpDiastolic = this.vitalForm.get("bpDiastolic").value.trim();
     let respiratoryRate = this.vitalForm.get("respiratoryRate").value.trim();
-
 
     if (!benificiaryId || benificiaryId <= 0) {
       alert("Please Select Beneficiary ID");
@@ -110,7 +121,5 @@ export class VitalsPage implements OnInit {
       alert("Enter Beneficiary respiratoryRate");
       return false;
     }
-
   }
-
 }

@@ -11,7 +11,7 @@ export class DatabaseService {
   dbObject: SQLiteObject;
   isDbReady: boolean = false;
 
-  database_name: string = "bpscl_dev13.db";
+  database_name: string = "bpscl_dev14.db";
 
   table_users: string = "du_User";
   table_genders: string = "mp_Gender";
@@ -58,9 +58,7 @@ export class DatabaseService {
         })
         .then(async (db: SQLiteObject) => {
           this.dbObject = await db;
-          console.log(
-            "database - createDb - Success -> " + JSON.stringify(db)
-          );
+          console.log("database - createDb - Success -> " + JSON.stringify(db));
           return db;
         })
         .catch(error => {
@@ -426,46 +424,52 @@ export class DatabaseService {
 
   getMaxBeneficiaryId(servicePointId) {
     let sql = `SELECT max(patientId) as maxbeneficiaryId FROM ${this.table_beneficiaries} where servicePointId = ${servicePointId}`;
-    console.log('Query is -> ' + sql);
-    return this.dbObject.executeSql(sql, []).then(data => {
-      let maxbeneficiaryId = [];
-      if (data.rows.length > 0) {
-        for (var i = 0; i < data.rows.length; i++) {
-          maxbeneficiaryId.push({
-            maxbeneficiaryId: data.rows.item(i).maxbeneficiaryId
-          });
+    console.log("Query is -> " + sql);
+    return this.dbObject
+      .executeSql(sql, [])
+      .then(data => {
+        let maxbeneficiaryId = [];
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
+            maxbeneficiaryId.push({
+              maxbeneficiaryId: data.rows.item(i).maxbeneficiaryId
+            });
+          }
+        } else {
+          return null;
         }
-      } else {
+        return maxbeneficiaryId;
+      })
+      .catch(e => {
         return null;
-      }
-      return maxbeneficiaryId;
-    }).catch(e => {
-      return null;
-    });
+      });
   }
 
   getMaxVisitId(servicePointId) {
     let sql = `SELECT max(visitId) as maxVisitId FROM ${this.table_visits} where servicePointId = ${servicePointId}`;
-    console.log('Query is -> ' + sql);
-    return this.dbObject.executeSql(sql, []).then(data => {
-      let maxVisitId = [];
-      if (data.rows.length > 0) {
-        for (var i = 0; i < data.rows.length; i++) {
-          maxVisitId.push({
-            maxVisitId: data.rows.item(i).maxVisitId
-          });
+    console.log("Query is -> " + sql);
+    return this.dbObject
+      .executeSql(sql, [])
+      .then(data => {
+        let maxVisitId = [];
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
+            maxVisitId.push({
+              maxVisitId: data.rows.item(i).maxVisitId
+            });
+          }
+        } else {
+          return null;
         }
-      } else {
+        return maxVisitId;
+      })
+      .catch(e => {
         return null;
-      }
-      return maxVisitId;
-    }).catch(e => {
-      return null;
-    });
+      });
   }
 
   getBeneficiaries() {
-    let sql = `SELECT patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, registrationDate, name, surname, genderId, dob, communityId, religionId, fatherName, spouseName, motherName, aadharNo, mctsId, villageId, mandalId, districtId, stateId, imageUrl, insertedBy, insertedDate, updatedBy, updatedDate, imageUploadStatus, uploadStatus FROM ${this.table_beneficiaries}`;
+    let sql = `SELECT patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, registrationDate, name, surname, genderId, dob, communityId, religionId, fatherName, spouseName, motherName, aadharNo, mctsId, villageId, mandalId, districtId, stateId, imageUrl, insertedBy, insertedDate, updatedBy, updatedDate, imageUploadStatus, uploadStatus FROM ${this.table_beneficiaries} WHERE isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let beneficiaries = [];
       if (data.rows.length > 0) {

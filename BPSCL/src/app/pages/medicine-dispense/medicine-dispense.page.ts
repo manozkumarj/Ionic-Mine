@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { StorageService } from "./../../services/storage.service";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-medicine-dispense',
-  templateUrl: './medicine-dispense.page.html',
-  styleUrls: ['./medicine-dispense.page.scss'],
+  selector: "app-medicine-dispense",
+  templateUrl: "./medicine-dispense.page.html",
+  styleUrls: ["./medicine-dispense.page.scss"]
 })
 export class MedicineDispensePage implements OnInit {
   medicineDispenseForm: FormGroup;
 
   showDispenses: boolean = false;
+  benIds: any[] = [];
+  dispenses: any[] = [];
 
   medicineDispenses: any[] = [
     {
@@ -38,8 +40,10 @@ export class MedicineDispensePage implements OnInit {
   constructor(
     private db: DatabaseService,
     private router: Router,
-    private storageService: StorageService) {
-    this.loadBeneficiaries();
+    private storageService: StorageService
+  ) {
+    // this.loadBeneficiaries();
+    // loadDispenses();
 
     this.medicineDispenseForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -47,11 +51,38 @@ export class MedicineDispensePage implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   loadBeneficiaries() {
+    this.db
+      .getBeneficiaries()
+      .then(beneficiaries => {
+        console.log(
+          "Fetched beneficiaries -> " + JSON.stringify(beneficiaries)
+        );
+        this.benIds = beneficiaries;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getBeneficiaries() function returned error." +
+            JSON.stringify(error)
+        );
+      });
+  }
 
+  loadDispenses() {
+    this.db
+      .getDispenses(1)
+      .then(dispenses => {
+        console.log("Fetched Dispenses -> " + JSON.stringify(dispenses));
+        this.dispenses = dispenses;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getDispenses() function returned error." +
+            JSON.stringify(error)
+        );
+      });
   }
 
   remarksCheckbox(e) {
@@ -83,7 +114,6 @@ export class MedicineDispensePage implements OnInit {
     this.medicineDispenses[id - 1]["quantity"] = +quantity.target.value;
   }
 
-
   onSubmit(values) {
     // console.log("Consumable Dispense form is submitted, below are the values");
     // console.log(values);
@@ -98,8 +128,10 @@ export class MedicineDispensePage implements OnInit {
 
     if (this.showDispenses === false) {
       // console.log(this.medicineDispenses);
-      let getErrors = this.medicineDispenses.filter(medicineDispense =>
-        medicineDispense.allowQuantity && !medicineDispense.quantity);
+      let getErrors = this.medicineDispenses.filter(
+        medicineDispense =>
+          medicineDispense.allowQuantity && !medicineDispense.quantity
+      );
       console.log("Error are below");
       console.log(getErrors);
       if (getErrors.length > 0) {
@@ -113,8 +145,6 @@ export class MedicineDispensePage implements OnInit {
       }
     }
 
-
     alert("Form can be submited");
-
   }
 }

@@ -13,6 +13,8 @@ export class ConsumableDispensePage implements OnInit {
   consumableDispenseForm: FormGroup;
 
   showDispenses: boolean = false;
+  benIds: any[] = [];
+  dispenses: any[] = [];
 
   consumableDispenses: any[] = [
     {
@@ -38,8 +40,10 @@ export class ConsumableDispensePage implements OnInit {
   constructor(
     private db: DatabaseService,
     private router: Router,
-    private storageService: StorageService) {
-    this.loadBeneficiaries();
+    private storageService: StorageService
+  ) {
+    // this.loadBeneficiaries();
+    // loadDispenses();
 
     this.consumableDispenseForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -47,11 +51,38 @@ export class ConsumableDispensePage implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   loadBeneficiaries() {
+    this.db
+      .getBeneficiaries()
+      .then(beneficiaries => {
+        console.log(
+          "Fetched beneficiaries -> " + JSON.stringify(beneficiaries)
+        );
+        this.benIds = beneficiaries;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getBeneficiaries() function returned error." +
+            JSON.stringify(error)
+        );
+      });
+  }
 
+  loadDispenses() {
+    this.db
+      .getDispenses(2)
+      .then(dispenses => {
+        console.log("Fetched Dispenses -> " + JSON.stringify(dispenses));
+        this.dispenses = dispenses;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getDispenses() function returned error." +
+            JSON.stringify(error)
+        );
+      });
   }
 
   remarksCheckbox(e) {
@@ -83,7 +114,6 @@ export class ConsumableDispensePage implements OnInit {
     this.consumableDispenses[id - 1]["quantity"] = +quantity.target.value;
   }
 
-
   onSubmit(values) {
     // console.log("Consumable Dispense form is submitted, below are the values");
     // console.log(values);
@@ -98,8 +128,10 @@ export class ConsumableDispensePage implements OnInit {
 
     if (this.showDispenses === false) {
       // console.log(this.consumableDispenses);
-      let getErrors = this.consumableDispenses.filter(consumableDispense =>
-        consumableDispense.allowQuantity && !consumableDispense.quantity);
+      let getErrors = this.consumableDispenses.filter(
+        consumableDispense =>
+          consumableDispense.allowQuantity && !consumableDispense.quantity
+      );
       console.log("Error are below");
       console.log(getErrors);
       if (getErrors.length > 0) {
@@ -113,8 +145,6 @@ export class ConsumableDispensePage implements OnInit {
       }
     }
 
-
     alert("Form can be submited");
-
   }
 }

@@ -12,6 +12,8 @@ import { Router } from "@angular/router";
 export class SearchBeneficiaryPage implements OnInit {
   searchBenForm: FormGroup;
   beneficiaries: any[] = [];
+  genders: any[] = [];
+  ageUnits: any[] = [];
 
   constructor(
     private db: DatabaseService,
@@ -44,6 +46,39 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
+            JSON.stringify(error)
+        );
+      });
+  }
+
+  loadAgeUnits() {
+    this.db
+      .getAgeUnits()
+      .then(ageUnits => {
+        console.log("Fetched AgeUnits -> " + JSON.stringify(ageUnits));
+        this.ageUnits = ageUnits.map(ageUnit => ({
+          ...ageUnit,
+          isSelected: false
+        }));
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getAgeUnits() function returned error." +
+            JSON.stringify(error)
+        );
+      });
+  }
+
+  loadGenders() {
+    this.db
+      .getGenders()
+      .then(genders => {
+        console.log("Fetched genders -> " + JSON.stringify(genders));
+        this.genders = genders;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getGenders() function returned error." +
             JSON.stringify(error)
         );
       });
