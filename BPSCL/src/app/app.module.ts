@@ -38,4 +38,8 @@ import { IonicStorageModule } from "@ionic/storage";
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    private db: DatabaseService
+  ) { }
+}

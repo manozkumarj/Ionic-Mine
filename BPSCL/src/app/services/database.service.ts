@@ -11,7 +11,7 @@ export class DatabaseService {
   dbObject: SQLiteObject;
   isDbReady: boolean = false;
 
-  database_name: string = "bpscl_dev11.db";
+  database_name: string = "bpscl_dev12.db";
 
   table_users: string = "du_User";
   table_genders: string = "mp_Gender";
@@ -59,13 +59,13 @@ export class DatabaseService {
         .then(async (db: SQLiteObject) => {
           this.dbObject = await db;
           console.log(
-            "database - constructor - Success -> " + JSON.stringify(db)
+            "database - createDb - Success -> " + JSON.stringify(db)
           );
           return db;
         })
         .catch(error => {
           console.warn(
-            "database - constructor - Error -> " + JSON.stringify(error)
+            "database - createDb - Error -> " + JSON.stringify(error)
           );
           return false;
         });
