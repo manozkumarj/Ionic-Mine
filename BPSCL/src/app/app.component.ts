@@ -104,10 +104,9 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    public menuCtrl: MenuController,
-    private db: DatabaseService
+    public menuCtrl: MenuController
   ) {
-    this.prepareDatabase();
+    this.initializeApp();
   }
 
   closeMenu() {
@@ -119,34 +118,5 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
-  }
-
-  async prepareDatabase() {
-    let data = await this.db
-      .checkTable()
-      .then(async (res: any) => {
-        let data = await res;
-        if (!data) {
-          console.error(
-            "checkTable() -> Something went wrong -> " + JSON.stringify(res)
-          );
-        } else {
-          console.log("Table is ready :) -> " + JSON.stringify(res));
-        }
-        return data;
-      })
-      .catch((error: any) => {
-        console.error(
-          "catch -> Table doesn't exist -> " + JSON.stringify(error)
-        );
-        return false;
-      });
-
-
-    console.log("After execution result is -> " + data);
-    if (data) {
-      this.initializeApp();
-    }
-
   }
 }

@@ -11,7 +11,7 @@ export class DatabaseService {
   dbObject: SQLiteObject;
   isDbReady: boolean = false;
 
-  database_name: string = "bpscl_dev7.db";
+  database_name: string = "bpscl_dev11.db";
 
   table_users: string = "du_User";
   table_genders: string = "mp_Gender";
