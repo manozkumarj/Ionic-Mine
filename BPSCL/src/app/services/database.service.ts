@@ -11,7 +11,7 @@ export class DatabaseService {
   dbObject: SQLiteObject;
   isDbReady: boolean = false;
 
-  database_name: string = "bpscl_dev12.db";
+  database_name: string = "bpscl_dev13.db";
 
   table_users: string = "du_User";
   table_genders: string = "mp_Gender";
@@ -110,6 +110,7 @@ export class DatabaseService {
               }
             });
           } else {
+            this.isDbReady = true;
             return true;
           }
         })

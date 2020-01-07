@@ -29,7 +29,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
     private db: DatabaseService,
     private platform: Platform,
     private storageService: StorageService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadUserDetails();
@@ -103,7 +103,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -118,7 +118,7 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
       .catch(error => {
         console.error(
           "Error -> getVisits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
