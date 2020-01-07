@@ -28,57 +28,62 @@ const routes: Routes = [
       import(
         "./pages/beneficiary-registration/beneficiary-registration.module"
       ).then(m => m.BeneficiaryRegistrationPageModule)
-  },  {
+  },
+  {
     path: 'vitals',
-    loadChildren: () => import('./pages/vitals/vitals.module').then( m => m.VitalsPageModule)
+    loadChildren: () => import('./pages/vitals/vitals.module').then(m => m.VitalsPageModule)
   },
   {
     path: 'doctor',
-    loadChildren: () => import('./pages/doctor/doctor.module').then( m => m.DoctorPageModule)
+    loadChildren: () => import('./pages/doctor/doctor.module').then(m => m.DoctorPageModule)
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'session-selection',
-    loadChildren: () => import('./pages/session-selection/session-selection.module').then( m => m.SessionSelectionPageModule)
+    loadChildren: () => import('./pages/session-selection/session-selection.module').then(m => m.SessionSelectionPageModule)
   },
   {
     path: 'staff-registration',
-    loadChildren: () => import('./pages/staff-registration/staff-registration.module').then( m => m.StaffRegistrationPageModule)
+    loadChildren: () => import('./pages/staff-registration/staff-registration.module').then(m => m.StaffRegistrationPageModule)
   },
   {
     path: 'edit-staff',
-    loadChildren: () => import('./pages/edit-staff/edit-staff.module').then( m => m.EditStaffPageModule)
+    loadChildren: () => import('./pages/edit-staff/edit-staff.module').then(m => m.EditStaffPageModule)
   },
   {
     path: 'care-provided',
-    loadChildren: () => import('./pages/care-provided/care-provided.module').then( m => m.CareProvidedPageModule)
+    loadChildren: () => import('./pages/care-provided/care-provided.module').then(m => m.CareProvidedPageModule)
   },
   {
     path: 'search-beneficiary',
-    loadChildren: () => import('./pages/search-beneficiary/search-beneficiary.module').then( m => m.SearchBeneficiaryPageModule)
+    loadChildren: () => import('./pages/search-beneficiary/search-beneficiary.module').then(m => m.SearchBeneficiaryPageModule)
   },
   {
     path: 'beneficiary-history',
-    loadChildren: () => import('./pages/beneficiary-history/beneficiary-history.module').then( m => m.BeneficiaryHistoryPageModule)
+    loadChildren: () => import('./pages/beneficiary-history/beneficiary-history.module').then(m => m.BeneficiaryHistoryPageModule)
   },
   {
     path: 'consumable-dispense',
-    loadChildren: () => import('./pages/consumable-dispense/consumable-dispense.module').then( m => m.ConsumableDispensePageModule)
+    loadChildren: () => import('./pages/consumable-dispense/consumable-dispense.module').then(m => m.ConsumableDispensePageModule)
   },
   {
     path: 'medicine-dispense',
-    loadChildren: () => import('./pages/medicine-dispense/medicine-dispense.module').then( m => m.MedicineDispensePageModule)
+    loadChildren: () => import('./pages/medicine-dispense/medicine-dispense.module').then(m => m.MedicineDispensePageModule)
   },
   {
     path: 'staff-attendance',
-    loadChildren: () => import('./pages/staff-attendance/staff-attendance.module').then( m => m.StaffAttendancePageModule)
+    loadChildren: () => import('./pages/staff-attendance/staff-attendance.module').then(m => m.StaffAttendancePageModule)
   },
   {
     path: 'reports',
-    loadChildren: () => import('./pages/reports/reports.module').then( m => m.ReportsPageModule)
+    loadChildren: () => import('./pages/reports/reports.module').then(m => m.ReportsPageModule)
+  },
+  {
+    path: 'initialization',
+    loadChildren: () => import('./pages/initialization/initialization.module').then(m => m.InitializationPageModule)
   }
 
 ];
@@ -89,4 +94,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

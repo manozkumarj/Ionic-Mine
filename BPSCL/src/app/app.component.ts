@@ -14,6 +14,11 @@ import { DatabaseService } from "./services/database.service";
 export class AppComponent {
   public appPages = [
     {
+      title: "Initialization",
+      url: "/initialization",
+      icon: "list"
+    },
+    {
       title: "Home",
       url: "/home",
       icon: "list"
@@ -102,7 +107,6 @@ export class AppComponent {
     public menuCtrl: MenuController,
     private db: DatabaseService
   ) {
-    this.initializeApp();
     this.prepareDatabase();
   }
 
@@ -117,22 +121,32 @@ export class AppComponent {
     });
   }
 
-  prepareDatabase() {
-    this.db
+  async prepareDatabase() {
+    let data = await this.db
       .checkTable()
-      .then((res: any) => {
-        if (!res) {
+      .then(async (res: any) => {
+        let data = await res;
+        if (!data) {
           console.error(
             "checkTable() -> Something went wrong -> " + JSON.stringify(res)
           );
         } else {
           console.log("Table is ready :) -> " + JSON.stringify(res));
         }
+        return data;
       })
       .catch((error: any) => {
         console.error(
           "catch -> Table doesn't exist -> " + JSON.stringify(error)
         );
+        return false;
       });
+
+
+    console.log("After execution result is -> " + data);
+    if (data) {
+      this.initializeApp();
+    }
+
   }
 }

@@ -9,8 +9,9 @@ import { HttpClient } from "@angular/common/http";
 })
 export class DatabaseService {
   dbObject: SQLiteObject;
+  isDbReady: boolean = false;
 
-  database_name: string = "bpscl_dev.db";
+  database_name: string = "bpscl_dev7.db";
 
   table_users: string = "du_User";
   table_genders: string = "mp_Gender";
@@ -60,7 +61,7 @@ export class DatabaseService {
           console.log(
             "database - constructor - Success -> " + JSON.stringify(db)
           );
-          return true;
+          return db;
         })
         .catch(error => {
           console.warn(
@@ -73,14 +74,15 @@ export class DatabaseService {
 
   seedSql() {
     return this.http
-      .get("assets/sql.sql", { responseType: "text" })
+      .get("assets/BPSCL_21112019_VAN_1.sql", { responseType: "text" })
       .toPromise()
       .then(sql => {
-        this.sqlitePorter
+        return this.sqlitePorter
           .importSqlToDb(this.dbObject, sql)
           .then(async res => {
             let getRes = await res;
             console.log("SQL file imported successfully... :)");
+            this.isDbReady = true;
             return true;
           })
           .catch(error => {
@@ -91,20 +93,24 @@ export class DatabaseService {
   }
 
   checkTable() {
-    return this.createDb().then(async res => {
+    return this.createDb().then(async (res: SQLiteObject) => {
       let data = await res;
       let sql = "SELECT name FROM sqlite_master WHERE type='table' AND name=?";
-      return this.dbObject
+      return data
         .executeSql(sql, [this.table_users])
         .then(res => {
           console.log(
             "database - checkTable - Success -> " + JSON.stringify(res)
           );
           if (res.rows.length <= 0) {
-            this.seedSql().then(async res => {
+            return this.seedSql().then(async res => {
               let data = await res;
-              return true;
+              if (data != null) {
+                return true;
+              }
             });
+          } else {
+            return true;
           }
         })
         .catch(error => {

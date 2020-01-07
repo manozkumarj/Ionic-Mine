@@ -48,10 +48,9 @@ export class BeneficiaryRegistrationPage implements OnInit {
   isPhotoCaptured: boolean = false;
   benPhoto: string = "assets/profile_pic.jpg";
 
-  randomPatientId: string =
-    "SP0002000002B000" + Math.floor(Math.random() * (599 - 500) + 500);
+  randomPatientId: string;
 
-  visitId: string = this.randomPatientId + "V000001";
+  visitId: string;
 
   constructor(
     private db: DatabaseService,
