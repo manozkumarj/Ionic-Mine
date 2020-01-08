@@ -106,6 +106,14 @@ export class VitalsPage implements OnInit {
         this.commonService.beneficiaryDetails['userDistrict'] = benDetails[0]['districtName'];
         this.commonService.beneficiaryDetails['userMandal'] = benDetails[0]['mandalName'];
         this.commonService.beneficiaryDetails['userVillage'] = benDetails[0]['villageName'];
+        this.commonService.beneficiaryDetails['userVisitId'] = benDetails[0]['visitId'];
+        this.commonService.beneficiaryDetails['userPatientId'] = benDetails[0]['patientId'];
+        this.commonService.beneficiaryDetails['userVisitCount'] = benDetails[0]['visitCount'];
+        this.commonService.beneficiaryDetails['userDeviceId'] = benDetails[0]['deviceId'];
+        this.commonService.beneficiaryDetails['userVanId'] = benDetails[0]['vanId'];
+        this.commonService.beneficiaryDetails['userRouteVillageId'] = benDetails[0]['routeVillageId'];
+        this.commonService.beneficiaryDetails['userServicePointId'] = benDetails[0]['servicePointId'];
+        this.commonService.beneficiaryDetails['userCompoundPatientId'] = benDetails[0]['compoundPatientId'];
       })
       .catch(error => {
         console.error(

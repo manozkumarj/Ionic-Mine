@@ -15,7 +15,15 @@ export class CommonService {
         userDOJ: '',
         userDistrict: '',
         userMandal: '',
-        userVillage: ''
+        userVillage: '',
+        userPatientId: '',
+        userVisitId: '',
+        userVisitCount: '',
+        userDeviceId: '',
+        userVanId: '',
+        userRouteVillageId: '',
+        userServicePointId: '',
+        userCompoundPatientId: ''
     }
 
     sessionDetails: Object = {

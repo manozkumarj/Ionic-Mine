@@ -31,6 +31,7 @@ export class DatabaseService {
   table_admins: string = "mv_VanDeviceApprove";
   table_beneficiaries: string = "dp_Registration";
   table_visits: string = "dp_Visit";
+  table_vitals: string = "dp_Vitals";
   table_dispenses: string = "mi_Item";
   table_hospitals: string = "mp_HospitalList";
   table_beneficiaryTypes: string = "mp_BeneficiaryType";
@@ -472,7 +473,7 @@ export class DatabaseService {
   }
 
   getBeneficiaryDetails(benId) {
-    let sql = `SELECT ben.patientId, ben.deviceId, ben.vanId, ben.routeVillageId, ben.servicePointId, ben.compoundPatientId, ben.registrationDate, ben.name, ben.surname, ben.genderId, ben.dob, ben.communityId, ben.religionId, ben.fatherName, ben.spouseName, ben.motherName, ben.aadharNo, ben.mctsId, ben.villageId, ben.mandalId, ben.districtId, ben.stateId, ben.imageUrl, ben.insertedBy, ben.insertedDate, ben.updatedBy, ben.updatedDate, ben.imageUploadStatus, ben.uploadStatus, visit.visitId, g.gender, d.districtName, m.mandalName, v.villageName FROM ${this.table_beneficiaries} AS ben LEFT JOIN ${this.table_visits} AS visit ON ben.patientId = visit.patientId LEFT JOIN mp_gender AS g ON ben.genderId = g.genderId LEFT JOIN m_District AS d ON ben.districtId = d.districtId LEFT JOIN m_Mandal AS m ON ben.mandalId = m.mandalId LEFT JOIN m_Village AS v ON ben.villageId = v.villageId WHERE ben.patientId = '${benId}'`;
+    let sql = `SELECT ben.patientId, ben.deviceId, ben.vanId, ben.routeVillageId, ben.servicePointId, ben.compoundPatientId, ben.registrationDate, ben.name, ben.surname, ben.genderId, ben.dob, ben.communityId, ben.religionId, ben.fatherName, ben.spouseName, ben.motherName, ben.aadharNo, ben.mctsId, ben.villageId, ben.mandalId, ben.districtId, ben.stateId, ben.imageUrl, ben.insertedBy, ben.insertedDate, ben.updatedBy, ben.updatedDate, ben.imageUploadStatus, ben.uploadStatus, visit.visitId, visit.visitCount, g.gender, d.districtName, m.mandalName, v.villageName FROM ${this.table_beneficiaries} AS ben LEFT JOIN ${this.table_visits} AS visit ON ben.patientId = visit.patientId LEFT JOIN mp_gender AS g ON ben.genderId = g.genderId LEFT JOIN m_District AS d ON ben.districtId = d.districtId LEFT JOIN m_Mandal AS m ON ben.mandalId = m.mandalId LEFT JOIN m_Village AS v ON ben.villageId = v.villageId WHERE ben.patientId = '${benId}'`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let beneficiaryDetails = [];
       if (data.rows.length > 0) {
@@ -498,7 +499,6 @@ export class DatabaseService {
             mctsId: data.rows.item(i).mctsId,
             villageId: data.rows.item(i).villageId,
             mandalId: data.rows.item(i).mandalId,
-            mandalName: data.rows.item(i).mandalName,
             districtId: data.rows.item(i).districtId,
             stateId: data.rows.item(i).stateId,
             imageUrl: data.rows.item(i).imageUrl,
@@ -507,7 +507,13 @@ export class DatabaseService {
             updatedBy: data.rows.item(i).updatedBy,
             updatedDate: data.rows.item(i).updatedDate,
             imageUploadStatus: data.rows.item(i).imageUploadStatus,
-            uploadStatus: data.rows.item(i).uploadStatus
+            uploadStatus: data.rows.item(i).uploadStatus,
+            visitId: data.rows.item(i).visitId,
+            visitCount: data.rows.item(i).visitCount,
+            gender: data.rows.item(i).gender,
+            districtName: data.rows.item(i).districtName,
+            mandalName: data.rows.item(i).mandalName,
+            villageName: data.rows.item(i).villageName
           });
         }
       }
@@ -790,6 +796,48 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - insertVisit() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  insertVital(data) {
+    let sql = `INSERT INTO ${this.table_vitals} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, height, weight, bmi, pulseRate, temperature, respiratoryRate, bpSystolic, bpDiastolic, doctorBpSystolic, doctorBpDiastolic, muac, hc, insertedBy, insertedDate, updatedBy, updatedDate, uploadStatus) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'datetime()',?,'datetime()',?)`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.patientId,
+        data.visitId,
+        data.deviceId,
+        data.vanId,
+        data.routeVillageId,
+        data.servicePointId,
+        data.compoundPatientId,
+        data.visitCount,
+        data.height,
+        data.weight,
+        data.bmi,
+        data.pulseRate,
+        data.temperature,
+        data.respiratoryRate,
+        data.bpSystolic,
+        data.bpDiastolic,
+        data.doctorBpSystolic,
+        data.doctorBpDiastolic,
+        data.muac,
+        data.hc,
+        data.userId,
+        data.userId,
+        this.status.active
+      ])
+      .then(res => {
+        console.log(
+          "database - insertVital() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - insertVital() - Error -> " + JSON.stringify(error)
         );
         return false;
       });
