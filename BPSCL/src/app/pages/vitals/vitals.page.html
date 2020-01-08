@@ -44,7 +44,7 @@
                   Beneficiary ID
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select formControlName="benificiaryId" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  <ion-select formControlName="benificiaryId" (ionChange)="benIdChange()" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
                     <ion-select-option value="1">Female</ion-select-option>
                     <ion-select-option value="2">Male</ion-select-option>
@@ -56,7 +56,8 @@
                   Height (36-245 CM)
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input formControlName="height" class="field-input" value=""></ion-input>
+                  <ion-input type="number" (ionBlur)="calculateBmi()" formControlName="height" class="field-input"
+                    value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -64,7 +65,8 @@
                   Weight (1.5-200 KG)
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input formControlName="weight" class="field-input" value=""></ion-input>
+                  <ion-input type="number" (ionBlur)="calculateBmi()" formControlName="weight" class="field-input"
+                    value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -72,7 +74,7 @@
                   BMI
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input formControlName="bmi" class="field-input" value=""></ion-input>
+                  <ion-input type="number" formControlName="bmi" class="field-input" value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -80,7 +82,7 @@
                   Temperature (92-105 F)
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input formControlName="temperature" class="field-input" value=""></ion-input>
+                  <ion-input type="number" formControlName="temperature" class="field-input" value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -88,7 +90,7 @@
                   Pulse (40-130)
                 </ion-col>
                 <ion-col>
-                  <ion-input formControlName="pulse" class="field-input" value=""></ion-input>
+                  <ion-input type="number" formControlName="pulse" class="field-input" value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -99,12 +101,12 @@
                   <ion-grid style="padding: 0; margin: 0;">
                     <ion-row style="width: 95%;">
                       <ion-col style="padding-left: 0;">
-                        <ion-input formControlName="bpSystolic" class="field-input" type="text" placeholder="Systolic"
-                          value="">
+                        <ion-input type="number" formControlName="bpSystolic" class="field-input" type="text"
+                          placeholder="Systolic" value="">
                         </ion-input>
                       </ion-col>
                       <ion-col>
-                        <ion-input formControlName="bpDiastolic" class="field-input" type="text" value=""
+                        <ion-input type="number" formControlName="bpDiastolic" class="field-input" type="text" value=""
                           placeholder="Diastolic"></ion-input>
                       </ion-col>
                     </ion-row>
@@ -116,7 +118,7 @@
                   Respiratory Rate (10-60)
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input formControlName="respiratoryRate" class="field-input" value=""></ion-input>
+                  <ion-input type="number" formControlName="respiratoryRate" class="field-input" value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">

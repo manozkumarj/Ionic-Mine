@@ -32,7 +32,10 @@ export class DatabaseService {
   table_beneficiaries: string = "dp_Registration";
   table_visits: string = "dp_Visit";
   table_dispenses: string = "mi_Item";
+  table_hospitals: string = "mp_HospitalList";
+  table_beneficiaryTypes: string = "mp_BeneficiaryType";
   table_roles: string = "mu_Role";
+  table_reports: string = "ms_Report";
 
   stateId: number = 21;
   status = {
@@ -468,13 +471,13 @@ export class DatabaseService {
       });
   }
 
-  getBeneficiaries() {
-    let sql = `SELECT patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, registrationDate, name, surname, genderId, dob, communityId, religionId, fatherName, spouseName, motherName, aadharNo, mctsId, villageId, mandalId, districtId, stateId, imageUrl, insertedBy, insertedDate, updatedBy, updatedDate, imageUploadStatus, uploadStatus FROM ${this.table_beneficiaries} WHERE isActive = ${this.status.active}`;
+  getBeneficiaryDetails(benId) {
+    let sql = `SELECT patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, registrationDate, name, surname, genderId, dob, communityId, religionId, fatherName, spouseName, motherName, aadharNo, mctsId, villageId, mandalId, districtId, stateId, imageUrl, insertedBy, insertedDate, updatedBy, updatedDate, imageUploadStatus, uploadStatus FROM ${this.table_beneficiaries} WHERE patientId = ${benId} AND isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, []).then(data => {
-      let beneficiaries = [];
+      let beneficiaryDetails = [];
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
-          beneficiaries.push({
+          beneficiaryDetails.push({
             patientId: data.rows.item(i).patientId,
             deviceId: data.rows.item(i).deviceId,
             vanId: data.rows.item(i).vanId,
@@ -508,22 +511,23 @@ export class DatabaseService {
           });
         }
       }
-      return beneficiaries;
+      return beneficiaryDetails;
     });
   }
 
-  getBeneficiaryIds() {
-    let sql = `SELECT patientId FROM ${this.table_beneficiaries} WHERE isActive = ${this.status.active}`;
+  getBeneficiaries() {
+    let sql = `SELECT patientId, name FROM ${this.table_beneficiaries} WHERE isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, []).then(data => {
-      let beneficiaryIds = [];
+      let beneficiaries = [];
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
-          beneficiaryIds.push({
-            patientId: data.rows.item(i).patientId
+          beneficiaries.push({
+            patientId: data.rows.item(i).patientId,
+            name: data.rows.item(i).name
           });
         }
       }
-      return beneficiaryIds;
+      return beneficiaries;
     });
   }
 
@@ -543,6 +547,38 @@ export class DatabaseService {
     });
   }
 
+  getHospitals() {
+    let sql = `SELECT hospitalId, hospitalName FROM ${this.table_hospitals} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let hospitals = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          hospitals.push({
+            hospitalId: data.rows.item(i).hospitalId,
+            hospitalName: data.rows.item(i).hospitalName
+          });
+        }
+      }
+      return hospitals;
+    });
+  }
+
+  getRCHs() {
+    let sql = `SELECT beneficiaryTypeId, beneficiaryTypeName FROM ${this.table_beneficiaryTypes} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let beneficiaryTypes = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          beneficiaryTypes.push({
+            beneficiaryTypeId: data.rows.item(i).beneficiaryTypeId,
+            beneficiaryTypeName: data.rows.item(i).beneficiaryTypeName
+          });
+        }
+      }
+      return beneficiaryTypes;
+    });
+  }
+
   getRoles() {
     let sql = `SELECT roleId, roleName FROM ${this.table_roles} WHERE isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, []).then(data => {
@@ -556,6 +592,22 @@ export class DatabaseService {
         }
       }
       return roles;
+    });
+  }
+
+  getReports() {
+    let sql = `SELECT reportId, reportName FROM ${this.table_reports} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let reports = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          reports.push({
+            reportId: data.rows.item(i).reportId,
+            reportName: data.rows.item(i).reportName
+          });
+        }
+      }
+      return reports;
     });
   }
 

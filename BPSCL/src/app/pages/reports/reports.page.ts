@@ -11,6 +11,7 @@ import { Router } from "@angular/router";
 })
 export class ReportsPage implements OnInit {
   reportsForm: FormGroup;
+  reports: any[] = [];
 
   items: any[] = [
     "one",
@@ -69,7 +70,24 @@ export class ReportsPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
+
+  loadReports() {
+    this.db
+      .getReports()
+      .then(reports => {
+        console.log(
+          "Fetched reports -> " + JSON.stringify(reports)
+        );
+        this.reports = reports;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getReports() function returned error." +
+          JSON.stringify(error)
+        );
+      });
+  }
 
   onSubmit(values, csv = false) {
     console.log("Reports form is submitted, below are the values");

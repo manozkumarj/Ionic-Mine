@@ -2,7 +2,7 @@
   <ion-row style="height: 162px; text-align: center;">
     <ion-col>
       <div>
-        <img src="assets/profile_pic.jpg" alt="user-avatar" width="150px" />
+        <img [src]="commonService.userPhoto" alt="user-avatar" width="150px" />
       </div>
     </ion-col>
   </ion-row>
@@ -23,7 +23,7 @@
       <div>Name</div>
     </ion-col>
     <ion-col>
-      <div>Test User</div>
+      <div>{{commonService.userName}}</div>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -31,7 +31,7 @@
       <div>Surname</div>
     </ion-col>
     <ion-col>
-      <div>Foobar</div>
+      <div>{{commonService.userSurname}}</div>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -39,7 +39,7 @@
       <div>Age</div>
     </ion-col>
     <ion-col>
-      <div>25</div>
+      <div>{{commonService.userAge}}</div>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -47,7 +47,7 @@
       <div>Gender</div>
     </ion-col>
     <ion-col>
-      <div>Male</div>
+      <div>{{commonService.userGender}}</div>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -55,7 +55,7 @@
       <div>Date of Registration</div>
     </ion-col>
     <ion-col>
-      <div>2019-12-16</div>
+      <div>{{commonService.userDOJ}}</div>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -63,7 +63,7 @@
       <div>District</div>
     </ion-col>
     <ion-col>
-      <div>Sample</div>
+      <div>{{commonService.userDistrict}}</div>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -71,7 +71,7 @@
       <div>Mandal</div>
     </ion-col>
     <ion-col>
-      <div>Foo</div>
+      <div>{{commonService.userMandal}}</div>
     </ion-col>
   </ion-row>
   <ion-row>
@@ -79,7 +79,7 @@
       <div>Village</div>
     </ion-col>
     <ion-col>
-      <div>Bar</div>
+      <div>{{commonService.userVillage}}</div>
     </ion-col>
   </ion-row>
 </ion-grid>

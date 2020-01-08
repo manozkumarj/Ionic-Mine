@@ -14,6 +14,8 @@ export class DoctorPage implements OnInit {
 
   showRemarks: boolean = false;
   benIds: any[] = [];
+  hospitals: any[] = [];
+  rchs: any[] = [];
 
   constructor(
     private db: DatabaseService,
@@ -21,6 +23,8 @@ export class DoctorPage implements OnInit {
     private storageService: StorageService
   ) {
     // this.loadBeneficiaries();
+    // this.loadHospitals();
+    // this.loadRCHs();
 
     this.doctorForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -33,7 +37,7 @@ export class DoctorPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   loadBeneficiaries() {
     this.db
@@ -47,7 +51,41 @@ export class DoctorPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
+        );
+      });
+  }
+
+  loadHospitals() {
+    this.db
+      .getHospitals()
+      .then(hospitals => {
+        console.log(
+          "Fetched hospitals -> " + JSON.stringify(hospitals)
+        );
+        this.hospitals = hospitals;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getHospitals() function returned error." +
+          JSON.stringify(error)
+        );
+      });
+  }
+
+  loadRCHs() {
+    this.db
+      .getRCHs()
+      .then(rchs => {
+        console.log(
+          "Fetched RCHs -> " + JSON.stringify(rchs)
+        );
+        this.rchs = rchs;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getRCHs() function returned error." +
+          JSON.stringify(error)
         );
       });
   }

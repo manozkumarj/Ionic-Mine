@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
+import { CommonService } from "src/app/services/common.service";
 import { StorageService } from "./../../services/storage.service";
 import { Router } from "@angular/router";
 
@@ -20,6 +21,7 @@ export class VitalsPage implements OnInit {
 
   constructor(
     private db: DatabaseService,
+    private commonService: CommonService,
     private router: Router,
     private storageService: StorageService
   ) {
@@ -38,7 +40,7 @@ export class VitalsPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   loadBeneficiaries() {
     this.db
@@ -52,9 +54,22 @@ export class VitalsPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
+  }
+
+  calculateBmi() {
+    let weight = this.vitalForm.get("weight").value;
+    let height = this.vitalForm.get("height").value;
+
+    if (weight && height) {
+      var wtInKg = weight;
+      var htInMeter = height / 100;
+      var thisBmi = wtInKg / (htInMeter * htInMeter);
+      this.vitalForm.patchValue({ bmi: thisBmi.toFixed(2) });
+      console.log("Calculated BMI is -> " + thisBmi.toFixed(2));
+    }
   }
 
   resetValues() {
@@ -69,6 +84,35 @@ export class VitalsPage implements OnInit {
       bpDiastolic: "",
       respiratoryRate: ""
     });
+  }
+
+  benIdChange() {
+    let selectedBenID = this.vitalForm.get("benificiaryId").value;
+    console.log("selectedBenID is -> " + selectedBenID);
+    // this.getBenDetails(selectedBenID);
+  }
+
+  getBenDetails(selectedBenID) {
+    this.db
+      .getBeneficiaryDetails(selectedBenID)
+      .then(benDetails => {
+        console.log("Received Ben details are -> " + benDetails);
+        this.commonService.userPhoto = benDetails[0]['imageUrl'];
+        this.commonService.userName = benDetails[0]['name'];
+        this.commonService.userSurname = benDetails[0]['surname'];
+        this.commonService.userAge = 5;
+        this.commonService.userGender = benDetails[0]['genderId'];
+        this.commonService.userDOJ = benDetails[0]['registrationDate'];
+        this.commonService.userDistrict = benDetails[0]['districtId'];
+        this.commonService.userMandal = benDetails[0]['mandalId'];
+        this.commonService.userVillage = benDetails[0]['villageId'];
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getBeneficiaryDetails() function returned error." +
+          JSON.stringify(error)
+        );
+      });
   }
 
   onSubmit(values) {
@@ -121,5 +165,8 @@ export class VitalsPage implements OnInit {
       alert("Enter Beneficiary respiratoryRate");
       return false;
     }
+
+    alert("Form can be submitted...!");
+
   }
 }
