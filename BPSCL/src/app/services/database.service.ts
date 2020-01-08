@@ -522,7 +522,7 @@ export class DatabaseService {
   }
 
   getBeneficiaries() {
-    let sql = `SELECT patientId, name FROM ${this.table_beneficiaries} WHERE isActive = ${this.status.active}`;
+    let sql = `SELECT patientId, name FROM ${this.table_beneficiaries}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let beneficiaries = [];
       if (data.rows.length > 0) {

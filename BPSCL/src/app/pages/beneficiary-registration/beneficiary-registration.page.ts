@@ -754,7 +754,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
                 this.router.navigate(["/vitals"]);
               }
             })
-            .then(error => {
+            .catch(error => {
               console.error(
                 "Error -> Beneficiary Visit details insertion failed - " +
                 JSON.stringify(error)
@@ -767,7 +767,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
         }
         // insertVisit functionality - ends
       })
-      .then(error => {
+      .catch(error => {
         console.error(
           "Error -> Beneficiary registration failed - " + JSON.stringify(error)
         );

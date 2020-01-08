@@ -25,7 +25,7 @@ export class VitalsPage implements OnInit {
     private router: Router,
     private storageService: StorageService
   ) {
-    // this.loadBeneficiaries();
+    this.loadBeneficiaries();
 
     this.vitalForm = new FormGroup({
       benificiaryId: new FormControl("", Validators.required),
@@ -40,7 +40,9 @@ export class VitalsPage implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log("User details are " + JSON.stringify(this.commonService.userDetails));
+  }
 
   loadBeneficiaries() {
     this.db
@@ -59,9 +61,21 @@ export class VitalsPage implements OnInit {
       });
   }
 
-  calculateBmi() {
+  calculateBmi(value) {
     let weight = this.vitalForm.get("weight").value;
     let height = this.vitalForm.get("height").value;
+
+    if (value == 'height') {
+      if (height < 36 || height > 245) {
+        alert("Height should be between 36-245");
+        return false;
+      }
+    } else {
+      if (weight < 1.5 || weight > 200) {
+        alert("Weight should be between 1.5-200");
+        return false;
+      }
+    }
 
     if (weight && height) {
       var wtInKg = weight;
@@ -89,14 +103,14 @@ export class VitalsPage implements OnInit {
   benIdChange() {
     let selectedBenID = this.vitalForm.get("benificiaryId").value;
     console.log("selectedBenID is -> " + selectedBenID);
-    // this.getBenDetails(selectedBenID);
+    this.getBenDetails(selectedBenID);
   }
 
   getBenDetails(selectedBenID) {
     this.db
       .getBeneficiaryDetails(selectedBenID)
       .then(benDetails => {
-        console.log("Received Ben details are -> " + benDetails);
+        console.log("Received Ben details are -> " + JSON.stringify(benDetails));
         this.commonService.beneficiaryDetails['userPhoto'] = benDetails[0]['imageUrl'];
         this.commonService.beneficiaryDetails['userName'] = benDetails[0]['name'];
         this.commonService.beneficiaryDetails['userSurname'] = benDetails[0]['surname'];
@@ -127,17 +141,30 @@ export class VitalsPage implements OnInit {
     console.log("Vital form is submitted, below are the values");
     console.log(values);
 
-    let benificiaryId = this.vitalForm.get("benificiaryId").value.trim();
-    let height = this.vitalForm.get("height").value.trim();
-    let weight = this.vitalForm.get("weight").value.trim();
-    let bmi = this.vitalForm.get("bmi").value.trim();
-    let temperature = this.vitalForm.get("temperature").value.trim();
-    let pulse = this.vitalForm.get("pulse").value.trim();
-    let bpSystolic = this.vitalForm.get("bpSystolic").value.trim();
-    let bpDiastolic = this.vitalForm.get("bpDiastolic").value.trim();
-    let respiratoryRate = this.vitalForm.get("respiratoryRate").value.trim();
+    let patientId = this.vitalForm.get("benificiaryId").value.trim();
+    let height = this.vitalForm.get("height").value;
+    let weight = this.vitalForm.get("weight").value;
+    let bmi = this.vitalForm.get("bmi").value;
+    let temperature = this.vitalForm.get("temperature").value;
+    let pulseRate = this.vitalForm.get("pulse").value;
+    let bpSystolic = this.vitalForm.get("bpSystolic").value;
+    let bpDiastolic = this.vitalForm.get("bpDiastolic").value;
+    let respiratoryRate = this.vitalForm.get("respiratoryRate").value;
 
-    if (!benificiaryId || benificiaryId <= 0) {
+    let visitId = this.commonService.beneficiaryDetails['userVisitId'];
+    let deviceId = this.commonService.beneficiaryDetails['userDeviceId'];
+    let vanId = this.commonService.beneficiaryDetails['userVanId'];
+    let routeVillageId = this.commonService.beneficiaryDetails['userRouteVillageId'];
+    let servicePointId = this.commonService.beneficiaryDetails['userServicePointId'];
+    let compoundPatientId = this.commonService.beneficiaryDetails['userCompoundPatientId'];
+    let visitCount = this.commonService.beneficiaryDetails['userVisitCount'];
+    let muac = this.muac;
+    let hc = this.hc;
+    let userId = this.commonService.userDetails['userId'];
+    let doctorBpSystolic = this.doctorBpSystolic;
+    let doctorBpDiastolic = this.doctorBpDiastolic;
+
+    if (!patientId || patientId <= 0) {
       alert("Please Select Beneficiary ID");
       return false;
     }
@@ -145,8 +172,16 @@ export class VitalsPage implements OnInit {
       alert("Enter Beneficiary height");
       return false;
     }
+    if (height < 36 || height > 245) {
+      alert("Height should be between 36-245");
+      return false;
+    }
     if (!weight || weight == null) {
       alert("Enter Beneficiary weight");
+      return false;
+    }
+    if (weight < 1.5 || weight > 200) {
+      alert("Weight should be between 1.5-200");
       return false;
     }
     if (!bmi || bmi == null) {
@@ -157,8 +192,16 @@ export class VitalsPage implements OnInit {
       alert("Enter Beneficiary temperature");
       return false;
     }
-    if (!pulse || pulse == null) {
+    if (temperature < 90 || temperature > 105) {
+      alert("Temperature should be between 90-105");
+      return false;
+    }
+    if (!pulseRate || pulseRate == null) {
       alert("Enter Beneficiary pulse");
+      return false;
+    }
+    if (pulseRate < 40 || pulseRate > 130) {
+      alert("PulseRate should be between 40-130");
       return false;
     }
     if (!bpSystolic || bpSystolic == null) {
@@ -173,8 +216,57 @@ export class VitalsPage implements OnInit {
       alert("Enter Beneficiary respiratoryRate");
       return false;
     }
+    if (respiratoryRate < 10 || respiratoryRate > 60) {
+      alert("RespiratoryRate should be between 10-60");
+      return false;
+    }
 
     alert("Form can be submitted...!");
+
+    let vitalFormDetails = {
+      patientId,
+      visitId,
+      deviceId,
+      vanId,
+      routeVillageId,
+      servicePointId,
+      compoundPatientId,
+      visitCount,
+      height,
+      weight,
+      bmi,
+      pulseRate,
+      temperature,
+      respiratoryRate,
+      bpSystolic,
+      bpDiastolic,
+      doctorBpSystolic,
+      doctorBpDiastolic,
+      muac,
+      hc,
+      userId,
+    }
+
+    console.log("Passable vitals details Object is " + JSON.stringify(vitalFormDetails));
+
+    this.db
+      .insertVital(vitalFormDetails)
+      .then(res => {
+        console.log(
+          "Vital details inserted successfully...!" +
+          JSON.stringify(res)
+        );
+        if (res) {
+          console.log("Can be redirected...");
+          this.router.navigate(["/doctor"]);
+        }
+      })
+      .catch(error => {
+        console.error(
+          "Error -> Vital details insertion failed - " +
+          JSON.stringify(error)
+        );
+      });
 
   }
 }

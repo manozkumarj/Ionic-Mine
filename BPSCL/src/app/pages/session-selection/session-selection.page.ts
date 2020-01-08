@@ -50,6 +50,7 @@ export class SessionSelectionPage implements OnInit {
   }
 
   ngOnInit() {
+    console.log("User details are " + JSON.stringify(this.commonService.userDetails));
     this.getSessionTypes();
     this.getStates();
   }

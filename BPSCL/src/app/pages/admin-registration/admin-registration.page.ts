@@ -63,7 +63,7 @@ export class AdminRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getStates() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -78,7 +78,7 @@ export class AdminRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getDistricts() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -93,7 +93,7 @@ export class AdminRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getMandals() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -108,7 +108,7 @@ export class AdminRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getVillages() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -173,7 +173,7 @@ export class AdminRegistrationPage implements OnInit {
         console.log("Admin registered successfully...!" + JSON.stringify(res));
         this.router.navigate(["/login"]);
       })
-      .then(error => {
+      .catch(error => {
         console.error(
           "Error -> Admin registration failed - " + JSON.stringify(error)
         );
