@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
+import { CommonService } from "src/app/services/common.service";
 import { Router } from "@angular/router";
 import { StorageService } from "./../../services/storage.service";
 
@@ -15,6 +16,7 @@ export class LoginPage implements OnInit {
 
   constructor(
     private db: DatabaseService,
+    private commonService: CommonService,
     private router: Router,
     private storageService: StorageService
   ) {
@@ -61,6 +63,15 @@ export class LoginPage implements OnInit {
             "User exist & the user details -> " + JSON.stringify(userDetails)
           );
           console.log("Storable userId -> " + userDetails["userId"]);
+
+          this.commonService.userDetails['firstName'] = userDetails["firstName"];
+          this.commonService.userDetails['lastName'] = userDetails["lastName"];
+          this.commonService.userDetails['fullName'] = userDetails["firstName"] + " " + userDetails["lastName"];
+          this.commonService.userDetails['userId'] = userDetails["userId"];
+          this.commonService.userDetails['roleId'] = userDetails["roleId"];
+          this.commonService.userDetails['deviceId'] = userDetails["deviceId"];
+          this.commonService.userDetails['vanId'] = userDetails["vanId"];
+
           this.storageService
             .setObject("userDetails", {
               firstName: userDetails["firstName"],

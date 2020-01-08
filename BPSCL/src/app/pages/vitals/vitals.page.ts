@@ -97,15 +97,15 @@ export class VitalsPage implements OnInit {
       .getBeneficiaryDetails(selectedBenID)
       .then(benDetails => {
         console.log("Received Ben details are -> " + benDetails);
-        this.commonService.userPhoto = benDetails[0]['imageUrl'];
-        this.commonService.userName = benDetails[0]['name'];
-        this.commonService.userSurname = benDetails[0]['surname'];
-        this.commonService.userAge = 5;
-        this.commonService.userGender = benDetails[0]['genderId'];
-        this.commonService.userDOJ = benDetails[0]['registrationDate'];
-        this.commonService.userDistrict = benDetails[0]['districtId'];
-        this.commonService.userMandal = benDetails[0]['mandalId'];
-        this.commonService.userVillage = benDetails[0]['villageId'];
+        this.commonService.beneficiaryDetails['userPhoto'] = benDetails[0]['imageUrl'];
+        this.commonService.beneficiaryDetails['userName'] = benDetails[0]['name'];
+        this.commonService.beneficiaryDetails['userSurname'] = benDetails[0]['surname'];
+        this.commonService.beneficiaryDetails['userAge'] = 5;
+        this.commonService.beneficiaryDetails['userGender'] = benDetails[0]['gender'];
+        this.commonService.beneficiaryDetails['userDOJ'] = benDetails[0]['registrationDate'];
+        this.commonService.beneficiaryDetails['userDistrict'] = benDetails[0]['districtName'];
+        this.commonService.beneficiaryDetails['userMandal'] = benDetails[0]['mandalName'];
+        this.commonService.beneficiaryDetails['userVillage'] = benDetails[0]['villageName'];
       })
       .catch(error => {
         console.error(

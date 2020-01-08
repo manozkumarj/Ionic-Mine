@@ -6,14 +6,36 @@ import { Injectable } from "@angular/core";
 export class CommonService {
     constructor() { }
 
-    userPhoto: string = 'assets/profile_pic.jpg';
-    userName: string = '';
-    userSurname: string = '';
-    userAge: Number;
-    userGender: string = '';
-    userDOJ: string = '';
-    userDistrict: string = '';
-    userMandal: string = '';
-    userVillage: string = '';
+    beneficiaryDetails: Object = {
+        userPhoto: 'assets/profile_pic.jpg',
+        userName: '',
+        userSurname: '',
+        userAge: null,
+        userGender: '',
+        userDOJ: '',
+        userDistrict: '',
+        userMandal: '',
+        userVillage: ''
+    }
+
+    sessionDetails: Object = {
+        stateId: null,
+        districtId: null,
+        mandalId: null,
+        villageId: null,
+        servicePointId: null,
+        servicePointName: null,
+        servicePointCode: null
+    }
+
+    userDetails: Object = {
+        firstName: null,
+        lastName: null,
+        fullName: null,
+        userId: null,
+        roleId: null,
+        deviceId: null,
+        vanId: null
+    }
 
 }

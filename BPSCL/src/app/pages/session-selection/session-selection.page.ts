@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
+import { CommonService } from "src/app/services/common.service";
 import { StorageService } from "./../../services/storage.service";
 import { Router } from "@angular/router";
 
@@ -33,6 +34,7 @@ export class SessionSelectionPage implements OnInit {
 
   constructor(
     private db: DatabaseService,
+    private commonService: CommonService,
     private router: Router,
     private storageService: StorageService
   ) {
@@ -238,6 +240,14 @@ export class SessionSelectionPage implements OnInit {
     this.servicePointCode = this.servicePoints[getIndex]["servicePointCode"];
     console.log("Selected servicePoint index is --> " + getIndex);
     console.log("Storable servicePoint name is --> " + this.servicePointName);
+
+    this.commonService.sessionDetails['stateId'] = this.stateId;
+    this.commonService.sessionDetails['districtId'] = this.districtId;
+    this.commonService.sessionDetails['mandalId'] = this.mandalId;
+    this.commonService.sessionDetails['villageId'] = this.villageId;
+    this.commonService.sessionDetails['servicePointId'] = selectedServicePointId;
+    this.commonService.sessionDetails['servicePointName'] = this.servicePointName;
+    this.commonService.sessionDetails['servicePointCode'] = this.servicePointCode;
 
     this.storageService
       .setObject("sessionDetails", {
