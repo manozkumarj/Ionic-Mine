@@ -147,12 +147,49 @@ export class AdminRegistrationPage implements OnInit {
     let mandalId = this.adminRegForm.get("mandalId").value;
     let villageId = this.adminRegForm.get("villageId").value;
     let registrationNo = this.adminRegForm.get("vehicleRegistrationNumber")
-      .value;
-    let parkingPlace = this.adminRegForm.get("parkingPlace").value;
-    let imeiNo = this.adminRegForm.get("imeiNo").value;
-    let gcmToken = this.adminRegForm.get("gcmToken").value;
-    let username = this.adminRegForm.get("username").value;
-    let password = this.adminRegForm.get("password").value;
+      .value.trim();
+    let parkingPlace = this.adminRegForm.get("parkingPlace").value.trim();
+    let imeiNo = this.adminRegForm.get("imeiNo").value.trim();
+    let gcmToken = this.adminRegForm.get("gcmToken").value.trim();
+    let username = this.adminRegForm.get("username").value.trim();
+    let password = this.adminRegForm.get("password").value.trim();
+
+    if (!stateId || stateId == null) {
+      alert("Please Select State");
+      return false;
+    }
+    if (!districtId || districtId == null) {
+      alert("Please Select District");
+      return false;
+    }
+    if (!mandalId || mandalId == null) {
+      alert("Please Select Mandal");
+      return false;
+    }
+    if (!villageId || villageId == null) {
+      alert("Please Select Village");
+      return false;
+    }
+    if (!registrationNo || registrationNo == null) {
+      alert("Please Enter Vehicle Registration Number");
+      return false;
+    }
+    if (!imeiNo || imeiNo == null) {
+      alert("Please Enter IMEI Number");
+      return false;
+    }
+    if (!gcmToken || gcmToken == null) {
+      alert("Please Enter GCM Token");
+      return false;
+    }
+    if (!username || username == null) {
+      alert("Please enter Username");
+      return false;
+    }
+    if (!password || password == null) {
+      alert("Please enter Password");
+      return false;
+    }
 
     let adminFormDetails = {
       stateId,
@@ -166,6 +203,8 @@ export class AdminRegistrationPage implements OnInit {
       imeiNo,
       gcmToken
     };
+
+    console.log("Passable Admin details Object is " + JSON.stringify(adminFormDetails));
 
     this.db
       .registerAdmin(adminFormDetails)
