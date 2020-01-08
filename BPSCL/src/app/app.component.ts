@@ -13,31 +13,31 @@ import { DatabaseService } from "./services/database.service";
 })
 export class AppComponent {
   public appPages = [
-    {
-      title: "Initialization",
-      url: "/initialization",
-      icon: "list"
-    },
-    {
-      title: "Home",
-      url: "/home",
-      icon: "list"
-    },
-    {
-      title: "Admin Registration",
-      url: "/admin-registration",
-      icon: "list"
-    },
-    {
-      title: "Login",
-      url: "/login",
-      icon: "list"
-    },
-    {
-      title: "Session Selection",
-      url: "/session-selection",
-      icon: "list"
-    },
+    // {
+    //   title: "Initialization",
+    //   url: "/initialization",
+    //   icon: "list"
+    // },
+    // {
+    //   title: "Home",
+    //   url: "/home",
+    //   icon: "list"
+    // },
+    // {
+    //   title: "Admin Registration",
+    //   url: "/admin-registration",
+    //   icon: "list"
+    // },
+    // {
+    //   title: "Login",
+    //   url: "/login",
+    //   icon: "list"
+    // },
+    // {
+    //   title: "Session Selection",
+    //   url: "/session-selection",
+    //   icon: "list"
+    // },
     {
       title: "Search Beneficiary",
       url: "/search-beneficiary",
@@ -92,7 +92,7 @@ export class AppComponent {
       title: "Other Options",
       url: "/reports",
       icon: "list"
-    },
+    }
     // {
     //   title: "Care Provided",
     //   url: "/care-provided",
