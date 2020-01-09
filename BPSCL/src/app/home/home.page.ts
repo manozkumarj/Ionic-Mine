@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from "@angular/core";
 import { DatabaseService } from "./../services/database.service";
 import { StorageService } from "./../services/storage.service";
 import { Platform } from "@ionic/angular";
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 
 @Component({
   selector: "app-home",
@@ -25,11 +26,23 @@ export class HomePage implements OnInit, OnDestroy, AfterViewInit {
   servicePointId: number;
   servicePointName: string;
 
+  currentScreenOrientation: string;
+
   constructor(
     private db: DatabaseService,
     private platform: Platform,
-    private storageService: StorageService
-  ) { }
+    private storageService: StorageService,
+    private screenOrientation: ScreenOrientation
+  ) {
+    // Changing the app orientation to 'Landscape' and locking it while opening the app.
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+
+    // get current
+    this.currentScreenOrientation = this.screenOrientation.type;
+
+    // logs the current orientation, example: 'landscape'
+    console.log("Orientation Changed" + this.screenOrientation.type);
+  }
 
   ngOnInit() {
     this.loadUserDetails();
