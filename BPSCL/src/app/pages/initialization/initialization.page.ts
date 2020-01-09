@@ -31,7 +31,6 @@ export class InitializationPage implements OnInit {
     } else {
       console.log("Database is ready... :)");
       this.redirector();
-      // this.router.navigate(["/home"]);
     }
   }
 
@@ -87,7 +86,7 @@ export class InitializationPage implements OnInit {
               if (!data) {
                 console.error(
                   "checkTable() -> Something went wrong -> " +
-                    JSON.stringify(res)
+                  JSON.stringify(res)
                 );
               } else {
                 console.log("Table is ready :) -> " + JSON.stringify(res));
@@ -105,7 +104,6 @@ export class InitializationPage implements OnInit {
           if (data) {
             a.dismiss();
             this.redirector();
-            this.router.navigate(["/home"]);
           }
         });
       });

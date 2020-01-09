@@ -1,10 +1,15 @@
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
+import { Router } from "@angular/router";
+
 @Injectable({
   providedIn: "root"
 })
 export class StorageService {
-  constructor(public storage: Storage) {
+  constructor(
+    public storage: Storage,
+    private router: Router
+  ) {
     console.log("Your storage provider is working here !");
   }
 
@@ -71,5 +76,6 @@ export class StorageService {
   //  delete all data from your application:
   clear() {
     this.storage.clear();
+    this.router.navigate(["/login"]);
   }
 }

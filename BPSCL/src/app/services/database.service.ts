@@ -681,7 +681,7 @@ export class DatabaseService {
   }
 
   registerAdmin(data) {
-    let sql = `INSERT INTO ${this.table_admins} (username, password, registrationNo, imeiNo, parkingPlace, villageId, mandalId, districtId, stateId, gcmToken, isActive, insertedDate, updatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,'datetime()','datetime()')`;
+    let sql = `INSERT INTO ${this.table_admins} (username, password, registrationNo, imeiNo, parkingPlace, villageId, mandalId, districtId, stateId, gcmToken, isActive, insertedDate, updatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,datetime('now'),datetime('now'))`;
     return this.dbObject
       .executeSql(sql, [
         data.username,
@@ -711,7 +711,7 @@ export class DatabaseService {
   }
 
   registerBeneficiary(data) {
-    let sql = `INSERT INTO ${this.table_beneficiaries} (patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, registrationDate, name, surname, genderId, dob, communityId, religionId, fatherName, spouseName, motherName, aadharNo, mctsId, villageId, mandalId, districtId, stateId, imageUrl, insertedBy, insertedDate, updatedBy, updatedDate, imageUploadStatus, uploadStatus) VALUES (?,?,?,?,?,?,'datetime()',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'datetime()',?,'datetime()',?,?)`;
+    let sql = `INSERT INTO ${this.table_beneficiaries} (patientId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, registrationDate, name, surname, genderId, dob, communityId, religionId, fatherName, spouseName, motherName, aadharNo, mctsId, villageId, mandalId, districtId, stateId, imageUrl, insertedBy, insertedDate, updatedBy, updatedDate, imageUploadStatus, uploadStatus) VALUES (?,?,?,?,?,?,datetime('now'),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'),?,?)`;
     return this.dbObject
       .executeSql(sql, [
         data.patientId,
@@ -756,7 +756,7 @@ export class DatabaseService {
   }
 
   insertVisit(data) {
-    let sql = `INSERT INTO ${this.table_visits} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, visitDate, age, ageTypeId, ageGroupId, contactNo, familyContactNo, economicStatusId, educationStatusId, maritalStatusId, occupationStatusId, serviceProvidedId, pregnancyStatus, benTypeId, noOfFamilyNumbers, isHandicaped, provisonalDiagnosis, impClinicalFindings, insertedBy, insertedDate, updatedBy, updatedDate, uploadStatus) VALUES (?,?,?,?,?,?,?,?,'datetime()',?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'datetime()',?,'datetime()',?)`;
+    let sql = `INSERT INTO ${this.table_visits} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, visitDate, age, ageTypeId, ageGroupId, contactNo, familyContactNo, economicStatusId, educationStatusId, maritalStatusId, occupationStatusId, serviceProvidedId, pregnancyStatus, benTypeId, noOfFamilyNumbers, isHandicaped, provisonalDiagnosis, impClinicalFindings, insertedBy, insertedDate, updatedBy, updatedDate, uploadStatus) VALUES (?,?,?,?,?,?,?,?,datetime('now'),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'),?)`;
     return this.dbObject
       .executeSql(sql, [
         data.patientId,
@@ -802,7 +802,7 @@ export class DatabaseService {
   }
 
   insertVital(data) {
-    let sql = `INSERT INTO ${this.table_vitals} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, height, weight, bmi, pulseRate, temperature, respiratoryRate, bpSystolic, bpDiastolic, doctorBpSystolic, doctorBpDiastolic, muac, hc, insertedBy, insertedDate, updatedBy, updatedDate, uploadStatus) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'datetime()',?,'datetime()',?)`;
+    let sql = `INSERT INTO ${this.table_vitals} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, height, weight, bmi, pulseRate, temperature, respiratoryRate, bpSystolic, bpDiastolic, doctorBpSystolic, doctorBpDiastolic, muac, hc, insertedBy, insertedDate, updatedBy, updatedDate, uploadStatus) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'),?)`;
     return this.dbObject
       .executeSql(sql, [
         data.patientId,
@@ -844,7 +844,7 @@ export class DatabaseService {
   }
 
   saveSessionDetails(sessionDetails) {
-    let sql = `INSERT INTO ${this.table_saveSessionDetails} (userId, sessionPeriodId, sessionTypeId, deviceId, vanId, insertedDate, sessionStart, sessionEnd) VALUES (?,?,?,?,?, 'datetime()','datetime()', 'datetime()')`;
+    let sql = `INSERT INTO ${this.table_saveSessionDetails} (userId, sessionPeriodId, sessionTypeId, deviceId, vanId, insertedDate, sessionStart, sessionEnd) VALUES (?,?,?,?,?, datetime('now'),datetime('now'), datetime('now'))`;
     return this.dbObject
       .executeSql(sql, [
         sessionDetails.userId,
@@ -868,7 +868,7 @@ export class DatabaseService {
   }
 
   saveServicePointLog(details) {
-    let sql = `INSERT INTO ${this.table_servicePointLog} (deviceId, vanId, servicePointId, userId, insertedDate) VALUES (?,?,?,?, 'datetime()')`;
+    let sql = `INSERT INTO ${this.table_servicePointLog} (deviceId, vanId, servicePointId, userId, insertedDate) VALUES (?,?,?,?, datetime('now'))`;
     return this.dbObject
       .executeSql(sql, [
         details.deviceId,

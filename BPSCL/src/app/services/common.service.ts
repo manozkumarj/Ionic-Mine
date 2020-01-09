@@ -46,4 +46,16 @@ export class CommonService {
         vanId: null
     }
 
+    makeBenObjectEmpty() {
+        this.beneficiaryDetails = {};
+    }
+
+    makeUserObjectEmpty() {
+        this.userDetails = {};
+    }
+
+    makeSessionObjectEmpty() {
+        this.sessionDetails = {};
+    }
+
 }

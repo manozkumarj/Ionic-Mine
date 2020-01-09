@@ -4,7 +4,8 @@ import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { MenuController } from "@ionic/angular";
-import { DatabaseService } from "./services/database.service";
+import { StorageService } from "./services/storage.service";
+import { AlertController } from "@ionic/angular";
 
 @Component({
   selector: "app-root",
@@ -92,6 +93,11 @@ export class AppComponent {
       title: "Other Options",
       url: "/reports",
       icon: "list"
+    },
+    {
+      title: "Logout",
+      url: "/logout",
+      icon: "list"
     }
     // {
     //   title: "Care Provided",
@@ -104,13 +110,38 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    public menuCtrl: MenuController
+    public menuCtrl: MenuController,
+    private storageService: StorageService,
+    private alertCtrl: AlertController
   ) {
     this.initializeApp();
   }
 
   closeMenu() {
     this.menuCtrl.toggle();
+  }
+
+  logout() {
+    this.alertCtrl
+      .create({
+        header: "Are you sure?",
+        message: "Do you want to logout?",
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel"
+          },
+          {
+            text: "Delete",
+            handler: () => {
+              this.storageService.clear();
+            }
+          }
+        ]
+      })
+      .then(alertEl => {
+        alertEl.present();
+      });
   }
 
   initializeApp() {

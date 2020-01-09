@@ -258,6 +258,7 @@ export class VitalsPage implements OnInit {
         );
         if (res) {
           console.log("Can be redirected...");
+          this.commonService.makeBenObjectEmpty();
           this.router.navigate(["/doctor"]);
         }
       })
