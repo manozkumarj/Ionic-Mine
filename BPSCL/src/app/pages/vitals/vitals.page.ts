@@ -98,12 +98,14 @@ export class VitalsPage implements OnInit {
       bpDiastolic: "",
       respiratoryRate: ""
     });
+    this.commonService.makeBenObjectEmpty();
   }
 
   benIdChange() {
     let selectedBenID = this.vitalForm.get("benificiaryId").value;
     console.log("selectedBenID is -> " + selectedBenID);
-    this.getBenDetails(selectedBenID);
+    if (selectedBenID && selectedBenID != null)
+      this.getBenDetails(selectedBenID);
   }
 
   getBenDetails(selectedBenID) {

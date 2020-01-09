@@ -234,6 +234,39 @@ export class SessionSelectionPage implements OnInit {
     console.log("Session form is submitted, below are the values");
     let selectedServicePointId = this.sessionForm.get("servicePointId").value;
     console.log(values);
+
+    let userId = this.userId;
+    let sessionPeriodId = this.sessionPeriodId;
+    let sessionTypeId = this.sessionTypeId;
+    let deviceId = this.deviceId;
+    let vanId = this.vanId;
+    let servicePointId = this.sessionForm.get("servicePointId").value;
+
+    if (!this.sessionTypeId || this.sessionTypeId == null) {
+      alert("Please Select Session");
+      return false;
+    }
+    if (!this.stateId || this.stateId == null) {
+      alert("Please Select State");
+      return false;
+    }
+    if (!this.districtId || this.districtId == null) {
+      alert("Please Select District");
+      return false;
+    }
+    if (!this.mandalId || this.mandalId == null) {
+      alert("Please Select Mandal");
+      return false;
+    }
+    if (!this.villageId || this.villageId == null) {
+      alert("Please Select Village");
+      return false;
+    }
+    if (!servicePointId || servicePointId == null) {
+      alert("Please Select Service point");
+      return false;
+    }
+
     let getIndex = this.servicePoints.findIndex(
       i => (i.servicePointId = selectedServicePointId)
     );
@@ -267,37 +300,6 @@ export class SessionSelectionPage implements OnInit {
         console.error("sessionDetails are not saved in localstorage -->: " + e);
       });
 
-    let userId = this.userId;
-    let sessionPeriodId = this.sessionPeriodId;
-    let sessionTypeId = this.sessionTypeId;
-    let deviceId = this.deviceId;
-    let vanId = this.vanId;
-    let servicePointId = this.sessionForm.get("servicePointId").value;
-
-    if (!this.sessionTypeId || this.sessionTypeId == null) {
-      alert("Please Select Session");
-      return false;
-    }
-    if (!this.stateId || this.stateId == null) {
-      alert("Please Select State");
-      return false;
-    }
-    if (!this.districtId || this.districtId == null) {
-      alert("Please Select District");
-      return false;
-    }
-    if (!this.mandalId || this.mandalId == null) {
-      alert("Please Select Mandal");
-      return false;
-    }
-    if (!this.villageId || this.villageId == null) {
-      alert("Please Select Village");
-      return false;
-    }
-    if (!servicePointId || servicePointId == null) {
-      alert("Please Select Service point");
-      return false;
-    }
 
     let sessionDetails = {
       userId,

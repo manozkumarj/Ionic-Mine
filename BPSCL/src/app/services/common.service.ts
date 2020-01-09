@@ -48,6 +48,7 @@ export class CommonService {
 
     makeBenObjectEmpty() {
         this.beneficiaryDetails = {};
+        this.beneficiaryDetails['userPhoto'] = 'assets/profile_pic.jpg';
     }
 
     makeUserObjectEmpty() {

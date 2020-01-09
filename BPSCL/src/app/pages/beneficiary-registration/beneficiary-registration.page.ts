@@ -580,20 +580,20 @@ export class BeneficiaryRegistrationPage implements OnInit {
     let mctsId = "N/A";
     let name = this.benRegForm.get("benificiaryName").value.trim();
     let surname = this.benRegForm.get("surname").value.trim();
-    let genderId = this.benRegForm.get("gender").value.trim();
+    let genderId = this.benRegForm.get("gender").value;
     let dob = this.benRegForm.get("dateOfBirth").value.trim();
     let age = +this.benRegForm.get("age").value;
-    let ageUnit = this.benRegForm.get("ageUnit").value.trim();
-    let ageCategory = this.benRegForm.get("ageCategory").value.trim();
-    let personalNumber = this.benRegForm.get("personalNumber").value.trim();
+    let ageUnit = this.benRegForm.get("ageUnit").value;
+    let ageCategory = this.benRegForm.get("ageCategory").value;
+    let personalNumber = this.benRegForm.get("personalNumber").value;
     let familyOrRelativeNumber = this.benRegForm
       .get("familyOrRelativeNumber")
-      .value.trim();
-    let communityId = this.benRegForm.get("caste").value.trim();
-    let religionId = this.benRegForm.get("religion").value.trim();
+      .value;
+    let communityId = this.benRegForm.get("caste").value;
+    let religionId = this.benRegForm.get("religion").value;
     let noOfFamilyNumbers = this.benRegForm
       .get("numberOfFamilyMembers")
-      .value.trim();
+      .value;
     let userId = this.userId;
 
     let isBpl = this.isBpl ? 1 : 2;
