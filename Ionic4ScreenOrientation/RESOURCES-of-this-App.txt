@@ -1,0 +1,1 @@
+* https://www.freakyjolly.com/ionic-4-set-screen-orientation-in-landscape-portrait-and-lock-unlock-using-ionic-native-plugin/

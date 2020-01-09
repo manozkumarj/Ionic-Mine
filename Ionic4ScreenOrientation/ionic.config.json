@@ -1,0 +1,7 @@
+{
+  "name": "Ionic4ScreenOrientation",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
