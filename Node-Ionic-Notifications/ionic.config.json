@@ -1,0 +1,7 @@
+{
+  "name": "node-ionic-notifications",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
