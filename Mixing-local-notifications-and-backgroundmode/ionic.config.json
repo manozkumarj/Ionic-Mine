@@ -1,0 +1,7 @@
+{
+  "name": "mixing-local-notifications-and-backgroundmode",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
