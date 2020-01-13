@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "573938606662",
+    "firebase_url": "https://ionic-4-fcm-ea51a.firebaseio.com",
+    "project_id": "ionic-4-fcm-ea51a",
+    "storage_bucket": "ionic-4-fcm-ea51a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:573938606662:android:d989122eaeb6c06822a047",
+        "android_client_info": {
+          "package_name": "com.felebs.ionicfcm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "573938606662-1uv19lhp6lr9ltp5ierdg6f5do8adibq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1Zn8tmRO-BGMYDwjYRMbeahnfJBkxhOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "573938606662-1uv19lhp6lr9ltp5ierdg6f5do8adibq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

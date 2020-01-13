@@ -1,0 +1,46 @@
+* https://www.djamware.com/post/5c6ccd1f80aca754f7a9d1ec/push-notification-using-ionic-4-and-firebase-cloud-messaging
+
+* https://www.youtube.com/watch?v=m7jRaRMhxKY
+
+* https://stackoverflow.com/questions/45309674/fcm-with-postman-the-request-was-missing-an-authentication-key-fcm-token
+
+* https://stackoverflow.com/questions/57961829/legacy-fcm-response-now-forbidden
+
+Postman:
+
+Headers:-
+POST URL -> https://fcm.googleapis.com/fcm/send
+Content-Type -> application/json
+Authorization -> key=AAAAhaFoIkY:APA91bFgnGzZoGv6s0fd6fiJ6PMZemLPvnpgYopmjc_PQxNg7toOPp6BSZGDYHh5zZHpZSk5uBl4w2kwxQQo6rnlGBNuBQHg3Ljw33OzmCP7hqWqVquKmGVh0WiJbQ7dWPpHMf9n5AfF
+
+Body:-
+{
+  "notification":{
+    "title":"Ionic 4 Notification",
+    "body":"This notification sent from POSTMAN using Firebase HTTP protocol",
+    "sound":"default",
+    "click_action":"FCM_PLUGIN_ACTIVITY",
+    "icon":"fcm_push_icon"
+  },
+  "data":{
+    "landing_page":"second",
+    "price":"$1,00,000.00"
+  },
+    "to":"fHdc9a0r9l4:APA91bEICCmL3eK1TlQFRJdG2mPyBCTHM0LAD_k4STm-PKHvrCwp2psE5G0kgsA9LwJZEO29DDcaZzzsN6xmnhLq0PxOW1uUW99bxXrq2byDvAnYdL4SVTkotAjUonNr2QqAwEYY_pNm",
+    "priority":"high",
+    "restricted_package_name":""
+}
+
+
+
+Note: 
+-> 'Server Key' from console.firebase.google.com account will be used as 'Authorization' value in Headers. Don't forget to prefix 'key='
+-> Whatever the token we get in console will be used as 'to' value while sending notification.
+
+
+
+Commands need to run:
+-> ionic cordova platform add android
+-> ionic cordova platform rm android
+-> ionic integrations enable cordova --add
+-> ionic cordova run android -l
