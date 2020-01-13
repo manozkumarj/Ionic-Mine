@@ -18,9 +18,10 @@ export class HomePage {
     platform.ready().then(() => {
       this.backgroundMode.on("activate").subscribe(() => {
         console.log("Device is in background... :)");
-        if (this.notificationAlreadyReceived === false) {
-          this.showNotification();
-        }
+        this.showNotificationWith5SecondsDelay();
+        // if (this.notificationAlreadyReceived === false) {
+        //   this.showNotificationWith5SecondsDelay();
+        // }
       });
 
       this.backgroundMode.on("deactivate").subscribe(() => {
@@ -34,10 +35,20 @@ export class HomePage {
 
   showNotification() {
     this.localNotifications.schedule({
-      text: "There is a legendary Pokemon near you",
+      text: "There is a legendary Pokemon near you...",
       foreground: true
     });
 
-    this.notificationAlreadyReceived = true;
+    // this.notificationAlreadyReceived = true;
+  }
+
+  showNotificationWith5SecondsDelay() {
+    this.localNotifications.schedule({
+      text: "There is a legendary Pokemon near you...",
+      foreground: true,
+      trigger: { at: new Date(new Date().getTime() + 15000) }
+    });
+
+    // this.notificationAlreadyReceived = true;
   }
 }
