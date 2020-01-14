@@ -161,31 +161,31 @@ app.get('/getTokens', function (req, res) {
         token_array.push(result[i]);
     }
 
-    // for (let i = 0; i < token_array.length; i++) {
-    //     var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
-    //         to: token_array[i].token,
-    //         collapse_key: 'pinkk',
+    for (let i = 0; i < token_array.length; i++) {
+    	console.log("Token is --> " + token_array[i].token);
+        var message = { //this may vary according to the message type (single recipient, multicast, topic, et cetera)
+            to: token_array[i].token,
 
-    //         notification: {
-    //             title: 'Title of your push notification',
-    //             body: 'Body of your push notification'
-    //         },
+            notification: {
+                title: 'Ionic 4 Notification',
+                body: 'This notification sent from POSTMAN using Firebase HTTP protocol'
+            },
 
-    //         data: {  //you can send only notification or only data(or include both)
-    //             my_key: 'my value',
-    //             my_another_key: 'my another value'
-    //         }
-    //     };
+            data: {  //you can send only notification or only data(or include both)
+                landing_page: 'second',
+                price: '$69,00,000.00'
+            }
+        };
 
-    //     fcm.send(message, function (err, response) {
-    //         if (err) {
-    //             console.log("Something has gone wrong!");
-    //             console.log(err);
-    //         } else {
-    //             console.log("Successfully sent with response: ", response);
-    //         }
-    //     });
-    // }
+        fcm.send(message, function (err, response) {
+            if (err) {
+                console.log("Something has gone wrong!");
+                console.log(err);
+            } else {
+                console.log("Successfully sent with response: ", response);
+            }
+        });
+    }
 
 	    res.json(result);
 	});

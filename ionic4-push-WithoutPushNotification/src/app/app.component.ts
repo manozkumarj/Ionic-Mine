@@ -42,15 +42,16 @@ export class AppComponent {
       .get("storedToken")
       .then(result => {
         this.storedToken = result;
-        if (result != null) {
-          console.log("storedToken is: " + result);
+        if (result) {
+          console.log("Token is already stored");
         }
+        console.log("storedToken is: " + result);
+        this.initializeApp();
       })
       .catch(e => {
         console.log("error: " + e);
         // Handle errors here
       });
-    this.initializeApp();
   }
 
   initializeApp() {
@@ -59,7 +60,7 @@ export class AppComponent {
       this.splashScreen.hide();
 
       this.fcm.getToken().then(token => {
-        console.log(token);
+      //  console.log(token);
         this.token = token;
         if (!this.storedToken) {
           this.insertToken(token);
@@ -67,7 +68,7 @@ export class AppComponent {
       });
 
       this.fcm.onTokenRefresh().subscribe(token => {
-        console.log(token);
+      //  console.log(token);
         this.token = token;
         if (!this.storedToken) {
           this.insertToken(token);
@@ -88,7 +89,11 @@ export class AppComponent {
   }
 
   insertToken(token) {
+  console.log("this.storedToken --> " + this.storedToken);
     console.log("Token is, from app.component.ts -> " + token);
-    this.fcmService.storeToken(this.token);
+
+    if (!this.storedToken) {
+      this.fcmService.storeToken(this.token);
+    }
   }
 }

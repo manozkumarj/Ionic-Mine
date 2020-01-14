@@ -33,6 +33,7 @@ karma.conf.js
 */platforms
 */plugins
 */www
+*/resources
 
 project-developers/node_modules
 project-developers/dist
