@@ -78,6 +78,9 @@ export class AppComponent {
 
     this.fcm.onNotification().subscribe(data => {
       console.log(data);
+
+      this.fcmService.insertItem();
+
       if (data.wasTapped) {
         console.log("Received in background");
         this.router.navigate([data.landing_page, data.price]);

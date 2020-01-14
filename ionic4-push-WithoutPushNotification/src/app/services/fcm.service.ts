@@ -49,4 +49,23 @@ export class FcmServices {
         }
       );
   }
+
+  insertItem() {
+    let d = new Date();
+    let seconds = d.getTime();
+    let itemArray = {
+      item: "item inserted @ " + seconds
+    };
+    this.http
+      .post(`http://${this.ipAddress}:${this.port}/insertItem`, itemArray)
+      .subscribe(
+        data => {
+          console.log("Item is inserted");
+        },
+        error => {
+          console.error("Item is not inserted, reason is below");
+          console.error(JSON.stringify(error));
+        }
+      );
+  }
 }

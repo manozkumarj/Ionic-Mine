@@ -131,7 +131,7 @@ app.post('/insertItems', function (req, res) {
 });
 
 
-// Inserting items
+// Inserting Token
 app.post('/storeToken', function (req, res) {
     console.log("Received is -> " + JSON.stringify(req.body));	
 	var token = req.body.token;
@@ -147,7 +147,7 @@ app.post('/storeToken', function (req, res) {
 });
 
 
-// Fetching items
+// Fetching Tokens
 app.get('/getTokens', function (req, res) {
 
     var token_array = [];
@@ -192,26 +192,34 @@ app.get('/getTokens', function (req, res) {
 });
 
 
-app.listen(port, () => {
-	console.log('Server is listening on port --> ' + port);
+// Inserting items
+app.post('/insertItem', function (req, res) {
+    console.log("Received item array -> " + JSON.stringify(req.body));	
+	var item = req.body.item;
+    // console.log("Received item is -> " + item);
+
+  	var sql = `INSERT INTO items (item) VALUES ('${item}')`;
+	con.query(sql, function (err, result, fields) {
+		console.log("From /insertItem");
+	    if (err) console.log(err);
+	    console.log("Inserted item --> "+ item);
+	    res.json(result);
+	});
 });
 
 
+// Fetching items
+app.get('/getItems', function (req, res) {
+
+  	var sql = `SELECT * FROM items ORDER BY id DESC`;
+	con.query(sql, function (err, result, fields) {
+	    if (err) console.log(err);
+	    res.json(result);
+	});
+
+});
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.listen(port, () => {
+	console.log('Server is listening on port --> ' + port);
+});
