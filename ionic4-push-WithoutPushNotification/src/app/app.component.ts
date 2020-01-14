@@ -5,6 +5,8 @@ import { Router } from "@angular/router";
 import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
+import { FcmServices } from "./services/fcm.service";
+import { StorageService } from "./services/storage.service";
 
 @Component({
   selector: "app-root",
@@ -12,6 +14,8 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
   styleUrls: ["app.component.scss"]
 })
 export class AppComponent {
+  storedToken: string = "";
+  token: string = "";
   public appPages = [
     {
       title: "Home",
@@ -30,8 +34,22 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private fcm: FCM,
-    private router: Router
+    private router: Router,
+    public fcmService: FcmServices,
+    private storageService: StorageService
   ) {
+    this.storageService
+      .get("storedToken")
+      .then(result => {
+        this.storedToken = result;
+        if (result != null) {
+          console.log("storedToken is: " + result);
+        }
+      })
+      .catch(e => {
+        console.log("error: " + e);
+        // Handle errors here
+      });
     this.initializeApp();
   }
 
@@ -42,10 +60,18 @@ export class AppComponent {
 
       this.fcm.getToken().then(token => {
         console.log(token);
+        this.token = token;
+        if (!this.storedToken) {
+          this.insertToken(token);
+        }
       });
 
       this.fcm.onTokenRefresh().subscribe(token => {
         console.log(token);
+        this.token = token;
+        if (!this.storedToken) {
+          this.insertToken(token);
+        }
       });
     });
 
@@ -59,5 +85,10 @@ export class AppComponent {
         this.router.navigate([data.landing_page, data.price]);
       }
     });
+  }
+
+  insertToken(token) {
+    console.log("Token is, from app.component.ts -> " + token);
+    this.fcmService.storeToken(this.token);
   }
 }
