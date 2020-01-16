@@ -1,2 +1,2 @@
-* https://javascripttuts.com/hit-the-ground-running-with-ionic-3/
+* https://javascripttuts.com/mixing-local-notifications-and-background-geolocation-in-ionic/
 * 
