@@ -29,6 +29,10 @@ export class HomePage {
         this.showNotification();
       });
 
+      this.backgroundMode.on("pause").subscribe(() => {
+        console.log("Device is Paused... :)");
+      });
+
       this.backgroundMode.enable();
     });
   }
