@@ -51,7 +51,7 @@ export class MedicineDispensePage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   loadBeneficiaries() {
     this.db
@@ -65,7 +65,7 @@ export class MedicineDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -80,7 +80,7 @@ export class MedicineDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getDispenses() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }

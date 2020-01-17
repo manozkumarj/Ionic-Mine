@@ -38,6 +38,7 @@ export class DatabaseService {
   table_roles: string = "mu_Role";
   table_reports: string = "ms_Report";
   table_provisionalDiagnosis: string = "mp_ProvisionalDiagnosis";
+  table_labTests: string = "mp_LabTest";
 
   stateId: number = 21;
   status = {
@@ -631,6 +632,24 @@ export class DatabaseService {
         }
       }
       return diagnoses;
+    });
+  }
+
+  getLabTests() {
+    let sql = `SELECT labTestId, labTestName, validValues, units FROM ${this.table_labTests} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let labTests = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          labTests.push({
+            labTestId: data.rows.item(i).labTestId,
+            labTestName: data.rows.item(i).labTestName,
+            validValues: data.rows.item(i).validValues,
+            units: data.rows.item(i).units
+          });
+        }
+      }
+      return labTests;
     });
   }
 

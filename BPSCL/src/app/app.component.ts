@@ -60,6 +60,11 @@ export class AppComponent {
       icon: "list"
     },
     {
+      title: "LabTest",
+      url: "/lab-test",
+      icon: "list"
+    },
+    {
       title: "Medicine Dispense",
       url: "/medicine-dispense",
       icon: "list"

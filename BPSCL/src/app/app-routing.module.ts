@@ -84,6 +84,10 @@ const routes: Routes = [
   {
     path: 'initialization',
     loadChildren: () => import('./pages/initialization/initialization.module').then(m => m.InitializationPageModule)
+  },
+  {
+    path: 'lab-test',
+    loadChildren: () => import('./pages/lab-test/lab-test.module').then( m => m.LabTestPageModule)
   }
 
 ];
