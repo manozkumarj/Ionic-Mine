@@ -58,8 +58,9 @@
                 <ion-col size="12" size-sm>
                   <ion-select formControlName="rch" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option value="1">Female</ion-select-option>
-                    <ion-select-option value="2">Male</ion-select-option>
+                    <ion-select-option value="1">111</ion-select-option>
+                    <ion-select-option value="2">222</ion-select-option>
+                    <ion-select-option value="3">333</ion-select-option>
                   </ion-select>
                 </ion-col>
               </ion-row>
@@ -68,7 +69,27 @@
                   CD(Chronic Illness)
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input [disabled]="showRemarks" formControlName="cd" class="field-input" value=""></ion-input>
+                  <ion-select (ionChange)="cdChange()" [disabled]="showRemarks" formControlName="cd" multiple="true"
+                    class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                    <ion-select-option value="1">111</ion-select-option>
+                    <ion-select-option value="2">222</ion-select-option>
+                    <ion-select-option value="3">333</ion-select-option>
+                    <ion-select-option value="4">444</ion-select-option>
+                    <ion-select-option value="5">555</ion-select-option>
+                    <ion-select-option value="6">666</ion-select-option>
+                    <ion-select-option value="7">777</ion-select-option>
+                    <ion-select-option value="other">CD_Other</ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45" [ngClass]="{
+                'hider': !allowOtherCd }">
+                <ion-col class="col-border-right" size="12" size-sm>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="otherCd" placeholder="CD_Other" class="field-input" value="">
+                  </ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -76,7 +97,27 @@
                   NCD(Nutritional Diseases)
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input [disabled]="showRemarks" formControlName="ncd" class="field-input" value=""></ion-input>
+                  <ion-select (ionChange)="ncdChange()" [disabled]="showRemarks" formControlName="ncd" multiple="true"
+                    class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                    <ion-select-option value="1">111</ion-select-option>
+                    <ion-select-option value="2">222</ion-select-option>
+                    <ion-select-option value="3">333</ion-select-option>
+                    <ion-select-option value="4">444</ion-select-option>
+                    <ion-select-option value="5">555</ion-select-option>
+                    <ion-select-option value="6">666</ion-select-option>
+                    <ion-select-option value="7">777</ion-select-option>
+                    <ion-select-option value="other">NCD_Other</ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45" [ngClass]="{
+                'hider': !allowOtherNcd }">
+                <ion-col class="col-border-right" size="12" size-sm>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="otherNcd" placeholder="NCD_Other" class="field-input" value="">
+                  </ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -84,7 +125,27 @@
                   Minor Ailments
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input [disabled]="showRemarks" formControlName="minorAilments" class="field-input" value="">
+                  <ion-select (ionChange)="minorAilmentChange()" [disabled]="showRemarks"
+                    formControlName="minorAilments" multiple="true" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                    <ion-select-option value="1">111</ion-select-option>
+                    <ion-select-option value="2">222</ion-select-option>
+                    <ion-select-option value="3">333</ion-select-option>
+                    <ion-select-option value="4">444</ion-select-option>
+                    <ion-select-option value="5">555</ion-select-option>
+                    <ion-select-option value="6">666</ion-select-option>
+                    <ion-select-option value="7">777</ion-select-option>
+                    <ion-select-option value="other">MinorAilment_Other</ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-row>
+              <ion-row class="row-border row-height-45" [ngClass]="{
+                'hider': !allowOtherMinorAilment }">
+                <ion-col class="col-border-right" size="12" size-sm>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-input formControlName="otherMinorAilment" placeholder="MinorAilment_Other" class="field-input"
+                    value="">
                   </ion-input>
                 </ion-col>
               </ion-row>

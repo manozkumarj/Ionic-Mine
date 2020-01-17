@@ -26,7 +26,6 @@ import { IonicStorageModule } from "@ionic/storage";
     AppRoutingModule,
     HttpClientModule,
     ExporterModule,
-    ScreenOrientation,
     IonicStorageModule.forRoot()
   ],
   providers: [
@@ -36,6 +35,7 @@ import { IonicStorageModule } from "@ionic/storage";
     Camera,
     SQLite,
     SQLitePorter,
+    ScreenOrientation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
