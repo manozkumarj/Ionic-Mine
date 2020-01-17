@@ -17,6 +17,7 @@ import { StorageService } from "./services/storage.service";
 })
 export class AppComponent {
   storedToken: string = "";
+  intervalVar;
   token: string = "";
   public appPages = [
     {
@@ -113,10 +114,17 @@ export class AppComponent {
       console.log("Device is in background... :)");
       this.showNotificationWith15SecondsDelay();
       this.showNotificationWith1MinuteDelay();
+
+      this.intervalVar = setInterval(() => {
+        // Inserting an item every 30 seconds
+        this.fcmService.insertItem();
+      }, (1000*30));
+
     });
 
     this.backgroundMode.on("deactivate").subscribe(() => {
       console.log("Device is in foreground...");
+      clearInterval(this.intervalVar);
       this.showNotification();
     });
 
