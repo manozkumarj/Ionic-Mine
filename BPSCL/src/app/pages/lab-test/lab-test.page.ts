@@ -12,7 +12,29 @@ import { Router } from "@angular/router";
 export class LabTestPage implements OnInit {
   labTestForm: FormGroup;
   benIds: any[] = [];
-  labTests: any[] = [];
+  selectedLabTests: any[] = [];
+  labTests: any[] = [
+    {
+      id: 1,
+      name: 'One',
+      result: '',
+      unit: 'mg%'
+    },
+    {
+      id: 2,
+      name: 'Two',
+      result: '',
+      unit: 'null'
+    },
+    {
+      id: 3,
+      name: 'Three',
+      result: '',
+      unit: 'kms'
+    }
+  ];
+
+  showLabTests: boolean = false;
 
   constructor(
     private db: DatabaseService,
@@ -62,6 +84,12 @@ export class LabTestPage implements OnInit {
           JSON.stringify(error)
         );
       });
+  }
+
+  benIdChange() {
+    let selectedBenID = this.labTestForm.get("beneficiaryId").value;
+    console.log("selectedBenID is -> " + selectedBenID);
+    this.showLabTests = true;
   }
 
   resetValues() {

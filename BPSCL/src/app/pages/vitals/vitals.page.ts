@@ -28,7 +28,7 @@ export class VitalsPage implements OnInit {
     this.loadBeneficiaries();
 
     this.vitalForm = new FormGroup({
-      benificiaryId: new FormControl("", Validators.required),
+      beneficiaryId: new FormControl("", Validators.required),
       height: new FormControl("", Validators.required),
       weight: new FormControl("", Validators.required),
       bmi: new FormControl("", Validators.required),
@@ -88,7 +88,7 @@ export class VitalsPage implements OnInit {
 
   resetValues() {
     this.vitalForm.patchValue({
-      benificiaryId: "",
+      beneficiaryId: "",
       height: "",
       weight: "",
       bmi: "",
@@ -102,7 +102,7 @@ export class VitalsPage implements OnInit {
   }
 
   benIdChange() {
-    let selectedBenID = this.vitalForm.get("benificiaryId").value;
+    let selectedBenID = this.vitalForm.get("beneficiaryId").value;
     console.log("selectedBenID is -> " + selectedBenID);
     if (selectedBenID && selectedBenID != null)
       this.getBenDetails(selectedBenID);
@@ -143,7 +143,7 @@ export class VitalsPage implements OnInit {
     console.log("Vital form is submitted, below are the values");
     console.log(values);
 
-    let patientId = this.vitalForm.get("benificiaryId").value.trim();
+    let patientId = this.vitalForm.get("beneficiaryId").value.trim();
     let height = this.vitalForm.get("height").value;
     let weight = this.vitalForm.get("weight").value;
     let bmi = this.vitalForm.get("bmi").value;
