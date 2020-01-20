@@ -19,6 +19,20 @@ export class VitalsPage implements OnInit {
   muac = 0.0;
   hc = 0.0;
 
+  newDate = new Date();
+  dateTime: string = this.commonService.getDateTime(this.newDate);
+
+  userId: number;
+  vanId: number;
+  deviceId: number;
+  stateId: number;
+  districtId: number;
+  mandalId: number;
+  villageId: number;
+  servicePointId: number;
+  servicePointName: string;
+  servicePointCode: string;
+
   constructor(
     private db: DatabaseService,
     private commonService: CommonService,
@@ -42,6 +56,16 @@ export class VitalsPage implements OnInit {
 
   ngOnInit() {
     console.log("User details are " + JSON.stringify(this.commonService.userDetails));
+  }
+
+  loadSessionDetails() {
+    this.stateId = this.commonService.sessionDetails['stateId'];
+    this.districtId = this.commonService.sessionDetails['districtId'];
+    this.mandalId = this.commonService.sessionDetails['mandalId'];
+    this.villageId = this.commonService.sessionDetails['villageId'];
+    this.servicePointId = this.commonService.sessionDetails['servicePointId'];
+    this.servicePointName = this.commonService.sessionDetails['servicePointName'];
+    this.servicePointCode = this.commonService.sessionDetails['servicePointCode'];
   }
 
   loadBeneficiaries() {

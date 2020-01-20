@@ -2,6 +2,7 @@ import { LoginPageRoutingModule } from './../login/login-routing.module';
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
+import { CommonService } from "src/app/services/common.service";
 import { StorageService } from "./../../services/storage.service";
 import { ConstantsService } from "../../services/constants.service";
 import { Router } from "@angular/router";
@@ -19,6 +20,16 @@ export class BeneficiaryRegistrationPage implements OnInit {
   ageCategories: any[] = [];
   castes: any[] = [];
   religions: any[] = [];
+  pregnancyStatuses: any[] = [
+    {
+      id: 1,
+      status: 'Yes'
+    },
+    {
+      id: 2,
+      status: 'No'
+    }
+  ];
 
   userId: number;
   vanId: number;
@@ -41,10 +52,10 @@ export class BeneficiaryRegistrationPage implements OnInit {
   personalNumberChecked: boolean = false;
   bplChecked: boolean = true;
   handicappedChecked: boolean = false;
+  showPregnancyField: boolean = false;
 
   newDate = new Date();
-
-  dateTime: string = this.getDateTime(this.newDate);
+  dateTime: string = this.commonService.getDateTime(this.newDate);
   isPhotoCaptured: boolean = false;
   benPhoto: string = "assets/profile_pic.jpg";
 
@@ -54,6 +65,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
   constructor(
     private db: DatabaseService,
+    private commonService: CommonService,
     private router: Router,
     private camera: Camera,
     private storageService: StorageService,
@@ -68,6 +80,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       gender: new FormControl("", Validators.required),
       age: new FormControl("", Validators.required),
       ageUnit: new FormControl("", Validators.required),
+      pregnancyStatus: new FormControl("", Validators.required),
       dateOfBirth: new FormControl("", Validators.required),
       ageCategory: new FormControl("", Validators.required),
       personalNumber: new FormControl("", Validators.required),
@@ -100,27 +113,13 @@ export class BeneficiaryRegistrationPage implements OnInit {
   }
 
   loadSessionDetails() {
-    this.storageService
-      .getObject("sessionDetails")
-      .then(data => {
-        console.log("sessionDetails are  -> " + JSON.stringify(data));
-        this.stateId = data.stateId;
-        this.districtId = data.districtId;
-        this.mandalId = data.mandalId;
-        this.villageId = data.villageId;
-        this.servicePointId = data.servicePointId;
-        this.servicePointName = data.servicePointName;
-        this.servicePointCode = data.servicePointCode;
-
-        this.getMaxBeneficiaryId(this.servicePointId);
-        this.getMaxVisitId(this.servicePointId);
-
-      })
-      .catch(error => {
-        console.error(
-          "sessionDetails were not set -> " + JSON.stringify(error)
-        );
-      });
+    this.stateId = this.commonService.sessionDetails['stateId'];
+    this.districtId = this.commonService.sessionDetails['districtId'];
+    this.mandalId = this.commonService.sessionDetails['mandalId'];
+    this.villageId = this.commonService.sessionDetails['villageId'];
+    this.servicePointId = this.commonService.sessionDetails['servicePointId'];
+    this.servicePointName = this.commonService.sessionDetails['servicePointName'];
+    this.servicePointCode = this.commonService.sessionDetails['servicePointCode'];
   }
 
 
@@ -263,20 +262,6 @@ export class BeneficiaryRegistrationPage implements OnInit {
         console.log("Error - takeSnap() returned error --> " + error);
       }
     );
-  }
-
-  getDateTime(myDate) {
-    return (
-      myDate.getFullYear() +
-      "-" +
-      this.padDatePart(myDate.getMonth() + 1) +
-      "-" +
-      this.padDatePart(myDate.getDate())
-    );
-  }
-
-  padDatePart(part) {
-    return ("0" + part).slice(-2);
   }
 
   loadGenders() {
@@ -456,7 +441,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
     if (manageAction) {
       console.log("Set calender value as -> " + dob);
-      let assignDob = this.getDateTime(dob);
+      let assignDob = this.commonService.getDateTime(dob);
       this.benRegForm.patchValue({ dateOfBirth: assignDob });
     }
   }
@@ -501,6 +486,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
   }
 
   selectAgeCategory(ageValue, ageType, gender) {
+    this.showPregnancyField = false;
     if (gender == 0 || ageType == 0 || ageValue == 0) {
       return false;
     }
@@ -523,6 +509,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       } else if (ageValue > 5 && ageValue <= 10) {
         this.benRegForm.patchValue({ ageCategory: 8 });
       } else if (ageValue > 15 && ageValue < 45 && gender == 2) {
+        this.showPregnancyField = true;
         this.benRegForm.patchValue({ ageCategory: 4 });
       } else if (ageValue > 10 && ageValue < 20) {
         this.benRegForm.patchValue({ ageCategory: 9 });

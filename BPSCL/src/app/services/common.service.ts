@@ -23,7 +23,10 @@ export class CommonService {
         userVanId: '',
         userRouteVillageId: '',
         userServicePointId: '',
-        userCompoundPatientId: ''
+        userCompoundPatientId: '',
+        age: '',
+        ageTypeId: '',
+        pregnancyStatus: ''
     }
 
     sessionDetails: Object = {
@@ -32,7 +35,7 @@ export class CommonService {
         mandalId: null,
         villageId: null,
         servicePointId: null,
-        servicePointName: null,
+        servicePointName: 'Loading...',
         servicePointCode: null
     }
 
@@ -57,6 +60,20 @@ export class CommonService {
 
     makeSessionObjectEmpty() {
         this.sessionDetails = {};
+    }
+
+    getDateTime(myDate) {
+        return (
+            myDate.getFullYear() +
+            "-" +
+            this.padDatePart(myDate.getMonth() + 1) +
+            "-" +
+            this.padDatePart(myDate.getDate())
+        );
+    }
+
+    padDatePart(part) {
+        return ("0" + part).slice(-2);
     }
 
 }
