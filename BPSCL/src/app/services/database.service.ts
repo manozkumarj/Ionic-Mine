@@ -33,12 +33,14 @@ export class DatabaseService {
   table_beneficiaries: string = "dp_Registration";
   table_visits: string = "dp_Visit";
   table_vitals: string = "dp_Vitals";
+  table_provisionalDiagnosis: string = "dp_ProvisionalDiagnosis";
   table_dispenses: string = "mi_Item";
-  table_hospitals: string = "mp_HospitalList";
+  table_refferedTo: string = "dp_Referral";
+  table_refferedTo_m: string = "mp_HospitalList";
   table_beneficiaryTypes: string = "mp_BeneficiaryType";
   table_roles: string = "mu_Role";
   table_reports: string = "ms_Report";
-  table_provisionalDiagnosis: string = "mp_ProvisionalDiagnosis";
+  table_provisionalDiagnosis_m: string = "mp_ProvisionalDiagnosis";
   table_labTests: string = "mp_LabTest";
 
   stateId: number = 21;
@@ -559,8 +561,8 @@ export class DatabaseService {
     });
   }
 
-  getHospitals() {
-    let sql = `SELECT hospitalId, hospitalName FROM ${this.table_hospitals} WHERE isActive = ${this.status.active}`;
+  geRefferedTos() {
+    let sql = `SELECT hospitalId, hospitalName FROM ${this.table_refferedTo_m} WHERE isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let hospitals = [];
       if (data.rows.length > 0) {
@@ -623,8 +625,8 @@ export class DatabaseService {
     });
   }
 
-  getProvisionalDiagnosis(category) {
-    let sql = `SELECT provisionalDiagnosisId, provisionalDiagnosisName FROM ${this.table_provisionalDiagnosis} WHERE category = ${category} AND isActive = ${this.status.active}`;
+  getProvisionalDiagnoses(category) {
+    let sql = `SELECT provisionalDiagnosisId, provisionalDiagnosisName FROM ${this.table_provisionalDiagnosis_m} WHERE category = ${category} AND isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let diagnoses = [];
       if (data.rows.length > 0) {
@@ -718,6 +720,36 @@ export class DatabaseService {
       id = data.rows.item(0).sessionPeriodId;
       return id;
     });
+  }
+
+  getProvisionalDiagnose(patientId, servicePointId, vanId, provisionalDiagnosisId, visitId) {
+    let sql = `SELECT provisionalDiagnosisId FROM ${this.table_provisionalDiagnosis} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND provisionalDiagnosisId = ? AND visitId = ? LIMIT 1`;
+    return this.dbObject.executeSql(sql, [patientId, servicePointId, vanId, provisionalDiagnosisId, visitId]).then(data => {
+      let provisionalDiagnosis = [];
+      provisionalDiagnosisId = data.rows.item(0).provisionalDiagnosisId;
+      return provisionalDiagnosis;
+    })
+      .catch(error => {
+        console.warn(
+          "database - getProvisionalDiagnose - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  getRefferedTo(patientId, servicePointId, vanId, visitId) {
+    let sql = `SELECT patientId FROM ${this.table_refferedTo} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND AND visitId = ? LIMIT 1`;
+    return this.dbObject.executeSql(sql, [patientId, servicePointId, vanId, visitId]).then(data => {
+      let patientIds = [];
+      patientId = data.rows.item(0).patientId;
+      return patientIds;
+    })
+      .catch(error => {
+        console.warn(
+          "database - getRefferedTo - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
   }
 
   registerAdmin(data) {
@@ -878,6 +910,66 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - insertVital() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  insertProvisionalDiagnose(data) {
+    let sql = `INSERT INTO ${this.table_provisionalDiagnosis} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, provisionalDiagnosisId, provisionalDiagnosisOther, remarks, insertedBy, insertedDate, updatedBy, updatedDate, uploadStatus) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'),?)`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.patientId,
+        data.visitId,
+        data.deviceId,
+        data.vanId,
+        data.routeVillageId,
+        data.servicePointId,
+        data.compoundPatientId,
+        data.visitCount,
+        data.provisionalDiagnosisId,
+        data.provisionalDiagnosisOther,
+        data.remarks,
+        data.userId,
+        data.userId,
+        this.status.active
+      ])
+      .then(res => {
+        console.log(
+          "database - insertProvisionalDiagnose() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - insertProvisionalDiagnose() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  updateProvisionalDiagnose(data) {
+    let sql = `UPDATE ${this.table_provisionalDiagnosis} SET provisionalDiagnosisId = ?, provisionalDiagnosisOther = ?, remarks = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND provisionalDiagnosisId = ? AND visitId = ?`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.provisionalDiagnosisId,
+        data.provisionalDiagnosisOther,
+        data.remarks,
+        data.userId,
+        data.patientId,
+        data.servicePointId,
+        data.vanId,
+        data.visitId
+      ])
+      .then(res => {
+        console.log(
+          "database - updateProvisionalDiagnose() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - updateProvisionalDiagnose() - Error -> " + JSON.stringify(error)
         );
         return false;
       });

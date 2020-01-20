@@ -112,7 +112,7 @@ export class DoctorPage implements OnInit {
 
   loadHospitals() {
     this.db
-      .getHospitals()
+      .geRefferedTos()
       .then(hospitals => {
         console.log(
           "Fetched hospitals -> " + JSON.stringify(hospitals)
@@ -121,7 +121,7 @@ export class DoctorPage implements OnInit {
       })
       .catch(error => {
         console.error(
-          "Error -> getHospitals() function returned error." +
+          "Error -> geRefferedTos() function returned error." +
           JSON.stringify(error)
         );
       });
@@ -138,7 +138,7 @@ export class DoctorPage implements OnInit {
     }
 
     this.db
-      .getProvisionalDiagnosis(category)
+      .getProvisionalDiagnoses(category)
       .then(results => {
         console.log(
           `Fetched ${categoryName} ->  + JSON.stringify(results)`
@@ -366,9 +366,9 @@ export class DoctorPage implements OnInit {
 
     let patientId = this.doctorForm.get("beneficiaryId").value;
     let rch = this.doctorForm.get("rch").value;
-    let cd = this.doctorForm.get("cd").value;
+    let cds = this.doctorForm.get("cd").value;
     let otherCd = this.doctorForm.get("otherCd").value.trim();
-    let ncd = this.doctorForm.get("ncd").value;
+    let ncds = this.doctorForm.get("ncd").value;
     let otherNcd = this.doctorForm.get("otherNcd").value.trim();
     let minorAilments = this.doctorForm.get("minorAilments").value;
     let otherMinorAilment = this.doctorForm.get("otherMinorAilment").value.trim();
@@ -387,7 +387,7 @@ export class DoctorPage implements OnInit {
     }
 
     if (this.showRemarks === false) {
-      if (!cd || cd.length == 0) {
+      if (!cds || cds.length == 0) {
         alert("Please Select CD");
         return false;
       }
@@ -395,7 +395,7 @@ export class DoctorPage implements OnInit {
         alert("Please Enter CD other details.");
         return false;
       }
-      if (!ncd || ncd.length == 0) {
+      if (!ncds || ncds.length == 0) {
         alert("Please Select NCD");
         return false;
       }
@@ -433,6 +433,18 @@ export class DoctorPage implements OnInit {
     let servicePointId = this.commonService.beneficiaryDetails['userServicePointId'];
     let compoundPatientId = this.commonService.beneficiaryDetails['userCompoundPatientId'];
     let visitCount = this.commonService.beneficiaryDetails['userVisitCount'];
+
+    for (let i = 0; i < cds.length; i++) {
+      console.log("CD is --> " + cds[i]);
+    }
+
+    for (let i = 0; i <= ncds.length; i++) {
+      console.log("NCD is --> " + ncds[i]);
+    }
+
+    for (let i = 0; i < minorAilments.length; i++) {
+      console.log("minorAilment is --> " + minorAilments[i]);
+    }
 
     alert("Form can be submitted");
   }
