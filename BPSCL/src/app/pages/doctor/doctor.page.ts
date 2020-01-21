@@ -46,7 +46,7 @@ export class DoctorPage implements OnInit {
   allowOtherCd: boolean = false;
   allowOtherNcd: boolean = false;
   allowOtherMinorAilment: boolean = false;
-  allowOtherRefferedTo: boolean = false;
+  allowOtherReferredTo: boolean = false;
 
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
@@ -86,8 +86,8 @@ export class DoctorPage implements OnInit {
       minorAilments: new FormControl("", Validators.required),
       otherMinorAilment: new FormControl("", Validators.required),
       remarks: new FormControl("", Validators.required),
-      refferedTo: new FormControl("", Validators.required),
-      otherRefferedTo: new FormControl("", Validators.required)
+      referredTo: new FormControl("", Validators.required),
+      otherReferredTo: new FormControl("", Validators.required)
     });
   }
 
@@ -112,7 +112,7 @@ export class DoctorPage implements OnInit {
 
   loadHospitals() {
     this.db
-      .geRefferedTos()
+      .geReferredTos()
       .then(hospitals => {
         console.log(
           "Fetched hospitals -> " + JSON.stringify(hospitals)
@@ -121,7 +121,7 @@ export class DoctorPage implements OnInit {
       })
       .catch(error => {
         console.error(
-          "Error -> geRefferedTos() function returned error." +
+          "Error -> geReferredTos() function returned error." +
           JSON.stringify(error)
         );
       });
@@ -198,7 +198,7 @@ export class DoctorPage implements OnInit {
         minorAilments: "N/A",
         otherMinorAilment: "",
         remarks: "",
-        refferedTo: -1
+        referredTo: -1
       });
       this.allowOtherCd = false;
       this.allowOtherNcd = false;
@@ -214,7 +214,7 @@ export class DoctorPage implements OnInit {
         minorAilments: "",
         remarks: "N/A",
         otherMinorAilment: "",
-        refferedTo: ""
+        referredTo: ""
       });
       console.log("remarksCheckbox is unchecked");
     }
@@ -259,15 +259,15 @@ export class DoctorPage implements OnInit {
     }
   }
 
-  refferedToChange() {
-    let selectedRefferedTo = this.doctorForm.get("refferedTo").value;
-    console.log("selected RefferedTo is -> " + JSON.stringify(selectedRefferedTo));
+  referredToChange() {
+    let selectedReferredTo = this.doctorForm.get("referredTo").value;
+    console.log("selected ReferredTo is -> " + JSON.stringify(selectedReferredTo));
 
-    if (selectedRefferedTo == 2) {
-      this.allowOtherRefferedTo = true;
+    if (selectedReferredTo == 2) {
+      this.allowOtherReferredTo = true;
       console.log("Other option is selected");
     } else {
-      this.allowOtherRefferedTo = false;
+      this.allowOtherReferredTo = false;
     }
   }
 
@@ -349,13 +349,13 @@ export class DoctorPage implements OnInit {
       minorAilments: "",
       otherMinorAilment: "",
       remarks: "",
-      refferedTo: "",
-      otherRefferedTo: ""
+      referredTo: "",
+      otherReferredTo: ""
     });
     this.allowOtherCd = false;
     this.allowOtherNcd = false;
     this.allowOtherMinorAilment = false;
-    this.allowOtherRefferedTo = false;
+    this.allowOtherReferredTo = false;
   }
 
 
@@ -373,8 +373,8 @@ export class DoctorPage implements OnInit {
     let minorAilments = this.doctorForm.get("minorAilments").value;
     let otherMinorAilment = this.doctorForm.get("otherMinorAilment").value.trim();
     let remarks = this.doctorForm.get("remarks").value.trim();
-    let refferedTo = this.doctorForm.get("refferedTo").value;
-    let otherRefferedTo = this.doctorForm.get("otherRefferedTo").value.trim();
+    let referredTo = this.doctorForm.get("referredTo").value;
+    let otherReferredTo = this.doctorForm.get("otherReferredTo").value.trim();
 
     if (!patientId || patientId <= 0) {
       alert("Please Select Beneficiary ID");
@@ -407,16 +407,16 @@ export class DoctorPage implements OnInit {
         alert("Please Select Minor Ailments");
         return false;
       }
-      if (this.allowOtherNcd && otherMinorAilment == '') {
+      if (this.allowOtherMinorAilment && otherMinorAilment == '') {
         alert("Please Enter Minor Ailment other details.");
         return false;
       }
-      if (!refferedTo || refferedTo.length == 0) {
-        alert("Please Select Reffered To");
+      if (!referredTo || referredTo.length == 0) {
+        alert("Please Select Referred To");
         return false;
       }
-      if (this.allowOtherRefferedTo && otherRefferedTo == '') {
-        alert("Please Enter RefferedTo other details.");
+      if (this.allowOtherReferredTo && otherReferredTo == '') {
+        alert("Please Enter ReferredTo other details.");
         return false;
       }
     } else {
@@ -434,17 +434,85 @@ export class DoctorPage implements OnInit {
     let compoundPatientId = this.commonService.beneficiaryDetails['userCompoundPatientId'];
     let visitCount = this.commonService.beneficiaryDetails['userVisitCount'];
 
-    for (let i = 0; i < cds.length; i++) {
-      console.log("CD is --> " + cds[i]);
+    let userId = this.commonService.userDetails['userId'];
+
+    let provisionals = [cds, ncds, minorAilments];
+
+    for (let j = 0; j < provisionals.length; j++) {
+      let provisionType = (j == 0) ? 'CD' : ((j == 1) ? 'NCD' : 'Minor Ailment');
+      let otherFieldId = (j == 0) ? 12 : ((j == 1) ? 13 : 34);
+      let provision = provisionals[j];
+      let otherFieldValue;
+      if (j == 0) {
+        otherFieldValue = otherCd;
+      } else if (j == 2) {
+        otherFieldValue = otherNcd;
+      } else {
+        otherFieldValue = otherMinorAilment;
+      }
+
+      for (let i = 0; i < provision.length; i++) {
+        let provisionalDiagnosisId = provision[i];
+        console.log(provisionType + " is --> " + provisionalDiagnosisId);
+        this.db.getProvisionalDiagnose(patientId, servicePointId, vanId, provisionalDiagnosisId, visitId).then(data => {
+
+          let setOtherFieldValue;
+          if (provisionalDiagnosisId == otherFieldId) {
+            setOtherFieldValue = otherFieldValue;
+          } else {
+            setOtherFieldValue = null;
+          }
+
+          if (data.length > 0) {
+            let updateData = {
+              provisionalDiagnosisId,
+              setOtherFieldValue,
+              remarks,
+              userId,
+              patientId,
+              servicePointId,
+              vanId,
+              visitId
+            }
+
+            this.db.updateProvisionalDiagnose(updateData).then(data => {
+              console.log("Success -> Provision is updated Successfully...");
+            }).catch(e => {
+              console.error("Error -> Provision is not updated");
+            });
+            // Need to update the ProvisionalDiagnose
+          } else {
+            // Need to insert the ProvisionalDiagnose
+          }
+        }).catch(e => {
+
+        });
+      }
+
+      console.log("*******************");
     }
 
-    for (let i = 0; i <= ncds.length; i++) {
-      console.log("NCD is --> " + ncds[i]);
-    }
+    // for (let i = 0; i < cds.length; i++) {
+    //   console.log("CD is --> " + cds[i]);
+    //   let provisionalDiagnosisId = cds[i];
+    //   this.db.getProvisionalDiagnose(patientId, servicePointId, vanId, provisionalDiagnosisId, visitId).then(data => {
+    //     if (data.length > 0) {
+    //       // Need to update the ProvisionalDiagnose
+    //     } else {
+    //       // Need to insert the ProvisionalDiagnose
+    //     }
+    //   }).catch(e => {
 
-    for (let i = 0; i < minorAilments.length; i++) {
-      console.log("minorAilment is --> " + minorAilments[i]);
-    }
+    //   });
+    // }
+
+    // for (let i = 0; i <= ncds.length; i++) {
+    //   console.log("NCD is --> " + ncds[i]);
+    // }
+
+    // for (let i = 0; i < minorAilments.length; i++) {
+    //   console.log("minorAilment is --> " + minorAilments[i]);
+    // }
 
     alert("Form can be submitted");
   }
