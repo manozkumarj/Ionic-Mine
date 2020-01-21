@@ -454,7 +454,7 @@ export class DoctorPage implements OnInit {
       for (let i = 0; i < provision.length; i++) {
         let provisionalDiagnosisId = provision[i];
         console.log(provisionType + " is --> " + provisionalDiagnosisId);
-        this.db.getProvisionalDiagnose(patientId, servicePointId, vanId, provisionalDiagnosisId, visitId).then(data => {
+        this.db.findProvisionalDiagnose(patientId, servicePointId, vanId, provisionalDiagnosisId, visitId).then(data => {
 
           let setOtherFieldValue;
           if (provisionalDiagnosisId == otherFieldId) {
@@ -476,16 +476,36 @@ export class DoctorPage implements OnInit {
             }
 
             this.db.updateProvisionalDiagnose(updateData).then(data => {
-              console.log("Success -> Provision is updated Successfully...");
+              console.log("Success -> ProvisionalDiagnose is updated Successfully...");
             }).catch(e => {
-              console.error("Error -> Provision is not updated");
+              console.error("Error -> ProvisionalDiagnose is not updated" + JSON.stringify(e));
             });
             // Need to update the ProvisionalDiagnose
           } else {
+            let insertData = {
+              patientId,
+              visitId,
+              deviceId,
+              vanId,
+              routeVillageId,
+              servicePointId,
+              compoundPatientId,
+              visitCount,
+              provisionalDiagnosisId,
+              setOtherFieldValue,
+              remarks,
+              userId,
+            }
+
+            this.db.insertProvisionalDiagnose(insertData).then(data => {
+              console.log("Success -> ProvisionalDiagnose is inserted Successfully...");
+            }).catch(e => {
+              console.error("Error -> ProvisionalDiagnose is not inserted" + JSON.stringify(e));
+            });
             // Need to insert the ProvisionalDiagnose
           }
         }).catch(e => {
-
+          console.error("Error -> findProvisionalDiagnose returned error" + JSON.stringify(e));
         });
       }
 

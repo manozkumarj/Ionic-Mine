@@ -722,7 +722,7 @@ export class DatabaseService {
     });
   }
 
-  getProvisionalDiagnose(patientId, servicePointId, vanId, provisionalDiagnosisId, visitId) {
+  findProvisionalDiagnose(patientId, servicePointId, vanId, provisionalDiagnosisId, visitId) {
     let sql = `SELECT provisionalDiagnosisId FROM ${this.table_provisionalDiagnosis} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND provisionalDiagnosisId = ? AND visitId = ? LIMIT 1`;
     return this.dbObject.executeSql(sql, [
       patientId,
@@ -737,7 +737,7 @@ export class DatabaseService {
     });
   }
 
-  getReferredTo(patientId, servicePointId, vanId, visitId) {
+  findReferredTo(patientId, servicePointId, vanId, visitId) {
     let sql = `SELECT patientId FROM ${this.table_referredTo} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND AND visitId = ? LIMIT 1`;
     return this.dbObject.executeSql(sql, [
       patientId,
@@ -751,7 +751,7 @@ export class DatabaseService {
     })
       .catch(error => {
         console.warn(
-          "database - getReferredTo - Error -> " + JSON.stringify(error)
+          "database - findReferredTo - Error -> " + JSON.stringify(error)
         );
         return false;
       });
