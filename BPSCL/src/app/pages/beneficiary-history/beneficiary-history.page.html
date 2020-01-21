@@ -65,7 +65,11 @@
           background-image: linear-gradient(#3b4bad, #FFF)"
             placeholder="Select"
           >
-            <ion-select-option value="Male">Male </ion-select-option>
+            <ion-select-option
+              *ngFor="let historyType of historyTypes"
+              [value]="historyType.value"
+              >{{historyType.name}}
+            </ion-select-option>
           </ion-select>
         </ion-col>
       </ion-row>
@@ -75,14 +79,8 @@
         style="text-align: center; padding: 5px; background-color: #3b4bad;
        color: #FFF;"
       >
-        <ion-col size="12" size-sm>
-          <div>Visit Date</div>
-        </ion-col>
-        <ion-col size="12" size-sm>
-          <div>Test Name</div>
-        </ion-col>
-        <ion-col size="12" size-sm>
-          <div>Result</div>
+        <ion-col *ngFor="let heading of headings" size="12" size-sm>
+          <div>{{heading}}</div>
         </ion-col>
       </ion-row>
       <div *ngIf="(results.length > 0); else noResults">

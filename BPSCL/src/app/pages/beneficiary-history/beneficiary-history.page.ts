@@ -14,6 +14,24 @@ export class BeneficiaryHistoryPage implements OnInit {
   selectedBenId = 0;
   selectedHistoryId = 0;
 
+  measurementDetails_headings = [
+    "Date of Visit",
+    "BP",
+    "Pulse",
+    "Temperature",
+    "RR",
+    "Height",
+    "Weight",
+    "BMI"
+  ];
+  benCategoryAndReferral_headings = [
+    "Visit Date",
+    "Beneficiary Category",
+    "Referral"
+  ];
+  labTestsAndAnswers_headings = ["Visit Date", "Test Name", "Result"];
+  medicinesDispensation_headings = ["Issued ID", "Name", "Quantity Given"];
+
   results: any[] = [
     {
       visitDate: "2019-12-29",
@@ -21,6 +39,27 @@ export class BeneficiaryHistoryPage implements OnInit {
       result: "jumbo"
     }
   ];
+
+  historyTypes: any[] = [
+    {
+      value: 1,
+      name: "Measurement Details"
+    },
+    {
+      value: 2,
+      name: "Beneficiary category & Referral"
+    },
+    {
+      value: 3,
+      name: "Labtests & Answers"
+    },
+    {
+      value: 4,
+      name: "Medicines Dispensation"
+    }
+  ];
+
+  headings = this.measurementDetails_headings;
 
   constructor(
     private db: DatabaseService,
@@ -46,11 +85,11 @@ export class BeneficiaryHistoryPage implements OnInit {
       return false;
     }
     if (!selectedHistoryId || selectedHistoryId <= 0) {
-      alert("Please select Beneficiary History");
+      console.log("History type is not selected");
       return false;
     }
 
-    this.onSubmit(this.benHistoryForm.value);
+    this.onSubmit(selectedBenId, selectedHistoryId);
   }
 
   loadBeneficiaries() {
@@ -70,10 +109,21 @@ export class BeneficiaryHistoryPage implements OnInit {
       });
   }
 
-  onSubmit(values) {
-    console.log("Ben Registration form is submitted, below are the values");
-    console.log(values);
+  onSubmit(patientId, selectedHistoryId) {
+    console.clear();
+    console.log("Ben History form is submitted, below are the values");
+    console.log(this.benHistoryForm.value);
 
     alert("Form can be submitted");
+
+    if (selectedHistoryId == 1) {
+      this.headings = this.measurementDetails_headings;
+    } else if (selectedHistoryId == 2) {
+      this.headings = this.benCategoryAndReferral_headings;
+    } else if (selectedHistoryId == 3) {
+      this.headings = this.labTestsAndAnswers_headings;
+    } else if (selectedHistoryId == 4) {
+      this.headings = this.medicinesDispensation_headings;
+    }
   }
 }

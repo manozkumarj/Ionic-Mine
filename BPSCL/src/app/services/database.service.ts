@@ -42,7 +42,8 @@ export class DatabaseService {
   table_roles: string = "mu_Role";
   table_reports: string = "ms_Report";
   table_provisionalDiagnosis_m: string = "mp_ProvisionalDiagnosis";
-  table_labTests: string = "mp_LabTest";
+  table_labTests_m: string = "mp_LabTest";
+  table_labTests: string = "dp_LabTest";
 
   stateId: number = 21;
   status = {
@@ -643,7 +644,7 @@ export class DatabaseService {
   }
 
   getLabTests() {
-    let sql = `SELECT labTestId, labTestName, validValues, units FROM ${this.table_labTests} WHERE isActive = ${this.status.active}`;
+    let sql = `SELECT labTestId, labTestName, validValues, units FROM ${this.table_labTests_m} WHERE isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let labTests = [];
       if (data.rows.length > 0) {
@@ -694,6 +695,84 @@ export class DatabaseService {
     });
   }
 
+  getBeneficiaryMeasurementsData(patientId) {
+    let sql = `SELECT insertedDate,bpSystolic,bpDiastolic,height,weight,bmi,pulseRate,temperature,respiratoryRate FROM ${this.table_vitals} WHERE patientId = ${patientId}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let measurementsData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          measurementsData.push({
+            insertedDate: data.rows.item(i).insertedDate,
+            bpSystolic: data.rows.item(i).bpSystolic,
+            bpDiastolic: data.rows.item(i).bpDiastolic,
+            pulseRate: data.rows.item(i).pulseRate,
+            temperature: data.rows.item(i).temperature,
+            respiratoryRate: data.rows.item(i).respiratoryRate,
+            height: data.rows.item(i).height,
+            weight: data.rows.item(i).weight,
+            bmi: data.rows.item(i).bmi
+          });
+        }
+      }
+      return measurementsData;
+    });
+  }
+
+  getBeneficiaryDiseasesData(patientId) {
+    let sql = `SELECT dp.insertedDate,mpd.provisionalDiagnosisName,dp.provisionalDiagnosisId,hospitalName FROM ${this.table_provisionalDiagnosis} dp INNER JOIN ${this.table_provisionalDiagnosis_m} mpd ON mpd.provisionalDiagnosisId=dp.provisionalDiagnosisId LEFT JOIN ${this.table_referredTo} dpr ON dpr.patientId=dp.patientId and dpr.visitId=dp.visitId LEFT JOIN ${this.table_referredTo_m} ON hospitalId=dpr.referralTypeId WHERE patientId = ${patientId}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let diseasesData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          diseasesData.push({
+            insertedDate: data.rows.item(i).insertedDate,
+            provisionalDiagnosisName: data.rows.item(i)
+              .provisionalDiagnosisName,
+            provisionalDiagnosisId: data.rows.item(i).provisionalDiagnosisId,
+            hospitalName: data.rows.item(i).hospitalName
+          });
+        }
+      }
+      return diseasesData;
+    });
+  }
+
+  getBeneficiaryLabtestData(patientId) {
+    let sql = `SELECT dpa.insertedDate,mpa.labTestName,labTestResult,dpa.labTestId FROM ${this.table_labTests} dpa INNER JOIN ${this.table_labTests_m} mpa ON dpa.labTestId=mpa.labTestId WHERE patientId = ${patientId}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let labtestData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          labtestData.push({
+            insertedDate: data.rows.item(i).insertedDate,
+            labTestName: data.rows.item(i).labTestName,
+            labTestResult: data.rows.item(i).labTestResult,
+            labTestId: data.rows.item(i).labTestId
+          });
+        }
+      }
+      return labtestData;
+    });
+  }
+
+  getBeneficiaryDispensesData(patientId) {
+    let sql = `SELECT dpi.insertedDate,dpi.quantityGiven, mit.genericName,dpi.itemId from ${this.table_dispenses} dpi INNER JOIN ${this.table_dispenses_m} mit dpi.itemId = mit.itemId WHERE patientId = ${patientId} AND dpi.insertedDate IN (SELECT dpi.insertedDate FROM ${this.table_dispenses} WHERE patientId = ${patientId})`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let dispensesData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          dispensesData.push({
+            insertedDate: data.rows.item(i).insertedDate,
+            quantityGiven: data.rows.item(i).quantityGiven,
+            genericName: data.rows.item(i).genericName,
+            itemId: data.rows.item(i).itemId
+          });
+        }
+      }
+      return dispensesData;
+    });
+  }
+
   login(username, password) {
     let sql = `SELECT firstName, lastName, userId, roleId, deviceId, vanId FROM ${this.table_users} WHERE userName = ? AND password = ? AND isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, [username, password]).then(data => {
@@ -723,48 +802,49 @@ export class DatabaseService {
     });
   }
 
-  findProvisionalDiagnose(patientId, servicePointId, vanId, provisionalDiagnosisId, visitId) {
+  findProvisionalDiagnose(
+    patientId,
+    servicePointId,
+    vanId,
+    provisionalDiagnosisId,
+    visitId
+  ) {
     let sql = `SELECT provisionalDiagnosisId FROM ${this.table_provisionalDiagnosis} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND provisionalDiagnosisId = ? AND visitId = ? LIMIT 1`;
-    return this.dbObject.executeSql(sql, [
-      patientId,
-      servicePointId,
-      vanId,
-      provisionalDiagnosisId,
-      visitId
-    ]).then(data => {
-      let provisionalDiagnosis = [];
-      provisionalDiagnosisId = data.rows.item(0).provisionalDiagnosisId;
-      return provisionalDiagnosis;
-    });
+    return this.dbObject
+      .executeSql(sql, [
+        patientId,
+        servicePointId,
+        vanId,
+        provisionalDiagnosisId,
+        visitId
+      ])
+      .then(data => {
+        let provisionalDiagnosis = [];
+        provisionalDiagnosisId = data.rows.item(0).provisionalDiagnosisId;
+        return provisionalDiagnosis;
+      });
   }
 
   findReferredTo(patientId, servicePointId, vanId, visitId) {
     let sql = `SELECT patientId FROM ${this.table_referredTo} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND AND visitId = ? LIMIT 1`;
-    return this.dbObject.executeSql(sql, [
-      patientId,
-      servicePointId,
-      vanId,
-      visitId
-    ]).then(data => {
-      let patientIds = [];
-      patientId = data.rows.item(0).patientId;
-      return patientIds;
-    });
+    return this.dbObject
+      .executeSql(sql, [patientId, servicePointId, vanId, visitId])
+      .then(data => {
+        let patientIds = [];
+        patientId = data.rows.item(0).patientId;
+        return patientIds;
+      });
   }
 
   findDispense(patientId, servicePointId, vanId, itemId, visitId) {
     let sql = `SELECT patientId FROM ${this.table_dispenses} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND itemId = ? AND visitId = ? LIMIT 1`;
-    return this.dbObject.executeSql(sql, [
-      patientId,
-      servicePointId,
-      vanId,
-      itemId,
-      visitId
-    ]).then(data => {
-      let patientId = [];
-      patientId = data.rows.item(0).patientId;
-      return patientId;
-    });
+    return this.dbObject
+      .executeSql(sql, [patientId, servicePointId, vanId, itemId, visitId])
+      .then(data => {
+        let patientId = [];
+        patientId = data.rows.item(0).patientId;
+        return patientId;
+      });
   }
 
   registerAdmin(data) {
@@ -951,13 +1031,15 @@ export class DatabaseService {
       ])
       .then(res => {
         console.log(
-          "database - insertProvisionalDiagnose() - Success -> " + JSON.stringify(res)
+          "database - insertProvisionalDiagnose() - Success -> " +
+            JSON.stringify(res)
         );
         return true;
       })
       .catch(error => {
         console.warn(
-          "database - insertProvisionalDiagnose() - Error -> " + JSON.stringify(error)
+          "database - insertProvisionalDiagnose() - Error -> " +
+            JSON.stringify(error)
         );
         return false;
       });
@@ -978,13 +1060,15 @@ export class DatabaseService {
       ])
       .then(res => {
         console.log(
-          "database - updateProvisionalDiagnose() - Success -> " + JSON.stringify(res)
+          "database - updateProvisionalDiagnose() - Success -> " +
+            JSON.stringify(res)
         );
         return true;
       })
       .catch(error => {
         console.warn(
-          "database - updateProvisionalDiagnose() - Error -> " + JSON.stringify(error)
+          "database - updateProvisionalDiagnose() - Error -> " +
+            JSON.stringify(error)
         );
         return false;
       });
@@ -1091,20 +1175,22 @@ export class DatabaseService {
 
   updateDispense(data) {
     let sql = `UPDATE ${this.table_dispenses} SET quantityGiven = ?, remarks = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ?`;
-    return this.dbObject.executeSql(sql, [
-      data.quantityGiven,
-      data.remarks,
-      data.userId,
-      data.patientId,
-      data.servicePointId,
-      data.vanId,
-      data.visitId
-    ]).then(res => {
-      console.log(
-        "database - updateDispense() - Success -> " + JSON.stringify(res)
-      );
-      return true;
-    })
+    return this.dbObject
+      .executeSql(sql, [
+        data.quantityGiven,
+        data.remarks,
+        data.userId,
+        data.patientId,
+        data.servicePointId,
+        data.vanId,
+        data.visitId
+      ])
+      .then(res => {
+        console.log(
+          "database - updateDispense() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
       .catch(error => {
         console.warn(
           "database - updateDispense() - Error -> " + JSON.stringify(error)
