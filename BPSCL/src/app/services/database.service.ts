@@ -748,13 +748,7 @@ export class DatabaseService {
       let patientIds = [];
       patientId = data.rows.item(0).patientId;
       return patientIds;
-    })
-      .catch(error => {
-        console.warn(
-          "database - findReferredTo - Error -> " + JSON.stringify(error)
-        );
-        return false;
-      });
+    });
   }
 
   registerAdmin(data) {

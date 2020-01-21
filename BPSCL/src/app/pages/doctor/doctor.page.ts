@@ -373,8 +373,8 @@ export class DoctorPage implements OnInit {
     let minorAilments = this.doctorForm.get("minorAilments").value;
     let otherMinorAilment = this.doctorForm.get("otherMinorAilment").value.trim();
     let remarks = this.doctorForm.get("remarks").value.trim();
-    let referredTo = this.doctorForm.get("referredTo").value;
-    let otherReferredTo = this.doctorForm.get("otherReferredTo").value.trim();
+    let referralTypeId = this.doctorForm.get("referredTo").value;
+    let otherPhc = this.doctorForm.get("otherReferredTo").value.trim();
 
     if (!patientId || patientId <= 0) {
       alert("Please Select Beneficiary ID");
@@ -411,11 +411,11 @@ export class DoctorPage implements OnInit {
         alert("Please Enter Minor Ailment other details.");
         return false;
       }
-      if (!referredTo || referredTo.length == 0) {
+      if (!referralTypeId || referralTypeId.length == 0) {
         alert("Please Select Referred To");
         return false;
       }
-      if (this.allowOtherReferredTo && otherReferredTo == '') {
+      if (this.allowOtherReferredTo && otherPhc == '') {
         alert("Please Enter ReferredTo other details.");
         return false;
       }
@@ -425,6 +425,8 @@ export class DoctorPage implements OnInit {
         return false;
       }
     }
+
+    alert("Form can be submitted");
 
     let visitId = this.commonService.beneficiaryDetails['userVisitId'];
     let deviceId = this.commonService.beneficiaryDetails['userDeviceId'];
@@ -508,32 +510,68 @@ export class DoctorPage implements OnInit {
           console.error("Error -> findProvisionalDiagnose returned error" + JSON.stringify(e));
         });
       }
-
       console.log("*******************");
     }
 
-    // for (let i = 0; i < cds.length; i++) {
-    //   console.log("CD is --> " + cds[i]);
-    //   let provisionalDiagnosisId = cds[i];
-    //   this.db.getProvisionalDiagnose(patientId, servicePointId, vanId, provisionalDiagnosisId, visitId).then(data => {
-    //     if (data.length > 0) {
-    //       // Need to update the ProvisionalDiagnose
-    //     } else {
-    //       // Need to insert the ProvisionalDiagnose
-    //     }
-    //   }).catch(e => {
 
-    //   });
-    // }
 
-    // for (let i = 0; i <= ncds.length; i++) {
-    //   console.log("NCD is --> " + ncds[i]);
-    // }
+    this.db.findReferredTo(patientId, servicePointId, vanId, visitId).then(data => {
 
-    // for (let i = 0; i < minorAilments.length; i++) {
-    //   console.log("minorAilment is --> " + minorAilments[i]);
-    // }
+      let setOtherFieldValue;
+      if (referralTypeId == 2) {
+        setOtherFieldValue = otherPhc;
+      } else {
+        setOtherFieldValue = null;
+      }
 
-    alert("Form can be submitted");
+      if (data.length > 0) {
+        let updateData = {
+          referralTypeId,
+          otherPhc,
+          remarks,
+          userId,
+          patientId,
+          servicePointId,
+          vanId,
+          visitId
+        }
+
+        this.db.updateReferredTo(updateData).then(data => {
+          console.log("Success -> ReferredTo is updated Successfully...");
+        }).catch(e => {
+          console.error("Error -> ReferredTo is not updated" + JSON.stringify(e));
+        });
+        // Need to update the ReferredTo
+      } else {
+        let insertData = {
+          patientId,
+          visitId,
+          deviceId,
+          vanId,
+          routeVillageId,
+          servicePointId,
+          compoundPatientId,
+          visitCount,
+          referralTypeId,
+          setOtherFieldValue,
+          remarks,
+          userId,
+        }
+
+        this.db.insertReferredTo(insertData).then(data => {
+          console.log("Success -> ReferredTo is inserted Successfully...");
+          this.commonService.makeBenObjectEmpty();
+          this.router.navigate(["/lab-test"]);
+        }).catch(e => {
+          console.error("Error -> ReferredTo is not inserted" + JSON.stringify(e));
+        });
+        // Need to insert the ReferredTo
+      }
+
+    }).catch(e => {
+      console.error("Error -> findReferredTo returned error" + JSON.stringify(e));
+    });
+
+
   }
 }
