@@ -51,7 +51,7 @@ export class ConsumableDispensePage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   loadBeneficiaries() {
     this.db
@@ -65,7 +65,7 @@ export class ConsumableDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -80,7 +80,7 @@ export class ConsumableDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getDispenses() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -123,6 +123,15 @@ export class ConsumableDispensePage implements OnInit {
 
     if (!beneficiaryId || beneficiaryId <= 0) {
       alert("Please Select Beneficiary ID");
+      return false;
+    }
+
+    let selectedDispenses = this.consumableDispenses.filter(
+      medicineDispense => medicineDispense.allowQuantity
+    );
+
+    if (this.showDispenses === false && selectedDispenses.length == 0) {
+      alert("Please select atleast one medicine or enter Remarks");
       return false;
     }
 

@@ -123,7 +123,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
   }
 
 
-  padFunction = function (str, padStr, len) {
+  prefixZeros = function (str, padStr, len) {
     while (str.length < len)
       str = padStr + str;
     return str;
@@ -167,7 +167,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
         } else {
           console.log("Inside else 2");
           console.log("this.servicePointCode -> " + this.servicePointCode);
-          let addLeadingZeros = this.padFunction(id, "0", 6);
+          let addLeadingZeros = this.prefixZeros(id, "0", 6);
           createBeneficiaryId = this.servicePointCode + 'B' + addLeadingZeros;
         }
 
@@ -222,7 +222,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
         } else {
           console.log("Inside else 2");
           console.log("this.servicePointCode -> " + this.servicePointCode);
-          let addLeadingZeros = this.padFunction(id, "0", 6);
+          let addLeadingZeros = this.prefixZeros(id, "0", 6);
           createVisitId = this.servicePointCode + 'V' + addLeadingZeros;
         }
 

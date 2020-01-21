@@ -86,7 +86,7 @@
                   </ion-col>
                   <ion-col>
                     <div [ngClass]="{'hider' : !consumableDispense.allowQuantity}">
-                      <ion-input placeholder="Enter Quantity" class="field-input" value=""
+                      <ion-input type="number" placeholder="Enter Quantity" class="field-input" value=""
                         (ionBlur)="quantityInput(consumableDispense.itemId, $event)"></ion-input>
                     </div>
                   </ion-col>

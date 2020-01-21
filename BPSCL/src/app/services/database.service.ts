@@ -34,7 +34,8 @@ export class DatabaseService {
   table_visits: string = "dp_Visit";
   table_vitals: string = "dp_Vitals";
   table_provisionalDiagnosis: string = "dp_ProvisionalDiagnosis";
-  table_dispenses: string = "mi_Item";
+  table_dispenses_m: string = "mi_Item";
+  table_dispenses: string = "dp_ItemDispensation";
   table_referredTo: string = "dp_Referral";
   table_referredTo_m: string = "mp_HospitalList";
   table_beneficiaryTypes: string = "mp_BeneficiaryType";
@@ -546,7 +547,7 @@ export class DatabaseService {
   }
 
   getDispenses(itemTypeId) {
-    let sql = `SELECT itemId, genericName FROM ${this.table_dispenses} WHERE itemType = ${itemTypeId} AND isActive = ${this.status.active}`;
+    let sql = `SELECT itemId, genericName FROM ${this.table_dispenses_m} WHERE itemType = ${itemTypeId} AND isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let dispenses = [];
       if (data.rows.length > 0) {
@@ -748,6 +749,21 @@ export class DatabaseService {
       let patientIds = [];
       patientId = data.rows.item(0).patientId;
       return patientIds;
+    });
+  }
+
+  findDispense(patientId, servicePointId, vanId, itemId, visitId) {
+    let sql = `SELECT patientId FROM ${this.table_dispenses} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND itemId = ? AND visitId = ? LIMIT 1`;
+    return this.dbObject.executeSql(sql, [
+      patientId,
+      servicePointId,
+      vanId,
+      itemId,
+      visitId
+    ]).then(data => {
+      let patientId = [];
+      patientId = data.rows.item(0).patientId;
+      return patientId;
     });
   }
 
@@ -1029,6 +1045,69 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - updateReferredTo() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  insertDispense(data) {
+    let sql = `INSERT INTO ${this.table_referredTo} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, itemId, itemTypeId, batchNo, brandName, expiryDate, duration, quantityGiven, quantityNeeded, dosage, remarks, insertedBy, insertedDate, updatedBy, updatedDate, uploadStatus) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'),?)`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.patientId,
+        data.visitId,
+        data.deviceId,
+        data.vanId,
+        data.routeVillageId,
+        data.servicePointId,
+        data.compoundPatientId,
+        data.visitCount,
+        data.itemId,
+        data.batchNo,
+        data.brandName,
+        data.expiryDate,
+        data.duration,
+        data.quantityGiven,
+        data.quantityNeeded,
+        data.dosage,
+        data.remarks,
+        data.userId,
+        data.userId,
+        this.status.active
+      ])
+      .then(res => {
+        console.log(
+          "database - insertDispense() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - insertDispense() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  updateDispense(data) {
+    let sql = `UPDATE ${this.table_dispenses} SET quantityGiven = ?, remarks = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ?`;
+    return this.dbObject.executeSql(sql, [
+      data.quantityGiven,
+      data.remarks,
+      data.userId,
+      data.patientId,
+      data.servicePointId,
+      data.vanId,
+      data.visitId
+    ]).then(res => {
+      console.log(
+        "database - updateDispense() - Success -> " + JSON.stringify(res)
+      );
+      return true;
+    })
+      .catch(error => {
+        console.warn(
+          "database - updateDispense() - Error -> " + JSON.stringify(error)
         );
         return false;
       });

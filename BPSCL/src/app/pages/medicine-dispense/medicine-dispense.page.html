@@ -32,10 +32,7 @@
 
 <ion-content style="background-color: #e6e9f2;">
   <!-- Parent Grid - starts here -->
-  <form
-    [formGroup]="medicineDispenseForm"
-    (ngSubmit)="onSubmit(medicineDispenseForm.value)"
-  >
+  <form [formGroup]="medicineDispenseForm" (ngSubmit)="onSubmit(medicineDispenseForm.value)">
     <ion-grid style="padding: 0px;">
       <ion-row style="min-height: 600px;">
         <ion-col size="12" size-sm>
@@ -47,13 +44,8 @@
                   Beneficiary ID
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select
-                    formControlName="beneficiaryId"
-                    class="field-input"
-                    style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)"
-                    placeholder="Select"
-                  >
+                  <ion-select formControlName="beneficiaryId" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
                     <ion-select-option value="f">Female</ion-select-option>
                     <ion-select-option value="m">Male</ion-select-option>
                   </ion-select>
@@ -61,84 +53,52 @@
               </ion-row>
               <ion-row class="row-border" style="height: 85px;">
                 <ion-col class="col-border-right" size="12" size-sm>
-                  <ion-checkbox
-                    (ionChange)="remarksCheckbox($event)"
-                  ></ion-checkbox>
+                  <ion-checkbox (ionChange)="remarksCheckbox($event)"></ion-checkbox>
                   Remarks
                 </ion-col>
                 <ion-col>
                   <div [ngClass]="{'hider' : !showDispenses}">
-                    <ion-textarea
-                      formControlName="remarks"
-                      class="field-input"
-                      placeholder="Enter more information here..."
-                    ></ion-textarea>
+                    <ion-textarea formControlName="remarks" class="field-input"
+                      placeholder="Enter more information here..."></ion-textarea>
                   </div>
                 </ion-col>
               </ion-row>
               <div [ngClass]="{'hider' : showDispenses}">
-                <ion-row
-                  style="text-align: center; padding: 5px; background-color: #3b4bad;
-             color: #FFF;"
-                >
-                  <ion-col size="12" size-sm>
+                <ion-row style="text-align: center; padding: 5px; background-color: #3b4bad;
+             color: #FFF;">
+                  <ion-col size="1">
                     <div>SNo.</div>
                   </ion-col>
                   <ion-col size="12" size-sm>
                     <div>Consumable Name</div>
                   </ion-col>
-                  <ion-col size="12" size-sm>
+                  <ion-col size="3">
                     <div>Issue Quantity</div>
                   </ion-col>
                 </ion-row>
-                <ion-row
-                  class="row-border"
-                  style="border-bottom: 2px solid #ccc;"
-                  *ngFor="let medicineDispense of medicineDispenses"
-                >
-                  <ion-col class="col-border-right" size="12" size-sm>
-                    <ion-checkbox
-                      (ionChange)="dispenseCheckbox(medicineDispense.itemId, $event)"
-                    ></ion-checkbox>
+                <ion-row class="row-border" style="border-bottom: 2px solid #ccc;text-align: center;"
+                  *ngFor="let medicineDispense of medicineDispenses">
+                  <ion-col class="col-border-right" size="1">
+                    <ion-checkbox (ionChange)="dispenseCheckbox(medicineDispense.itemId, $event)"></ion-checkbox>
                   </ion-col>
                   <ion-col class="col-border-right" size="12" size-sm>
                     {{medicineDispense.genericName}}
                   </ion-col>
-                  <ion-col>
-                    <div
-                      [ngClass]="{'hider' : !medicineDispense.allowQuantity}"
-                    >
-                      <ion-input
-                        placeholder="Enter Quantity"
-                        class="field-input"
-                        value=""
-                        (ionBlur)="quantityInput(medicineDispense.itemId, $event)"
-                      ></ion-input>
+                  <ion-col size="3">
+                    <div [ngClass]="{'hider' : !medicineDispense.allowQuantity}">
+                      <ion-input type="number" placeholder="Enter Quantity" class="field-input" value=""
+                        (ionBlur)="quantityInput(medicineDispense.itemId, $event)"></ion-input>
                     </div>
                   </ion-col>
                 </ion-row>
               </div>
 
-              <ion-row
-                class="row-border row-height-45"
-                align-items-center
-                justify-content-center
-              >
+              <ion-row class="row-border row-height-45" align-items-center justify-content-center>
                 <ion-col size="12" size-sm>
-                  <ion-button
-                    style="width: 90%; font-weight: bold;"
-                    type="submit"
-                    color="primary"
-                    >Issue</ion-button
-                  >
+                  <ion-button style="width: 90%; font-weight: bold;" type="submit" color="primary">Issue</ion-button>
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-button
-                    style="width: 90%; font-weight: bold;"
-                    type="reset"
-                    color="primary"
-                    >Skip</ion-button
-                  >
+                  <ion-button style="width: 90%; font-weight: bold;" type="reset" color="primary">Skip</ion-button>
                 </ion-col>
               </ion-row>
             </ion-grid>

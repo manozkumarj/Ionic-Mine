@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
+import { CommonService } from "src/app/services/common.service";
 import { StorageService } from "./../../services/storage.service";
 import { Router } from "@angular/router";
 
@@ -37,11 +38,24 @@ export class MedicineDispensePage implements OnInit {
     }
   ];
 
+  userId: number;
+  vanId: number;
+  deviceId: number;
+  stateId: number;
+  districtId: number;
+  mandalId: number;
+  villageId: number;
+  servicePointId: number;
+  servicePointName: string;
+  servicePointCode: string;
+
   constructor(
     private db: DatabaseService,
+    private commonService: CommonService,
     private router: Router,
     private storageService: StorageService
   ) {
+    this.loadSessionDetails();
     // this.loadBeneficiaries();
     // loadDispenses();
 
@@ -52,6 +66,16 @@ export class MedicineDispensePage implements OnInit {
   }
 
   ngOnInit() { }
+
+  loadSessionDetails() {
+    this.stateId = this.commonService.sessionDetails['stateId'];
+    this.districtId = this.commonService.sessionDetails['districtId'];
+    this.mandalId = this.commonService.sessionDetails['mandalId'];
+    this.villageId = this.commonService.sessionDetails['villageId'];
+    this.servicePointId = this.commonService.sessionDetails['servicePointId'];
+    this.servicePointName = this.commonService.sessionDetails['servicePointName'];
+    this.servicePointCode = this.commonService.sessionDetails['servicePointCode'];
+  }
 
   loadBeneficiaries() {
     this.db
@@ -75,7 +99,13 @@ export class MedicineDispensePage implements OnInit {
       .getDispenses(1)
       .then(dispenses => {
         console.log("Fetched Dispenses -> " + JSON.stringify(dispenses));
-        this.dispenses = dispenses;
+        // this.dispenses = dispenses;
+        this.dispenses = dispenses.map(dispense => ({
+          ...dispense,
+          allowQuantity: false,
+          quantity: null
+        }));
+
       })
       .catch(error => {
         console.error(
@@ -87,13 +117,13 @@ export class MedicineDispensePage implements OnInit {
 
   remarksCheckbox(e) {
     if (e.target.checked) {
-      this.showDispenses = true;
       // this.doctorForm.patchValue({ cd: "N/A", ncd: "N/A", minorAilments: "N/A", refferedTo: -1 });
-      // console.log("remarksCheckbox is checked");
+      this.showDispenses = true;
+      console.log("remarksCheckbox is checked");
     } else {
       this.showDispenses = false;
       // this.doctorForm.patchValue({ cd: "", ncd: "", minorAilments: "", refferedTo: "" });
-      // console.log("remarksCheckbox is unchecked");
+      console.log("remarksCheckbox is unchecked");
     }
   }
 
@@ -123,6 +153,15 @@ export class MedicineDispensePage implements OnInit {
 
     if (!beneficiaryId || beneficiaryId <= 0) {
       alert("Please Select Beneficiary ID");
+      return false;
+    }
+
+    let selectedDispenses = this.medicineDispenses.filter(
+      medicineDispense => medicineDispense.allowQuantity
+    );
+
+    if (this.showDispenses === false && selectedDispenses.length == 0) {
+      alert("Please select atleast one medicine or enter Remarks");
       return false;
     }
 
