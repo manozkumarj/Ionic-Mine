@@ -13,6 +13,17 @@ export class BeneficiaryHistoryPage implements OnInit {
   benHistoryForm: FormGroup;
   selectedBenId = 0;
   selectedHistoryId = 0;
+  benIds: any[] = [
+    {
+      patientId: 'SP0001000036B000574'
+    },
+    {
+      patientId: 'SP0001000036B000575'
+    },
+    {
+      patientId: 'SP0001000036B000576'
+    }
+  ];
 
   measurementDetails_headings = [
     "Date of Visit",
@@ -32,13 +43,17 @@ export class BeneficiaryHistoryPage implements OnInit {
   labTestsAndAnswers_headings = ["Visit Date", "Test Name", "Result"];
   medicinesDispensation_headings = ["Issued ID", "Name", "Quantity Given"];
 
-  results: any[] = [
+  otherResults: any[] = [
     {
-      visitDate: "2019-12-29",
-      testName: "test",
-      result: "jumbo"
+      rowOneData: "2019-12-29",
+      rowTwoData: "test",
+      rowThreeData: "jumbo"
     }
   ];
+
+  measurementResults: any[] = [];
+  showMeasurementResults: boolean = false;
+  showOtherResults: boolean = false;
 
   historyTypes: any[] = [
     {
@@ -99,31 +114,89 @@ export class BeneficiaryHistoryPage implements OnInit {
         console.log(
           "Fetched beneficiaries -> " + JSON.stringify(beneficiaries)
         );
-        this.results = beneficiaries;
+        this.benIds = beneficiaries;
       })
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
 
   onSubmit(patientId, selectedHistoryId) {
+    this.showMeasurementResults = false;
+    this.showOtherResults = false;
     console.clear();
     console.log("Ben History form is submitted, below are the values");
     console.log(this.benHistoryForm.value);
 
-    alert("Form can be submitted");
+    // alert("Form can be submitted");
 
     if (selectedHistoryId == 1) {
       this.headings = this.measurementDetails_headings;
+      this.showMeasurementResults = true;
+
+      this.db.getBeneficiaryMeasurementsData(patientId).then(data => {
+        console.log("Success -> Received MeasurementsData --> " + JSON.stringify(data));
+        if (data.length > 0) {
+          this.measurementResults = data;
+        } else {
+          this.measurementResults.length = 0;
+        }
+      }).catch(e => {
+        this.measurementResults.length = 0;
+        console.error("Error -> getBeneficiaryMeasurementsData returned error" + JSON.stringify(e));
+      });
+
     } else if (selectedHistoryId == 2) {
       this.headings = this.benCategoryAndReferral_headings;
+      this.showOtherResults = true;
+
+      this.db.getBeneficiaryDiseasesData(patientId).then(data => {
+        console.log("Success -> Received DiseasesData --> " + JSON.stringify(data));
+        if (data.length > 0) {
+          this.measurementResults = data;
+        } else {
+          this.measurementResults.length = 0;
+        }
+      }).catch(e => {
+        this.measurementResults.length = 0;
+        console.error("Error -> getBeneficiaryDiseasesData returned error" + JSON.stringify(e));
+      });
+
     } else if (selectedHistoryId == 3) {
       this.headings = this.labTestsAndAnswers_headings;
+      this.showOtherResults = true;
+
+      this.db.getBeneficiaryLabtestData(patientId).then(data => {
+        console.log("Success -> Received LabtestData --> " + JSON.stringify(data));
+        if (data.length > 0) {
+          this.measurementResults = data;
+        } else {
+          this.measurementResults.length = 0;
+        }
+      }).catch(e => {
+        this.measurementResults.length = 0;
+        console.error("Error -> getBeneficiaryLabtestData returned error" + JSON.stringify(e));
+      });
+
     } else if (selectedHistoryId == 4) {
       this.headings = this.medicinesDispensation_headings;
+      this.showOtherResults = true;
+
+      this.db.getBeneficiaryDispensesData(patientId).then(data => {
+        console.log("Success -> Received DispensesData --> " + JSON.stringify(data));
+        if (data.length > 0) {
+          this.measurementResults = data;
+        } else {
+          this.measurementResults.length = 0;
+        }
+      }).catch(e => {
+        this.measurementResults.length = 0;
+        console.error("Error -> getBeneficiaryDispensesData returned error" + JSON.stringify(e));
+      });
+
     }
   }
 }

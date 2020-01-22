@@ -703,8 +703,7 @@ export class DatabaseService {
         for (var i = 0; i < data.rows.length; i++) {
           measurementsData.push({
             insertedDate: data.rows.item(i).insertedDate,
-            bpSystolic: data.rows.item(i).bpSystolic,
-            bpDiastolic: data.rows.item(i).bpDiastolic,
+            bp: data.rows.item(i).bpSystolic + '/' + data.rows.item(i).bpDiastolic,
             pulseRate: data.rows.item(i).pulseRate,
             temperature: data.rows.item(i).temperature,
             respiratoryRate: data.rows.item(i).respiratoryRate,
@@ -725,11 +724,9 @@ export class DatabaseService {
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
           diseasesData.push({
-            insertedDate: data.rows.item(i).insertedDate,
-            provisionalDiagnosisName: data.rows.item(i)
-              .provisionalDiagnosisName,
-            provisionalDiagnosisId: data.rows.item(i).provisionalDiagnosisId,
-            hospitalName: data.rows.item(i).hospitalName
+            rowOneData: data.rows.item(i).insertedDate,
+            rowTwoData: data.rows.item(i).provisionalDiagnosisName,
+            rowThreeData: data.rows.item(i).hospitalName
           });
         }
       }
@@ -744,10 +741,9 @@ export class DatabaseService {
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
           labtestData.push({
-            insertedDate: data.rows.item(i).insertedDate,
-            labTestName: data.rows.item(i).labTestName,
-            labTestResult: data.rows.item(i).labTestResult,
-            labTestId: data.rows.item(i).labTestId
+            rowOneData: data.rows.item(i).insertedDate,
+            rowTwoData: data.rows.item(i).labTestName,
+            rowThreeData: data.rows.item(i).labTestResult
           });
         }
       }
@@ -762,10 +758,9 @@ export class DatabaseService {
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
           dispensesData.push({
-            insertedDate: data.rows.item(i).insertedDate,
-            quantityGiven: data.rows.item(i).quantityGiven,
-            genericName: data.rows.item(i).genericName,
-            itemId: data.rows.item(i).itemId
+            rowOneData: data.rows.item(i).insertedDate,
+            rowTwoData: data.rows.item(i).genericName,
+            rowThreeData: data.rows.item(i).quantityGiven
           });
         }
       }
@@ -1032,14 +1027,14 @@ export class DatabaseService {
       .then(res => {
         console.log(
           "database - insertProvisionalDiagnose() - Success -> " +
-            JSON.stringify(res)
+          JSON.stringify(res)
         );
         return true;
       })
       .catch(error => {
         console.warn(
           "database - insertProvisionalDiagnose() - Error -> " +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
         return false;
       });
@@ -1061,14 +1056,14 @@ export class DatabaseService {
       .then(res => {
         console.log(
           "database - updateProvisionalDiagnose() - Success -> " +
-            JSON.stringify(res)
+          JSON.stringify(res)
         );
         return true;
       })
       .catch(error => {
         console.warn(
           "database - updateProvisionalDiagnose() - Error -> " +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
         return false;
       });

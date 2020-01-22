@@ -31,88 +31,98 @@
 </ion-header>
 
 <ion-content>
-  <form
-    [formGroup]="benHistoryForm"
-    (ngSubmit)="onSubmit(benHistoryForm.value)"
-    style="margin-bottom: 25px;"
-  >
+  <form [formGroup]="benHistoryForm" (ngSubmit)="onSubmit(benHistoryForm.value)" style="margin-bottom: 25px;">
     <ion-grid style="padding: 0px;">
       <ion-row class="row-border row-height-45">
         <ion-col class="col-border-right" size="12" size-sm>
           Beneficiary Id
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-select
-            (ionChange)="onChange()"
-            formControlName="beneficiaryId"
-            class="field-input"
-            style="color: #000; font-weight: bold; background: #3b4bad; 
-          background-image: linear-gradient(#3b4bad, #FFF)"
-            placeholder="Select"
-          >
-            <ion-select-option value="Male">Male </ion-select-option>
+          <ion-select (ionChange)="onChange()" formControlName="beneficiaryId" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+          background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+            <ion-select-option *ngFor="let benId of benIds" value="{{benId.patientId}}">
+              {{benId.patientId}}
+            </ion-select-option>
           </ion-select>
         </ion-col>
         <ion-col class="col-border-right" size="12" size-sm>
           Beneficiary History
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-select
-            (ionChange)="onChange()"
-            formControlName="beneficiaryHistory"
-            class="field-input"
-            style="color: #000; font-weight: bold; background: #3b4bad; 
-          background-image: linear-gradient(#3b4bad, #FFF)"
-            placeholder="Select"
-          >
-            <ion-select-option
-              *ngFor="let historyType of historyTypes"
-              [value]="historyType.value"
-              >{{historyType.name}}
+          <ion-select (ionChange)="onChange()" formControlName="beneficiaryHistory" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+          background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+            <ion-select-option *ngFor="let historyType of historyTypes" [value]="historyType.value">{{historyType.name}}
             </ion-select-option>
           </ion-select>
         </ion-col>
       </ion-row>
     </ion-grid>
     <ion-grid>
-      <ion-row
-        style="text-align: center; padding: 5px; background-color: #3b4bad;
-       color: #FFF;"
-      >
+
+      <ion-row *ngIf="showOtherResults || showMeasurementResults" style="text-align: center; padding: 5px; background-color: #3b4bad;
+       color: #FFF;">
         <ion-col *ngFor="let heading of headings" size="12" size-sm>
           <div>{{heading}}</div>
         </ion-col>
       </ion-row>
-      <div *ngIf="(results.length > 0); else noResults">
-        <ion-row
-          *ngFor="let ben of results"
-          align-items-center
-          justify-content-center
-          style="padding: 12px; text-align: center;
+
+      <div *ngIf="showOtherResults">
+        <div *ngIf="(otherResults.length > 0); else noResults">
+          <ion-row *ngFor="let result of otherResults; let i = index" align-items-center justify-content-center style="padding: 12px; text-align: center;
        color: #3b4bad; border: 2px solid #3b4bad;
-         margin-top: 3px;"
-        >
-          <ion-col size="12" size-sm>
-            <div>{{ben.visitDate}}</div>
-          </ion-col>
-          <ion-col size="12" size-sm>
-            <div>{{ben.testName}}</div>
-          </ion-col>
-          <ion-col size="12" size-sm>
-            <div>{{ben.result}}</div>
-          </ion-col>
-        </ion-row>
+         margin-top: 3px;">
+            <ion-col size="12" size-sm>
+              <div>{{result.rowOneData}}</div>
+            </ion-col>
+            <ion-col size="12" size-sm>
+              <div>{{result.rowTwoData}}</div>
+            </ion-col>
+            <ion-col size="12" size-sm>
+              <div>{{result.rowThreeData}}</div>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+      <div *ngIf="showMeasurementResults">
+        <div *ngIf="showMeasurementResults && (measurementResults.length > 0); else noResults">
+          <ion-row *ngFor="let measurementResult of measurementResults; let i = index" align-items-center
+            justify-content-center style="padding: 12px; text-align: center;
+       color: #3b4bad; border: 2px solid #3b4bad;
+         margin-top: 3px;">
+            <ion-col size="12" size-sm>
+              <div>{{measurementResult.insertedDate}}</div>
+            </ion-col>
+            <ion-col size="12" size-sm>
+              <div>{{measurementResult.bp}}</div>
+            </ion-col>
+            <ion-col size="12" size-sm>
+              <div>{{measurementResult.pulseRate}}</div>
+            </ion-col>
+            <ion-col size="12" size-sm>
+              <div>{{measurementResult.temperature}}</div>
+            </ion-col>
+            <ion-col size="12" size-sm>
+              <div>{{measurementResult.respiratoryRate}}</div>
+            </ion-col>
+            <ion-col size="12" size-sm>
+              <div>{{measurementResult.height}}</div>
+            </ion-col>
+            <ion-col size="12" size-sm>
+              <div>{{measurementResult.weight}}</div>
+            </ion-col>
+            <ion-col size="12" size-sm>
+              <div>{{measurementResult.bmi}}</div>
+            </ion-col>
+          </ion-row>
+        </div>
       </div>
 
       <ng-template #noResults>
         <ion-grid>
-          <ion-row
-            align-items-center
-            justify-content-center
-            style="padding: 50px; text-align: center;
+          <ion-row align-items-center justify-content-center style="padding: 50px; text-align: center;
          color: #3b4bad; border: 2px solid #3b4bad;
-           margin-top: 3px;"
-          >
+           margin-top: 3px;">
             <ion-col>
               No Results found.
             </ion-col>
