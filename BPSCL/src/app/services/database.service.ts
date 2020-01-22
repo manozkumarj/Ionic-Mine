@@ -479,6 +479,30 @@ export class DatabaseService {
       });
   }
 
+  getMaxUserId() {
+    let maxVisitId = 1;
+    let sql = `SELECT max(userId) as maxUserId FROM ${this.table_users}`;
+    console.log("Query is -> " + sql);
+    return this.dbObject
+      .executeSql(sql, [])
+      .then(data => {
+        if (data.rows.length > 0) {
+          maxVisitId += data.rows.item(0).maxVisitId;
+        } else {
+          console.warn(
+            "database - getMaxUserId() returned empty results - Warning -> " + JSON.stringify(data)
+          );
+        }
+        return maxVisitId;
+      })
+      .catch(error => {
+        console.error(
+          "database - getMaxUserId() - Error -> " + JSON.stringify(error)
+        );
+        return 0;
+      });
+  }
+
   getBeneficiaryDetails(benId) {
     let sql = `SELECT ben.patientId, ben.deviceId, ben.vanId, ben.routeVillageId, ben.servicePointId, ben.compoundPatientId, ben.registrationDate, ben.name, ben.surname, ben.genderId, ben.dob, ben.communityId, ben.religionId, ben.fatherName, ben.spouseName, ben.motherName, ben.aadharNo, ben.mctsId, ben.villageId, ben.mandalId, ben.districtId, ben.stateId, ben.imageUrl, ben.insertedBy, ben.insertedDate, ben.updatedBy, ben.updatedDate, ben.imageUploadStatus, ben.uploadStatus, visit.visitId, visit.visitCount, visit.age, visit.ageTypeId, visit.pregnancyStatus, g.gender, d.districtName, m.mandalName, v.villageName FROM ${this.table_beneficiaries} AS ben LEFT JOIN ${this.table_visits} AS visit ON ben.patientId = visit.patientId LEFT JOIN mp_gender AS g ON ben.genderId = g.genderId LEFT JOIN m_District AS d ON ben.districtId = d.districtId LEFT JOIN m_Mandal AS m ON ben.mandalId = m.mandalId LEFT JOIN m_Village AS v ON ben.villageId = v.villageId WHERE ben.patientId = '${benId}'`;
     return this.dbObject.executeSql(sql, []).then(data => {
@@ -917,6 +941,46 @@ export class DatabaseService {
       });
   }
 
+  registerStaff(data) {
+    let sql = `INSERT INTO ${this.table_users} (userId, firstName, lastName, userName, password, genderId, dob, fatherName, phone, address, email, age, ageTypeId, doj, roleId, userImageUrl, isActive, deviceId, vanId, insertedBy, insertedDate, updatedBy, updatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'))`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.userIdIncrement,
+        data.firstName,
+        data.lastName,
+        data.userName,
+        data.password,
+        data.genderId,
+        data.dob,
+        data.fatherName,
+        data.phone,
+        data.address,
+        data.email,
+        data.age,
+        data.ageTypeId,
+        data.doj,
+        data.roleId,
+        data.userImageUrl,
+        data.isActive,
+        data.deviceId,
+        data.vanId,
+        data.userId,
+        data.userId
+      ])
+      .then(res => {
+        console.log(
+          "database - registerStaff() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - registerStaff() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
   insertVisit(data) {
     let sql = `INSERT INTO ${this.table_visits} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, visitDate, age, ageTypeId, ageGroupId, contactNo, familyContactNo, economicStatusId, educationStatusId, maritalStatusId, occupationStatusId, serviceProvidedId, pregnancyStatus, benTypeId, noOfFamilyNumbers, isHandicaped, provisionalDiagnosis, impClinicalFindings, insertedBy, insertedDate, updatedBy, updatedDate, uploadStatus) VALUES (?,?,?,?,?,?,?,?,datetime('now'),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'),?)`;
     return this.dbObject
@@ -1189,6 +1253,45 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - updateDispense() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  updateStaff(data) {
+    let sql = `UPDATE ${this.table_users} SET firstName = ?, lastName = ?, userName = ?, password = ?, genderId = ?, dob = ?, fatherName = ?, phone = ?, address = ?, email = ?, age = ?, ageTypeId = ?, doj = ?, roleId = ?, userImageUrl = ?, isActive = ?, deviceId = ?, vanId = ?, updatedBy = ?, updatedDate = datetime('now') WHERE userId = ?,`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.firstName,
+        data.lastName,
+        data.userName,
+        data.password,
+        data.genderId,
+        data.dob,
+        data.fatherName,
+        data.phone,
+        data.address,
+        data.email,
+        data.age,
+        data.ageTypeId,
+        data.doj,
+        data.roleId,
+        data.userImageUrl,
+        data.isActive,
+        data.deviceId,
+        data.vanId,
+        data.userId,
+        data.selectedUserId
+      ])
+      .then(res => {
+        console.log(
+          "database - updateStaff() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - updateStaff() - Error -> " + JSON.stringify(error)
         );
         return false;
       });

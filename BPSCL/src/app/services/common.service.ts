@@ -4,7 +4,13 @@ import { Injectable } from "@angular/core";
     providedIn: "root"
 })
 export class CommonService {
-    constructor() { }
+
+    newDate = new Date();
+    dateTime: string;
+
+    constructor() {
+        this.dateTime = this.getDateTime(this.newDate);
+    }
 
     beneficiaryDetails: Object = {
         userPhoto: 'assets/profile_pic.jpg',

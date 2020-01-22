@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
+import { CommonService } from "src/app/services/common.service";
 import { StorageService } from "./../../services/storage.service";
+import { ConstantsService } from "../../services/constants.service";
 import { Router } from "@angular/router";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 
@@ -12,15 +14,55 @@ import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 })
 export class StaffRegistrationPage implements OnInit {
   staffRegForm: FormGroup;
+  genders: any[] = [];
+  ageUnits: any[] = [
+    {
+      ageUnitId: 1,
+      ageUnitName: 'Days',
+      isSelected: false
+    },
+    {
+      ageUnitId: 1,
+      ageUnitName: 'Months',
+      isSelected: false
+    },
+    {
+      ageUnitId: 1,
+      ageUnitName: 'Years',
+      isSelected: false
+    }
+  ];
+  roles: any[] = [
+    {
+      roleId: 1,
+      roleName: 'Admin'
+    },
+    {
+      roleId: 1,
+      roleName: 'Driver'
+    },
+    {
+      roleId: 1,
+      roleName: 'ANM'
+    }
+  ];
 
   isPhotoCaptured: boolean = false;
   benPhoto: string = "assets/profile_pic.jpg";
 
+  newDate = new Date();
+  dateTime: string = this.commonService.getDateTime(this.newDate);
+
+  servicePointName: string = this.commonService.sessionDetails['servicePointName'];
+
   constructor(
     private db: DatabaseService,
+    private commonService: CommonService,
     private router: Router,
     private camera: Camera,
-    private storageService: StorageService) {
+    private storageService: StorageService,
+    public constants: ConstantsService
+  ) {
 
     this.staffRegForm = new FormGroup({
       firstName: new FormControl("", Validators.required),
@@ -28,11 +70,11 @@ export class StaffRegistrationPage implements OnInit {
       fatherName: new FormControl("", Validators.required),
       gender: new FormControl("", Validators.required),
       age: new FormControl("", Validators.required),
-      ageType: new FormControl("", Validators.required),
-      dob: new FormControl("", Validators.required),
+      ageUnit: new FormControl("", Validators.required),
+      dateOfBirth: new FormControl("", Validators.required),
       doj: new FormControl("", Validators.required),
       address: new FormControl("", Validators.required),
-      phone: new FormControl("", Validators.required),
+      phone: new FormControl("", [Validators.required, Validators.pattern('[6-9]\\d{9}')]),
       email: new FormControl("", Validators.required),
       roleId: new FormControl("", Validators.required),
       userName: new FormControl("", Validators.required),
@@ -49,6 +91,9 @@ export class StaffRegistrationPage implements OnInit {
   };
 
   ngOnInit() {
+    // this.loadGenders();
+    // this.loadAgeUnits();
+    // this.loadRoles();
   }
 
   takeSnap() {
@@ -65,6 +110,150 @@ export class StaffRegistrationPage implements OnInit {
         console.log("Error - takeSnap() returned error --> " + error);
       }
     );
+  }
+
+  loadGenders() {
+    this.db
+      .getGenders()
+      .then(genders => {
+        console.log("Fetched genders -> " + JSON.stringify(genders));
+        this.genders = genders;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getGenders() function returned error." +
+          JSON.stringify(error)
+        );
+      });
+  }
+
+  loadAgeUnits() {
+    this.db
+      .getAgeUnits()
+      .then(ageUnits => {
+        console.log("Fetched AgeUnits -> " + JSON.stringify(ageUnits));
+        this.ageUnits = ageUnits.map(ageUnit => ({
+          ...ageUnit,
+          isSelected: false
+        }));
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getAgeUnits() function returned error." +
+          JSON.stringify(error)
+        );
+      });
+  }
+
+  loadRoles() {
+    this.db
+      .getRoles()
+      .then(roles => {
+        console.log("Fetched Roles -> " + JSON.stringify(roles));
+        this.roles = roles;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getRoles() function returned error." +
+          JSON.stringify(error)
+        );
+      });
+  }
+
+  ageChange() {
+    let enteredAge = this.staffRegForm.get("age").value;
+    console.log("ageChange() - enteredAge -> " + enteredAge);
+    this.ageUnitChange();
+
+    // this.staffRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+  }
+
+  ageUnitChange() {
+    let enteredAge = this.staffRegForm.get("age").value;
+    let selectedAgeUnit = this.staffRegForm.get("ageUnit").value;
+    let manageAction = false;
+
+    console.log("enteredAge -> " + enteredAge);
+    console.log("selectedAgeUnit -> " + selectedAgeUnit);
+
+    let today = new Date();
+    let dob;
+
+    if (selectedAgeUnit == this.constants.age_unit_years) {
+      manageAction = true;
+      if (enteredAge > 100) {
+        alert("Years should be between 1-100");
+        this.staffRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+        return false;
+      }
+      let currentYear = today.getFullYear();
+      let dobYear = currentYear - enteredAge;
+      dob = new Date(dobYear, today.getMonth(), today.getDate());
+    } else if (selectedAgeUnit == this.constants.age_unit_months) {
+      manageAction = true;
+      if (enteredAge > 11) {
+        alert("Months should be between 1-11");
+        this.staffRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+        return false;
+      }
+      let currentMonth = today.getMonth();
+      let dobMonth = currentMonth - enteredAge;
+      dob = new Date(today.getFullYear(), dobMonth, today.getDate());
+    } else if (selectedAgeUnit == this.constants.age_unit_days) {
+      manageAction = true;
+      if (enteredAge > 30) {
+        alert("Days should be between 1-30");
+        this.staffRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+        return false;
+      }
+      let currentDate = today.getDate();
+      let dobDate = currentDate - enteredAge;
+      dob = new Date(today.getFullYear(), today.getMonth(), dobDate);
+    }
+
+    if (manageAction) {
+      console.log("Set calender value as -> " + dob);
+      let assignDob = this.commonService.getDateTime(dob);
+      this.staffRegForm.patchValue({ dateOfBirth: assignDob });
+    }
+  }
+
+  dateOfBirthChange() {
+    let selectedDob = new Date(this.staffRegForm.get("dateOfBirth").value);
+    let selectedGender = this.staffRegForm.get("gender").value;
+    let selectedDobSeconds = selectedDob.getTime();
+    let ageWillBe;
+    let ageUnitWillBe;
+    console.log("dateOfBirthChange() - selectedDob -> " + selectedDobSeconds);
+    console.log("Date.now() is -> " + Date.now());
+
+    if (selectedDobSeconds && selectedDobSeconds > 0) {
+      var timeDiff = Math.abs(Date.now() - selectedDobSeconds);
+      var diffDays = Math.floor(timeDiff / (1000 * 3600 * 24));
+      if (diffDays < 30) {
+        ageWillBe = diffDays;
+        ageUnitWillBe = 1;
+        this.ageUnits[2]["isSelected"] = false;
+        this.ageUnits[1]["isSelected"] = false;
+        this.ageUnits[0]["isSelected"] = true;
+      } else if (diffDays < 365) {
+        ageWillBe = Math.floor(diffDays / 30);
+        ageUnitWillBe = 2;
+        this.ageUnits[2]["isSelected"] = false;
+        this.ageUnits[0]["isSelected"] = false;
+        this.ageUnits[1]["isSelected"] = true;
+      } else {
+        ageWillBe = Math.floor(diffDays / 365);
+        ageUnitWillBe = 3;
+        this.ageUnits[0]["isSelected"] = false;
+        this.ageUnits[1]["isSelected"] = false;
+        this.ageUnits[2]["isSelected"] = true;
+      }
+
+      this.staffRegForm.patchValue({ ageUnit: ageUnitWillBe, age: ageWillBe });
+      console.log("asigning year to ageUnit & age here ");
+      console.log("ageUnit was set and value is " + ageUnitWillBe);
+    }
   }
 
   resetValues() {
@@ -88,26 +277,39 @@ export class StaffRegistrationPage implements OnInit {
     this.isPhotoCaptured = false;
   }
 
+  onlyNumberMaxLength(event) {
+    const pattern = /[0-9]/;
+    let inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
 
   onSubmit(values) {
+    console.clear();
     console.log("Staff Registration form is submitted, below are the values");
     console.log(values);
+
+    let userIdIncrement = 1;
 
     let firstName = this.staffRegForm.get("firstName").value.trim();
     let lastName = this.staffRegForm.get("lastName").value.trim();
     let fatherName = this.staffRegForm.get("fatherName").value.trim();
-    let gender = this.staffRegForm.get("gender").value.trim();
+    let genderId = this.staffRegForm.get("gender").value.trim();
     let age = this.staffRegForm.get("age").value;
-    let ageType = this.staffRegForm.get("ageType").value.trim();
-    let dob = this.staffRegForm.get("dob").value.trim();
+    let ageTypeId = this.staffRegForm.get("ageUnit").value;
+    let dob = this.staffRegForm.get("dateOfBirth").value.trim();
     let doj = this.staffRegForm.get("doj").value.trim();
     let address = this.staffRegForm.get("address").value.trim();
     let phone = this.staffRegForm.get("phone").value.trim();
     let email = this.staffRegForm.get("email").value.trim();
-    let roleId = this.staffRegForm.get("roleId").value.trim();
+    let roleId = this.staffRegForm.get("roleId").value;
     let userName = this.staffRegForm.get("userName").value.trim();
     let password = this.staffRegForm.get("password").value.trim();
     let confirmPassword = this.staffRegForm.get("confirmPassword").value.trim();
+    let userImageUrl = this.benPhoto;
+    let isActive = 1;
 
     if (!firstName || firstName == null) {
       alert("Enter First Name");
@@ -121,7 +323,7 @@ export class StaffRegistrationPage implements OnInit {
       alert("Enter Father Name");
       return false;
     }
-    if (!gender || gender == null) {
+    if (!genderId || genderId == null) {
       alert("Please Select Gender");
       return false;
     }
@@ -129,7 +331,7 @@ export class StaffRegistrationPage implements OnInit {
       alert("Please Enter Age");
       return false;
     }
-    if (!ageType || ageType == null) {
+    if (!ageTypeId || ageTypeId == null) {
       alert("Please Select Age Type");
       return false;
     }
@@ -149,8 +351,16 @@ export class StaffRegistrationPage implements OnInit {
       alert("Please Enter Phone Number");
       return false;
     }
+    if (phone.length < 10 || phone.length > 10) {
+      alert("Please Enter valid Phone Number");
+      return false;
+    }
+    if (parseInt(phone[0]) < 6) {
+      alert("Phone Number first digit should between 6-9");
+      return false;
+    }
     if (!email || email == null) {
-      alert("Please Enter Email Number");
+      alert("Please Enter Email Address");
       return false;
     }
     if (!roleId || roleId == null) {
@@ -177,6 +387,48 @@ export class StaffRegistrationPage implements OnInit {
       alert("Please Capture photo");
       return false;
     }
+
+    let userId = this.commonService.userDetails['userId'];
+    let deviceId = this.commonService.beneficiaryDetails['userDeviceId'];
+    let vanId = this.commonService.beneficiaryDetails['userVanId'];
+
+    this.db.getMaxUserId().then(data => {
+      if (data) {
+        userIdIncrement = data;
+        let insertData = {
+          userIdIncrement,
+          firstName,
+          lastName,
+          userName,
+          password,
+          genderId,
+          dob,
+          fatherName,
+          phone,
+          address,
+          email,
+          age,
+          ageTypeId,
+          doj,
+          roleId,
+          userImageUrl,
+          isActive,
+          deviceId,
+          vanId,
+          userId
+        }
+
+        this.db.registerStaff(insertData).then(data => {
+          console.log("Success -> registerStaff is inserted Successfully...");
+          this.router.navigate(["/edit-staff"]);
+        }).catch(e => {
+          console.error("Error -> registerStaff is not inserted" + JSON.stringify(e));
+        });
+
+      }
+    }).catch(e => {
+      console.error("Error -> getMaxUserId returned error" + JSON.stringify(e));
+    });
 
   }
 
