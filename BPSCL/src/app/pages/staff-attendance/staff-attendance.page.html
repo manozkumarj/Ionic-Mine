@@ -50,9 +50,10 @@
           Staff Name
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-select formControlName="staffName" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+          <ion-select formControlName="staffName" (ionChange)="usernameChange()" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
           background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-            <ion-select-option value="1">Male
+            <ion-select-option *ngFor="let user of users" value="{{user.userId}}">
+              {{user.username}}
             </ion-select-option>
           </ion-select>
         </ion-col>

@@ -434,7 +434,7 @@ export class DatabaseService {
   }
 
   getUserDetails(userId) {
-    let sql = `SELECT firstName, lastName, userName, password, genderId, dob, fatherName, phone, address, email, age, ageTypeId, doj, roleId, userImageUrl FROM ${this.table_users} WHERE userId = ?`;
+    let sql = `SELECT u.firstName, u.lastName, u.userName, u.password, u.genderId, u.dob, u.fatherName, u.phone, u.address, u.email, u.age, u.ageTypeId, u.doj, u.roleId, u.userImageUrl, r.roleName FROM ${this.table_users} u LEFT JOIN ${this.table_roles} r ON u.roleId = r.roleId WHERE u.userId = ?`;
     return this.dbObject.executeSql(sql, [userId]).then(data => {
       let users = [];
       if (data.rows.length > 0) {
@@ -455,6 +455,7 @@ export class DatabaseService {
             doj: data.rows.item(i).doj,
             roleId: data.rows.item(i).roleId,
             userImageUrl: data.rows.item(i).userImageUrl,
+            roleName: data.rows.item(i).roleName
           });
         }
       }

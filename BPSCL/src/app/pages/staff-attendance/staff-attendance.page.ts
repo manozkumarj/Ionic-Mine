@@ -12,7 +12,23 @@ import { Router } from "@angular/router";
 export class StaffAttendancePage implements OnInit {
   staffAttendanceForm: FormGroup;
   sessionTypes: any[] = [];
-  adminUsers: any[] = [];
+
+  selectedUseId: number;
+
+  users: any[] = [
+    {
+      userId: 1,
+      username: 'AAA'
+    },
+    {
+      userId: 2,
+      username: 'BBB'
+    },
+    {
+      userId: 3,
+      username: 'CCC'
+    }
+  ];
 
   constructor(
     private db: DatabaseService,
@@ -22,7 +38,7 @@ export class StaffAttendancePage implements OnInit {
     this.staffAttendanceForm = new FormGroup({
       sessionType: new FormControl("", Validators.required),
       staffName: new FormControl("", Validators.required),
-      staffDesignation: new FormControl("", Validators.required)
+      staffDesignation: new FormControl({ value: "", disabled: true })
     });
   }
 
@@ -35,13 +51,13 @@ export class StaffAttendancePage implements OnInit {
     this.db
       .getSessionTypes()
       .then(sessionTypes => {
-        console.log("Fetched states -> " + JSON.stringify(sessionTypes));
+        console.log("Fetched sessionTypes -> " + JSON.stringify(sessionTypes));
         this.sessionTypes = sessionTypes;
       })
       .catch(error => {
         console.error(
           "Error -> getSessionTypes() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -50,12 +66,43 @@ export class StaffAttendancePage implements OnInit {
     this.db
       .getUsers()
       .then(users => {
-        this.adminUsers = users;
+        this.users = users;
         console.log("Total No. of users = " + users.length);
         console.log("Total users are ==> " + JSON.stringify(users));
       })
       .catch(error => {
         console.error("Database Error " + JSON.stringify(error));
+      });
+  }
+
+  usernameChange() {
+    let selectedUserID = this.staffAttendanceForm.get("staffName").value;
+    console.log("selectedUserID is -> " + selectedUserID);
+    // if (selectedUserID && selectedUserID != null)
+    //   this.getUserDetails(selectedUserID);
+
+    // delete below lines after enabling above lines
+    this.staffAttendanceForm.patchValue({
+      staffDesignation: 'roleName'
+    });
+  }
+
+  getUserDetails(selectedUserID) {
+    this.selectedUseId = selectedUserID;
+    this.db
+      .getUserDetails(selectedUserID)
+      .then(userDetails => {
+        console.log("Received User details are -> " + JSON.stringify(userDetails));
+        this.staffAttendanceForm.patchValue({
+          staffDesignation: userDetails['roleName']
+        });
+
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getUserDetails() function returned error." +
+          JSON.stringify(error)
+        );
       });
   }
 
