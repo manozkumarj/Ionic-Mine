@@ -50,7 +50,9 @@ export class SessionSelectionPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log("User details are " + JSON.stringify(this.commonService.userDetails));
+    console.log(
+      "User details are " + JSON.stringify(this.commonService.userDetails)
+    );
     this.getSessionTypes();
     this.getStates();
   }
@@ -79,7 +81,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionTypes() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -94,7 +96,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getStates() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -121,7 +123,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getServicePoints() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -136,7 +138,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getDistricts() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -151,7 +153,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getMandals() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -166,7 +168,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getVillages() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -218,14 +220,14 @@ export class SessionSelectionPage implements OnInit {
     console.log("Session selected " + id);
     this.sessionTypeId = id;
     this.db
-      .getStartingSessionPeriodId(id)
-      .then(sessionPeriodId => {
-        this.sessionPeriodId = sessionPeriodId;
+      .getSessionPeriods(id)
+      .then(sessionPeriods => {
+        this.sessionPeriodId = sessionPeriods[0]["sessionPeriodId"];
       })
       .catch(error => {
         console.error(
           "Error -> getStartingSessionPeriodId() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -275,13 +277,19 @@ export class SessionSelectionPage implements OnInit {
     console.log("Selected servicePoint index is --> " + getIndex);
     console.log("Storable servicePoint name is --> " + this.servicePointName);
 
-    this.commonService.sessionDetails['stateId'] = this.stateId;
-    this.commonService.sessionDetails['districtId'] = this.districtId;
-    this.commonService.sessionDetails['mandalId'] = this.mandalId;
-    this.commonService.sessionDetails['villageId'] = this.villageId;
-    this.commonService.sessionDetails['servicePointId'] = selectedServicePointId;
-    this.commonService.sessionDetails['servicePointName'] = this.servicePointName;
-    this.commonService.sessionDetails['servicePointCode'] = this.servicePointCode;
+    this.commonService.sessionDetails["stateId"] = this.stateId;
+    this.commonService.sessionDetails["districtId"] = this.districtId;
+    this.commonService.sessionDetails["mandalId"] = this.mandalId;
+    this.commonService.sessionDetails["villageId"] = this.villageId;
+    this.commonService.sessionDetails[
+      "servicePointId"
+    ] = selectedServicePointId;
+    this.commonService.sessionDetails[
+      "servicePointName"
+    ] = this.servicePointName;
+    this.commonService.sessionDetails[
+      "servicePointCode"
+    ] = this.servicePointCode;
 
     this.storageService
       .setObject("sessionDetails", {
@@ -299,7 +307,6 @@ export class SessionSelectionPage implements OnInit {
       .catch(e => {
         console.error("sessionDetails are not saved in localstorage -->: " + e);
       });
-
 
     let sessionDetails = {
       userId,
@@ -329,14 +336,14 @@ export class SessionSelectionPage implements OnInit {
           .catch(error => {
             console.error(
               "Error -> saveServicePointLog() function returned error." +
-              JSON.stringify(error)
+                JSON.stringify(error)
             );
           });
       })
       .catch(error => {
         console.error(
           "Error -> saveSessionDetails() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }

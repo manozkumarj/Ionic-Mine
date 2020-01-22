@@ -7,7 +7,7 @@
       <ion-row style="text-align: center;">
         <ion-col size="3" size="12" size-sm>
           <div>
-            Service Point :
+            Service Point : {{servicePointName}}
           </div>
         </ion-col>
         <ion-col size="5" size="12" size-sm>
@@ -17,7 +17,7 @@
         </ion-col>
         <ion-col size="12" size-sm>
           <div>
-            Service Date :
+            Service Date : {{dateTime}}
           </div>
         </ion-col>
         <ion-col size="auto">
@@ -31,16 +31,51 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="staffAttendanceForm" (ngSubmit)="onSubmit(staffAttendanceForm.value)" style="margin-bottom: 25px;">
+  <form
+    [formGroup]="staffAttendanceForm"
+    (ngSubmit)="onSubmit(staffAttendanceForm.value)"
+    style="margin-bottom: 25px;"
+  >
     <ion-grid style="padding: 5px 30px;">
       <ion-row class="row-border">
         <ion-col class="col-border-right" size="12" size-sm>
           Session Type
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-select formControlName="sessionType" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
-          background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-            <ion-select-option value="1">Male
+          <ion-select
+            formControlName="sessionType"
+            class="field-input"
+            (ionChange)="sessionTypeChange()"
+            style="color: #000; font-weight: bold; background: #3b4bad; 
+          background-image: linear-gradient(#3b4bad, #FFF)"
+            placeholder="Select"
+          >
+            <ion-select-option
+              *ngFor="let sessionType of sessionTypes"
+              value="{{sessionType.sessionTypeId}}"
+            >
+              {{sessionType.sessionTypeName}}
+            </ion-select-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
+      <ion-row class="row-border" *ngIf="showSessionPeriodField">
+        <ion-col class="col-border-right" size="12" size-sm>
+          Session Period
+        </ion-col>
+        <ion-col size="12" size-sm>
+          <ion-select
+            formControlName="sessionPeriod"
+            class="field-input"
+            style="color: #000; font-weight: bold; background: #3b4bad; 
+          background-image: linear-gradient(#3b4bad, #FFF)"
+            placeholder="Select"
+          >
+            <ion-select-option
+              *ngFor="let sessionPeriod of sessionPeriods"
+              value="{{sessionPeriod.sessionPeriodId}}"
+            >
+              {{sessionPeriod.sessionPeriodName}}
             </ion-select-option>
           </ion-select>
         </ion-col>
@@ -50,9 +85,18 @@
           Staff Name
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-select formControlName="staffName" (ionChange)="usernameChange()" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
-          background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-            <ion-select-option *ngFor="let user of users" value="{{user.userId}}">
+          <ion-select
+            formControlName="staffName"
+            (ionChange)="usernameChange()"
+            class="field-input"
+            style="color: #000; font-weight: bold; background: #3b4bad; 
+          background-image: linear-gradient(#3b4bad, #FFF)"
+            placeholder="Select"
+          >
+            <ion-select-option
+              *ngFor="let user of users"
+              value="{{user.userId}}"
+            >
               {{user.username}}
             </ion-select-option>
           </ion-select>
@@ -63,21 +107,35 @@
           Staff Designation
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-input formControlName="staffDesignation" class="field-input" placeholder="Staff Designation" value="">
+          <ion-input
+            formControlName="staffDesignation"
+            class="field-input"
+            placeholder="Staff Designation"
+            value=""
+          >
           </ion-input>
         </ion-col>
       </ion-row>
 
       <ion-row align-items-center justify-content-center>
         <ion-col size="12" size-sm>
-          <ion-button style="width: 90%; font-weight: bold;" type="submit" color="primary">Save</ion-button>
+          <ion-button
+            style="width: 90%; font-weight: bold;"
+            type="submit"
+            color="primary"
+            >Save</ion-button
+          >
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-button (click)="resetValues()" style="width: 90%; font-weight: bold;" type="button" color="primary">Reset
+          <ion-button
+            (click)="resetValues()"
+            style="width: 90%; font-weight: bold;"
+            type="button"
+            color="primary"
+            >Reset
           </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
   </form>
-
 </ion-content>

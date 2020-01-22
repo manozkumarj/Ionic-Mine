@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
+import { CommonService } from "src/app/services/common.service";
 import { StorageService } from "./../../services/storage.service";
 import { Router } from "@angular/router";
 
@@ -11,32 +12,58 @@ import { Router } from "@angular/router";
 })
 export class StaffAttendancePage implements OnInit {
   staffAttendanceForm: FormGroup;
-  sessionTypes: any[] = [];
+  sessionTypes: any[] = [
+    {
+      sessionTypeId: 1,
+      sessionTypeName: "AAA"
+    },
+    {
+      sessionTypeId: 2,
+      sessionTypeName: "BBB"
+    },
+    {
+      sessionTypeId: 3,
+      sessionTypeName: "CCC"
+    }
+  ];
 
-  selectedUseId: number;
+  sessionPeriods: any[] = [];
+
+  selectedUserId: number;
 
   users: any[] = [
     {
       userId: 1,
-      username: 'AAA'
+      username: "AAA"
     },
     {
       userId: 2,
-      username: 'BBB'
+      username: "BBB"
     },
     {
       userId: 3,
-      username: 'CCC'
+      username: "CCC"
     }
   ];
 
+  newDate = new Date();
+  dateTime: string = this.commonService.getDateTime(this.newDate);
+
+  servicePointName: string = this.commonService.sessionDetails[
+    "servicePointName"
+  ];
+
+  showSessionPeriodField: boolean = false;
+
   constructor(
     private db: DatabaseService,
+    private commonService: CommonService,
     private router: Router,
     private storageService: StorageService
   ) {
     this.staffAttendanceForm = new FormGroup({
       sessionType: new FormControl("", Validators.required),
+      sessionPeriod: new FormControl(""),
       staffName: new FormControl("", Validators.required),
       staffDesignation: new FormControl({ value: "", disabled: true })
     });
@@ -57,7 +84,7 @@ export class StaffAttendancePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionTypes() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -83,25 +110,69 @@ export class StaffAttendancePage implements OnInit {
 
     // delete below lines after enabling above lines
     this.staffAttendanceForm.patchValue({
-      staffDesignation: 'roleName'
+      staffDesignation: "roleName"
     });
   }
 
   getUserDetails(selectedUserID) {
-    this.selectedUseId = selectedUserID;
+    this.selectedUserId = selectedUserID;
     this.db
       .getUserDetails(selectedUserID)
       .then(userDetails => {
-        console.log("Received User details are -> " + JSON.stringify(userDetails));
+        console.log(
+          "Received User details are -> " + JSON.stringify(userDetails)
+        );
         this.staffAttendanceForm.patchValue({
-          staffDesignation: userDetails['roleName']
+          staffDesignation: userDetails["roleName"]
         });
-
       })
       .catch(error => {
         console.error(
           "Error -> getUserDetails() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
+        );
+      });
+  }
+
+  sessionTypeChange() {
+    let selectedsessionTypeID = this.staffAttendanceForm.get("sessionType")
+      .value;
+    console.log("selectedsessionTypeID is -> " + selectedsessionTypeID);
+    // if (selectedsessionTypeID && selectedsessionTypeID != null)
+    //   this.getSessionPeriods(selectedsessionTypeID);
+
+    // delete below lines after enabling above lines
+    this.sessionPeriods = [
+      {
+        sessionPeriodId: 1,
+        sessionPeriodName: "pAAA"
+      },
+      {
+        sessionPeriodId: 2,
+        sessionPeriodName: "pBBB"
+      },
+      {
+        sessionPeriodId: 3,
+        sessionPeriodName: "pCCC"
+      }
+    ];
+
+    this.showSessionPeriodField = true;
+  }
+
+  getSessionPeriods(selectedsessionTypeID) {
+    this.db
+      .getSessionPeriods(selectedsessionTypeID)
+      .then(sessionPeriods => {
+        console.log(
+          "Received SessionPeriods are -> " + JSON.stringify(sessionPeriods)
+        );
+        this.sessionPeriods = sessionPeriods;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getSessionPeriods() function returned error." +
+            JSON.stringify(error)
         );
       });
   }
@@ -118,13 +189,14 @@ export class StaffAttendancePage implements OnInit {
     console.log("Staff Attendance form is submitted, below are the values");
     console.log(values);
 
-    let sessionType = this.staffAttendanceForm.get("sessionType").value;
+    let sessionTypeId = this.staffAttendanceForm.get("sessionType").value;
+    let sessionPeriodId = this.staffAttendanceForm.get("sessionPeriod").value;
     let staffName = this.staffAttendanceForm.get("staffName").value;
     let staffDesignation = this.staffAttendanceForm
       .get("staffDesignation")
       .value.trim();
 
-    if (!sessionType || sessionType <= 0) {
+    if (!sessionTypeId || sessionTypeId <= 0) {
       alert("Please Select Session Type");
       return false;
     }
@@ -138,5 +210,31 @@ export class StaffAttendancePage implements OnInit {
     }
 
     alert("Form can be submitted");
+
+    let userId = this.commonService.userDetails["userId"];
+    let deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
+    let vanId = this.commonService.beneficiaryDetails["userVanId"];
+
+    this.db
+      .getMaxAttendanceId()
+      .then(data => {
+        if (data) {
+          let attendanceId = data;
+
+          let insertData = {
+            attendanceId,
+            userId,
+            sessionPeriodId,
+            sessionTypeId,
+            deviceId,
+            vanId
+          };
+        }
+      })
+      .catch(e => {
+        console.error(
+          "Error -> getMaxAttendanceId returned error" + JSON.stringify(e)
+        );
+      });
   }
 }
