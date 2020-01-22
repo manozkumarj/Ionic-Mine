@@ -433,6 +433,35 @@ export class DatabaseService {
     });
   }
 
+  getUserDetails(userId) {
+    let sql = `SELECT firstName, lastName, userName, password, genderId, dob, fatherName, phone, address, email, age, ageTypeId, doj, roleId, userImageUrl FROM ${this.table_users} WHERE userId = ?`;
+    return this.dbObject.executeSql(sql, [userId]).then(data => {
+      let users = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          users.push({
+            firstName: data.rows.item(i).firstName,
+            lastName: data.rows.item(i).lastName,
+            username: data.rows.item(i).userName,
+            password: data.rows.item(i).password,
+            genderId: data.rows.item(i).genderId,
+            dob: data.rows.item(i).dob,
+            fatherName: data.rows.item(i).fatherName,
+            phone: data.rows.item(i).phone,
+            address: data.rows.item(i).address,
+            email: data.rows.item(i).email,
+            age: data.rows.item(i).age,
+            ageTypeId: data.rows.item(i).ageTypeId,
+            doj: data.rows.item(i).doj,
+            roleId: data.rows.item(i).roleId,
+            userImageUrl: data.rows.item(i).userImageUrl,
+          });
+        }
+      }
+      return users;
+    });
+  }
+
   getMaxBeneficiaryId(servicePointId) {
     let sql = `SELECT max(patientId) as maxbeneficiaryId FROM ${this.table_beneficiaries} where servicePointId = ${servicePointId}`;
     console.log("Query is -> " + sql);
@@ -948,7 +977,7 @@ export class DatabaseService {
         data.userIdIncrement,
         data.firstName,
         data.lastName,
-        data.userName,
+        data.username,
         data.password,
         data.genderId,
         data.dob,
@@ -1264,7 +1293,7 @@ export class DatabaseService {
       .executeSql(sql, [
         data.firstName,
         data.lastName,
-        data.userName,
+        data.username,
         data.password,
         data.genderId,
         data.dob,

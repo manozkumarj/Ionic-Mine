@@ -77,7 +77,7 @@ export class StaffRegistrationPage implements OnInit {
       phone: new FormControl("", [Validators.required, Validators.pattern('[6-9]\\d{9}')]),
       email: new FormControl("", Validators.required),
       roleId: new FormControl("", Validators.required),
-      userName: new FormControl("", Validators.required),
+      username: new FormControl("", Validators.required),
       password: new FormControl("", Validators.required),
       confirmPassword: new FormControl("", Validators.required)
     })
@@ -263,14 +263,14 @@ export class StaffRegistrationPage implements OnInit {
       fatherName: '',
       gender: '',
       age: '',
-      ageType: '',
-      dob: '',
+      ageUnit: '',
+      dateOfBirth: '',
       doj: '',
       address: '',
       phone: '',
       email: '',
       roleId: '',
-      userName: '',
+      username: '',
       password: '',
       confirmPassword: ''
     });
@@ -305,7 +305,7 @@ export class StaffRegistrationPage implements OnInit {
     let phone = this.staffRegForm.get("phone").value.trim();
     let email = this.staffRegForm.get("email").value.trim();
     let roleId = this.staffRegForm.get("roleId").value;
-    let userName = this.staffRegForm.get("userName").value.trim();
+    let username = this.staffRegForm.get("username").value.trim();
     let password = this.staffRegForm.get("password").value.trim();
     let confirmPassword = this.staffRegForm.get("confirmPassword").value.trim();
     let userImageUrl = this.benPhoto;
@@ -367,8 +367,8 @@ export class StaffRegistrationPage implements OnInit {
       alert("Please Select Role");
       return false;
     }
-    if (!userName || userName == null) {
-      alert("Please Enter Username");
+    if (!username || username == null) {
+      alert("Please Enter username");
       return false;
     }
     if (!password || password == null) {
@@ -399,7 +399,7 @@ export class StaffRegistrationPage implements OnInit {
           userIdIncrement,
           firstName,
           lastName,
-          userName,
+          username,
           password,
           genderId,
           dob,
