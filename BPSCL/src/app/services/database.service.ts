@@ -35,6 +35,7 @@ export class DatabaseService {
   table_vitals: string = "dp_Vitals";
   table_provisionalDiagnosis: string = "dp_ProvisionalDiagnosis";
   table_dispenses_m: string = "mi_Item";
+  table_dispenseType_m: string = "mi_ItemType";
   table_dispenses: string = "dp_ItemDispensation";
   table_referredTo: string = "dp_Referral";
   table_referredTo_m: string = "mp_HospitalList";
@@ -884,6 +885,94 @@ export class DatabaseService {
         });
       }
       return sessionPeriods;
+    });
+  }
+
+  drugwiseReport(startDate, endDate) {
+    let sql = `SELECT se.itemId AS DrugId, genericName AS Drugname, itemTypeName, SUM(quantityGiven) AS Total_Quantity,villageName AS servicePoint FROM ${this.table_dispenses} se LEFT JOIN ${this.table_villages} spm ON spm.villageId=se.servicePointId LEFT JOIN ${this.table_dispenses_m} mi ON mi.itemId=se.itemId LEFT JOIN ${this.table_dispenseType_m} mit ON mit.itemTypeId=se.itemTypeId WHERE se.insertedDate BETWEEN ? AND ? GROUP BY DrugId ORDER BY 2`;
+    return this.dbObject.executeSql(sql, [startDate, endDate]).then(data => {
+      let drugwiseReports: any[] = [];
+      for (var i = 0; i < data.rows.length; i++) {
+        drugwiseReports.push({
+          DrugId: data.rows.item(i).DrugId,
+          Drugname: data.rows.item(i).Drugname,
+          Total_Quantity: data.rows.item(i).Total_Quantity,
+          servicePoint: data.rows.item(i).servicePoint
+        });
+      }
+      return drugwiseReports;
+    });
+  }
+
+  beneficiarywiseDrugReport(startDate, endDate) {
+    let sql = `SELECT di.patientId, di.visitId, di.itemId, genericName AS DrugName,quantityGiven, ms.servicePointName, di.insertedDate FROM ${this.table_dispenses} di
+    LEFT JOIN ${this.table_dispenses_m} mi ON mi.itemId=di.itemId
+    LEFT JOIN ${this.table_servicePoints} ms ON ms.servicePointId=di.servicePointId
+    WHERE di.insertedDate BETWEEN ? AND ?`;
+    return this.dbObject.executeSql(sql, [startDate, endDate]).then(data => {
+      let beneficiarywiseDrugReports: any[] = [];
+      for (var i = 0; i < data.rows.length; i++) {
+        beneficiarywiseDrugReports.push({
+          patientId: data.rows.item(i).patientId,
+          visitId: data.rows.item(i).visitId,
+          itemId: data.rows.item(i).itemId,
+          DrugName: data.rows.item(i).DrugName,
+          quantityGiven: data.rows.item(i).quantityGiven,
+          servicePointName: data.rows.item(i).servicePointName,
+          insertedDate: data.rows.item(i).insertedDate
+        });
+      }
+      return beneficiarywiseDrugReports;
+    });
+  }
+
+  benSummaryReport(startDate, endDate) {
+    let sql = `SELECT di.patientId, di.visitId, di.itemId, genericName AS DrugName, quantityGiven, ms.servicePointName, dr.registrationDate, dv.visitDate, dr.name, dr.surname, CASE WHEN dr.genderId=1 THEN "Male" ELSE "Female" end AS GenderType, substr(dv.age||ma.ageUnitName,-10,10) AS Age, height, weight, bmi, respiratoryRate FROM ${this.table_dispenses} di LEFT JOIN ${this.table_dispenses_m} mi ON mi.itemId=di.itemId LEFT JOIN ${this.table_visits} dv ON di.patientId=dv.patientId AND di.visitId=dv.visitId LEFT JOIN ${this.table_beneficiaries} dr ON dr.patientId=dv.patientId LEFT JOIN ${this.table_vitals} dpv ON di.patientId=dpv.patientId AND di.visitId=dpv.visitId LEFT JOIN ${this.table_servicePoints} ms ON ms.servicePointId=di.servicePointId LEFT JOIN ${this.table_ageUnits} ma ON ma.ageUnitId=dv.ageTypeId WHERE di.insertedDate BETWEEN ? AND ?`;
+    return this.dbObject.executeSql(sql, [startDate, endDate]).then(data => {
+      let benSummaryReports: any[] = [];
+      for (var i = 0; i < data.rows.length; i++) {
+        benSummaryReports.push({
+          patientId: data.rows.item(i).patientId,
+          visitId: data.rows.item(i).visitId,
+          itemId: data.rows.item(i).itemId,
+          DrugName: data.rows.item(i).DrugName,
+          quantityGiven: data.rows.item(i).quantityGiven,
+          servicePointName: data.rows.item(i).servicePointName,
+          registrationDate: data.rows.item(i).registrationDate,
+          visitDate: data.rows.item(i).visitDate,
+          name: data.rows.item(i).name,
+          surname: data.rows.item(i).surname,
+          GenderType: data.rows.item(i).GenderType,
+          Age: data.rows.item(i).Age,
+          height: data.rows.item(i).height,
+          weight: data.rows.item(i).weight,
+          bmi: data.rows.item(i).bmi,
+          respiratoryRate: data.rows.item(i).respiratoryRate,
+        });
+      }
+      return benSummaryReports;
+    });
+  }
+
+  benVisitReport(startDate, endDate) {
+    let sql = `SELECT v.visitId, v.patientId, sp.servicePointName, r.registrationDate, v.visitDate, r.name, r.surname, CASE WHEN r.genderId = 1 THEN "MALE" WHEN r.genderId = 2 THEN "FEMALE" End AS GENDER, v.age, CASE WHEN v.visitDate = r.registrationDate THEN "NEW REG" ELSE "REVISIT" END AS Type FROM ${this.table_visits} v LEFT JOIN ${this.table_servicePoints} sp ON  sp.servicePointId = v.servicePointId LEFT JOIN ${this.table_beneficiaries} r ON r.patientId = v.patientId WHERE v.visitDate BETWEEN ? AND ?`;
+    return this.dbObject.executeSql(sql, [startDate, endDate]).then(data => {
+      let benVisitReports: any[] = [];
+      for (var i = 0; i < data.rows.length; i++) {
+        benVisitReports.push({
+          visitId: data.rows.item(i).visitId,
+          patientId: data.rows.item(i).patientId,
+          servicePointName: data.rows.item(i).servicePointName,
+          registrationDate: data.rows.item(i).registrationDate,
+          visitDate: data.rows.item(i).visitDate,
+          name: data.rows.item(i).name,
+          surname: data.rows.item(i).surname,
+          GENDER: data.rows.item(i).GENDER,
+          Age: data.rows.item(i).Age,
+          Type: data.rows.item(i).Type
+        });
+      }
+      return benVisitReports;
     });
   }
 

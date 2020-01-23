@@ -15,27 +15,33 @@ export class ReportsPage implements OnInit {
   reports: any[] = [
     {
       reportId: '1',
-      reportName: 'aaa'
+      reportName: 'aaa',
+      reportQuery: 'aaa Query'
     },
     {
       reportId: '2',
-      reportName: 'bbb'
+      reportName: 'bbb',
+      reportQuery: 'bbb Query'
     },
     {
       reportId: '3',
-      reportName: 'ccc'
+      reportName: 'ccc',
+      reportQuery: 'ccc Query'
     },
     {
       reportId: '4',
-      reportName: 'ddd'
+      reportName: 'ddd',
+      reportQuery: 'ddd Query'
     },
     {
       reportId: '5',
-      reportName: 'eee'
+      reportName: 'eee',
+      reportQuery: 'eee Query'
     },
     {
       reportId: '6',
-      reportName: 'fff'
+      reportName: 'fff',
+      reportQuery: 'fff Query'
     },
   ];
 
@@ -175,6 +181,13 @@ export class ReportsPage implements OnInit {
     } else if (report == 6) {
       this.headings = this.uploadedCountDataHeadings;
     }
+
+
+    let startDate = this.commonService.getDateTime(new Date(fromDate)) + ' 00:00:00';
+    console.log("startDate after converting --> " + startDate);
+
+    let endDate = this.commonService.getDateTime(new Date(toDate)) + ' 23:59:59';
+    console.log("startDate after converting --> " + endDate);
 
     // if (csv) {
     //   alert("Export CSV file");
