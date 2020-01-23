@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
+import { CommonService } from "./../../services/common.service";
 import { StorageService } from "./../../services/storage.service";
 import { Router } from "@angular/router";
 
@@ -76,8 +77,16 @@ export class BeneficiaryHistoryPage implements OnInit {
 
   headings = this.measurementDetails_headings;
 
+  newDate = new Date();
+  dateTime: string = this.commonService.getDateTime(this.newDate);
+
+  servicePointName: string = this.commonService.sessionDetails[
+    "servicePointName"
+  ];
+
   constructor(
     private db: DatabaseService,
+    private commonService: CommonService,
     private router: Router,
     private storageService: StorageService
   ) {

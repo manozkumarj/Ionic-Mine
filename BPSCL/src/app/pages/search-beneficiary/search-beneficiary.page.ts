@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { StorageService } from "./../../services/storage.service";
+import { CommonService } from "./../../services/common.service";
 import { Router } from "@angular/router";
 
 @Component({
@@ -15,9 +16,17 @@ export class SearchBeneficiaryPage implements OnInit {
   genders: any[] = [];
   ageUnits: any[] = [];
 
+  newDate = new Date();
+  dateTime: string = this.commonService.getDateTime(this.newDate);
+
+  servicePointName: string = this.commonService.sessionDetails[
+    "servicePointName"
+  ];
+
   constructor(
     private db: DatabaseService,
     private router: Router,
+    private commonService: CommonService,
     private storageService: StorageService
   ) {
     this.searchBenForm = new FormGroup({
@@ -46,7 +55,7 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -64,7 +73,7 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -79,7 +88,7 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }

@@ -53,12 +53,16 @@ export class ConsumableDispensePage implements OnInit {
   servicePointName: string;
   servicePointCode: string;
 
+  newDate = new Date();
+  dateTime: string = this.commonService.getDateTime(this.newDate);
+
   constructor(
     private db: DatabaseService,
     private commonService: CommonService,
     private router: Router,
     private storageService: StorageService
   ) {
+    this.loadSessionDetails();
     // this.loadBeneficiaries();
     // loadDispenses();
 
@@ -69,6 +73,16 @@ export class ConsumableDispensePage implements OnInit {
   }
 
   ngOnInit() { }
+
+  loadSessionDetails() {
+    this.stateId = this.commonService.sessionDetails['stateId'];
+    this.districtId = this.commonService.sessionDetails['districtId'];
+    this.mandalId = this.commonService.sessionDetails['mandalId'];
+    this.villageId = this.commonService.sessionDetails['villageId'];
+    this.servicePointId = this.commonService.sessionDetails['servicePointId'];
+    this.servicePointName = this.commonService.sessionDetails['servicePointName'];
+    this.servicePointCode = this.commonService.sessionDetails['servicePointCode'];
+  }
 
   loadBeneficiaries() {
     this.db

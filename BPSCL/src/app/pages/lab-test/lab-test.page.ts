@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { StorageService } from "./../../services/storage.service";
+import { CommonService } from "./../../services/common.service";
 import { Router } from "@angular/router";
 
 @Component({
@@ -36,8 +37,16 @@ export class LabTestPage implements OnInit {
 
   showLabTests: boolean = false;
 
+  newDate = new Date();
+  dateTime: string = this.commonService.getDateTime(this.newDate);
+
+  servicePointName: string = this.commonService.sessionDetails[
+    "servicePointName"
+  ];
+
   constructor(
     private db: DatabaseService,
+    private commonService: CommonService,
     private router: Router,
     private storageService: StorageService
   ) {

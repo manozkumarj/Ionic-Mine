@@ -692,14 +692,16 @@ export class DatabaseService {
   }
 
   getReports() {
-    let sql = `SELECT reportId, reportName FROM ${this.table_reports} WHERE isActive = ${this.status.active}`;
+    let sql = `SELECT reportId, reportName, reportQuery, noOfArguments FROM ${this.table_reports} WHERE isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let reports = [];
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
           reports.push({
             reportId: data.rows.item(i).reportId,
-            reportName: data.rows.item(i).reportName
+            reportName: data.rows.item(i).reportName,
+            reportQuery: data.rows.item(i).reportQuery,
+            noOfArguments: data.rows.item(i).noOfArguments
           });
         }
       }

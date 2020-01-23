@@ -48,9 +48,6 @@ export class DoctorPage implements OnInit {
   allowOtherMinorAilment: boolean = false;
   allowOtherReferredTo: boolean = false;
 
-  newDate = new Date();
-  dateTime: string = this.commonService.getDateTime(this.newDate);
-
   userId: number;
   vanId: number;
   deviceId: number;
@@ -61,6 +58,9 @@ export class DoctorPage implements OnInit {
   servicePointId: number;
   servicePointName: string;
   servicePointCode: string;
+
+  newDate = new Date();
+  dateTime: string = this.commonService.getDateTime(this.newDate);
 
   constructor(
     private db: DatabaseService,

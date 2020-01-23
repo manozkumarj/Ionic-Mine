@@ -7,7 +7,7 @@
       <ion-row style="text-align: center;">
         <ion-col size="3" size="12" size-sm>
           <div>
-            Service Point :
+            Service Point : {{servicePointName}}
           </div>
         </ion-col>
         <ion-col size="5" size="12" size-sm>
@@ -17,10 +17,10 @@
         </ion-col>
         <ion-col size="12" size-sm>
           <div>
-            Service Date :
+            Service Date : {{dateTime}}
           </div>
         </ion-col>
-        <ion-col size="auto">
+        <ion-col size="auto" (click)="commonService.logout()">
           <div>
             Logout
           </div>

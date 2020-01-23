@@ -7,7 +7,7 @@
       <ion-row style="text-align: center;">
         <ion-col size="3" size="12" size-sm>
           <div>
-            Service Point : Gogikona
+            Service Point : {{servicePointName}}
           </div>
         </ion-col>
         <ion-col size="5" size="12" size-sm>
@@ -17,10 +17,10 @@
         </ion-col>
         <ion-col size="12" size-sm>
           <div>
-            Service Date: 2019-12-16
+            Service Date : {{dateTime}}
           </div>
         </ion-col>
-        <ion-col size="auto" size="12" size-sm>
+        <ion-col size="auto" (click)="commonService.logout()">
           <div>
             Logout
           </div>
@@ -35,67 +35,43 @@
     <ion-grid style="padding: 0px;">
       <ion-row>
         <ion-col size="12" size-sm>
-          <ion-select
-            formControlName="report"
-            class="field-input"
-            style="color: #000; font-weight: bold; background: #3b4bad; 
-          background-image: linear-gradient(#3b4bad, #FFF)"
-            placeholder="Select"
-          >
-            <ion-select-option value="Male">Male </ion-select-option>
+          <ion-select formControlName="report" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+          background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+            <ion-select-option *ngFor="let report of reports" value="{{report.reportId}}">
+              {{report.reportName}}
+            </ion-select-option>
           </ion-select>
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-input
-            formControlName="fromDate"
-            placeholder="From Date"
-            class="field-input"
-          ></ion-input>
+          <ion-datetime class="field-input" placeholder="From Date" displayFormat="YYYY-MM-DD" value=""
+            formControlName="fromDate">
+          </ion-datetime>
         </ion-col>
         <ion-col size="12" size-sm>
-          <ion-input
-            formControlName="toDate"
-            placeholder="To Date"
-            class="field-input"
-            value=""
-          >
-          </ion-input>
+          <ion-datetime class="field-input" placeholder="To Date" displayFormat="YYYY-MM-DD" value=""
+            formControlName="toDate">
+          </ion-datetime>
         </ion-col>
         <ion-col class="col-border-right" size="12" size-sm>
-          <ion-button
-            style="width: 90%; font-weight: bold; margin-top: -10px;"
-            type="submit"
-            color="primary"
-            >Submit
+          <ion-button style="width: 90%; font-weight: bold; margin-top: -10px;" type="submit" color="primary">Submit
           </ion-button>
         </ion-col>
         <ion-col class="col-border-right" size="12" size-sm>
-          <ion-button
-            (click)="onSubmit(reportsForm.value, true)"
-            style="width: 90%; font-weight: bold; margin-top: -10px;"
-            type="button"
-            color="primary"
-            >Export CSV
+          <ion-button (click)="onSubmit(reportsForm.value, true)"
+            style="width: 90%; font-weight: bold; margin-top: -10px;" type="button" color="primary">Export CSV
           </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
   </form>
 
-  <ion-grid class="forecast_container scroll">
-    <ion-row nowrap class="header">
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
+  <ion-grid class="forecast_container scroll" *ngIf="headings.length > 0">
+    <ion-row nowrap class="header" *ngIf="headings.length > 0">
+      <ion-col *ngFor="let heading of headings">
+        {{heading}}
+      </ion-col>
     </ion-row>
-    <ion-row nowrap class="data">
+    <ion-row *ngIf='reportsData.length > 0' nowrap class="data">
       <ion-col>dataimd_forecastforecast</ion-col>
       <ion-col>dataimd_forecast</ion-col>
       <ion-col>dataimd_forecast</ion-col>
@@ -107,17 +83,14 @@
       <ion-col>dataimd_forecast</ion-col>
       <ion-col>dataimd_forecast</ion-col>
     </ion-row>
-    <ion-row nowrap class="data">
-      <ion-col>forecast</ion-col>
-      <ion-col>forecast</ion-col>
-      <ion-col>forecast</ion-col>
-      <ion-col>forecast</ion-col>
-      <ion-col>forecast</ion-col>
-      <ion-col>forecast</ion-col>
-      <ion-col>forecast</ion-col>
-      <ion-col>forecast</ion-col>
-      <ion-col>forecast</ion-col>
-      <ion-col>forecast</ion-col>
+  </ion-grid>
+
+  <ion-grid *ngIf="reportsData.length == 0">
+    <ion-row align-items-center justify-content-center
+      style="padding: 150px; text-align: center; font-size: 20px; color: #000; margin-top: 3px;">
+      <ion-col>
+        No Data found
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

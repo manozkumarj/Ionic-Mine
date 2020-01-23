@@ -53,7 +53,9 @@ export class StaffRegistrationPage implements OnInit {
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
 
-  servicePointName: string = this.commonService.sessionDetails['servicePointName'];
+  servicePointName: string = this.commonService.sessionDetails[
+    "servicePointName"
+  ];
 
   constructor(
     private db: DatabaseService,

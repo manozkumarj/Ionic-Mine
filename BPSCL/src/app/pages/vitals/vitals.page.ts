@@ -19,9 +19,6 @@ export class VitalsPage implements OnInit {
   muac = 0.0;
   hc = 0.0;
 
-  newDate = new Date();
-  dateTime: string = this.commonService.getDateTime(this.newDate);
-
   userId: number;
   vanId: number;
   deviceId: number;
@@ -32,6 +29,9 @@ export class VitalsPage implements OnInit {
   servicePointId: number;
   servicePointName: string;
   servicePointCode: string;
+
+  newDate = new Date();
+  dateTime: string = this.commonService.getDateTime(this.newDate);
 
   constructor(
     private db: DatabaseService,

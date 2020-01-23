@@ -53,6 +53,9 @@ export class MedicineDispensePage implements OnInit {
   servicePointName: string;
   servicePointCode: string;
 
+  newDate = new Date();
+  dateTime: string = this.commonService.getDateTime(this.newDate);
+
   constructor(
     private db: DatabaseService,
     private commonService: CommonService,

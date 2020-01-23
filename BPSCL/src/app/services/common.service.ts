@@ -1,4 +1,6 @@
 import { Injectable } from "@angular/core";
+import { AlertController } from "@ionic/angular";
+import { StorageService } from "./storage.service";
 
 @Injectable({
     providedIn: "root"
@@ -8,7 +10,7 @@ export class CommonService {
     newDate = new Date();
     dateTime: string;
 
-    constructor() {
+    constructor(private alertCtrl: AlertController, private storageService: StorageService) {
         this.dateTime = this.getDateTime(this.newDate);
     }
 
@@ -80,6 +82,30 @@ export class CommonService {
 
     padDatePart(part) {
         return ("0" + part).slice(-2);
+    }
+
+    logout() {
+        this.alertCtrl
+            .create({
+                header: "Are you sure?",
+                message: "Do you want to logout?",
+                buttons: [
+                    {
+                        text: "Cancel",
+                        role: "cancel"
+                    },
+                    {
+                        text: "Delete",
+                        handler: () => {
+                            alert("User will be logged out");
+                            // this.storageService.clear();
+                        }
+                    }
+                ]
+            })
+            .then(alertEl => {
+                alertEl.present();
+            });
     }
 
 }

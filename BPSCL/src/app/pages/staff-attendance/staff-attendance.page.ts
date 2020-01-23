@@ -46,14 +46,14 @@ export class StaffAttendancePage implements OnInit {
     }
   ];
 
+  showSessionPeriodField: boolean = false;
+
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
 
   servicePointName: string = this.commonService.sessionDetails[
     "servicePointName"
   ];
-
-  showSessionPeriodField: boolean = false;
 
   constructor(
     private db: DatabaseService,

@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { StorageService } from "./../../services/storage.service";
+import { CommonService } from "./../../services/common.service";
 import { Router } from "@angular/router";
 
 @Component({
@@ -11,7 +12,48 @@ import { Router } from "@angular/router";
 })
 export class ReportsPage implements OnInit {
   reportsForm: FormGroup;
-  reports: any[] = [];
+  reports: any[] = [
+    {
+      reportId: '1',
+      reportName: 'aaa'
+    },
+    {
+      reportId: '2',
+      reportName: 'bbb'
+    },
+    {
+      reportId: '3',
+      reportName: 'ccc'
+    },
+    {
+      reportId: '4',
+      reportName: 'ddd'
+    },
+    {
+      reportId: '5',
+      reportName: 'eee'
+    },
+    {
+      reportId: '6',
+      reportName: 'fff'
+    },
+  ];
+
+  drugwiseDataHeadings: any[] = ['DrugId', 'DrugName', 'ItemTypeName', 'Total_Quantity', 'ServicePoint'];
+
+  benwiseDrugReportDataHeadings: any[] = ['PatientId', 'VisitId', 'ItemId', 'DrugName', 'QuantityGiven', 'ServicePointName', 'InsertedDate'];
+
+  benSummaryReportDataHeadings: any[] = ['PatientId', 'VisitId', 'ItemId', 'DrugName', 'QuantityGiven', 'ServicePointName', 'RegistrationDate', 'VisitDate', 'Name', 'Surname', 'GenderType', 'Age', 'Height', 'Weight', 'BMI', 'RespiratoryRate'];
+
+  benVisitReportDataHeadings: any[] = ['VisitId', 'PatientId', 'ServicePointName', 'RegistrationDate', 'VisitDate', 'Name', 'Surname', 'Gender', 'Age', 'Type'];
+
+  regAndRevisitDataHeadings: any[] = ['Count', 'Count No'];
+
+  uploadedCountDataHeadings: any[] = ['TableName', 'Uploads Type', 'Count(*)'];
+
+  headings: any[] = [];
+
+  reportsData: any[] = [];
 
   items: any[] = [
     "one",
@@ -58,9 +100,17 @@ export class ReportsPage implements OnInit {
     }
   ];
 
+  servicePointName: string = this.commonService.sessionDetails[
+    "servicePointName"
+  ];
+
+  newDate = new Date();
+  dateTime: string = this.commonService.getDateTime(this.newDate);
+
   constructor(
     private db: DatabaseService,
     private router: Router,
+    private commonService: CommonService,
     private storageService: StorageService
   ) {
     this.reportsForm = new FormGroup({
@@ -90,6 +140,7 @@ export class ReportsPage implements OnInit {
   }
 
   onSubmit(values, csv = false) {
+    console.clear();
     console.log("Reports form is submitted, below are the values");
     console.log(values);
     console.log("Is CSV export -> " + csv);
@@ -111,10 +162,25 @@ export class ReportsPage implements OnInit {
       return false;
     }
 
-    if (csv) {
-      alert("Export CSV file");
-    } else {
-      alert("Show details");
+    if (report == 1) {
+      this.headings = this.drugwiseDataHeadings;
+    } else if (report == 2) {
+      this.headings = this.benwiseDrugReportDataHeadings;
+    } else if (report == 3) {
+      this.headings = this.benSummaryReportDataHeadings;
+    } else if (report == 4) {
+      this.headings = this.benVisitReportDataHeadings;
+    } else if (report == 5) {
+      this.headings = this.regAndRevisitDataHeadings;
+    } else if (report == 6) {
+      this.headings = this.uploadedCountDataHeadings;
     }
+
+    // if (csv) {
+    //   alert("Export CSV file");
+    // } else {
+    //   alert("Show details");
+    // }
+
   }
 }
