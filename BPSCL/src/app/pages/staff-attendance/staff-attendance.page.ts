@@ -84,7 +84,7 @@ export class StaffAttendancePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionTypes() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -129,7 +129,7 @@ export class StaffAttendancePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getUserDetails() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -172,7 +172,7 @@ export class StaffAttendancePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionPeriods() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -214,26 +214,63 @@ export class StaffAttendancePage implements OnInit {
     let userId = this.commonService.userDetails["userId"];
     let deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
     let vanId = this.commonService.beneficiaryDetails["userVanId"];
+    let dateYMD = this.commonService.dateTime;
+
+    let queryData = {
+      userId,
+      sessionPeriodId,
+      sessionTypeId,
+      deviceId,
+      vanId,
+      dateYMD
+    };
 
     this.db
-      .getMaxAttendanceId()
-      .then(data => {
-        if (data) {
-          let attendanceId = data;
+      .findAttendanceId(queryData)
+      .then(attendanceId => {
 
-          let insertData = {
-            attendanceId,
-            userId,
-            sessionPeriodId,
-            sessionTypeId,
-            deviceId,
-            vanId
-          };
+        if (attendanceId && attendanceId > 0) {
+
+          this.db.updateAttendance(queryData).then(data => {
+            console.log("Success -> updateAttendance is updated Successfully...");
+            this.router.navigate(["/reports"]);
+          }).catch(e => {
+            console.error("Error -> updateAttendance is not updated" + JSON.stringify(e));
+          });
+
+        } else {
+
+          this.db
+            .getMaxAttendanceId()
+            .then(attendanceId => {
+              if (attendanceId) {
+                queryData['attendanceId'] = attendanceId;
+                this.db
+                  .insertAttendance(queryData)
+                  .then(data => {
+                    console.log("Success - insertAttendance -> " + data);
+                    this.router.navigate(["/reports"]);
+                  })
+                  .catch(error => {
+                    console.error(
+                      "Error -> insertAttendance() function returned error." +
+                      JSON.stringify(error)
+                    );
+                  });
+              }
+            })
+            .catch(e => {
+              console.error(
+                "Error -> getMaxAttendanceId returned error" + JSON.stringify(e)
+              );
+            });
+
         }
+
       })
       .catch(e => {
         console.error(
-          "Error -> getMaxAttendanceId returned error" + JSON.stringify(e)
+          "Error -> findAttendanceId returned error" + JSON.stringify(e)
         );
       });
   }

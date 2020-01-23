@@ -81,7 +81,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionTypes() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -96,7 +96,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getStates() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -123,7 +123,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getServicePoints() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -138,7 +138,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getDistricts() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -153,7 +153,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getMandals() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -168,7 +168,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getVillages() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -227,7 +227,7 @@ export class SessionSelectionPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getStartingSessionPeriodId() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -324,26 +324,15 @@ export class SessionSelectionPage implements OnInit {
     };
 
     this.db
-      .saveSessionDetails(sessionDetails)
+      .saveServicePointLog(servicePointDetails)
       .then(data => {
-        console.log("Success - saveSessionDetails -> " + data);
-        this.db
-          .saveServicePointLog(servicePointDetails)
-          .then(data => {
-            console.log("Success - saveServicePointLog -> " + data);
-            this.router.navigate(["/beneficiary-registration"]);
-          })
-          .catch(error => {
-            console.error(
-              "Error -> saveServicePointLog() function returned error." +
-                JSON.stringify(error)
-            );
-          });
+        console.log("Success - saveServicePointLog -> " + data);
+        this.router.navigate(["/beneficiary-registration"]);
       })
       .catch(error => {
         console.error(
-          "Error -> saveSessionDetails() function returned error." +
-            JSON.stringify(error)
+          "Error -> saveServicePointLog() function returned error." +
+          JSON.stringify(error)
         );
       });
   }

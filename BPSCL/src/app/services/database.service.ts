@@ -521,7 +521,7 @@ export class DatabaseService {
         } else {
           console.warn(
             "database - getMaxUserId() returned empty results - Warning -> " +
-              JSON.stringify(data)
+            JSON.stringify(data)
           );
         }
         return maxVisitId;
@@ -546,7 +546,7 @@ export class DatabaseService {
         } else {
           console.warn(
             "database - getMaxAttendanceId() returned empty results - Warning -> " +
-              JSON.stringify(data)
+            JSON.stringify(data)
           );
         }
         return maxAttendanceId;
@@ -930,6 +930,23 @@ export class DatabaseService {
       });
   }
 
+  findAttendanceId(data) {
+    let attendanceId = 0;
+    let sql = `SELECT attendanceId FROM ${this.table_attendances} WHERE sessionPeriodId = ? AND userId = ? AND insertedDate LIKE '%${data.dateYMD}%' LIMIT 1`;
+    return this.dbObject
+      .executeSql(sql, [data.sessionPeriodId, data.userId])
+      .then(data => {
+        attendanceId = data.rows.item(0).attendanceId;
+        return attendanceId;
+      })
+      .catch(error => {
+        console.warn(
+          "database - findAttendanceId - Error -> " + JSON.stringify(error)
+        );
+        return attendanceId;
+      });
+  }
+
   registerAdmin(data) {
     let sql = `INSERT INTO ${this.table_admins} (username, password, registrationNo, imeiNo, parkingPlace, villageId, mandalId, districtId, stateId, gcmToken, isActive, insertedDate, updatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,datetime('now'),datetime('now'))`;
     return this.dbObject
@@ -1155,14 +1172,14 @@ export class DatabaseService {
       .then(res => {
         console.log(
           "database - insertProvisionalDiagnose() - Success -> " +
-            JSON.stringify(res)
+          JSON.stringify(res)
         );
         return true;
       })
       .catch(error => {
         console.warn(
           "database - insertProvisionalDiagnose() - Error -> " +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
         return false;
       });
@@ -1184,14 +1201,14 @@ export class DatabaseService {
       .then(res => {
         console.log(
           "database - updateProvisionalDiagnose() - Success -> " +
-            JSON.stringify(res)
+          JSON.stringify(res)
         );
         return true;
       })
       .catch(error => {
         console.warn(
           "database - updateProvisionalDiagnose() - Error -> " +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
         return false;
       });
@@ -1291,6 +1308,54 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - insertDispense() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  insertAttendance(data) {
+    let sql = `INSERT INTO ${this.table_attendances} (attendanceId, userId, sessionPeriodId, sessionTypeId , deviceId,  vanId,  insertedDate, sessionStart, sessionEnd) VALUES (?,?,?,?,?,?,datetime('now'),datetime('now'),datetime('now'))`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.attendanceId,
+        data.userId,
+        data.sessionPeriodId,
+        data.sessionTypeId,
+        data.deviceId,
+        data.vanId
+      ])
+      .then(res => {
+        console.log(
+          "database - insertAttendance() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - insertAttendance() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  updateAttendance(data) {
+    let sql = `UPDATE ${this.table_attendances} SET sessionTypeId = ?, vanId = ?, sessionEnd = datetime('now') WHERE sessionPeriodId = ? AND userId = ? AND insertedDate LIKE '%${data.dateYMD}%'`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.sessionTypeId,
+        data.vanId,
+        data.sessionPeriodId,
+        data.userId
+      ])
+      .then(res => {
+        console.log(
+          "database - updateAttendance() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - updateAttendance() - Error -> " + JSON.stringify(error)
         );
         return false;
       });
