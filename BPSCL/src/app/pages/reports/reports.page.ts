@@ -14,48 +14,90 @@ export class ReportsPage implements OnInit {
   reportsForm: FormGroup;
   reports: any[] = [
     {
-      reportId: '1',
-      reportName: 'aaa',
-      reportQuery: 'aaa Query'
+      reportId: "1",
+      reportName: "aaa",
+      reportQuery: "aaa Query"
     },
     {
-      reportId: '2',
-      reportName: 'bbb',
-      reportQuery: 'bbb Query'
+      reportId: "2",
+      reportName: "bbb",
+      reportQuery: "bbb Query"
     },
     {
-      reportId: '3',
-      reportName: 'ccc',
-      reportQuery: 'ccc Query'
+      reportId: "3",
+      reportName: "ccc",
+      reportQuery: "ccc Query"
     },
     {
-      reportId: '4',
-      reportName: 'ddd',
-      reportQuery: 'ddd Query'
+      reportId: "4",
+      reportName: "ddd",
+      reportQuery: "ddd Query"
     },
     {
-      reportId: '5',
-      reportName: 'eee',
-      reportQuery: 'eee Query'
+      reportId: "5",
+      reportName: "eee",
+      reportQuery: "eee Query"
     },
     {
-      reportId: '6',
-      reportName: 'fff',
-      reportQuery: 'fff Query'
-    },
+      reportId: "6",
+      reportName: "fff",
+      reportQuery: "fff Query"
+    }
   ];
 
-  drugwiseDataHeadings: any[] = ['DrugId', 'DrugName', 'ItemTypeName', 'Total_Quantity', 'ServicePoint'];
+  drugwiseDataHeadings: any[] = [
+    "DrugId",
+    "DrugName",
+    "ItemTypeName",
+    "Total_Quantity",
+    "ServicePoint"
+  ];
 
-  benwiseDrugReportDataHeadings: any[] = ['PatientId', 'VisitId', 'ItemId', 'DrugName', 'QuantityGiven', 'ServicePointName', 'InsertedDate'];
+  benwiseDrugReportDataHeadings: any[] = [
+    "PatientId",
+    "VisitId",
+    "ItemId",
+    "DrugName",
+    "QuantityGiven",
+    "ServicePointName",
+    "InsertedDate"
+  ];
 
-  benSummaryReportDataHeadings: any[] = ['PatientId', 'VisitId', 'ItemId', 'DrugName', 'QuantityGiven', 'ServicePointName', 'RegistrationDate', 'VisitDate', 'Name', 'Surname', 'GenderType', 'Age', 'Height', 'Weight', 'BMI', 'RespiratoryRate'];
+  benSummaryReportDataHeadings: any[] = [
+    "PatientId",
+    "VisitId",
+    "ItemId",
+    "DrugName",
+    "QuantityGiven",
+    "ServicePointName",
+    "RegistrationDate",
+    "VisitDate",
+    "Name",
+    "Surname",
+    "GenderType",
+    "Age",
+    "Height",
+    "Weight",
+    "BMI",
+    "RespiratoryRate"
+  ];
 
-  benVisitReportDataHeadings: any[] = ['VisitId', 'PatientId', 'ServicePointName', 'RegistrationDate', 'VisitDate', 'Name', 'Surname', 'Gender', 'Age', 'Type'];
+  benVisitReportDataHeadings: any[] = [
+    "VisitId",
+    "PatientId",
+    "ServicePointName",
+    "RegistrationDate",
+    "VisitDate",
+    "Name",
+    "Surname",
+    "Gender",
+    "Age",
+    "Type"
+  ];
 
-  regAndRevisitDataHeadings: any[] = ['Count', 'Count No'];
+  regAndRevisitDataHeadings: any[] = ["Count", "Count No"];
 
-  uploadedCountDataHeadings: any[] = ['TableName', 'Uploads Type', 'Count(*)'];
+  uploadedCountDataHeadings: any[] = ["TableName", "Uploads Type", "Count(*)"];
 
   headings: any[] = [];
 
@@ -126,21 +168,19 @@ export class ReportsPage implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   loadReports() {
     this.db
       .getReports()
       .then(reports => {
-        console.log(
-          "Fetched reports -> " + JSON.stringify(reports)
-        );
+        console.log("Fetched reports -> " + JSON.stringify(reports));
         this.reports = reports;
       })
       .catch(error => {
         console.error(
           "Error -> getReports() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -168,32 +208,125 @@ export class ReportsPage implements OnInit {
       return false;
     }
 
-    if (report == 1) {
-      this.headings = this.drugwiseDataHeadings;
-    } else if (report == 2) {
-      this.headings = this.benwiseDrugReportDataHeadings;
-    } else if (report == 3) {
-      this.headings = this.benSummaryReportDataHeadings;
-    } else if (report == 4) {
-      this.headings = this.benVisitReportDataHeadings;
-    } else if (report == 5) {
-      this.headings = this.regAndRevisitDataHeadings;
-    } else if (report == 6) {
-      this.headings = this.uploadedCountDataHeadings;
-    }
-
-
-    let startDate = this.commonService.getDateTime(new Date(fromDate)) + ' 00:00:00';
+    let startDate =
+      this.commonService.getDateTime(new Date(fromDate)) + " 00:00:00";
     console.log("startDate after converting --> " + startDate);
 
-    let endDate = this.commonService.getDateTime(new Date(toDate)) + ' 23:59:59';
+    let endDate =
+      this.commonService.getDateTime(new Date(toDate)) + " 23:59:59";
     console.log("startDate after converting --> " + endDate);
+
+    if (report == 1) {
+      this.headings = this.drugwiseDataHeadings;
+      this.db
+        .drugwiseReports(startDate, endDate)
+        .then(data => {
+          if (data.length > 0) {
+            console.log("Fetched drugwiseReports " + JSON.stringify(data));
+          } else {
+            console.log("No drugwiseReports found");
+          }
+        })
+        .catch(e => {
+          console.error(
+            "Error -> drugwiseReports returned error" + JSON.stringify(e)
+          );
+        });
+    } else if (report == 2) {
+      this.headings = this.benwiseDrugReportDataHeadings;
+      this.db
+        .beneficiarywiseDrugReports(startDate, endDate)
+        .then(data => {
+          if (data.length > 0) {
+            console.log(
+              "Fetched beneficiarywiseDrugReports " + JSON.stringify(data)
+            );
+          } else {
+            console.log("No beneficiarywiseDrugReports found");
+          }
+        })
+        .catch(e => {
+          console.error(
+            "Error -> beneficiarywiseDrugReports returned error" +
+              JSON.stringify(e)
+          );
+        });
+    } else if (report == 3) {
+      this.headings = this.benSummaryReportDataHeadings;
+      this.db
+        .benSummaryReports(startDate, endDate)
+        .then(data => {
+          if (data.length > 0) {
+            console.log("Fetched benSummaryReports " + JSON.stringify(data));
+          } else {
+            console.log("No benSummaryReports found");
+          }
+        })
+        .catch(e => {
+          console.error(
+            "Error -> benSummaryReports returned error" + JSON.stringify(e)
+          );
+        });
+    } else if (report == 4) {
+      this.headings = this.benVisitReportDataHeadings;
+      this.db
+        .benVisitReports(startDate, endDate)
+        .then(data => {
+          if (data.length > 0) {
+            console.log("Fetched benVisitReports " + JSON.stringify(data));
+          } else {
+            console.log("No benVisitReports found");
+          }
+        })
+        .catch(e => {
+          console.error(
+            "Error -> benVisitReports returned error" + JSON.stringify(e)
+          );
+        });
+    } else if (report == 5) {
+      this.headings = this.regAndRevisitDataHeadings;
+      this.db
+        .regAndRevisitCountReports(startDate, endDate)
+        .then(data => {
+          if (data.length > 0) {
+            console.log(
+              "Fetched regAndRevisitCountReports " + JSON.stringify(data)
+            );
+          } else {
+            console.log("No regAndRevisitCountReports found");
+          }
+        })
+        .catch(e => {
+          console.error(
+            "Error -> regAndRevisitCountReports returned error" +
+              JSON.stringify(e)
+          );
+        });
+    } else if (report == 6) {
+      this.headings = this.uploadedCountDataHeadings;
+      this.db
+        .checkUploadedCountReports(startDate, endDate)
+        .then(data => {
+          if (data.length > 0) {
+            console.log(
+              "Fetched checkUploadedCountReports " + JSON.stringify(data)
+            );
+          } else {
+            console.log("No checkUploadedCountReports found");
+          }
+        })
+        .catch(e => {
+          console.error(
+            "Error -> checkUploadedCountReports returned error" +
+              JSON.stringify(e)
+          );
+        });
+    }
 
     // if (csv) {
     //   alert("Export CSV file");
     // } else {
     //   alert("Show details");
     // }
-
   }
 }

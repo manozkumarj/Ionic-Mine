@@ -45,6 +45,7 @@ export class DatabaseService {
   table_provisionalDiagnosis_m: string = "mp_ProvisionalDiagnosis";
   table_labTests_m: string = "mp_LabTest";
   table_labTests: string = "dp_LabTest";
+  table_uploadData: string = "ds_UploadData";
 
   stateId: number = 21;
   status = {
@@ -888,7 +889,7 @@ export class DatabaseService {
     });
   }
 
-  drugwiseReport(startDate, endDate) {
+  drugwiseReports(startDate, endDate) {
     let sql = `SELECT se.itemId AS DrugId, genericName AS Drugname, itemTypeName, SUM(quantityGiven) AS Total_Quantity,villageName AS servicePoint FROM ${this.table_dispenses} se LEFT JOIN ${this.table_villages} spm ON spm.villageId=se.servicePointId LEFT JOIN ${this.table_dispenses_m} mi ON mi.itemId=se.itemId LEFT JOIN ${this.table_dispenseType_m} mit ON mit.itemTypeId=se.itemTypeId WHERE se.insertedDate BETWEEN ? AND ? GROUP BY DrugId ORDER BY 2`;
     return this.dbObject.executeSql(sql, [startDate, endDate]).then(data => {
       let drugwiseReports: any[] = [];
@@ -904,7 +905,7 @@ export class DatabaseService {
     });
   }
 
-  beneficiarywiseDrugReport(startDate, endDate) {
+  beneficiarywiseDrugReports(startDate, endDate) {
     let sql = `SELECT di.patientId, di.visitId, di.itemId, genericName AS DrugName,quantityGiven, ms.servicePointName, di.insertedDate FROM ${this.table_dispenses} di
     LEFT JOIN ${this.table_dispenses_m} mi ON mi.itemId=di.itemId
     LEFT JOIN ${this.table_servicePoints} ms ON ms.servicePointId=di.servicePointId
@@ -926,7 +927,7 @@ export class DatabaseService {
     });
   }
 
-  benSummaryReport(startDate, endDate) {
+  benSummaryReports(startDate, endDate) {
     let sql = `SELECT di.patientId, di.visitId, di.itemId, genericName AS DrugName, quantityGiven, ms.servicePointName, dr.registrationDate, dv.visitDate, dr.name, dr.surname, CASE WHEN dr.genderId=1 THEN "Male" ELSE "Female" end AS GenderType, substr(dv.age||ma.ageUnitName,-10,10) AS Age, height, weight, bmi, respiratoryRate FROM ${this.table_dispenses} di LEFT JOIN ${this.table_dispenses_m} mi ON mi.itemId=di.itemId LEFT JOIN ${this.table_visits} dv ON di.patientId=dv.patientId AND di.visitId=dv.visitId LEFT JOIN ${this.table_beneficiaries} dr ON dr.patientId=dv.patientId LEFT JOIN ${this.table_vitals} dpv ON di.patientId=dpv.patientId AND di.visitId=dpv.visitId LEFT JOIN ${this.table_servicePoints} ms ON ms.servicePointId=di.servicePointId LEFT JOIN ${this.table_ageUnits} ma ON ma.ageUnitId=dv.ageTypeId WHERE di.insertedDate BETWEEN ? AND ?`;
     return this.dbObject.executeSql(sql, [startDate, endDate]).then(data => {
       let benSummaryReports: any[] = [];
@@ -954,7 +955,7 @@ export class DatabaseService {
     });
   }
 
-  benVisitReport(startDate, endDate) {
+  benVisitReports(startDate, endDate) {
     let sql = `SELECT v.visitId, v.patientId, sp.servicePointName, r.registrationDate, v.visitDate, r.name, r.surname, CASE WHEN r.genderId = 1 THEN "MALE" WHEN r.genderId = 2 THEN "FEMALE" End AS GENDER, v.age, CASE WHEN v.visitDate = r.registrationDate THEN "NEW REG" ELSE "REVISIT" END AS Type FROM ${this.table_visits} v LEFT JOIN ${this.table_servicePoints} sp ON  sp.servicePointId = v.servicePointId LEFT JOIN ${this.table_beneficiaries} r ON r.patientId = v.patientId WHERE v.visitDate BETWEEN ? AND ?`;
     return this.dbObject.executeSql(sql, [startDate, endDate]).then(data => {
       let benVisitReports: any[] = [];
@@ -973,6 +974,35 @@ export class DatabaseService {
         });
       }
       return benVisitReports;
+    });
+  }
+
+  regAndRevisitCountReports(startDate, endDate) {
+    let sql = `SELECT "NEW REGISTRATIONS" AS "count", COUNT(1) AS "countNo" FROM ${this.table_visits} dv WHERE dv.visitCount = 1 AND dv.visitDate BETWEEN ? AND ? UNION ALL SELECT "REVISIT" AS "Count",COUNT(1) AS "COUNT NO" FROM ${this.table_visits} dv WHERE dv.visitCount <> 1 AND dv.visitDate BETWEEN ? AND ? UNION ALL SELECT "TOTAL VISITS" AS "Count",COUNT(1) AS "COUNT NO" FROM ${this.table_visits} dv WHERE dv.visitDate BETWEEN ? AND ?`;
+    return this.dbObject.executeSql(sql, [startDate, endDate, startDate, endDate, startDate, endDate]).then(data => {
+      let regAndRevisitCountReports: any[] = [];
+      for (var i = 0; i < data.rows.length; i++) {
+        regAndRevisitCountReports.push({
+          count: data.rows.item(i).count,
+          countNo: data.rows.item(i).countNo
+        });
+      }
+      return regAndRevisitCountReports;
+    });
+  }
+
+  checkUploadedCountReports(startDate, endDate) {
+    let sql = `SELECT tableName, CASE WHEN uploadStatus!=0 THEN "Not Uploaded" ELSE  "Uploaded" END AS "uploadesType",count(*) AS 'Count' FROM ${this.table_uploadData} WHERE insertedDate BETWEEN ? AND ? GROUP BY tableName,uploadStatus ORDER BY tableName`;
+    return this.dbObject.executeSql(sql, [startDate, endDate, startDate, endDate, startDate, endDate]).then(data => {
+      let checkUploadedCountReports: any[] = [];
+      for (var i = 0; i < data.rows.length; i++) {
+        checkUploadedCountReports.push({
+          tableName: data.rows.item(i).tableName,
+          uploadesType: data.rows.item(i).uploadesType,
+          Count: data.rows.item(i).Count
+        });
+      }
+      return checkUploadedCountReports;
     });
   }
 
