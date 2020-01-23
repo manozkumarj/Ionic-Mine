@@ -13,8 +13,34 @@ import { Router } from "@angular/router";
 export class SearchBeneficiaryPage implements OnInit {
   searchBenForm: FormGroup;
   beneficiaries: any[] = [];
-  genders: any[] = [];
-  ageUnits: any[] = [];
+  genders: any[] = [
+    {
+      genderId: 1,
+      gender: "Male"
+    },
+    {
+      genderId: 2,
+      gender: "Female"
+    },
+    {
+      genderId: 3,
+      gender: "Others"
+    }
+  ];
+  ageUnits: any[] = [
+    {
+      ageUnitId: 1,
+      ageUnitName: "Days"
+    },
+    {
+      ageUnitId: 2,
+      ageUnitName: "Months"
+    },
+    {
+      ageUnitId: 3,
+      ageUnitName: "Years"
+    }
+  ];
 
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
@@ -22,6 +48,7 @@ export class SearchBeneficiaryPage implements OnInit {
   servicePointName: string = this.commonService.sessionDetails[
     "servicePointName"
   ];
+  servicePointId = this.commonService.sessionDetails["servicePointId"];
 
   constructor(
     private db: DatabaseService,
@@ -41,6 +68,8 @@ export class SearchBeneficiaryPage implements OnInit {
 
   ngOnInit() {
     // this.loadBeneficiaries();
+    // this.loadAgeUnits();
+    // this.loadGenders();
   }
 
   loadBeneficiaries() {
@@ -55,7 +84,7 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -73,7 +102,7 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -88,7 +117,7 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -132,5 +161,7 @@ export class SearchBeneficiaryPage implements OnInit {
     ];
 
     alert("Form can be submitted");
+
+    let query = `SELECT Distinct vi.patientId, bi.name, bi.surname, mg.gender, vi.age, ma.ageUnitName, bi.imageUrl FROM dp_Visit vi INNER JOIN dp_Registration bi  ON vi.patientId = bi.patientId INNER JOIN mp_ageunit ma ON ma.ageUnitId = vi.ageTypeId INNER JOIN mp_Gender mg ON bi.genderId = mg.genderId WHERE bi.servicePointId = ${this.servicePointId} AND visitCount=1`;
   }
 }
