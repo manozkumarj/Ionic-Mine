@@ -1068,6 +1068,32 @@ export class DatabaseService {
       });
   }
 
+  searchBeneficiaries(query) {
+    let beneficiariesData: any[] = [];
+    let sql = query;
+    return this.dbObject
+      .executeSql(sql, [])
+      .then(data => {
+        for (var i = 0; i < data.rows.length; i++) {
+          beneficiariesData.push({
+            patientId: data.rows.item(i).patientId,
+            name: data.rows.item(i).name,
+            surname: data.rows.item(i).surname,
+            gender: data.rows.item(i).gender,
+            age: data.rows.item(i).age + ' ' + data.rows.item(i).ageUnitName,
+            imageUrl: data.rows.item(i).imageUrl
+          });
+        }
+        return beneficiariesData;
+      })
+      .catch(error => {
+        console.warn(
+          "database - searchBeneficiaries - Error -> " + JSON.stringify(error)
+        );
+        return beneficiariesData;
+      });
+  }
+
   registerAdmin(data) {
     let sql = `INSERT INTO ${this.table_admins} (username, password, registrationNo, imeiNo, parkingPlace, villageId, mandalId, districtId, stateId, gcmToken, isActive, insertedDate, updatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,datetime('now'),datetime('now'))`;
     return this.dbObject

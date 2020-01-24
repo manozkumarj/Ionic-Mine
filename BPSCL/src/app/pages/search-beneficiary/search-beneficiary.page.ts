@@ -67,26 +67,8 @@ export class SearchBeneficiaryPage implements OnInit {
   }
 
   ngOnInit() {
-    // this.loadBeneficiaries();
     // this.loadAgeUnits();
     // this.loadGenders();
-  }
-
-  loadBeneficiaries() {
-    this.db
-      .getBeneficiaries()
-      .then(beneficiaries => {
-        console.log(
-          "Fetched beneficiaries -> " + JSON.stringify(beneficiaries)
-        );
-        this.beneficiaries = beneficiaries;
-      })
-      .catch(error => {
-        console.error(
-          "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
-        );
-      });
   }
 
   loadAgeUnits() {
@@ -102,7 +84,7 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -117,12 +99,13 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
 
   onSubmit(values) {
+    console.clear();
     console.log("Search Ben form is submitted, below are the values");
     console.log(values);
 
@@ -160,8 +143,50 @@ export class SearchBeneficiaryPage implements OnInit {
       }
     ];
 
-    alert("Form can be submitted");
+    // alert("Form can be submitted");
 
     let query = `SELECT Distinct vi.patientId, bi.name, bi.surname, mg.gender, vi.age, ma.ageUnitName, bi.imageUrl FROM dp_Visit vi INNER JOIN dp_Registration bi  ON vi.patientId = bi.patientId INNER JOIN mp_ageunit ma ON ma.ageUnitId = vi.ageTypeId INNER JOIN mp_Gender mg ON bi.genderId = mg.genderId WHERE bi.servicePointId = ${this.servicePointId} AND visitCount=1`;
+
+    if (beneficiaryId && beneficiaryId != null) {
+      query += ` AND vi.patientId LIKE '%${beneficiaryId}%'`;
+    }
+    if (beneficiaryName && beneficiaryName != null) {
+      query += ` AND bi.name LIKE '%${beneficiaryName}%'`;
+    }
+    if (beneficiarySurname && beneficiarySurname != null) {
+      query += ` AND bi.surname LIKE '%${beneficiarySurname}%'`;
+    }
+    if (beneficiaryAge && beneficiaryAge != null) {
+      query += ` AND vi.age = ${beneficiaryAge}`;
+    }
+    if (beneficiaryAgeUnit && beneficiaryAgeUnit != null) {
+      query += ` AND vi.ageTypeId = ${beneficiaryAgeUnit}`;
+    }
+    if (beneficiaryGender && beneficiaryGender != null) {
+      query += ` AND bi.genderId = ${beneficiaryGender}`;
+    }
+
+    console.log('Final Query is  --> ' + query);
+
+    this.db
+      .searchBeneficiaries(query)
+      .then(beneficiaries => {
+        console.log(
+          "Fetched beneficiariesData -> " + JSON.stringify(beneficiaries)
+        );
+        if (beneficiaries.length > 0) {
+          this.beneficiaries = beneficiaries;
+          if (!this.beneficiaries['imageUrl'] || this.beneficiaries['imageUrl'] == null) {
+            this.beneficiaries['imageUrl'] = "assets/profile_pic.jpg";
+          }
+        }
+      })
+      .catch(error => {
+        console.error(
+          "Error -> searchBeneficiaries() function returned error." +
+          JSON.stringify(error)
+        );
+      });
+
   }
 }
