@@ -1068,6 +1068,29 @@ export class DatabaseService {
       });
   }
 
+  findBenLabtest(data) {
+    let fetchedPatientId = 0;
+    let sql = `SELECT patientId FROM ${this.table_labTests} WHERE patientId = ? AND visitId = ? AND servicePointId = ? AND vanId = ? AND labTestId = ?`;
+    return this.dbObject.executeSql(sql, [
+      data.patientId,
+      data.visitId,
+      data.servicePointId,
+      data.vanId,
+      data.labTestId
+    ]).then(data => {
+      if (data.rows.length > 0) {
+        fetchedPatientId = data.rows.item(0).patientId
+      }
+      return fetchedPatientId;
+    })
+      .catch(error => {
+        console.warn(
+          "database - findBenLabtest - Error -> " + JSON.stringify(error)
+        );
+        return fetchedPatientId;
+      });
+  }
+
   searchBeneficiaries(query) {
     let beneficiariesData: any[] = [];
     let sql = query;
@@ -1326,6 +1349,67 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - insertProvisionalDiagnose() - Error -> " +
+          JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  insertLabtest(data) {
+    let sql = `INSERT INTO ${this.table_labTests} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, labTestId, labTestResult,  insertedBy, insertedDate, updatedBy, updatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'))`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.patientId,
+        data.visitId,
+        data.deviceId,
+        data.vanId,
+        data.routeVillageId,
+        data.servicePointId,
+        data.compoundPatientId,
+        data.visitCount,
+        data.labTestId,
+        data.labTestResult,
+        data.userId,
+        data.userId
+      ])
+      .then(res => {
+        console.log(
+          "database - insertLabtest() - Success -> " +
+          JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - insertLabtest() - Error -> " +
+          JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  updateLabtest(data) {
+    let sql = `UPDATE ${this.table_labTests} SET labTestResult = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND labTestId = ? AND visitId = ?`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.labTestResult,
+        data.userId,
+        data.patientId,
+        data.servicePointId,
+        data.vanId,
+        data.labTestId,
+        data.visitId
+      ])
+      .then(res => {
+        console.log(
+          "database - updateLabtest() - Success -> " +
+          JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - updateLabtest() - Error -> " +
           JSON.stringify(error)
         );
         return false;

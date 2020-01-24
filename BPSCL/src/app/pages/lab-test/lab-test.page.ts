@@ -35,14 +35,19 @@ export class LabTestPage implements OnInit {
     }
   ];
 
-  showLabTests: boolean = false;
+  visitCount: number;
+  stateId: number;
+  districtId: number;
+  mandalId: number;
+  villageId: number;
+  servicePointId: number;
+  servicePointName: string;
+  servicePointCode: string;
+
+  showLabTests: boolean = true;
 
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
-
-  servicePointName: string = this.commonService.sessionDetails[
-    "servicePointName"
-  ];
 
   constructor(
     private db: DatabaseService,
@@ -50,6 +55,7 @@ export class LabTestPage implements OnInit {
     private router: Router,
     private storageService: StorageService
   ) {
+    this.loadSessionDetails();
     // this.loadBeneficiaries();
     // loadLabTests();
 
@@ -95,6 +101,16 @@ export class LabTestPage implements OnInit {
       });
   }
 
+  loadSessionDetails() {
+    this.stateId = this.commonService.sessionDetails['stateId'];
+    this.districtId = this.commonService.sessionDetails['districtId'];
+    this.mandalId = this.commonService.sessionDetails['mandalId'];
+    this.villageId = this.commonService.sessionDetails['villageId'];
+    this.servicePointId = this.commonService.sessionDetails['servicePointId'];
+    this.servicePointName = this.commonService.sessionDetails['servicePointName'];
+    this.servicePointCode = this.commonService.sessionDetails['servicePointCode'];
+  }
+
   benIdChange() {
     let selectedBenID = this.labTestForm.get("beneficiaryId").value;
     console.log("selectedBenID is -> " + selectedBenID);
@@ -121,6 +137,16 @@ export class LabTestPage implements OnInit {
     }
 
     alert("Form can be submitted");
+
+    let visitId = this.commonService.beneficiaryDetails['userVisitId'];
+    let deviceId = this.commonService.beneficiaryDetails['userDeviceId'];
+    let vanId = this.commonService.beneficiaryDetails['userVanId'];
+    let routeVillageId = this.commonService.beneficiaryDetails['userRouteVillageId'];
+    let servicePointId = this.commonService.beneficiaryDetails['userServicePointId'];
+    let compoundPatientId = this.commonService.beneficiaryDetails['userCompoundPatientId'];
+    let visitCount = this.commonService.beneficiaryDetails['userVisitCount'];
+
+    let userId = this.commonService.userDetails['userId'];
   }
 
 }
