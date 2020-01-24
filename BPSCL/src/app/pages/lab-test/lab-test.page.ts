@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { StorageService } from "./../../services/storage.service";
 import { CommonService } from "./../../services/common.service";
 import { Router } from "@angular/router";
+import { IonSelect } from '@ionic/angular';
 
 @Component({
   selector: 'app-lab-test',
@@ -11,9 +12,11 @@ import { Router } from "@angular/router";
   styleUrls: ['./lab-test.page.scss'],
 })
 export class LabTestPage implements OnInit {
+  @ViewChild('mySelect', { static: false }) selectRef: IonSelect;
   labTestForm: FormGroup;
   benIds: any[] = [];
   selectedLabTests: any[] = [];
+  ecgs: any[] = [];
   labTests: any[] = [
     {
       id: 1,
@@ -58,6 +61,7 @@ export class LabTestPage implements OnInit {
     this.loadSessionDetails();
     // this.loadBeneficiaries();
     // loadLabTests();
+    // loadEcgs();
 
     this.labTestForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required)
@@ -101,6 +105,23 @@ export class LabTestPage implements OnInit {
       });
   }
 
+  loadEcgs() {
+    this.db
+      .getEcgs()
+      .then(ecgs => {
+        console.log(
+          "Fetched ecgs -> " + JSON.stringify(ecgs)
+        );
+        this.ecgs = ecgs;
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getEcgs() function returned error." +
+          JSON.stringify(error)
+        );
+      });
+  }
+
   loadSessionDetails() {
     this.stateId = this.commonService.sessionDetails['stateId'];
     this.districtId = this.commonService.sessionDetails['districtId'];
@@ -115,6 +136,25 @@ export class LabTestPage implements OnInit {
     let selectedBenID = this.labTestForm.get("beneficiaryId").value;
     console.log("selectedBenID is -> " + selectedBenID);
     this.showLabTests = true;
+  }
+
+  labTestChange(val) {
+    console.log("selected val is -> " + val);
+    this.selectedLabTests.push(val);
+    let filtered = this.labTests.filter(labTest => !this.selectedLabTests.includes(labTest.id));
+
+    console.log("filtered labtests are -> " + JSON.stringify(filtered));
+
+    this.labTests = filtered;
+
+  }
+
+  openSelect() {
+    this.selectRef.open();
+  }
+
+  closeSelect() {
+    // this.selectRef.close();
   }
 
   resetValues() {

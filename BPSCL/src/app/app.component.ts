@@ -5,6 +5,7 @@ import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { MenuController } from "@ionic/angular";
 import { StorageService } from "./services/storage.service";
+import { CommonService } from "./services/common.service";
 import { AlertController } from "@ionic/angular";
 
 @Component({
@@ -117,6 +118,7 @@ export class AppComponent {
     private statusBar: StatusBar,
     public menuCtrl: MenuController,
     private storageService: StorageService,
+    private commonService: CommonService,
     private alertCtrl: AlertController
   ) {
     this.initializeApp();
@@ -124,29 +126,6 @@ export class AppComponent {
 
   closeMenu() {
     this.menuCtrl.toggle();
-  }
-
-  logout() {
-    this.alertCtrl
-      .create({
-        header: "Are you sure?",
-        message: "Do you want to logout?",
-        buttons: [
-          {
-            text: "Cancel",
-            role: "cancel"
-          },
-          {
-            text: "Delete",
-            handler: () => {
-              this.storageService.clear();
-            }
-          }
-        ]
-      })
-      .then(alertEl => {
-        alertEl.present();
-      });
   }
 
   initializeApp() {

@@ -67,7 +67,23 @@
 
                 <ion-row [ngClass]="{'hider' : !showLabTests}" class="labTests">
                   <ion-col size="12" size-sm>
-                    <ion-select placeholder="Select Lab Test">
+                    <ion-input (ionFocus)="openSelect()" type="number" value="" placeholder="Select Lab Test">
+                    </ion-input>
+                  </ion-col>
+                  <ion-col size="12" size-sm>
+                    <ion-input type="number" value="" placeholder="Result">
+                    </ion-input>
+                  </ion-col>
+                  <ion-col size="12" size-sm>
+                    <ion-input disabled='disabled' value="Units">
+                    </ion-input>
+                  </ion-col>
+                </ion-row>
+
+
+                <ion-row [ngClass]="{'hider' : !showLabTests}" class="labTests">
+                  <ion-col size="12" size-sm>
+                    <ion-select placeholder="Select Lab Test" (ionChange)="labTestChange(two.value)" #two>
                       <ion-select-option *ngFor="let labTest of labTests" [value]="labTest.id">
                         {{labTest.name}}
                       </ion-select-option>
@@ -83,21 +99,6 @@
                   </ion-col>
                 </ion-row>
 
-                <ion-row class="row-border" style="border-bottom: 2px solid #ccc;"
-                  *ngFor="let medicineDispense of medicineDispenses">
-                  <ion-col class="col-border-right" size="12" size-sm>
-                    <ion-checkbox (ionChange)="dispenseCheckbox(medicineDispense.itemId, $event)"></ion-checkbox>
-                  </ion-col>
-                  <ion-col class="col-border-right" size="12" size-sm>
-                    {{medicineDispense.genericName}}
-                  </ion-col>
-                  <ion-col>
-                    <div [ngClass]="{'hider' : !medicineDispense.allowQuantity}">
-                      <ion-input placeholder="Enter Quantity" class="field-input" value=""
-                        (ionBlur)="quantityInput(medicineDispense.itemId, $event)"></ion-input>
-                    </div>
-                  </ion-col>
-                </ion-row>
               </div>
 
               <ion-row class="row-border row-height-45" align-items-center justify-content-center>
@@ -113,14 +114,27 @@
                   <ion-button style="width: 90%; font-weight: bold;" type="reset" color="primary">Skip</ion-button>
                 </ion-col>
               </ion-row>
+
+              <ion-row>
+                <ion-col size="12" size-sm>
+                  <ion-select #mySelect style="display: none;">
+                    <ion-select-option>Appliances</ion-select-option>
+                    <ion-select-option>Automobile</ion-select-option>
+                    <ion-select-option>Cellphones</ion-select-option>
+                    <ion-select-option>Clothing</ion-select-option>
+                    <ion-select-option>Computers</ion-select-option>
+                    <ion-select-option>Electronics</ion-select-option>
+                    <ion-select-option>Toys</ion-select-option>
+                  </ion-select>
+                </ion-col>
+              </ion-row>
+
             </ion-grid>
             <!-- left side Grid - starts here -->
           </div>
         </ion-col>
+
         <ion-col size="4" style="border-left: 4px solid #3b4bad;">
-          <div>
-            <app-user-details></app-user-details>
-          </div>
         </ion-col>
       </ion-row>
     </ion-grid>

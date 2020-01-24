@@ -46,6 +46,8 @@ export class DatabaseService {
   table_labTests_m: string = "mp_LabTest";
   table_labTests: string = "dp_LabTest";
   table_uploadData: string = "ds_UploadData";
+  table_ecgs: string = "dp_ecg";
+  table_ecgs_m: string = "mp_ecg";
 
   stateId: number = 21;
   status = {
@@ -742,6 +744,23 @@ export class DatabaseService {
         }
       }
       return labTests;
+    });
+  }
+
+  getEcgs() {
+    let sql = `SELECT ecgId, ecgName, referral FROM ${this.table_ecgs_m} WHERE isActive = ${this.status.active}`;
+    return this.dbObject.executeSql(sql, []).then(data => {
+      let ecgs = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          ecgs.push({
+            ecgId: data.rows.item(i).ecgId,
+            ecgName: data.rows.item(i).ecgName,
+            referral: data.rows.item(i).referral
+          });
+        }
+      }
+      return ecgs;
     });
   }
 
