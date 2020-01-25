@@ -14,29 +14,38 @@ export class DoctorPage implements OnInit {
   doctorForm: FormGroup;
 
   showRemarks: boolean = false;
-  benIds: any[] = [];
+  benIds: any[] = [
+    {
+      patientId: "a01",
+      name: "aaa"
+    },
+    {
+      patientId: "b02",
+      name: "bbb"
+    }
+  ];
   hospitals: any[] = [];
   dbRchs: any[] = [];
   rchs: any[] = [
     {
       beneficiaryTypeId: 1,
-      beneficiaryTypeName: 'ANC',
+      beneficiaryTypeName: "ANC"
     },
     {
       beneficiaryTypeId: 2,
-      beneficiaryTypeName: 'PNC',
+      beneficiaryTypeName: "PNC"
     },
     {
       beneficiaryTypeId: 3,
-      beneficiaryTypeName: 'NEONATE',
+      beneficiaryTypeName: "NEONATE"
     },
     {
       beneficiaryTypeId: 4,
-      beneficiaryTypeName: 'INFANT',
+      beneficiaryTypeName: "INFANT"
     },
     {
       beneficiaryTypeId: 5,
-      beneficiaryTypeName: 'CHILD (1 - 5 YRS)',
+      beneficiaryTypeName: "CHILD (1 - 5 YRS)"
     }
   ];
   cds: any[] = [];
@@ -91,7 +100,7 @@ export class DoctorPage implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   loadBeneficiaries() {
     this.db
@@ -105,7 +114,7 @@ export class DoctorPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -114,15 +123,13 @@ export class DoctorPage implements OnInit {
     this.db
       .geReferredTos()
       .then(hospitals => {
-        console.log(
-          "Fetched hospitals -> " + JSON.stringify(hospitals)
-        );
+        console.log("Fetched hospitals -> " + JSON.stringify(hospitals));
         this.hospitals = hospitals;
       })
       .catch(error => {
         console.error(
           "Error -> geReferredTos() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -130,19 +137,17 @@ export class DoctorPage implements OnInit {
   loadProvisionalDiagnosis(category) {
     let categoryName;
     if (category == 1) {
-      categoryName = 'CDs';
+      categoryName = "CDs";
     } else if (category == 2) {
-      categoryName = 'NCDs';
+      categoryName = "NCDs";
     } else {
-      categoryName = 'Minor Ailments';
+      categoryName = "Minor Ailments";
     }
 
     this.db
       .getProvisionalDiagnoses(category)
       .then(results => {
-        console.log(
-          `Fetched ${categoryName} ->  + JSON.stringify(results)`
-        );
+        console.log(`Fetched ${categoryName} ->  + JSON.stringify(results)`);
         if (category == 1) {
           this.cds = results;
         } else if (category == 2) {
@@ -154,7 +159,7 @@ export class DoctorPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getProvisionalDiagnosis() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -163,39 +168,40 @@ export class DoctorPage implements OnInit {
     this.db
       .getRCHs()
       .then(rchs => {
-        console.log(
-          "Fetched RCHs -> " + JSON.stringify(rchs)
-        );
+        console.log("Fetched RCHs -> " + JSON.stringify(rchs));
         this.dbRchs = rchs;
         this.rchs = rchs;
       })
       .catch(error => {
         console.error(
-          "Error -> getRCHs() function returned error." +
-          JSON.stringify(error)
+          "Error -> getRCHs() function returned error." + JSON.stringify(error)
         );
       });
   }
 
   loadSessionDetails() {
-    this.stateId = this.commonService.sessionDetails['stateId'];
-    this.districtId = this.commonService.sessionDetails['districtId'];
-    this.mandalId = this.commonService.sessionDetails['mandalId'];
-    this.villageId = this.commonService.sessionDetails['villageId'];
-    this.servicePointId = this.commonService.sessionDetails['servicePointId'];
-    this.servicePointName = this.commonService.sessionDetails['servicePointName'];
-    this.servicePointCode = this.commonService.sessionDetails['servicePointCode'];
+    this.stateId = this.commonService.sessionDetails["stateId"];
+    this.districtId = this.commonService.sessionDetails["districtId"];
+    this.mandalId = this.commonService.sessionDetails["mandalId"];
+    this.villageId = this.commonService.sessionDetails["villageId"];
+    this.servicePointId = this.commonService.sessionDetails["servicePointId"];
+    this.servicePointName = this.commonService.sessionDetails[
+      "servicePointName"
+    ];
+    this.servicePointCode = this.commonService.sessionDetails[
+      "servicePointCode"
+    ];
   }
 
   remarksCheckbox(e) {
     if (e.target.checked) {
       this.showRemarks = true;
       this.doctorForm.patchValue({
-        cd: "N/A",
+        cd: null,
         otherCd: "",
-        ncd: "N/A",
+        ncd: null,
         otherNcd: "",
-        minorAilments: "N/A",
+        minorAilments: null,
         otherMinorAilment: "",
         remarks: "",
         referredTo: -1
@@ -248,7 +254,9 @@ export class DoctorPage implements OnInit {
 
   minorAilmentChange() {
     let selectedMinorAilment = this.doctorForm.get("minorAilments").value;
-    console.log("selected minorAilment are -> " + JSON.stringify(selectedMinorAilment));
+    console.log(
+      "selected minorAilment are -> " + JSON.stringify(selectedMinorAilment)
+    );
     let hasOther = selectedMinorAilment.filter(id => id == 34);
 
     if (hasOther.length > 0) {
@@ -261,7 +269,9 @@ export class DoctorPage implements OnInit {
 
   referredToChange() {
     let selectedReferredTo = this.doctorForm.get("referredTo").value;
-    console.log("selected ReferredTo is -> " + JSON.stringify(selectedReferredTo));
+    console.log(
+      "selected ReferredTo is -> " + JSON.stringify(selectedReferredTo)
+    );
 
     if (selectedReferredTo == 2) {
       this.allowOtherReferredTo = true;
@@ -283,33 +293,52 @@ export class DoctorPage implements OnInit {
     this.db
       .getBeneficiaryDetails(selectedBenID)
       .then(benDetails => {
-        console.log("Received Ben details are -> " + JSON.stringify(benDetails));
+        console.log(
+          "Received Ben details are -> " + JSON.stringify(benDetails)
+        );
 
-        let benAge = benDetails[0]['age'];
-        let benAgeTypeId = benDetails[0]['ageTypeId'];
-        let benPregnancyStatus = benDetails[0]['pregnancyStatus'];
-        let benGender = benDetails[0]['gender'];
+        let benAge = benDetails[0]["age"];
+        let benAgeTypeId = benDetails[0]["ageTypeId"];
+        let benPregnancyStatus = benDetails[0]["pregnancyStatus"];
+        let benGender = benDetails[0]["gender"];
 
-        this.commonService.beneficiaryDetails['userPhoto'] = benDetails[0]['imageUrl'];
-        this.commonService.beneficiaryDetails['userName'] = benDetails[0]['name'];
-        this.commonService.beneficiaryDetails['pregnancyStatus'] = benPregnancyStatus;
-        this.commonService.beneficiaryDetails['ageTypeId'] = benAgeTypeId;
-        this.commonService.beneficiaryDetails['age'] = benAge;
-        this.commonService.beneficiaryDetails['userSurname'] = benDetails[0]['surname'];
-        this.commonService.beneficiaryDetails['userAge'] = 5;
-        this.commonService.beneficiaryDetails['userGender'] = benGender;
-        this.commonService.beneficiaryDetails['userDOJ'] = benDetails[0]['registrationDate'];
-        this.commonService.beneficiaryDetails['userDistrict'] = benDetails[0]['districtName'];
-        this.commonService.beneficiaryDetails['userMandal'] = benDetails[0]['mandalName'];
-        this.commonService.beneficiaryDetails['userVillage'] = benDetails[0]['villageName'];
-        this.commonService.beneficiaryDetails['userVisitId'] = benDetails[0]['visitId'];
-        this.commonService.beneficiaryDetails['userPatientId'] = benDetails[0]['patientId'];
-        this.commonService.beneficiaryDetails['userVisitCount'] = benDetails[0]['visitCount'];
-        this.commonService.beneficiaryDetails['userDeviceId'] = benDetails[0]['deviceId'];
-        this.commonService.beneficiaryDetails['userVanId'] = benDetails[0]['vanId'];
-        this.commonService.beneficiaryDetails['userRouteVillageId'] = benDetails[0]['routeVillageId'];
-        this.commonService.beneficiaryDetails['userServicePointId'] = benDetails[0]['servicePointId'];
-        this.commonService.beneficiaryDetails['userCompoundPatientId'] = benDetails[0]['compoundPatientId'];
+        this.commonService.beneficiaryDetails["userPhoto"] =
+          benDetails[0]["imageUrl"];
+        this.commonService.beneficiaryDetails["userName"] =
+          benDetails[0]["name"];
+        this.commonService.beneficiaryDetails[
+          "pregnancyStatus"
+        ] = benPregnancyStatus;
+        this.commonService.beneficiaryDetails["ageTypeId"] = benAgeTypeId;
+        this.commonService.beneficiaryDetails["age"] = benAge;
+        this.commonService.beneficiaryDetails["userSurname"] =
+          benDetails[0]["surname"];
+        this.commonService.beneficiaryDetails["userAge"] = 5;
+        this.commonService.beneficiaryDetails["userGender"] = benGender;
+        this.commonService.beneficiaryDetails["userDOJ"] =
+          benDetails[0]["registrationDate"];
+        this.commonService.beneficiaryDetails["userDistrict"] =
+          benDetails[0]["districtName"];
+        this.commonService.beneficiaryDetails["userMandal"] =
+          benDetails[0]["mandalName"];
+        this.commonService.beneficiaryDetails["userVillage"] =
+          benDetails[0]["villageName"];
+        this.commonService.beneficiaryDetails["userVisitId"] =
+          benDetails[0]["visitId"];
+        this.commonService.beneficiaryDetails["userPatientId"] =
+          benDetails[0]["patientId"];
+        this.commonService.beneficiaryDetails["userVisitCount"] =
+          benDetails[0]["visitCount"];
+        this.commonService.beneficiaryDetails["userDeviceId"] =
+          benDetails[0]["deviceId"];
+        this.commonService.beneficiaryDetails["userVanId"] =
+          benDetails[0]["vanId"];
+        this.commonService.beneficiaryDetails["userRouteVillageId"] =
+          benDetails[0]["routeVillageId"];
+        this.commonService.beneficiaryDetails["userServicePointId"] =
+          benDetails[0]["servicePointId"];
+        this.commonService.beneficiaryDetails["userCompoundPatientId"] =
+          benDetails[0]["compoundPatientId"];
 
         if (benGender == 2) {
           if (benAge >= 16 && benAgeTypeId == 3) {
@@ -329,11 +358,13 @@ export class DoctorPage implements OnInit {
           this.rchs.length = 0;
         }
 
+        let pickedRch = this.doctorForm.get("rch").value;
+        console.log(pickedRch);
       })
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryDetails() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -358,7 +389,6 @@ export class DoctorPage implements OnInit {
     this.allowOtherReferredTo = false;
   }
 
-
   onSubmit(values) {
     console.clear();
     console.log("Doctor form is submitted, below are the values");
@@ -371,55 +401,59 @@ export class DoctorPage implements OnInit {
     let ncds = this.doctorForm.get("ncd").value;
     let otherNcd = this.doctorForm.get("otherNcd").value.trim();
     let minorAilments = this.doctorForm.get("minorAilments").value;
-    let otherMinorAilment = this.doctorForm.get("otherMinorAilment").value.trim();
+    let otherMinorAilment = this.doctorForm
+      .get("otherMinorAilment")
+      .value.trim();
     let remarks = this.doctorForm.get("remarks").value.trim();
     let referralTypeId = this.doctorForm.get("referredTo").value;
     let otherPhc = this.doctorForm.get("otherReferredTo").value.trim();
+
+    let remarksArray;
 
     if (!patientId || patientId <= 0) {
       alert("Please Select Beneficiary ID");
       return false;
     }
 
-    if (!rch || rch.length == 0) {
-      alert("Please Select RCH");
-      return false;
+    if (this.rchs.length != 0) {
+      if (!rch || rch.length == 0) {
+        alert("Please Select RCH");
+        return false;
+      }
     }
 
     if (this.showRemarks === false) {
-      if (!cds || cds.length == 0) {
-        alert("Please Select CD");
+      remarksArray = null;
+      if (
+        (!cds || cds.length == 0) &&
+        (!ncds || ncds.length == 0) &&
+        (!minorAilments || minorAilments.length == 0) &&
+        (!referralTypeId || referralTypeId.length == 0)
+      ) {
+        alert(
+          "Please select at least one of CD or NCD or Minor Ailment or ReferredTo. Otherwise enter Remarks."
+        );
         return false;
       }
-      if (this.allowOtherCd && otherCd == '') {
+
+      if (this.allowOtherCd && otherCd == "") {
         alert("Please Enter CD other details.");
         return false;
       }
-      if (!ncds || ncds.length == 0) {
-        alert("Please Select NCD");
-        return false;
-      }
-      if (this.allowOtherNcd && otherNcd == '') {
+      if (this.allowOtherNcd && otherNcd == "") {
         alert("Please Enter NCD other details.");
         return false;
       }
-      if (!minorAilments || minorAilments.length == 0) {
-        alert("Please Select Minor Ailments");
-        return false;
-      }
-      if (this.allowOtherMinorAilment && otherMinorAilment == '') {
+      if (this.allowOtherMinorAilment && otherMinorAilment == "") {
         alert("Please Enter Minor Ailment other details.");
         return false;
       }
-      if (!referralTypeId || referralTypeId.length == 0) {
-        alert("Please Select Referred To");
-        return false;
-      }
-      if (this.allowOtherReferredTo && otherPhc == '') {
+      if (this.allowOtherReferredTo && otherPhc == "") {
         alert("Please Enter ReferredTo other details.");
         return false;
       }
     } else {
+      remarksArray = [-1];
       if (!remarks || remarks == null) {
         alert("Please Enter Remarks");
         return false;
@@ -428,95 +462,130 @@ export class DoctorPage implements OnInit {
 
     alert("Form can be submitted");
 
-    let visitId = this.commonService.beneficiaryDetails['userVisitId'];
-    let deviceId = this.commonService.beneficiaryDetails['userDeviceId'];
-    let vanId = this.commonService.beneficiaryDetails['userVanId'];
-    let routeVillageId = this.commonService.beneficiaryDetails['userRouteVillageId'];
-    let servicePointId = this.commonService.beneficiaryDetails['userServicePointId'];
-    let compoundPatientId = this.commonService.beneficiaryDetails['userCompoundPatientId'];
-    let visitCount = this.commonService.beneficiaryDetails['userVisitCount'];
+    let visitId = this.commonService.beneficiaryDetails["userVisitId"];
+    let deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
+    let vanId = this.commonService.beneficiaryDetails["userVanId"];
+    let routeVillageId = this.commonService.beneficiaryDetails[
+      "userRouteVillageId"
+    ];
+    let servicePointId = this.commonService.beneficiaryDetails[
+      "userServicePointId"
+    ];
+    let compoundPatientId = this.commonService.beneficiaryDetails[
+      "userCompoundPatientId"
+    ];
+    let visitCount = this.commonService.beneficiaryDetails["userVisitCount"];
 
-    let userId = this.commonService.userDetails['userId'];
+    let userId = this.commonService.userDetails["userId"];
 
-    let provisionals = [cds, ncds, minorAilments];
+    let provisionals = [cds, ncds, minorAilments, remarksArray];
 
     for (let j = 0; j < provisionals.length; j++) {
-      let provisionType = (j == 0) ? 'CD' : ((j == 1) ? 'NCD' : 'Minor Ailment');
-      let otherFieldId = (j == 0) ? 12 : ((j == 1) ? 13 : 34);
+      let provisionType =
+        j == 0 ? "CD" : j == 1 ? "NCD" : j == 2 ? "Minor Ailment" : "Remarks";
+      let otherFieldId = j == 0 ? 12 : j == 1 ? 13 : j == 2 ? 34 : null;
       let provision = provisionals[j];
       let otherFieldValue;
       if (j == 0) {
         otherFieldValue = otherCd;
-      } else if (j == 2) {
+      } else if (j == 1) {
         otherFieldValue = otherNcd;
       } else {
         otherFieldValue = otherMinorAilment;
       }
 
-      for (let i = 0; i < provision.length; i++) {
-        let provisionalDiagnosisId = provision[i];
-        console.log(provisionType + " is --> " + provisionalDiagnosisId);
-        this.db.findProvisionalDiagnose(patientId, servicePointId, vanId, provisionalDiagnosisId, visitId).then(data => {
-
+      if (provision) {
+        for (let i = 0; i < provision.length; i++) {
+          let provisionalDiagnosisId = provision[i];
+          console.log(provisionType + " is --> " + provisionalDiagnosisId);
           let setOtherFieldValue;
-          if (provisionalDiagnosisId == otherFieldId) {
+          if (otherFieldId && provisionalDiagnosisId == otherFieldId) {
             setOtherFieldValue = otherFieldValue;
           } else {
             setOtherFieldValue = null;
           }
 
-          if (data.length > 0) {
-            let updateData = {
-              provisionalDiagnosisId,
-              setOtherFieldValue,
-              remarks,
-              userId,
-              patientId,
-              servicePointId,
-              vanId,
-              visitId
-            }
+          console.log("setOtherFieldValue is --> " + setOtherFieldValue);
 
-            this.db.updateProvisionalDiagnose(updateData).then(data => {
-              console.log("Success -> ProvisionalDiagnose is updated Successfully...");
-            }).catch(e => {
-              console.error("Error -> ProvisionalDiagnose is not updated" + JSON.stringify(e));
-            });
-            // Need to update the ProvisionalDiagnose
-          } else {
-            let insertData = {
-              patientId,
-              visitId,
-              deviceId,
-              vanId,
-              routeVillageId,
-              servicePointId,
-              compoundPatientId,
-              visitCount,
-              provisionalDiagnosisId,
-              setOtherFieldValue,
-              remarks,
-              userId,
-            }
+          // this.db
+          //   .findProvisionalDiagnose(
+          //     patientId,
+          //     servicePointId,
+          //     vanId,
+          //     provisionalDiagnosisId,
+          //     visitId
+          //   )
+          //   .then(data => {
+          //     if (data.length > 0) {
+          //       let updateData = {
+          //         provisionalDiagnosisId,
+          //         setOtherFieldValue,
+          //         remarks,
+          //         userId,
+          //         patientId,
+          //         servicePointId,
+          //         vanId,
+          //         visitId
+          //       };
 
-            this.db.insertProvisionalDiagnose(insertData).then(data => {
-              console.log("Success -> ProvisionalDiagnose is inserted Successfully...");
-            }).catch(e => {
-              console.error("Error -> ProvisionalDiagnose is not inserted" + JSON.stringify(e));
-            });
-            // Need to insert the ProvisionalDiagnose
-          }
-        }).catch(e => {
-          console.error("Error -> findProvisionalDiagnose returned error" + JSON.stringify(e));
-        });
+          //       this.db
+          //         .updateProvisionalDiagnose(updateData)
+          //         .then(data => {
+          //           console.log(
+          //             "Success -> ProvisionalDiagnose is updated Successfully..."
+          //           );
+          //         })
+          //         .catch(e => {
+          //           console.error(
+          //             "Error -> ProvisionalDiagnose is not updated" +
+          //               JSON.stringify(e)
+          //           );
+          //         });
+          //       // Need to update the ProvisionalDiagnose
+          //     } else {
+          //       let insertData = {
+          //         patientId,
+          //         visitId,
+          //         deviceId,
+          //         vanId,
+          //         routeVillageId,
+          //         servicePointId,
+          //         compoundPatientId,
+          //         visitCount,
+          //         provisionalDiagnosisId,
+          //         setOtherFieldValue,
+          //         remarks,
+          //         userId
+          //       };
+
+          //       this.db
+          //         .insertProvisionalDiagnose(insertData)
+          //         .then(data => {
+          //           console.log(
+          //             "Success -> ProvisionalDiagnose is inserted Successfully..."
+          //           );
+          //         })
+          //         .catch(e => {
+          //           console.error(
+          //             "Error -> ProvisionalDiagnose is not inserted" +
+          //               JSON.stringify(e)
+          //           );
+          //         });
+          //       // Need to insert the ProvisionalDiagnose
+          //     }
+          //   })
+          //   .catch(e => {
+          //     console.error(
+          //       "Error -> findProvisionalDiagnose returned error" +
+          //         JSON.stringify(e)
+          //     );
+          //   });
+        }
+        console.log("*******************");
       }
-      console.log("*******************");
     }
 
-
-
-    this.db.findReferredTo(patientId, servicePointId, vanId, visitId).then(data => {
-
+    if (referralTypeId && referralTypeId != null) {
       let setOtherFieldValue;
       if (referralTypeId == 2) {
         setOtherFieldValue = otherPhc;
@@ -524,54 +593,74 @@ export class DoctorPage implements OnInit {
         setOtherFieldValue = null;
       }
 
-      if (data.length > 0) {
-        let updateData = {
-          referralTypeId,
-          otherPhc,
-          remarks,
-          userId,
-          patientId,
-          servicePointId,
-          vanId,
-          visitId
-        }
+      console.log("referralTypeId is --> " + referralTypeId);
+      console.log("setOtherFieldValue is --> " + setOtherFieldValue);
 
-        this.db.updateReferredTo(updateData).then(data => {
-          console.log("Success -> ReferredTo is updated Successfully...");
-        }).catch(e => {
-          console.error("Error -> ReferredTo is not updated" + JSON.stringify(e));
-        });
-        // Need to update the ReferredTo
-      } else {
-        let insertData = {
-          patientId,
-          visitId,
-          deviceId,
-          vanId,
-          routeVillageId,
-          servicePointId,
-          compoundPatientId,
-          visitCount,
-          referralTypeId,
-          setOtherFieldValue,
-          remarks,
-          userId,
-        }
+      // this.db
+      //   .findReferredTo(patientId, servicePointId, vanId, visitId)
+      //   .then(data => {
 
-        this.db.insertReferredTo(insertData).then(data => {
-          console.log("Success -> ReferredTo is inserted Successfully...");
-          this.commonService.makeBenObjectEmpty();
-          this.router.navigate(["/lab-test"]);
-        }).catch(e => {
-          console.error("Error -> ReferredTo is not inserted" + JSON.stringify(e));
-        });
-        // Need to insert the ReferredTo
-      }
+      //     if (data.length > 0) {
+      //       let updateData = {
+      //         referralTypeId,
+      //         otherPhc,
+      //         remarks,
+      //         userId,
+      //         patientId,
+      //         servicePointId,
+      //         vanId,
+      //         visitId
+      //       };
 
-    }).catch(e => {
-      console.error("Error -> findReferredTo returned error" + JSON.stringify(e));
-    });
+      //       this.db
+      //         .updateReferredTo(updateData)
+      //         .then(data => {
+      //           console.log("Success -> ReferredTo is updated Successfully...");
+      //         })
+      //         .catch(e => {
+      //           console.error(
+      //             "Error -> ReferredTo is not updated" + JSON.stringify(e)
+      //           );
+      //         });
+      //       // Need to update the ReferredTo
+      //     } else {
+      //       let insertData = {
+      //         patientId,
+      //         visitId,
+      //         deviceId,
+      //         vanId,
+      //         routeVillageId,
+      //         servicePointId,
+      //         compoundPatientId,
+      //         visitCount,
+      //         referralTypeId,
+      //         setOtherFieldValue,
+      //         remarks,
+      //         userId
+      //       };
 
-
+      //       this.db
+      //         .insertReferredTo(insertData)
+      //         .then(data => {
+      //           console.log(
+      //             "Success -> ReferredTo is inserted Successfully..."
+      //           );
+      //           this.commonService.makeBenObjectEmpty();
+      //           this.router.navigate(["/lab-test"]);
+      //         })
+      //         .catch(e => {
+      //           console.error(
+      //             "Error -> ReferredTo is not inserted" + JSON.stringify(e)
+      //           );
+      //         });
+      //       // Need to insert the ReferredTo
+      //     }
+      //   })
+      //   .catch(e => {
+      //     console.error(
+      //       "Error -> findReferredTo returned error" + JSON.stringify(e)
+      //     );
+      //   });
+    }
   }
 }
