@@ -78,12 +78,12 @@ export class DoctorPage implements OnInit {
     private storageService: StorageService
   ) {
     this.loadSessionDetails();
-    // this.loadBeneficiaries();
-    // this.loadHospitals();
-    // this.loadRCHs();
-    // this.loadProvisionalDiagnosis(1);
-    // this.loadProvisionalDiagnosis(2);
-    // this.loadProvisionalDiagnosis(3);
+    this.loadBeneficiaries();
+    this.loadHospitals();
+    this.loadRCHs();
+    this.loadProvisionalDiagnosis(1);
+    this.loadProvisionalDiagnosis(2);
+    this.loadProvisionalDiagnosis(3);
 
     this.doctorForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -284,8 +284,8 @@ export class DoctorPage implements OnInit {
   benIdChange() {
     let selectedBenID = this.doctorForm.get("beneficiaryId").value;
     console.log("selectedBenID is -> " + selectedBenID);
-    // if (selectedBenID && selectedBenID != null)
-    //   this.getBenDetails(selectedBenID);
+    if (selectedBenID && selectedBenID != null)
+      this.getBenDetails(selectedBenID);
   }
 
   getBenDetails(selectedBenID) {
@@ -508,79 +508,79 @@ export class DoctorPage implements OnInit {
 
           console.log("setOtherFieldValue is --> " + setOtherFieldValue);
 
-          // this.db
-          //   .findProvisionalDiagnose(
-          //     patientId,
-          //     servicePointId,
-          //     vanId,
-          //     provisionalDiagnosisId,
-          //     visitId
-          //   )
-          //   .then(data => {
-          //     if (data.length > 0) {
-          //       let updateData = {
-          //         provisionalDiagnosisId,
-          //         setOtherFieldValue,
-          //         remarks,
-          //         userId,
-          //         patientId,
-          //         servicePointId,
-          //         vanId,
-          //         visitId
-          //       };
+          this.db
+            .findProvisionalDiagnose(
+              patientId,
+              servicePointId,
+              vanId,
+              provisionalDiagnosisId,
+              visitId
+            )
+            .then(data => {
+              if (data.length > 0) {
+                let updateData = {
+                  provisionalDiagnosisId,
+                  setOtherFieldValue,
+                  remarks,
+                  userId,
+                  patientId,
+                  servicePointId,
+                  vanId,
+                  visitId
+                };
 
-          //       this.db
-          //         .updateProvisionalDiagnose(updateData)
-          //         .then(data => {
-          //           console.log(
-          //             "Success -> ProvisionalDiagnose is updated Successfully..."
-          //           );
-          //         })
-          //         .catch(e => {
-          //           console.error(
-          //             "Error -> ProvisionalDiagnose is not updated" +
-          //               JSON.stringify(e)
-          //           );
-          //         });
-          //       // Need to update the ProvisionalDiagnose
-          //     } else {
-          //       let insertData = {
-          //         patientId,
-          //         visitId,
-          //         deviceId,
-          //         vanId,
-          //         routeVillageId,
-          //         servicePointId,
-          //         compoundPatientId,
-          //         visitCount,
-          //         provisionalDiagnosisId,
-          //         setOtherFieldValue,
-          //         remarks,
-          //         userId
-          //       };
+                this.db
+                  .updateProvisionalDiagnose(updateData)
+                  .then(data => {
+                    console.log(
+                      "Success -> ProvisionalDiagnose is updated Successfully..."
+                    );
+                  })
+                  .catch(e => {
+                    console.error(
+                      "Error -> ProvisionalDiagnose is not updated" +
+                        JSON.stringify(e)
+                    );
+                  });
+                // Need to update the ProvisionalDiagnose
+              } else {
+                let insertData = {
+                  patientId,
+                  visitId,
+                  deviceId,
+                  vanId,
+                  routeVillageId,
+                  servicePointId,
+                  compoundPatientId,
+                  visitCount,
+                  provisionalDiagnosisId,
+                  setOtherFieldValue,
+                  remarks,
+                  userId
+                };
 
-          //       this.db
-          //         .insertProvisionalDiagnose(insertData)
-          //         .then(data => {
-          //           console.log(
-          //             "Success -> ProvisionalDiagnose is inserted Successfully..."
-          //           );
-          //         })
-          //         .catch(e => {
-          //           console.error(
-          //             "Error -> ProvisionalDiagnose is not inserted" +
-          //               JSON.stringify(e)
-          //           );
-          //         });
-          //       // Need to insert the ProvisionalDiagnose
-          //     }
-          //   })
-          //   .catch(e => {
-          //     console.error(
-          //       "Error -> findProvisionalDiagnose returned error" +
-          //         JSON.stringify(e)
-          //     );
-          //   });
+                this.db
+                  .insertProvisionalDiagnose(insertData)
+                  .then(data => {
+                    console.log(
+                      "Success -> ProvisionalDiagnose is inserted Successfully..."
+                    );
+                  })
+                  .catch(e => {
+                    console.error(
+                      "Error -> ProvisionalDiagnose is not inserted" +
+                        JSON.stringify(e)
+                    );
+                  });
+                // Need to insert the ProvisionalDiagnose
+              }
+            })
+            .catch(e => {
+              console.error(
+                "Error -> findProvisionalDiagnose returned error" +
+                  JSON.stringify(e)
+              );
+            });
         }
         console.log("*******************");
       }
@@ -597,71 +597,71 @@ export class DoctorPage implements OnInit {
       console.log("referralTypeId is --> " + referralTypeId);
       console.log("setOtherFieldValue is --> " + setOtherFieldValue);
 
-      // this.db
-      //   .findReferredTo(patientId, servicePointId, vanId, visitId)
-      //   .then(data => {
+      this.db
+        .findReferredTo(patientId, servicePointId, vanId, visitId)
+        .then(data => {
 
-      //     if (data.length > 0) {
-      //       let updateData = {
-      //         referralTypeId,
-      //         otherPhc,
-      //         remarks,
-      //         userId,
-      //         patientId,
-      //         servicePointId,
-      //         vanId,
-      //         visitId
-      //       };
+          if (data.length > 0) {
+            let updateData = {
+              referralTypeId,
+              otherPhc,
+              remarks,
+              userId,
+              patientId,
+              servicePointId,
+              vanId,
+              visitId
+            };
 
-      //       this.db
-      //         .updateReferredTo(updateData)
-      //         .then(data => {
-      //           console.log("Success -> ReferredTo is updated Successfully...");
-      //         })
-      //         .catch(e => {
-      //           console.error(
-      //             "Error -> ReferredTo is not updated" + JSON.stringify(e)
-      //           );
-      //         });
-      //       // Need to update the ReferredTo
-      //     } else {
-      //       let insertData = {
-      //         patientId,
-      //         visitId,
-      //         deviceId,
-      //         vanId,
-      //         routeVillageId,
-      //         servicePointId,
-      //         compoundPatientId,
-      //         visitCount,
-      //         referralTypeId,
-      //         setOtherFieldValue,
-      //         remarks,
-      //         userId
-      //       };
+            this.db
+              .updateReferredTo(updateData)
+              .then(data => {
+                console.log("Success -> ReferredTo is updated Successfully...");
+              })
+              .catch(e => {
+                console.error(
+                  "Error -> ReferredTo is not updated" + JSON.stringify(e)
+                );
+              });
+            // Need to update the ReferredTo
+          } else {
+            let insertData = {
+              patientId,
+              visitId,
+              deviceId,
+              vanId,
+              routeVillageId,
+              servicePointId,
+              compoundPatientId,
+              visitCount,
+              referralTypeId,
+              setOtherFieldValue,
+              remarks,
+              userId
+            };
 
-      //       this.db
-      //         .insertReferredTo(insertData)
-      //         .then(data => {
-      //           console.log(
-      //             "Success -> ReferredTo is inserted Successfully..."
-      //           );
-      //           this.commonService.makeBenObjectEmpty();
-      //           this.router.navigate(["/lab-test"]);
-      //         })
-      //         .catch(e => {
-      //           console.error(
-      //             "Error -> ReferredTo is not inserted" + JSON.stringify(e)
-      //           );
-      //         });
-      //       // Need to insert the ReferredTo
-      //     }
-      //   })
-      //   .catch(e => {
-      //     console.error(
-      //       "Error -> findReferredTo returned error" + JSON.stringify(e)
-      //     );
-      //   });
+            this.db
+              .insertReferredTo(insertData)
+              .then(data => {
+                console.log(
+                  "Success -> ReferredTo is inserted Successfully..."
+                );
+                this.commonService.makeBenObjectEmpty();
+                this.router.navigate(["/lab-test"]);
+              })
+              .catch(e => {
+                console.error(
+                  "Error -> ReferredTo is not inserted" + JSON.stringify(e)
+                );
+              });
+            // Need to insert the ReferredTo
+          }
+        })
+        .catch(e => {
+          console.error(
+            "Error -> findReferredTo returned error" + JSON.stringify(e)
+          );
+        });
     }
   }
 }

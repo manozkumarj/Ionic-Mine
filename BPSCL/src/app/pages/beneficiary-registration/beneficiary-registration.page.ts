@@ -1,4 +1,4 @@
-import { LoginPageRoutingModule } from './../login/login-routing.module';
+import { LoginPageRoutingModule } from "./../login/login-routing.module";
 import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
@@ -23,11 +23,11 @@ export class BeneficiaryRegistrationPage implements OnInit {
   pregnancyStatuses: any[] = [
     {
       id: 1,
-      status: 'Yes'
+      status: "Yes"
     },
     {
       id: 2,
-      status: 'No'
+      status: "No"
     }
   ];
 
@@ -113,21 +113,33 @@ export class BeneficiaryRegistrationPage implements OnInit {
   }
 
   loadSessionDetails() {
-    this.stateId = this.commonService.sessionDetails['stateId'];
-    this.districtId = this.commonService.sessionDetails['districtId'];
-    this.mandalId = this.commonService.sessionDetails['mandalId'];
-    this.villageId = this.commonService.sessionDetails['villageId'];
-    this.servicePointId = this.commonService.sessionDetails['servicePointId'];
-    this.servicePointName = this.commonService.sessionDetails['servicePointName'];
-    this.servicePointCode = this.commonService.sessionDetails['servicePointCode'];
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("Session Details are -> " + JSON.stringify(data));
+
+        this.stateId = data["stateId"];
+        this.districtId = data["districtId"];
+        this.mandalId = data["mandalId"];
+        this.villageId = data["villageId"];
+        this.servicePointName = data["servicePointName"];
+        this.servicePointCode = data["servicePointCode"];
+
+        this.servicePointId = data["servicePointId"];
+        this.getMaxBeneficiaryId(this.servicePointId);
+        this.getMaxVisitId(this.servicePointId);
+      })
+      .catch(error => {
+        console.error(
+          "Session Details were not set -> " + JSON.stringify(error)
+        );
+      });
   }
 
-
-  prefixZeros = function (str, padStr, len) {
-    while (str.length < len)
-      str = padStr + str;
+  prefixZeros = function(str, padStr, len) {
+    while (str.length < len) str = padStr + str;
     return str;
-  }
+  };
 
   getMaxBeneficiaryId(servicePointId) {
     console.log("Sending servicePointId is -> " + servicePointId);
@@ -135,9 +147,16 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .getMaxBeneficiaryId(servicePointId)
       .then(maxbeneficiaryId => {
         let id;
-        console.log("Fetched maxbeneficiaryId -> " + JSON.stringify(maxbeneficiaryId));
+        console.log(
+          "Fetched maxbeneficiaryId -> " + JSON.stringify(maxbeneficiaryId)
+        );
         console.log(maxbeneficiaryId);
-        let receivedData = maxbeneficiaryId[0]['maxbeneficiaryId'];
+        let receivedData = maxbeneficiaryId[0]["maxbeneficiaryId"];
+
+        if (!receivedData || receivedData == null) {
+          receivedData =
+            "SP000" + this.mandalId + "00000" + this.villageId + "B000001";
+        }
 
         if (receivedData) {
           console.log("Inside if");
@@ -159,27 +178,28 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
         id = id.toString();
 
-        let createBeneficiaryId = '';
+        let createBeneficiaryId = "";
 
         if (id.length >= 6) {
           console.log("Inside if 2");
-          createBeneficiaryId = this.servicePointCode + 'B' + id;
+          createBeneficiaryId = this.servicePointCode + "B" + id;
         } else {
           console.log("Inside else 2");
           console.log("this.servicePointCode -> " + this.servicePointCode);
           let addLeadingZeros = this.prefixZeros(id, "0", 6);
-          createBeneficiaryId = this.servicePointCode + 'B' + addLeadingZeros;
+          createBeneficiaryId = this.servicePointCode + "B" + addLeadingZeros;
         }
 
         this.randomPatientId = createBeneficiaryId;
 
-        console.log("Random patient ID is set dynamically -> " + this.randomPatientId);
-
+        console.log(
+          "Random patient ID is set dynamically -> " + this.randomPatientId
+        );
       })
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryId() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -192,7 +212,12 @@ export class BeneficiaryRegistrationPage implements OnInit {
         let id;
         console.log("Fetched maxVisitId -> " + JSON.stringify(maxVisitId));
         console.log(maxVisitId);
-        let receivedData = maxVisitId[0]['maxVisitId'];
+        let receivedData = maxVisitId[0]["maxVisitId"];
+
+        if (!receivedData || receivedData == null) {
+          receivedData =
+            "SP000" + this.mandalId + "00000" + this.villageId + "V000001";
+        }
 
         if (receivedData) {
           console.log("Inside if");
@@ -214,27 +239,26 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
         id = id.toString();
 
-        let createVisitId = '';
+        let createVisitId = "";
 
         if (id.length >= 6) {
           console.log("Inside if 2");
-          createVisitId = this.servicePointCode + 'V' + id;
+          createVisitId = this.servicePointCode + "V" + id;
         } else {
           console.log("Inside else 2");
           console.log("this.servicePointCode -> " + this.servicePointCode);
           let addLeadingZeros = this.prefixZeros(id, "0", 6);
-          createVisitId = this.servicePointCode + 'V' + addLeadingZeros;
+          createVisitId = this.servicePointCode + "V" + addLeadingZeros;
         }
 
         this.visitId = createVisitId;
 
         console.log("Visit ID is set dynamically -> " + this.visitId);
-
       })
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryId() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -274,7 +298,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -289,7 +313,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getCastes() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -304,7 +328,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getReligions() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -322,7 +346,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -339,7 +363,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeCategories() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -573,14 +597,11 @@ export class BeneficiaryRegistrationPage implements OnInit {
     let ageUnit = this.benRegForm.get("ageUnit").value;
     let ageCategory = this.benRegForm.get("ageCategory").value;
     let personalNumber = this.benRegForm.get("personalNumber").value;
-    let familyOrRelativeNumber = this.benRegForm
-      .get("familyOrRelativeNumber")
+    let familyOrRelativeNumber = this.benRegForm.get("familyOrRelativeNumber")
       .value;
     let communityId = this.benRegForm.get("caste").value;
     let religionId = this.benRegForm.get("religion").value;
-    let noOfFamilyNumbers = this.benRegForm
-      .get("numberOfFamilyMembers")
-      .value;
+    let noOfFamilyNumbers = this.benRegForm.get("numberOfFamilyMembers").value;
     let userId = this.userId;
 
     let isBpl = this.isBpl ? 1 : 2;
@@ -658,17 +679,13 @@ export class BeneficiaryRegistrationPage implements OnInit {
     };
 
     console.log("Ben Registration form is submitted, below are the values");
-    console.log(values);
+    // console.log(values);
 
     console.log(
-      "Object of benRegFormDetails -> " +
-      JSON.stringify(benRegFormDetails)
+      "Object of benRegFormDetails -> " + JSON.stringify(benRegFormDetails)
     );
 
-    console.log(
-      "Object of visitDetails -> " +
-      JSON.stringify(visitDetails)
-    );
+    console.log("Object of visitDetails -> " + JSON.stringify(visitDetails));
 
     console.log("Ben patientId -> " + patientId);
 
@@ -735,7 +752,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
             .then(res => {
               console.log(
                 "Beneficiary Visit details inserted successfully...!" +
-                JSON.stringify(res)
+                  JSON.stringify(res)
               );
               if (res) {
                 this.router.navigate(["/vitals"]);
@@ -744,7 +761,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
             .catch(error => {
               console.error(
                 "Error -> Beneficiary Visit details insertion failed - " +
-                JSON.stringify(error)
+                  JSON.stringify(error)
               );
             });
         } else {
