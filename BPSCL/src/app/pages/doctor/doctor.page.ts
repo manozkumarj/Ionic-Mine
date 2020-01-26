@@ -204,7 +204,7 @@ export class DoctorPage implements OnInit {
         minorAilments: null,
         otherMinorAilment: "",
         remarks: "",
-        referredTo: -1
+        referredTo: null
       });
       this.allowOtherCd = false;
       this.allowOtherNcd = false;
@@ -373,20 +373,21 @@ export class DoctorPage implements OnInit {
     this.doctorForm.patchValue({
       beneficiaryId: "",
       rch: "",
-      cd: "",
+      cd: null,
       otherCd: "",
-      ncd: "",
+      ncd: null,
       otherNcd: "",
-      minorAilments: "",
+      minorAilments: null,
       otherMinorAilment: "",
       remarks: "",
-      referredTo: "",
+      referredTo: null,
       otherReferredTo: ""
     });
     this.allowOtherCd = false;
     this.allowOtherNcd = false;
     this.allowOtherMinorAilment = false;
     this.allowOtherReferredTo = false;
+    // this.showRemarks = false;
   }
 
   onSubmit(values) {

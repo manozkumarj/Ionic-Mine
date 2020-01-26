@@ -14,8 +14,18 @@ export class ConsumableDispensePage implements OnInit {
   consumableDispenseForm: FormGroup;
 
   showDispenses: boolean = false;
-  benIds: any[] = [];
+  benIds: any[] = [
+    {
+      patientId: "a01",
+      name: "aaa"
+    },
+    {
+      patientId: "b02",
+      name: "bbb"
+    }
+  ];
   dispenses: any[] = [];
+  freshDispenses: any[] = [];
 
   consumableDispenses: any[] = [
     {
@@ -72,16 +82,20 @@ export class ConsumableDispensePage implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   loadSessionDetails() {
-    this.stateId = this.commonService.sessionDetails['stateId'];
-    this.districtId = this.commonService.sessionDetails['districtId'];
-    this.mandalId = this.commonService.sessionDetails['mandalId'];
-    this.villageId = this.commonService.sessionDetails['villageId'];
-    this.servicePointId = this.commonService.sessionDetails['servicePointId'];
-    this.servicePointName = this.commonService.sessionDetails['servicePointName'];
-    this.servicePointCode = this.commonService.sessionDetails['servicePointCode'];
+    this.stateId = this.commonService.sessionDetails["stateId"];
+    this.districtId = this.commonService.sessionDetails["districtId"];
+    this.mandalId = this.commonService.sessionDetails["mandalId"];
+    this.villageId = this.commonService.sessionDetails["villageId"];
+    this.servicePointId = this.commonService.sessionDetails["servicePointId"];
+    this.servicePointName = this.commonService.sessionDetails[
+      "servicePointName"
+    ];
+    this.servicePointCode = this.commonService.sessionDetails[
+      "servicePointCode"
+    ];
   }
 
   loadBeneficiaries() {
@@ -96,7 +110,7 @@ export class ConsumableDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -106,12 +120,17 @@ export class ConsumableDispensePage implements OnInit {
       .getDispenses(2)
       .then(dispenses => {
         console.log("Fetched Dispenses -> " + JSON.stringify(dispenses));
-        this.dispenses = dispenses;
+        this.freshDispenses = dispenses.map(dispense => ({
+          ...dispense,
+          allowQuantity: false,
+          quantity: null
+        }));
+        this.dispenses = this.freshDispenses;
       })
       .catch(error => {
         console.error(
           "Error -> getDispenses() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -119,7 +138,7 @@ export class ConsumableDispensePage implements OnInit {
   remarksCheckbox(e) {
     if (e.target.checked) {
       this.showDispenses = true;
-      this.consumableDispenseForm.patchValue({ remarks: '' });
+      this.consumableDispenseForm.patchValue({ remarks: "" });
     } else {
       this.showDispenses = false;
       // this.doctorForm.patchValue({ cd: "", ncd: "", minorAilments: "", refferedTo: "" });
@@ -144,73 +163,103 @@ export class ConsumableDispensePage implements OnInit {
     this.consumableDispenses[id - 1]["quantity"] = +quantity.target.value;
   }
 
+  skipper() {
+    // this.consumableDispenseForm.patchValue({
+    //   beneficiaryId: "",
+    //   remarks: ""
+    // });
+    // this.dispenses = this.freshDispenses;
+  }
 
-  findAndUpsertDispense(patientId, servicePointId, vanId, itemId, visitId, quantityGiven, remarks, userId) {
+  findAndUpsertDispense(
+    patientId,
+    servicePointId,
+    vanId,
+    itemId,
+    visitId,
+    quantityGiven,
+    remarks,
+    userId
+  ) {
+    this.db
+      .findDispense(patientId, servicePointId, vanId, itemId, visitId)
+      .then(data => {
+        if (data.length > 0) {
+          // Need to update the Dispense
+          let updateData = {
+            quantityGiven,
+            remarks,
+            userId,
+            patientId,
+            servicePointId,
+            vanId,
+            visitId
+          };
 
-    this.db.findDispense(patientId, servicePointId, vanId, itemId, visitId).then(data => {
+          this.db
+            .updateDispense(updateData)
+            .then(data => {
+              console.log(
+                "Success -> updateDispense is updated Successfully..."
+              );
+            })
+            .catch(e => {
+              console.error(
+                "Error -> updateDispense is not updated" + JSON.stringify(e)
+              );
+            });
+        } else {
+          // Need to insert the Dispense
+          let insertData = {
+            patientId,
+            visitId,
+            deviceId: this.deviceId,
+            vanId,
+            routeVillageId: this.routeVillageId,
+            servicePointId,
+            compoundPatientId: this.compoundPatientId,
+            visitCount: this.visitCount,
+            itemId,
+            batchNo: -1,
+            brandName: "N/A",
+            expiryDate: -1,
+            duration: -1,
+            quantityGiven,
+            quantityNeeded: -1,
+            dosage: -1,
+            remarks,
+            userId
+          };
 
-      if (data.length > 0) {
-        // Need to update the Dispense
-        let updateData = {
-          quantityGiven,
-          remarks,
-          userId,
-          patientId,
-          servicePointId,
-          vanId,
-          visitId
+          this.db
+            .insertDispense(insertData)
+            .then(data => {
+              console.log(
+                "Success -> insertDispense is inserted Successfully..."
+              );
+            })
+            .catch(e => {
+              console.error(
+                "Error -> insertDispense is not inserted" + JSON.stringify(e)
+              );
+            });
         }
-
-        this.db.updateDispense(updateData).then(data => {
-          console.log("Success -> updateDispense is updated Successfully...");
-        }).catch(e => {
-          console.error("Error -> updateDispense is not updated" + JSON.stringify(e));
-        });
-
-      } else {
-        // Need to insert the Dispense
-        let insertData = {
-          patientId,
-          visitId,
-          deviceId: this.deviceId,
-          vanId,
-          routeVillageId: this.routeVillageId,
-          servicePointId,
-          compoundPatientId: this.compoundPatientId,
-          visitCount: this.visitCount,
-          itemId,
-          batchNo: -1,
-          brandName: 'N/A',
-          expiryDate: -1,
-          duration: -1,
-          quantityGiven,
-          quantityNeeded: -1,
-          dosage: -1,
-          remarks,
-          userId
-        }
-
-        this.db.insertDispense(insertData).then(data => {
-          console.log("Success -> insertDispense is inserted Successfully...");
-        }).catch(e => {
-          console.error("Error -> insertDispense is not inserted" + JSON.stringify(e));
-        });
-
-      }
-
-    }).catch(e => {
-      console.error("Error -> findDispense returned error" + JSON.stringify(e));
-    });
-
+      })
+      .catch(e => {
+        console.error(
+          "Error -> findDispense returned error" + JSON.stringify(e)
+        );
+      });
   }
 
   onSubmit(values) {
-    console.clear()
+    console.clear();
     console.log("Consumable Dispense form is submitted, below are the values");
     console.log(values);
 
     let patientId = this.consumableDispenseForm.get("beneficiaryId").value;
-    let remarks = this.consumableDispenseForm.get("remarks").value.trim();
+    let remarks = this.consumableDispenseForm.get("remarks").value;
+    remarks = remarks ? remarks.trim() : remarks;
 
     if (!patientId || patientId <= 0) {
       alert("Please Select Beneficiary ID");
@@ -247,34 +296,60 @@ export class ConsumableDispensePage implements OnInit {
 
     alert("Form can be submited");
 
-    this.visitId = this.commonService.beneficiaryDetails['userVisitId'];
-    this.deviceId = this.commonService.beneficiaryDetails['userDeviceId'];
-    this.vanId = this.commonService.beneficiaryDetails['userVanId'];
-    this.routeVillageId = this.commonService.beneficiaryDetails['userRouteVillageId'];
-    this.servicePointId = this.commonService.beneficiaryDetails['userServicePointId'];
-    this.compoundPatientId = this.commonService.beneficiaryDetails['userCompoundPatientId'];
-    this.visitCount = this.commonService.beneficiaryDetails['userVisitCount'];
+    this.visitId = this.commonService.beneficiaryDetails["userVisitId"];
+    this.deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
+    this.vanId = this.commonService.beneficiaryDetails["userVanId"];
+    this.routeVillageId = this.commonService.beneficiaryDetails[
+      "userRouteVillageId"
+    ];
+    this.servicePointId = this.commonService.beneficiaryDetails[
+      "userServicePointId"
+    ];
+    this.compoundPatientId = this.commonService.beneficiaryDetails[
+      "userCompoundPatientId"
+    ];
+    this.visitCount = this.commonService.beneficiaryDetails["userVisitCount"];
 
-    this.userId = this.commonService.userDetails['userId'];
+    this.userId = this.commonService.userDetails["userId"];
 
     if (this.showDispenses === false) {
       console.log("Upsert for Dispenses");
       for (let i = 0; i < selectedDispenses.length; i++) {
-        let itemId = selectedDispenses[i]['itemId'];
-        let quantityGiven = selectedDispenses[i]['quantity'];
+        let itemId = selectedDispenses[i]["itemId"];
+        let quantityGiven = selectedDispenses[i]["quantity"];
         let remarks = null;
         console.log("Dispense Id --> " + itemId);
-        this.findAndUpsertDispense(patientId, this.servicePointId, this.vanId, itemId, this.visitId, quantityGiven, remarks, this.userId);
+        console.log("quantityGiven is --> " + quantityGiven);
+
+        // this.findAndUpsertDispense(
+        //   patientId,
+        //   this.servicePointId,
+        //   this.vanId,
+        //   itemId,
+        //   this.visitId,
+        //   quantityGiven,
+        //   remarks,
+        //   this.userId
+        // );
       }
 
-      this.router.navigate(["/beneficiary-history"]);
-
+      // this.router.navigate(["/beneficiary-history"]);
     } else {
       console.log("Upsert for Remarks");
-      this.findAndUpsertDispense(patientId, this.servicePointId, this.vanId, -1, this.visitId, -1, remarks, this.userId);
+      console.log("remarks is --> " + remarks);
 
-      this.router.navigate(["/beneficiary-history"]);
+      // this.findAndUpsertDispense(
+      //   patientId,
+      //   this.servicePointId,
+      //   this.vanId,
+      //   -1,
+      //   this.visitId,
+      //   -1,
+      //   remarks,
+      //   this.userId
+      // );
+
+      // this.router.navigate(["/beneficiary-history"]);
     }
-
   }
 }
