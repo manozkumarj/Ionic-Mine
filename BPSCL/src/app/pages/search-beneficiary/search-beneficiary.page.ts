@@ -84,7 +84,7 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -99,7 +99,7 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -110,6 +110,7 @@ export class SearchBeneficiaryPage implements OnInit {
     console.log(values);
 
     let beneficiaryId = this.searchBenForm.get("beneficiaryId").value;
+    beneficiaryId = beneficiaryId ? beneficiaryId.trim() : beneficiaryId;
     let beneficiaryName = this.searchBenForm
       .get("beneficiaryName")
       .value.trim();
@@ -166,7 +167,7 @@ export class SearchBeneficiaryPage implements OnInit {
       query += ` AND bi.genderId = ${beneficiaryGender}`;
     }
 
-    console.log('Final Query is  --> ' + query);
+    console.log("Final Query is  --> " + query);
 
     this.db
       .searchBeneficiaries(query)
@@ -176,17 +177,19 @@ export class SearchBeneficiaryPage implements OnInit {
         );
         if (beneficiaries.length > 0) {
           this.beneficiaries = beneficiaries;
-          if (!this.beneficiaries['imageUrl'] || this.beneficiaries['imageUrl'] == null) {
-            this.beneficiaries['imageUrl'] = "assets/profile_pic.jpg";
+          if (
+            !this.beneficiaries["imageUrl"] ||
+            this.beneficiaries["imageUrl"] == null
+          ) {
+            this.beneficiaries["imageUrl"] = "assets/profile_pic.jpg";
           }
         }
       })
       .catch(error => {
         console.error(
           "Error -> searchBeneficiaries() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
-
   }
 }

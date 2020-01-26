@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
@@ -8,9 +8,9 @@ import { Router } from "@angular/router";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 
 @Component({
-  selector: 'app-edit-staff',
-  templateUrl: './edit-staff.page.html',
-  styleUrls: ['./edit-staff.page.scss'],
+  selector: "app-edit-staff",
+  templateUrl: "./edit-staff.page.html",
+  styleUrls: ["./edit-staff.page.scss"]
 })
 export class EditStaffPage implements OnInit {
   editStaffForm: FormGroup;
@@ -20,47 +20,47 @@ export class EditStaffPage implements OnInit {
   users: any[] = [
     {
       userId: 1,
-      username: 'AAA'
+      username: "AAA"
     },
     {
       userId: 2,
-      username: 'BBB'
+      username: "BBB"
     },
     {
       userId: 3,
-      username: 'CCC'
+      username: "CCC"
     }
   ];
   genders: any[] = [];
   ageUnits: any[] = [
     {
       ageUnitId: 1,
-      ageUnitName: 'Days',
+      ageUnitName: "Days",
       isSelected: false
     },
     {
       ageUnitId: 1,
-      ageUnitName: 'Months',
+      ageUnitName: "Months",
       isSelected: false
     },
     {
       ageUnitId: 1,
-      ageUnitName: 'Years',
+      ageUnitName: "Years",
       isSelected: false
     }
   ];
   roles: any[] = [
     {
       roleId: 1,
-      roleName: 'Admin'
+      roleName: "Admin"
     },
     {
       roleId: 1,
-      roleName: 'Driver'
+      roleName: "Driver"
     },
     {
       roleId: 1,
-      roleName: 'ANM'
+      roleName: "ANM"
     }
   ];
 
@@ -70,7 +70,9 @@ export class EditStaffPage implements OnInit {
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
 
-  servicePointName: string = this.commonService.sessionDetails['servicePointName'];
+  servicePointName: string = this.commonService.sessionDetails[
+    "servicePointName"
+  ];
 
   constructor(
     private db: DatabaseService,
@@ -80,7 +82,6 @@ export class EditStaffPage implements OnInit {
     private storageService: StorageService,
     public constants: ConstantsService
   ) {
-
     this.editStaffForm = new FormGroup({
       firstName: new FormControl("", Validators.required),
       lastName: new FormControl("", Validators.required),
@@ -91,13 +92,16 @@ export class EditStaffPage implements OnInit {
       dateOfBirth: new FormControl("", Validators.required),
       doj: new FormControl("", Validators.required),
       address: new FormControl("", Validators.required),
-      phone: new FormControl("", [Validators.required, Validators.pattern('[6-9]\\d{9}')]),
+      phone: new FormControl("", [
+        Validators.required,
+        Validators.pattern("[6-9]\\d{9}")
+      ]),
       email: new FormControl("", Validators.required),
       roleId: new FormControl("", Validators.required),
       username: new FormControl("", Validators.required),
       password: new FormControl("", Validators.required),
       confirmPassword: new FormControl("", Validators.required)
-    })
+    });
   }
 
   cameraOptions: CameraOptions = {
@@ -140,7 +144,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -158,7 +162,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -172,8 +176,7 @@ export class EditStaffPage implements OnInit {
       })
       .catch(error => {
         console.error(
-          "Error -> getRoles() function returned error." +
-          JSON.stringify(error)
+          "Error -> getRoles() function returned error." + JSON.stringify(error)
         );
       });
   }
@@ -188,7 +191,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -205,35 +208,36 @@ export class EditStaffPage implements OnInit {
     this.db
       .getUserDetails(selectedUserID)
       .then(userDetails => {
-        console.log("Received User details are -> " + JSON.stringify(userDetails));
+        console.log(
+          "Received User details are -> " + JSON.stringify(userDetails)
+        );
         this.editStaffForm.patchValue({
-          firstName: userDetails['firstName'],
-          lastName: userDetails['lastName'],
-          fatherName: userDetails['fatherName'],
-          gender: userDetails['gender'],
-          age: userDetails['age'],
-          ageUnit: userDetails['ageUnit'],
-          dateOfBirth: userDetails['dateOfBirth'],
-          doj: userDetails['doj'],
-          address: userDetails['address'],
-          phone: userDetails['phone'],
-          email: userDetails['email'],
-          roleId: userDetails['roleId'],
-          userName: userDetails['userName'],
-          password: userDetails['password'],
-          confirmPassword: userDetails['password']
+          firstName: userDetails["firstName"],
+          lastName: userDetails["lastName"],
+          fatherName: userDetails["fatherName"],
+          gender: userDetails["gender"],
+          age: userDetails["age"],
+          ageUnit: userDetails["ageUnit"],
+          dateOfBirth: userDetails["dateOfBirth"],
+          doj: userDetails["doj"],
+          address: userDetails["address"],
+          phone: userDetails["phone"],
+          email: userDetails["email"],
+          roleId: userDetails["roleId"],
+          userName: userDetails["userName"],
+          password: userDetails["password"],
+          confirmPassword: userDetails["password"]
         });
 
-        if (userDetails['userImageUrl'] && userDetails['userImageUrl'] != '') {
-          this.benPhoto = userDetails['userImageUrl'];
+        if (userDetails["userImageUrl"] && userDetails["userImageUrl"] != "") {
+          this.benPhoto = userDetails["userImageUrl"];
           this.isPhotoCaptured = true;
         }
-
       })
       .catch(error => {
         console.error(
           "Error -> getUserDetails() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -344,25 +348,24 @@ export class EditStaffPage implements OnInit {
 
   resetValues() {
     this.editStaffForm.patchValue({
-      firstName: '',
-      lastName: '',
-      fatherName: '',
-      gender: '',
-      age: '',
-      ageUnit: '',
-      dateOfBirth: '',
-      doj: '',
-      address: '',
-      phone: '',
-      email: '',
-      roleId: '',
-      userName: '',
-      password: '',
-      confirmPassword: ''
+      firstName: "",
+      lastName: "",
+      fatherName: "",
+      gender: "",
+      age: "",
+      ageUnit: "",
+      dateOfBirth: "",
+      doj: "",
+      address: "",
+      phone: "",
+      email: "",
+      roleId: "",
+      userName: "",
+      password: "",
+      confirmPassword: ""
     });
     this.isPhotoCaptured = false;
   }
-
 
   onSubmit(values) {
     console.clear();
@@ -383,9 +386,13 @@ export class EditStaffPage implements OnInit {
     let roleId = this.editStaffForm.get("roleId").value;
     let username = this.editStaffForm.get("username").value.trim();
     let password = this.editStaffForm.get("password").value.trim();
-    let confirmPassword = this.editStaffForm.get("confirmPassword").value.trim();
+    let confirmPassword = this.editStaffForm
+      .get("confirmPassword")
+      .value.trim();
     let userImageUrl = this.benPhoto;
     let isActive = 1;
+
+    let emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
     if (!username || username == null) {
       alert("Please Enter username");
@@ -443,6 +450,10 @@ export class EditStaffPage implements OnInit {
       alert("Please Enter Email Address");
       return false;
     }
+    if (!email.match(emailPattern)) {
+      alert("Please Enter Valid Email Address");
+      return false;
+    }
     if (!roleId || roleId == null) {
       alert("Please Select Role");
       return false;
@@ -459,14 +470,15 @@ export class EditStaffPage implements OnInit {
       alert("Passwords didn't match");
       return false;
     }
-    if (!this.isPhotoCaptured) {
-      alert("Please Capture photo");
-      return false;
-    }
 
-    let userId = this.commonService.userDetails['userId'];
-    let deviceId = this.commonService.beneficiaryDetails['userDeviceId'];
-    let vanId = this.commonService.beneficiaryDetails['userVanId'];
+    // if (!this.isPhotoCaptured) {
+    //   alert("Please Capture photo");
+    //   return false;
+    // }
+
+    let userId = this.commonService.userDetails["userId"];
+    let deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
+    let vanId = this.commonService.beneficiaryDetails["userVanId"];
     let selectedUserId = this.selectedUseId;
 
     let updateData = {
@@ -490,15 +502,20 @@ export class EditStaffPage implements OnInit {
       vanId,
       userId,
       selectedUserId
-    }
+    };
 
-    this.db.updateStaff(updateData).then(data => {
-      console.log("Success -> updateStaff is updated Successfully...");
-      this.router.navigate(["/staff-attendance"]);
-    }).catch(e => {
-      console.error("Error -> updateStaff is not updated" + JSON.stringify(e));
-    });
+    console.log("updateData -> " + updateData);
 
+    this.db
+      .updateStaff(updateData)
+      .then(data => {
+        console.log("Success -> updateStaff is updated Successfully...");
+        this.router.navigate(["/staff-attendance"]);
+      })
+      .catch(e => {
+        console.error(
+          "Error -> updateStaff is not updated" + JSON.stringify(e)
+        );
+      });
   }
-
 }

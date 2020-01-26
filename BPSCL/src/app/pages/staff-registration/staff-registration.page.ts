@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
@@ -8,9 +8,9 @@ import { Router } from "@angular/router";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 
 @Component({
-  selector: 'app-staff-registration',
-  templateUrl: './staff-registration.page.html',
-  styleUrls: ['./staff-registration.page.scss'],
+  selector: "app-staff-registration",
+  templateUrl: "./staff-registration.page.html",
+  styleUrls: ["./staff-registration.page.scss"]
 })
 export class StaffRegistrationPage implements OnInit {
   staffRegForm: FormGroup;
@@ -18,32 +18,32 @@ export class StaffRegistrationPage implements OnInit {
   ageUnits: any[] = [
     {
       ageUnitId: 1,
-      ageUnitName: 'Days',
+      ageUnitName: "Days",
       isSelected: false
     },
     {
-      ageUnitId: 1,
-      ageUnitName: 'Months',
+      ageUnitId: 2,
+      ageUnitName: "Months",
       isSelected: false
     },
     {
-      ageUnitId: 1,
-      ageUnitName: 'Years',
+      ageUnitId: 3,
+      ageUnitName: "Years",
       isSelected: false
     }
   ];
   roles: any[] = [
     {
       roleId: 1,
-      roleName: 'Admin'
+      roleName: "Admin"
     },
     {
       roleId: 1,
-      roleName: 'Driver'
+      roleName: "Driver"
     },
     {
       roleId: 1,
-      roleName: 'ANM'
+      roleName: "ANM"
     }
   ];
 
@@ -65,7 +65,6 @@ export class StaffRegistrationPage implements OnInit {
     private storageService: StorageService,
     public constants: ConstantsService
   ) {
-
     this.staffRegForm = new FormGroup({
       firstName: new FormControl("", Validators.required),
       lastName: new FormControl("", Validators.required),
@@ -76,13 +75,16 @@ export class StaffRegistrationPage implements OnInit {
       dateOfBirth: new FormControl("", Validators.required),
       doj: new FormControl("", Validators.required),
       address: new FormControl("", Validators.required),
-      phone: new FormControl("", [Validators.required, Validators.pattern('[6-9]\\d{9}')]),
+      phone: new FormControl("", [
+        Validators.required,
+        Validators.pattern("[6-9]\\d{9}")
+      ]),
       email: new FormControl("", Validators.required),
       roleId: new FormControl("", Validators.required),
       username: new FormControl("", Validators.required),
       password: new FormControl("", Validators.required),
       confirmPassword: new FormControl("", Validators.required)
-    })
+    });
   }
 
   cameraOptions: CameraOptions = {
@@ -124,7 +126,7 @@ export class StaffRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -142,7 +144,7 @@ export class StaffRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -156,8 +158,7 @@ export class StaffRegistrationPage implements OnInit {
       })
       .catch(error => {
         console.error(
-          "Error -> getRoles() function returned error." +
-          JSON.stringify(error)
+          "Error -> getRoles() function returned error." + JSON.stringify(error)
         );
       });
   }
@@ -260,21 +261,21 @@ export class StaffRegistrationPage implements OnInit {
 
   resetValues() {
     this.staffRegForm.patchValue({
-      firstName: '',
-      lastName: '',
-      fatherName: '',
-      gender: '',
-      age: '',
-      ageUnit: '',
-      dateOfBirth: '',
-      doj: '',
-      address: '',
-      phone: '',
-      email: '',
-      roleId: '',
-      username: '',
-      password: '',
-      confirmPassword: ''
+      firstName: "",
+      lastName: "",
+      fatherName: "",
+      gender: "",
+      age: "",
+      ageUnit: "",
+      dateOfBirth: "",
+      doj: "",
+      address: "",
+      phone: "",
+      email: "",
+      roleId: "",
+      username: "",
+      password: "",
+      confirmPassword: ""
     });
     this.isPhotoCaptured = false;
   }
@@ -286,7 +287,6 @@ export class StaffRegistrationPage implements OnInit {
       event.preventDefault();
     }
   }
-
 
   onSubmit(values) {
     console.clear();
@@ -312,6 +312,8 @@ export class StaffRegistrationPage implements OnInit {
     let confirmPassword = this.staffRegForm.get("confirmPassword").value.trim();
     let userImageUrl = this.benPhoto;
     let isActive = 1;
+
+    let emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
     if (!firstName || firstName == null) {
       alert("Enter First Name");
@@ -365,6 +367,10 @@ export class StaffRegistrationPage implements OnInit {
       alert("Please Enter Email Address");
       return false;
     }
+    if (!email.match(emailPattern)) {
+      alert("Please Enter Valid Email Address");
+      return false;
+    }
     if (!roleId || roleId == null) {
       alert("Please Select Role");
       return false;
@@ -385,53 +391,67 @@ export class StaffRegistrationPage implements OnInit {
       alert("Passwords didn't match");
       return false;
     }
-    if (!this.isPhotoCaptured) {
-      alert("Please Capture photo");
-      return false;
-    }
 
-    let userId = this.commonService.userDetails['userId'];
-    let deviceId = this.commonService.beneficiaryDetails['userDeviceId'];
-    let vanId = this.commonService.beneficiaryDetails['userVanId'];
+    // if (!this.isPhotoCaptured) {
+    //   alert("Please Capture photo");
+    //   return false;
+    // }
 
-    this.db.getMaxUserId().then(data => {
-      if (data) {
-        userIdIncrement = data;
-        let insertData = {
-          userIdIncrement,
-          firstName,
-          lastName,
-          username,
-          password,
-          genderId,
-          dob,
-          fatherName,
-          phone,
-          address,
-          email,
-          age,
-          ageTypeId,
-          doj,
-          roleId,
-          userImageUrl,
-          isActive,
-          deviceId,
-          vanId,
-          userId
+    let userId = this.commonService.userDetails["userId"];
+    let deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
+    let vanId = this.commonService.beneficiaryDetails["userVanId"];
+
+    let insertData = {
+      userIdIncrement,
+      firstName,
+      lastName,
+      username,
+      password,
+      genderId,
+      dob,
+      fatherName,
+      phone,
+      address,
+      email,
+      age,
+      ageTypeId,
+      doj,
+      roleId,
+      userImageUrl,
+      isActive,
+      deviceId,
+      vanId,
+      userId
+    };
+
+    console.log("insertData -> " + JSON.stringify(insertData));
+
+    this.db
+      .getMaxUserId()
+      .then(data => {
+        if (data) {
+          userIdIncrement = data;
+          insertData["userIdIncrement"] = data;
+
+          this.db
+            .registerStaff(insertData)
+            .then(data => {
+              console.log(
+                "Success -> registerStaff is inserted Successfully..."
+              );
+              this.router.navigate(["/edit-staff"]);
+            })
+            .catch(e => {
+              console.error(
+                "Error -> registerStaff is not inserted" + JSON.stringify(e)
+              );
+            });
         }
-
-        this.db.registerStaff(insertData).then(data => {
-          console.log("Success -> registerStaff is inserted Successfully...");
-          this.router.navigate(["/edit-staff"]);
-        }).catch(e => {
-          console.error("Error -> registerStaff is not inserted" + JSON.stringify(e));
-        });
-
-      }
-    }).catch(e => {
-      console.error("Error -> getMaxUserId returned error" + JSON.stringify(e));
-    });
-
+      })
+      .catch(e => {
+        console.error(
+          "Error -> getMaxUserId returned error" + JSON.stringify(e)
+        );
+      });
   }
-
 }

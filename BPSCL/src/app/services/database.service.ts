@@ -105,6 +105,14 @@ export class DatabaseService {
       });
   }
 
+  exportDatabase(){
+    this.sqlitePorter.exportDbToSql(this.database_name).then(
+      (data) => {
+        console.log("Database has been exported" + JSON.stringify(data));
+      }
+    );
+  }
+
   checkTable() {
     return this.createDb().then(async (res: SQLiteObject) => {
       let data = await res;

@@ -84,7 +84,7 @@ export class StaffAttendancePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionTypes() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -129,7 +129,7 @@ export class StaffAttendancePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getUserDetails() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -172,7 +172,7 @@ export class StaffAttendancePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionPeriods() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -198,6 +198,10 @@ export class StaffAttendancePage implements OnInit {
 
     if (!sessionTypeId || sessionTypeId <= 0) {
       alert("Please Select Session Type");
+      return false;
+    }
+    if (!sessionPeriodId || sessionPeriodId <= 0) {
+      alert("Please Select Session Period");
       return false;
     }
     if (!staffName || staffName <= 0) {
@@ -228,23 +232,26 @@ export class StaffAttendancePage implements OnInit {
     this.db
       .findAttendanceId(queryData)
       .then(attendanceId => {
-
         if (attendanceId && attendanceId > 0) {
-
-          this.db.updateAttendance(queryData).then(data => {
-            console.log("Success -> updateAttendance is updated Successfully...");
-            this.router.navigate(["/reports"]);
-          }).catch(e => {
-            console.error("Error -> updateAttendance is not updated" + JSON.stringify(e));
-          });
-
+          this.db
+            .updateAttendance(queryData)
+            .then(data => {
+              console.log(
+                "Success -> updateAttendance is updated Successfully..."
+              );
+              this.router.navigate(["/reports"]);
+            })
+            .catch(e => {
+              console.error(
+                "Error -> updateAttendance is not updated" + JSON.stringify(e)
+              );
+            });
         } else {
-
           this.db
             .getMaxAttendanceId()
             .then(attendanceId => {
               if (attendanceId) {
-                queryData['attendanceId'] = attendanceId;
+                queryData["attendanceId"] = attendanceId;
                 this.db
                   .insertAttendance(queryData)
                   .then(data => {
@@ -254,7 +261,7 @@ export class StaffAttendancePage implements OnInit {
                   .catch(error => {
                     console.error(
                       "Error -> insertAttendance() function returned error." +
-                      JSON.stringify(error)
+                        JSON.stringify(error)
                     );
                   });
               }
@@ -264,9 +271,7 @@ export class StaffAttendancePage implements OnInit {
                 "Error -> getMaxAttendanceId returned error" + JSON.stringify(e)
               );
             });
-
         }
-
       })
       .catch(e => {
         console.error(
