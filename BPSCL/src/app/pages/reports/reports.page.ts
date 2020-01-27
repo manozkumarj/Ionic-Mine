@@ -100,53 +100,7 @@ export class ReportsPage implements OnInit {
   uploadedCountDataHeadings: any[] = ["TableName", "Uploads Type", "Count(*)"];
 
   headings: any[] = [];
-
   reportsData: any[] = [];
-
-  items: any[] = [
-    "one",
-    "two",
-    "three",
-    "four",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-    "ten"
-  ];
-
-  beneficiaries: any[] = [
-    {
-      patientId: "SP000200TEST"
-    },
-    {
-      patientId: "SP000200TEST"
-    },
-    {
-      patientId: "SP000200TEST"
-    },
-    {
-      patientId: "SP000200TEST"
-    },
-    {
-      patientId: "SP000200TEST"
-    },
-    {
-      patientId: "SP000200TEST"
-    },
-    {
-      patientId: "SP000200TEST"
-    },
-    {
-      patientId: "SP000200TEST"
-    },
-    {
-      patientId: "SP000200TEST"
-    },
-    {
-      patientId: "SP000200TEST"
-    }
-  ];
 
   servicePointName: string;
   servicePointId: string;

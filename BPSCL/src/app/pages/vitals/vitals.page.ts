@@ -22,6 +22,7 @@ export class VitalsPage implements OnInit {
   userId: number;
   vanId: number;
   deviceId: number;
+
   stateId: number;
   districtId: number;
   mandalId: number;
@@ -40,6 +41,8 @@ export class VitalsPage implements OnInit {
     private storageService: StorageService
   ) {
     this.loadBeneficiaries();
+    this.loadUserDetails();
+    this.loadSessionDetails();
 
     this.vitalForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -58,14 +61,39 @@ export class VitalsPage implements OnInit {
     console.log("User details are " + JSON.stringify(this.commonService.userDetails));
   }
 
+  loadUserDetails() {
+    this.storageService
+      .getObject("userDetails")
+      .then(data => {
+        console.log("User details are -> " + JSON.stringify(data));
+        this.userId = data.userId;
+        this.vanId = data.vanId;
+        this.deviceId = data.deviceId;
+      })
+      .catch(error => {
+        console.error("User details were not set -> " + JSON.stringify(error));
+      });
+  }
+
   loadSessionDetails() {
-    this.stateId = this.commonService.sessionDetails['stateId'];
-    this.districtId = this.commonService.sessionDetails['districtId'];
-    this.mandalId = this.commonService.sessionDetails['mandalId'];
-    this.villageId = this.commonService.sessionDetails['villageId'];
-    this.servicePointId = this.commonService.sessionDetails['servicePointId'];
-    this.servicePointName = this.commonService.sessionDetails['servicePointName'];
-    this.servicePointCode = this.commonService.sessionDetails['servicePointCode'];
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("Session Details are -> " + JSON.stringify(data));
+
+        this.stateId = data["stateId"];
+        this.districtId = data["districtId"];
+        this.mandalId = data["mandalId"];
+        this.villageId = data["villageId"];
+        this.servicePointName = data["servicePointName"];
+        this.servicePointCode = data["servicePointCode"];
+        this.servicePointId = data["servicePointId"];
+      })
+      .catch(error => {
+        console.error(
+          "Session Details were not set -> " + JSON.stringify(error)
+        );
+      });
   }
 
   loadBeneficiaries() {
@@ -137,23 +165,7 @@ export class VitalsPage implements OnInit {
       .getBeneficiaryDetails(selectedBenID)
       .then(benDetails => {
         console.log("Received Ben details are -> " + JSON.stringify(benDetails));
-        this.commonService.beneficiaryDetails['userPhoto'] = benDetails[0]['imageUrl'];
-        this.commonService.beneficiaryDetails['userName'] = benDetails[0]['name'];
-        this.commonService.beneficiaryDetails['userSurname'] = benDetails[0]['surname'];
-        this.commonService.beneficiaryDetails['userAge'] = 5;
-        this.commonService.beneficiaryDetails['userGender'] = benDetails[0]['gender'];
-        this.commonService.beneficiaryDetails['userDOJ'] = benDetails[0]['registrationDate'];
-        this.commonService.beneficiaryDetails['userDistrict'] = benDetails[0]['districtName'];
-        this.commonService.beneficiaryDetails['userMandal'] = benDetails[0]['mandalName'];
-        this.commonService.beneficiaryDetails['userVillage'] = benDetails[0]['villageName'];
-        this.commonService.beneficiaryDetails['userVisitId'] = benDetails[0]['visitId'];
-        this.commonService.beneficiaryDetails['userPatientId'] = benDetails[0]['patientId'];
-        this.commonService.beneficiaryDetails['userVisitCount'] = benDetails[0]['visitCount'];
-        this.commonService.beneficiaryDetails['userDeviceId'] = benDetails[0]['deviceId'];
-        this.commonService.beneficiaryDetails['userVanId'] = benDetails[0]['vanId'];
-        this.commonService.beneficiaryDetails['userRouteVillageId'] = benDetails[0]['routeVillageId'];
-        this.commonService.beneficiaryDetails['userServicePointId'] = benDetails[0]['servicePointId'];
-        this.commonService.beneficiaryDetails['userCompoundPatientId'] = benDetails[0]['compoundPatientId'];
+        this.commonService.setBenDetails(benDetails[0]);
       })
       .catch(error => {
         console.error(
@@ -177,16 +189,18 @@ export class VitalsPage implements OnInit {
     let bpDiastolic = this.vitalForm.get("bpDiastolic").value;
     let respiratoryRate = this.vitalForm.get("respiratoryRate").value;
 
+    let userId = this.userId;
+    let deviceId = this.deviceId;
+    let vanId = this.vanId;
+    let servicePointId = this.servicePointId;
+
     let visitId = this.commonService.beneficiaryDetails['userVisitId'];
-    let deviceId = this.commonService.beneficiaryDetails['userDeviceId'];
-    let vanId = this.commonService.beneficiaryDetails['userVanId'];
     let routeVillageId = this.commonService.beneficiaryDetails['userRouteVillageId'];
-    let servicePointId = this.commonService.beneficiaryDetails['userServicePointId'];
     let compoundPatientId = this.commonService.beneficiaryDetails['userCompoundPatientId'];
     let visitCount = this.commonService.beneficiaryDetails['userVisitCount'];
+
     let muac = this.muac;
     let hc = this.hc;
-    let userId = this.commonService.userDetails['userId'];
     let doctorBpSystolic = this.doctorBpSystolic;
     let doctorBpDiastolic = this.doctorBpDiastolic;
 

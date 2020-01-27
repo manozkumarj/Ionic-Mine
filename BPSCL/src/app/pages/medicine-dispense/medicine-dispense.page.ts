@@ -72,9 +72,10 @@ export class MedicineDispensePage implements OnInit {
     private router: Router,
     private storageService: StorageService
   ) {
+    this.loadUserDetails();
     this.loadSessionDetails();
-    // this.loadBeneficiaries();
-    // loadDispenses();
+    this.loadBeneficiaries();
+    this.loadDispenses();
 
     this.medicineDispenseForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -82,21 +83,7 @@ export class MedicineDispensePage implements OnInit {
     });
   }
 
-  ngOnInit() {}
-
-  loadSessionDetails() {
-    this.stateId = this.commonService.sessionDetails["stateId"];
-    this.districtId = this.commonService.sessionDetails["districtId"];
-    this.mandalId = this.commonService.sessionDetails["mandalId"];
-    this.villageId = this.commonService.sessionDetails["villageId"];
-    this.servicePointId = this.commonService.sessionDetails["servicePointId"];
-    this.servicePointName = this.commonService.sessionDetails[
-      "servicePointName"
-    ];
-    this.servicePointCode = this.commonService.sessionDetails[
-      "servicePointCode"
-    ];
-  }
+  ngOnInit() { }
 
   loadBeneficiaries() {
     this.db
@@ -110,7 +97,7 @@ export class MedicineDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -131,7 +118,42 @@ export class MedicineDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getDispenses() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
+        );
+      });
+  }
+
+  loadUserDetails() {
+    this.storageService
+      .getObject("userDetails")
+      .then(data => {
+        console.log("User details are -> " + JSON.stringify(data));
+        this.userId = data.userId;
+        this.vanId = data.vanId;
+        this.deviceId = data.deviceId;
+      })
+      .catch(error => {
+        console.error("User details were not set -> " + JSON.stringify(error));
+      });
+  }
+
+  loadSessionDetails() {
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("Session Details are -> " + JSON.stringify(data));
+
+        this.stateId = data["stateId"];
+        this.districtId = data["districtId"];
+        this.mandalId = data["mandalId"];
+        this.villageId = data["villageId"];
+        this.servicePointName = data["servicePointName"];
+        this.servicePointCode = data["servicePointCode"];
+        this.servicePointId = data["servicePointId"];
+      })
+      .catch(error => {
+        console.error(
+          "Session Details were not set -> " + JSON.stringify(error)
         );
       });
   }
@@ -163,6 +185,28 @@ export class MedicineDispensePage implements OnInit {
     // console.log("quantity is -> " + quantity.target.value);
     // console.log(quantity);
     this.medicineDispenses[id - 1]["quantity"] = +quantity.target.value;
+  }
+
+  benIdChange() {
+    let selectedBenID = this.medicineDispenseForm.get("beneficiaryId").value;
+    console.log("selectedBenID is -> " + selectedBenID);
+    if (selectedBenID && selectedBenID != null)
+      this.getBenDetails(selectedBenID);
+  }
+
+  getBenDetails(selectedBenID) {
+    this.db
+      .getBeneficiaryDetails(selectedBenID)
+      .then(benDetails => {
+        console.log("Received Ben details are -> " + JSON.stringify(benDetails));
+        this.commonService.setBenDetails(benDetails[0]);
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getBeneficiaryDetails() function returned error." +
+          JSON.stringify(error)
+        );
+      });
   }
 
   skipper() {
@@ -296,23 +340,20 @@ export class MedicineDispensePage implements OnInit {
       }
     }
 
-    alert("Form can be submited");
+    console.log("Form can be submited");
+
+    let userId = this.userId;
+    let vanId = this.vanId;
+    let servicePointId = this.servicePointId;
 
     this.visitId = this.commonService.beneficiaryDetails["userVisitId"];
-    this.deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
-    this.vanId = this.commonService.beneficiaryDetails["userVanId"];
     this.routeVillageId = this.commonService.beneficiaryDetails[
       "userRouteVillageId"
-    ];
-    this.servicePointId = this.commonService.beneficiaryDetails[
-      "userServicePointId"
     ];
     this.compoundPatientId = this.commonService.beneficiaryDetails[
       "userCompoundPatientId"
     ];
     this.visitCount = this.commonService.beneficiaryDetails["userVisitCount"];
-
-    this.userId = this.commonService.userDetails["userId"];
 
     if (this.showDispenses === false) {
       console.log("Upsert for Dispenses");
@@ -323,35 +364,35 @@ export class MedicineDispensePage implements OnInit {
         console.log("Dispense Id --> " + itemId);
         console.log("quantityGiven is --> " + quantityGiven);
 
-        // this.findAndUpsertDispense(
-        //   patientId,
-        //   this.servicePointId,
-        //   this.vanId,
-        //   itemId,
-        //   this.visitId,
-        //   quantityGiven,
-        //   remarks,
-        //   this.userId
-        // );
+        this.findAndUpsertDispense(
+          patientId,
+          servicePointId,
+          vanId,
+          itemId,
+          this.visitId,
+          quantityGiven,
+          remarks,
+          userId
+        );
       }
 
-      // this.router.navigate(["/consumable-dispense"]);
+      this.router.navigate(["/consumable-dispense"]);
     } else {
       console.log("Upsert for Remarks");
       console.log("remarks is --> " + remarks);
 
-      // this.findAndUpsertDispense(
-      //   patientId,
-      //   this.servicePointId,
-      //   this.vanId,
-      //   -1,
-      //   this.visitId,
-      //   -1,
-      //   remarks,
-      //   this.userId
-      // );
+      this.findAndUpsertDispense(
+        patientId,
+        servicePointId,
+        vanId,
+        -1,
+        this.visitId,
+        -1,
+        remarks,
+        userId
+      );
 
-      // this.router.navigate(["/consumable-dispense"]);
+      this.router.navigate(["/consumable-dispense"]);
     }
   }
 }

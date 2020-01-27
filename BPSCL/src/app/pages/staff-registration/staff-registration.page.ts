@@ -53,9 +53,17 @@ export class StaffRegistrationPage implements OnInit {
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
 
-  servicePointName: string = this.commonService.sessionDetails[
-    "servicePointName"
-  ];
+  userId: number;
+  vanId: number;
+  deviceId: number;
+
+  stateId: number;
+  districtId: number;
+  mandalId: number;
+  villageId: number;
+  servicePointId: number;
+  servicePointName: string;
+  servicePointCode: string;
 
   constructor(
     private db: DatabaseService,
@@ -95,9 +103,11 @@ export class StaffRegistrationPage implements OnInit {
   };
 
   ngOnInit() {
-    // this.loadGenders();
-    // this.loadAgeUnits();
-    // this.loadRoles();
+    this.loadUserDetails();
+    this.loadSessionDetails();
+    this.loadGenders();
+    this.loadAgeUnits();
+    this.loadRoles();
   }
 
   takeSnap() {
@@ -114,6 +124,41 @@ export class StaffRegistrationPage implements OnInit {
         console.log("Error - takeSnap() returned error --> " + error);
       }
     );
+  }
+
+  loadUserDetails() {
+    this.storageService
+      .getObject("userDetails")
+      .then(data => {
+        console.log("User details are -> " + JSON.stringify(data));
+        this.userId = data.userId;
+        this.vanId = data.vanId;
+        this.deviceId = data.deviceId;
+      })
+      .catch(error => {
+        console.error("User details were not set -> " + JSON.stringify(error));
+      });
+  }
+
+  loadSessionDetails() {
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("Session Details are -> " + JSON.stringify(data));
+
+        this.stateId = data["stateId"];
+        this.districtId = data["districtId"];
+        this.mandalId = data["mandalId"];
+        this.villageId = data["villageId"];
+        this.servicePointName = data["servicePointName"];
+        this.servicePointCode = data["servicePointCode"];
+        this.servicePointId = data["servicePointId"];
+      })
+      .catch(error => {
+        console.error(
+          "Session Details were not set -> " + JSON.stringify(error)
+        );
+      });
   }
 
   loadGenders() {
@@ -397,9 +442,9 @@ export class StaffRegistrationPage implements OnInit {
     //   return false;
     // }
 
-    let userId = this.commonService.userDetails["userId"];
-    let deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
-    let vanId = this.commonService.beneficiaryDetails["userVanId"];
+    let userId = this.userId;
+    let deviceId = this.deviceId;
+    let vanId = this.vanId;
 
     let insertData = {
       userIdIncrement,
@@ -437,7 +482,7 @@ export class StaffRegistrationPage implements OnInit {
             .registerStaff(insertData)
             .then(data => {
               console.log(
-                "Success -> registerStaff is inserted Successfully..."
+                "Success -> registerStaff is inserted Successfully..." + data
               );
               this.router.navigate(["/edit-staff"]);
             })
@@ -446,6 +491,10 @@ export class StaffRegistrationPage implements OnInit {
                 "Error -> registerStaff is not inserted" + JSON.stringify(e)
               );
             });
+        } else {
+          console.warn(
+            "Error -> getMaxUserId function returned 0 -> " + JSON.stringify(data)
+          );
         }
       })
       .catch(e => {

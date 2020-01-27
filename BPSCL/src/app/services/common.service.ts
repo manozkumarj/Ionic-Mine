@@ -84,6 +84,26 @@ export class CommonService {
         return ("0" + part).slice(-2);
     }
 
+    setBenDetails(benDetails) {
+        this.beneficiaryDetails['userPhoto'] = benDetails['imageUrl'];
+        this.beneficiaryDetails['userName'] = benDetails['name'];
+        this.beneficiaryDetails['userSurname'] = benDetails['surname'];
+        this.beneficiaryDetails['userAge'] = 5;
+        this.beneficiaryDetails['userGender'] = benDetails['gender'];
+        this.beneficiaryDetails['userDOJ'] = benDetails['registrationDate'];
+        this.beneficiaryDetails['userDistrict'] = benDetails['districtName'];
+        this.beneficiaryDetails['userMandal'] = benDetails['mandalName'];
+        this.beneficiaryDetails['userVillage'] = benDetails['villageName'];
+        this.beneficiaryDetails['userVisitId'] = benDetails['visitId'];
+        this.beneficiaryDetails['userPatientId'] = benDetails['patientId'];
+        this.beneficiaryDetails['userVisitCount'] = benDetails['visitCount'];
+        this.beneficiaryDetails['userDeviceId'] = benDetails['deviceId'];
+        this.beneficiaryDetails['userVanId'] = benDetails['vanId'];
+        this.beneficiaryDetails['userRouteVillageId'] = benDetails['routeVillageId'];
+        this.beneficiaryDetails['userServicePointId'] = benDetails['servicePointId'];
+        this.beneficiaryDetails['userCompoundPatientId'] = benDetails['compoundPatientId'];
+    }
+
     logout() {
         this.alertCtrl
             .create({

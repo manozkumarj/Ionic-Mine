@@ -70,9 +70,17 @@ export class EditStaffPage implements OnInit {
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
 
-  servicePointName: string = this.commonService.sessionDetails[
-    "servicePointName"
-  ];
+  userId: number;
+  vanId: number;
+  deviceId: number;
+
+  stateId: number;
+  districtId: number;
+  mandalId: number;
+  villageId: number;
+  servicePointId: number;
+  servicePointName: string;
+  servicePointCode: string;
 
   constructor(
     private db: DatabaseService,
@@ -112,10 +120,12 @@ export class EditStaffPage implements OnInit {
   };
 
   ngOnInit() {
-    // this.loadGenders();
-    // this.loadAgeUnits();
-    // this.loadRoles();
-    // this.loadUsernames();
+    this.loadUserDetails();
+    this.loadSessionDetails();
+    this.loadUsernames();
+    this.loadGenders();
+    this.loadAgeUnits();
+    this.loadRoles();
   }
 
   takeSnap() {
@@ -134,6 +144,41 @@ export class EditStaffPage implements OnInit {
     );
   }
 
+  loadUserDetails() {
+    this.storageService
+      .getObject("userDetails")
+      .then(data => {
+        console.log("User details are -> " + JSON.stringify(data));
+        this.userId = data.userId;
+        this.vanId = data.vanId;
+        this.deviceId = data.deviceId;
+      })
+      .catch(error => {
+        console.error("User details were not set -> " + JSON.stringify(error));
+      });
+  }
+
+  loadSessionDetails() {
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("Session Details are -> " + JSON.stringify(data));
+
+        this.stateId = data["stateId"];
+        this.districtId = data["districtId"];
+        this.mandalId = data["mandalId"];
+        this.villageId = data["villageId"];
+        this.servicePointName = data["servicePointName"];
+        this.servicePointCode = data["servicePointCode"];
+        this.servicePointId = data["servicePointId"];
+      })
+      .catch(error => {
+        console.error(
+          "Session Details were not set -> " + JSON.stringify(error)
+        );
+      });
+  }
+
   loadGenders() {
     this.db
       .getGenders()
@@ -144,7 +189,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -162,7 +207,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -191,7 +236,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -237,7 +282,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getUserDetails() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -476,9 +521,9 @@ export class EditStaffPage implements OnInit {
     //   return false;
     // }
 
-    let userId = this.commonService.userDetails["userId"];
-    let deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
-    let vanId = this.commonService.beneficiaryDetails["userVanId"];
+    let userId = this.userId;
+    let deviceId = this.deviceId;
+    let vanId = this.vanId;
     let selectedUserId = this.selectedUseId;
 
     let updateData = {
@@ -509,7 +554,7 @@ export class EditStaffPage implements OnInit {
     this.db
       .updateStaff(updateData)
       .then(data => {
-        console.log("Success -> updateStaff is updated Successfully...");
+        console.log("Success -> updateStaff is updated Successfully..." + data);
         this.router.navigate(["/staff-attendance"]);
       })
       .catch(e => {

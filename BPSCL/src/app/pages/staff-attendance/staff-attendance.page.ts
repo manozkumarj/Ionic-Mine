@@ -12,39 +12,13 @@ import { Router } from "@angular/router";
 })
 export class StaffAttendancePage implements OnInit {
   staffAttendanceForm: FormGroup;
-  sessionTypes: any[] = [
-    {
-      sessionTypeId: 1,
-      sessionTypeName: "AAA"
-    },
-    {
-      sessionTypeId: 2,
-      sessionTypeName: "BBB"
-    },
-    {
-      sessionTypeId: 3,
-      sessionTypeName: "CCC"
-    }
-  ];
+  sessionTypes: any[] = [];
 
   sessionPeriods: any[] = [];
 
   selectedUserId: number;
 
-  users: any[] = [
-    {
-      userId: 1,
-      username: "AAA"
-    },
-    {
-      userId: 2,
-      username: "BBB"
-    },
-    {
-      userId: 3,
-      username: "CCC"
-    }
-  ];
+  users: any[] = [];
 
   showSessionPeriodField: boolean = false;
 
@@ -70,8 +44,8 @@ export class StaffAttendancePage implements OnInit {
   }
 
   ngOnInit() {
-    // this.getSessionTypes();
-    // this.loadUsers();
+    this.getSessionTypes();
+    this.loadUsers();
   }
 
   getSessionTypes() {
@@ -84,7 +58,7 @@ export class StaffAttendancePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionTypes() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -105,13 +79,8 @@ export class StaffAttendancePage implements OnInit {
   usernameChange() {
     let selectedUserID = this.staffAttendanceForm.get("staffName").value;
     console.log("selectedUserID is -> " + selectedUserID);
-    // if (selectedUserID && selectedUserID != null)
-    //   this.getUserDetails(selectedUserID);
-
-    // delete below lines after enabling above lines
-    this.staffAttendanceForm.patchValue({
-      staffDesignation: "roleName"
-    });
+    if (selectedUserID && selectedUserID != null)
+      this.getUserDetails(selectedUserID);
   }
 
   getUserDetails(selectedUserID) {
@@ -129,7 +98,7 @@ export class StaffAttendancePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getUserDetails() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -138,32 +107,15 @@ export class StaffAttendancePage implements OnInit {
     let selectedsessionTypeID = this.staffAttendanceForm.get("sessionType")
       .value;
     console.log("selectedsessionTypeID is -> " + selectedsessionTypeID);
-    // if (selectedsessionTypeID && selectedsessionTypeID != null)
-    //   this.getSessionPeriods(selectedsessionTypeID);
-
-    // delete below lines after enabling above lines
-    this.sessionPeriods = [
-      {
-        sessionPeriodId: 1,
-        sessionPeriodName: "pAAA"
-      },
-      {
-        sessionPeriodId: 2,
-        sessionPeriodName: "pBBB"
-      },
-      {
-        sessionPeriodId: 3,
-        sessionPeriodName: "pCCC"
-      }
-    ];
-
-    this.showSessionPeriodField = true;
+    if (selectedsessionTypeID && selectedsessionTypeID != null)
+      this.getSessionPeriods(selectedsessionTypeID);
   }
 
   getSessionPeriods(selectedsessionTypeID) {
     this.db
       .getSessionPeriods(selectedsessionTypeID)
       .then(sessionPeriods => {
+        this.showSessionPeriodField = true;
         console.log(
           "Received SessionPeriods are -> " + JSON.stringify(sessionPeriods)
         );
@@ -172,7 +124,7 @@ export class StaffAttendancePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getSessionPeriods() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -180,6 +132,7 @@ export class StaffAttendancePage implements OnInit {
   resetValues() {
     this.staffAttendanceForm.patchValue({
       sessionType: "",
+      sessionPeriod: "",
       staffName: "",
       staffDesignation: ""
     });
@@ -237,7 +190,7 @@ export class StaffAttendancePage implements OnInit {
             .updateAttendance(queryData)
             .then(data => {
               console.log(
-                "Success -> updateAttendance is updated Successfully..."
+                "Success -> updateAttendance is updated Successfully..." + data
               );
               this.router.navigate(["/reports"]);
             })
@@ -261,7 +214,7 @@ export class StaffAttendancePage implements OnInit {
                   .catch(error => {
                     console.error(
                       "Error -> insertAttendance() function returned error." +
-                        JSON.stringify(error)
+                      JSON.stringify(error)
                     );
                   });
               }

@@ -80,9 +80,8 @@ export class BeneficiaryHistoryPage implements OnInit {
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
 
-  servicePointName: string = this.commonService.sessionDetails[
-    "servicePointName"
-  ];
+  servicePointName: string;
+  servicePointId: string;
 
   constructor(
     private db: DatabaseService,
@@ -97,7 +96,8 @@ export class BeneficiaryHistoryPage implements OnInit {
   }
 
   ngOnInit() {
-    // this.loadBeneficiaries();
+    this.loadBeneficiaries();
+    this.loadSessionDetails();
   }
 
   onChange() {
@@ -133,9 +133,27 @@ export class BeneficiaryHistoryPage implements OnInit {
       });
   }
 
+  loadSessionDetails() {
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("Session Details are -> " + JSON.stringify(data));
+
+        this.servicePointName = data["servicePointName"];
+        this.servicePointId = data["servicePointId"];
+      })
+      .catch(error => {
+        console.error(
+          "Session Details were not set -> " + JSON.stringify(error)
+        );
+      });
+  }
+
   onSubmit(patientId, selectedHistoryId) {
     this.showMeasurementResults = false;
     this.showOtherResults = false;
+    this.measurementResults.length = 0;
+    this.otherResults.length = 0;
     console.clear();
     console.log("Ben History form is submitted, below are the values");
     console.log(this.benHistoryForm.value);
@@ -165,12 +183,12 @@ export class BeneficiaryHistoryPage implements OnInit {
       this.db.getBeneficiaryDiseasesData(patientId).then(data => {
         console.log("Success -> Received DiseasesData --> " + JSON.stringify(data));
         if (data.length > 0) {
-          this.measurementResults = data;
+          this.otherResults = data;
         } else {
-          this.measurementResults.length = 0;
+          this.otherResults.length = 0;
         }
       }).catch(e => {
-        this.measurementResults.length = 0;
+        this.otherResults.length = 0;
         console.error("Error -> getBeneficiaryDiseasesData returned error" + JSON.stringify(e));
       });
 
@@ -181,12 +199,12 @@ export class BeneficiaryHistoryPage implements OnInit {
       this.db.getBeneficiaryLabtestData(patientId).then(data => {
         console.log("Success -> Received LabtestData --> " + JSON.stringify(data));
         if (data.length > 0) {
-          this.measurementResults = data;
+          this.otherResults = data;
         } else {
-          this.measurementResults.length = 0;
+          this.otherResults.length = 0;
         }
       }).catch(e => {
-        this.measurementResults.length = 0;
+        this.otherResults.length = 0;
         console.error("Error -> getBeneficiaryLabtestData returned error" + JSON.stringify(e));
       });
 
@@ -197,12 +215,12 @@ export class BeneficiaryHistoryPage implements OnInit {
       this.db.getBeneficiaryDispensesData(patientId).then(data => {
         console.log("Success -> Received DispensesData --> " + JSON.stringify(data));
         if (data.length > 0) {
-          this.measurementResults = data;
+          this.otherResults = data;
         } else {
-          this.measurementResults.length = 0;
+          this.otherResults.length = 0;
         }
       }).catch(e => {
-        this.measurementResults.length = 0;
+        this.otherResults.length = 0;
         console.error("Error -> getBeneficiaryDispensesData returned error" + JSON.stringify(e));
       });
 

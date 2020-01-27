@@ -70,8 +70,8 @@
                 <ion-col size="12" size-sm>
                   <ion-select formControlName="gender" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option value="f">Female</ion-select-option>
-                    <ion-select-option value="m">Male</ion-select-option>
+                    <ion-select-option *ngFor="let gender of genders" [value]="gender.genderId">{{gender.gender}}
+                    </ion-select-option>
                   </ion-select>
                 </ion-col>
               </ion-row>
@@ -91,7 +91,7 @@
                         <ion-select (ionChange)="ageUnitChange()" formControlName="ageUnit" class="field-input" style="color: #000;
                          font-weight: bold; background: #3b4bad; 
                         background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                          <ion-select-option *ngFor="let ageUnit of ageUnits" value="{{ageUnit.ageUnitId}}">
+                          <ion-select-option *ngFor="let ageUnit of ageUnits" [value]="ageUnit.ageUnitId">
                             {{ageUnit.ageUnitName}}
                           </ion-select-option>
                         </ion-select>
@@ -152,7 +152,7 @@
                   <ion-select formControlName="roleId" class="field-input" style="color: #000; 
                   font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option *ngFor="let role of roles" value="{{role.roleId}}">
+                    <ion-select-option *ngFor="let role of roles" [value]="role.roleId">
                       {{role.roleName}}
                     </ion-select-option>
                   </ion-select>
