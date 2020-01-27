@@ -302,43 +302,7 @@ export class DoctorPage implements OnInit {
         let benPregnancyStatus = benDetails[0]["pregnancyStatus"];
         let benGender = benDetails[0]["gender"];
 
-        this.commonService.beneficiaryDetails["userPhoto"] =
-          benDetails[0]["imageUrl"];
-        this.commonService.beneficiaryDetails["userName"] =
-          benDetails[0]["name"];
-        this.commonService.beneficiaryDetails[
-          "pregnancyStatus"
-        ] = benPregnancyStatus;
-        this.commonService.beneficiaryDetails["ageTypeId"] = benAgeTypeId;
-        this.commonService.beneficiaryDetails["age"] = benAge;
-        this.commonService.beneficiaryDetails["userSurname"] =
-          benDetails[0]["surname"];
-        this.commonService.beneficiaryDetails["userAge"] = 5;
-        this.commonService.beneficiaryDetails["userGender"] = benGender;
-        this.commonService.beneficiaryDetails["userDOJ"] =
-          benDetails[0]["registrationDate"];
-        this.commonService.beneficiaryDetails["userDistrict"] =
-          benDetails[0]["districtName"];
-        this.commonService.beneficiaryDetails["userMandal"] =
-          benDetails[0]["mandalName"];
-        this.commonService.beneficiaryDetails["userVillage"] =
-          benDetails[0]["villageName"];
-        this.commonService.beneficiaryDetails["userVisitId"] =
-          benDetails[0]["visitId"];
-        this.commonService.beneficiaryDetails["userPatientId"] =
-          benDetails[0]["patientId"];
-        this.commonService.beneficiaryDetails["userVisitCount"] =
-          benDetails[0]["visitCount"];
-        this.commonService.beneficiaryDetails["userDeviceId"] =
-          benDetails[0]["deviceId"];
-        this.commonService.beneficiaryDetails["userVanId"] =
-          benDetails[0]["vanId"];
-        this.commonService.beneficiaryDetails["userRouteVillageId"] =
-          benDetails[0]["routeVillageId"];
-        this.commonService.beneficiaryDetails["userServicePointId"] =
-          benDetails[0]["servicePointId"];
-        this.commonService.beneficiaryDetails["userCompoundPatientId"] =
-          benDetails[0]["compoundPatientId"];
+        this.commonService.setBenDetails(benDetails[0]);
 
         if (benGender == 2) {
           if (benAge >= 16 && benAgeTypeId == 3) {
@@ -600,7 +564,6 @@ export class DoctorPage implements OnInit {
       this.db
         .findReferredTo(patientId, servicePointId, vanId, visitId)
         .then(data => {
-
           if (data.length > 0) {
             let updateData = {
               referralTypeId,

@@ -120,11 +120,13 @@ export class VitalsPage implements OnInit {
     if (value == 'height') {
       if (height < 36 || height > 245) {
         alert("Height should be between 36-245");
+        this.vitalForm.patchValue({ height: null });
         return false;
       }
     } else {
       if (weight < 1.5 || weight > 200) {
         alert("Weight should be between 1.5-200");
+        this.vitalForm.patchValue({ weight: null });
         return false;
       }
     }
@@ -135,6 +137,38 @@ export class VitalsPage implements OnInit {
       var thisBmi = wtInKg / (htInMeter * htInMeter);
       this.vitalForm.patchValue({ bmi: thisBmi.toFixed(2) });
       console.log("Calculated BMI is -> " + thisBmi.toFixed(2));
+    }
+  }
+
+  temperatureChange(){
+    let enteredTemperature = this.vitalForm.get("temperature").value;
+    if(enteredTemperature < 92 || enteredTemperature > 105){
+      alert("Temperature should be between 92-105");
+      this.vitalForm.patchValue({ temperature: null });
+      return false;
+    }
+  }
+
+  bpChange(bpType){
+    if(bpType == 'systolic'){
+
+    }else{
+
+    }
+    let enteredTemperature = this.vitalForm.get("temperature").value;
+    if(enteredTemperature < 92 || enteredTemperature > 105){
+      alert("Temperature should be between 92-105");
+      this.vitalForm.patchValue({ temperature: null });
+      return false;
+    }
+  }
+
+  respiratoryRateChange(){
+    let enteredTemperature = this.vitalForm.get("respiratoryRate").value;
+    if(enteredTemperature < 92 || enteredTemperature > 105){
+      alert("Temperature should be between 92-105");
+      this.vitalForm.patchValue({ temperature: null });
+      return false;
     }
   }
 

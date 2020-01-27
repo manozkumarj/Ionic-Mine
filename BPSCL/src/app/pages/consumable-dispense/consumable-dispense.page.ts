@@ -24,29 +24,8 @@ export class ConsumableDispensePage implements OnInit {
       name: "bbb"
     }
   ];
-  dispenses: any[] = [];
   freshDispenses: any[] = [];
-
-  consumableDispenses: any[] = [
-    {
-      itemId: 1,
-      genericName: "Bandage 6 inch",
-      allowQuantity: false,
-      quantity: null
-    },
-    {
-      itemId: 2,
-      genericName: "Cotton Role 450grm",
-      allowQuantity: false,
-      quantity: null
-    },
-    {
-      itemId: 3,
-      genericName: "Face mask",
-      allowQuantity: false,
-      quantity: null
-    }
-  ];
+  consumableDispenses: any[] = [];
 
   userId: number;
   vanId: number;
@@ -83,7 +62,7 @@ export class ConsumableDispensePage implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   loadBeneficiaries() {
     this.db
@@ -97,7 +76,7 @@ export class ConsumableDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -126,12 +105,12 @@ export class ConsumableDispensePage implements OnInit {
           allowQuantity: false,
           quantity: null
         }));
-        this.dispenses = this.freshDispenses;
+        this.consumableDispenses = this.freshDispenses;
       })
       .catch(error => {
         console.error(
           "Error -> getDispenses() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -196,13 +175,15 @@ export class ConsumableDispensePage implements OnInit {
     this.db
       .getBeneficiaryDetails(selectedBenID)
       .then(benDetails => {
-        console.log("Received Ben details are -> " + JSON.stringify(benDetails));
+        console.log(
+          "Received Ben details are -> " + JSON.stringify(benDetails)
+        );
         this.commonService.setBenDetails(benDetails[0]);
       })
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryDetails() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }

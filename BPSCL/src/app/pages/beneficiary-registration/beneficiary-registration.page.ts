@@ -136,7 +136,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       });
   }
 
-  prefixZeros = function (str, padStr, len) {
+  prefixZeros = function(str, padStr, len) {
     while (str.length < len) str = padStr + str;
     return str;
   };
@@ -198,7 +198,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryId() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -256,7 +256,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryId() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -296,7 +296,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -311,7 +311,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getCastes() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -326,7 +326,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getReligions() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -344,7 +344,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -361,17 +361,15 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeCategories() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
 
   genderChange() {
     let selectedGender = this.benRegForm.get("gender").value;
-    if (selectedGender != 2)
-      this.showPregnancyField = false;
-    else
-      this.showPregnancyField = true;
+    if (selectedGender != 2) this.showPregnancyField = false;
+    else this.showPregnancyField = true;
   }
 
   personalNumberCheckbox(e) {
@@ -616,7 +614,8 @@ export class BeneficiaryRegistrationPage implements OnInit {
     let pregnancyStatus = this.benRegForm.get("pregnancyStatus").value;
     let ageCategory = this.benRegForm.get("ageCategory").value;
     let personalNumber = this.benRegForm.get("personalNumber").value.trim();
-    let familyOrRelativeNumber = this.benRegForm.get("familyOrRelativeNumber")
+    let familyOrRelativeNumber = this.benRegForm
+      .get("familyOrRelativeNumber")
       .value.trim();
     let communityId = this.benRegForm.get("caste").value;
     let religionId = this.benRegForm.get("religion").value;
@@ -737,27 +736,42 @@ export class BeneficiaryRegistrationPage implements OnInit {
       alert("Please Select Date of birth ");
       return false;
     }
-    if (!personalNumber || personalNumber == null) {
+    if (
+      !this.disablePersonalNumber &&
+      (!personalNumber || personalNumber == null)
+    ) {
       alert("Please Enter personal number ");
       return false;
     }
-    if (personalNumber.length < 10 || personalNumber.length > 10) {
+    if (
+      !this.disablePersonalNumber &&
+      (personalNumber.length < 10 || personalNumber.length > 10)
+    ) {
       alert("Please Enter valid personal number Number");
       return false;
     }
-    if (parseInt(personalNumber[0]) < 6) {
+    if (!this.disablePersonalNumber && parseInt(personalNumber[0]) < 6) {
       alert("Personal Number first digit should be between 6-9");
       return false;
     }
-    if (!familyOrRelativeNumber || familyOrRelativeNumber == null) {
+    if (
+      !this.disableFamilyOrRelativeNumber &&
+      (!familyOrRelativeNumber || familyOrRelativeNumber == null)
+    ) {
       alert("Please Enter Family Or Relative number ");
       return false;
     }
-    if (familyOrRelativeNumber.length < 10 || familyOrRelativeNumber.length > 10) {
+    if (
+      !this.disableFamilyOrRelativeNumber &&
+      (familyOrRelativeNumber.length < 10 || familyOrRelativeNumber.length > 10)
+    ) {
       alert("Please Enter valid Family Or Relative number Number");
       return false;
     }
-    if (parseInt(familyOrRelativeNumber[0]) < 6) {
+    if (
+      !this.disableFamilyOrRelativeNumber &&
+      parseInt(familyOrRelativeNumber[0]) < 6
+    ) {
       alert("Phone Number first digit should be between 6-9");
       return false;
     }
@@ -793,7 +807,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
             .then(res => {
               console.log(
                 "Beneficiary Visit details inserted successfully...!" +
-                JSON.stringify(res)
+                  JSON.stringify(res)
               );
               if (res) {
                 this.router.navigate(["/vitals"]);
@@ -802,7 +816,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
             .catch(error => {
               console.error(
                 "Error -> Beneficiary Visit details insertion failed - " +
-                JSON.stringify(error)
+                  JSON.stringify(error)
               );
             });
         } else {

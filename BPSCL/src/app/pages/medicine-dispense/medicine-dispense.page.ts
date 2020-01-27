@@ -14,39 +14,9 @@ export class MedicineDispensePage implements OnInit {
   medicineDispenseForm: FormGroup;
 
   showDispenses: boolean = false;
-  benIds: any[] = [
-    {
-      patientId: "a01",
-      name: "aaa"
-    },
-    {
-      patientId: "b02",
-      name: "bbb"
-    }
-  ];
-  dispenses: any[] = [];
+  benIds: any[] = [];
   freshDispenses: any[] = [];
-
-  medicineDispenses: any[] = [
-    {
-      itemId: 1,
-      genericName: "Bandage 6 inch",
-      allowQuantity: false,
-      quantity: null
-    },
-    {
-      itemId: 2,
-      genericName: "Cotton Role 450grm",
-      allowQuantity: false,
-      quantity: null
-    },
-    {
-      itemId: 3,
-      genericName: "Face mask",
-      allowQuantity: false,
-      quantity: null
-    }
-  ];
+  medicineDispenses: any[] = [];
 
   userId: number;
   vanId: number;
@@ -83,7 +53,7 @@ export class MedicineDispensePage implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   loadBeneficiaries() {
     this.db
@@ -97,7 +67,7 @@ export class MedicineDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -113,12 +83,14 @@ export class MedicineDispensePage implements OnInit {
           allowQuantity: false,
           quantity: null
         }));
-        this.dispenses = this.freshDispenses;
+        this.medicineDispenses = this.freshDispenses;
+        console.log("********-----------************");
+        console.log("freshDispenses -> " + JSON.stringify(this.freshDispenses));
       })
       .catch(error => {
         console.error(
           "Error -> getDispenses() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -198,13 +170,15 @@ export class MedicineDispensePage implements OnInit {
     this.db
       .getBeneficiaryDetails(selectedBenID)
       .then(benDetails => {
-        console.log("Received Ben details are -> " + JSON.stringify(benDetails));
+        console.log(
+          "Received Ben details are -> " + JSON.stringify(benDetails)
+        );
         this.commonService.setBenDetails(benDetails[0]);
       })
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryDetails() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -363,6 +337,24 @@ export class MedicineDispensePage implements OnInit {
         let remarks = null;
         console.log("Dispense Id --> " + itemId);
         console.log("quantityGiven is --> " + quantityGiven);
+
+        console.log(
+          patientId +
+            " *** " +
+            servicePointId +
+            " *** " +
+            vanId +
+            " *** " +
+            itemId +
+            " *** " +
+            this.visitId +
+            " *** " +
+            quantityGiven +
+            " *** " +
+            remarks +
+            " *** " +
+            userId
+        );
 
         this.findAndUpsertDispense(
           patientId,

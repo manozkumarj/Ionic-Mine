@@ -84,7 +84,7 @@
                   Temperature (92-105 F)
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input type="number" formControlName="temperature" class="field-input" value=""></ion-input>
+                  <ion-input (ionChange)="temperatureChange()" type="number" formControlName="temperature" class="field-input" value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -103,12 +103,12 @@
                   <ion-grid style="padding: 0; margin: 0;">
                     <ion-row style="width: 95%;">
                       <ion-col style="padding-left: 0;">
-                        <ion-input type="number" formControlName="bpSystolic" class="field-input" type="text"
+                        <ion-input (ionChange)="bpChange('systolic')" type="number" formControlName="bpSystolic" class="field-input" type="text"
                           placeholder="Systolic" value="">
                         </ion-input>
                       </ion-col>
                       <ion-col>
-                        <ion-input type="number" formControlName="bpDiastolic" class="field-input" type="text" value=""
+                        <ion-input (ionChange)="bpChange('diastolic')" type="number" formControlName="bpDiastolic" class="field-input" type="text" value=""
                           placeholder="Diastolic"></ion-input>
                       </ion-col>
                     </ion-row>
@@ -120,7 +120,7 @@
                   Respiratory Rate (10-60)
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input type="number" formControlName="respiratoryRate" class="field-input" value=""></ion-input>
+                  <ion-input (ionChange)="respiratoryRateChange()" type="number" formControlName="respiratoryRate" class="field-input" value=""></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">

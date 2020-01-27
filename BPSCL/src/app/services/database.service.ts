@@ -1067,14 +1067,22 @@ export class DatabaseService {
       });
   }
 
-  findDispense(patientId, servicePointId, vanId, itemId, visitId) {
-    let sql = `SELECT patientId FROM ${this.table_dispenses} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND itemId = ? AND visitId = ? LIMIT 1`;
+  findDispense(patientId, servicePointId, vanId, itemId, visitId) {    
+    let sql = `SELECT patientId FROM ${this.table_dispenses} WHERE patientId = '${patientId}' AND servicePointId = ${servicePointId} AND vanId = ${vanId} AND itemId = ${itemId} AND visitId = '${visitId}' LIMIT 1`;
+
+    console.log('Execute query is --> ' + sql);
+
     return this.dbObject
-      .executeSql(sql, [patientId, servicePointId, vanId, itemId, visitId])
+      .executeSql(sql, [])
       .then(data => {
-        let patientId = [];
+        let patientId;
         patientId = data.rows.item(0).patientId;
         return patientId;
+      })
+      .catch(error => {
+        console.error(
+          "database - findDispense - Error -> " + JSON.stringify(error)
+        );
       });
   }
 
