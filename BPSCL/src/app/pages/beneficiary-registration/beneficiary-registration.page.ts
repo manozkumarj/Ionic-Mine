@@ -50,7 +50,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
   familyOrRelativeChecked: boolean = false;
   personalNumberChecked: boolean = false;
-  bplChecked: boolean = true;
+  bplChecked: boolean = false;
   handicappedChecked: boolean = false;
   showPregnancyField: boolean = false;
 
@@ -136,7 +136,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       });
   }
 
-  prefixZeros = function(str, padStr, len) {
+  prefixZeros = function (str, padStr, len) {
     while (str.length < len) str = padStr + str;
     return str;
   };
@@ -154,8 +154,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
         let receivedData = maxbeneficiaryId[0]["maxbeneficiaryId"];
 
         if (!receivedData || receivedData == null) {
-          receivedData =
-            "SP000" + this.mandalId + "00000" + this.villageId + "B000001";
+          receivedData = this.servicePointCode + "B000001";
         }
 
         if (receivedData) {
@@ -199,7 +198,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryId() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -215,8 +214,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
         let receivedData = maxVisitId[0]["maxVisitId"];
 
         if (!receivedData || receivedData == null) {
-          receivedData =
-            "SP000" + this.mandalId + "00000" + this.villageId + "V000001";
+          receivedData = this.servicePointCode + "V000001";
         }
 
         if (receivedData) {
@@ -258,7 +256,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryId() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -298,7 +296,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -313,7 +311,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getCastes() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -328,7 +326,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getReligions() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -346,7 +344,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -363,9 +361,17 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeCategories() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
+  }
+
+  genderChange() {
+    let selectedGender = this.benRegForm.get("gender").value;
+    if (selectedGender != 2)
+      this.showPregnancyField = false;
+    else
+      this.showPregnancyField = true;
   }
 
   personalNumberCheckbox(e) {
@@ -546,6 +552,14 @@ export class BeneficiaryRegistrationPage implements OnInit {
     console.log("Picked selectedAgeCategory -> " + selectedAgeCategory);
   }
 
+  onlyNumberMaxLength(event) {
+    const pattern = /[0-9]/;
+    let inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
   resetValues() {
     this.benRegForm.patchValue({
       benificiaryName: "",
@@ -554,6 +568,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       dateOfBirth: "",
       age: "",
       ageUnit: "",
+      pregnancyStatus: "",
       ageCategory: "",
       personalNumber: "",
       familyOrRelativeNumber: "",
@@ -575,6 +590,9 @@ export class BeneficiaryRegistrationPage implements OnInit {
   }
 
   onSubmit(values) {
+    console.log("Ben Registration form is submitted, below are the values");
+    console.log(values);
+
     // let patientId = "SP0002000010B000500";
     let patientId = this.randomPatientId;
     let visitId = this.visitId;
@@ -595,10 +613,11 @@ export class BeneficiaryRegistrationPage implements OnInit {
     let dob = this.benRegForm.get("dateOfBirth").value.trim();
     let age = +this.benRegForm.get("age").value;
     let ageUnit = this.benRegForm.get("ageUnit").value;
+    let pregnancyStatus = this.benRegForm.get("pregnancyStatus").value;
     let ageCategory = this.benRegForm.get("ageCategory").value;
-    let personalNumber = this.benRegForm.get("personalNumber").value;
+    let personalNumber = this.benRegForm.get("personalNumber").value.trim();
     let familyOrRelativeNumber = this.benRegForm.get("familyOrRelativeNumber")
-      .value;
+      .value.trim();
     let communityId = this.benRegForm.get("caste").value;
     let religionId = this.benRegForm.get("religion").value;
     let noOfFamilyNumbers = this.benRegForm.get("numberOfFamilyMembers").value;
@@ -619,7 +638,11 @@ export class BeneficiaryRegistrationPage implements OnInit {
     let maritalStatusId = -1;
     let occupationStatusId = -1;
     let serviceProvidedId = -1;
-    let pregnancyStatus = 0;
+
+    if (genderId != 2) {
+      pregnancyStatus = 0;
+    }
+
     let benTypeId = 0;
     let provisonalDiagnosis = "N/A";
     let impClinicalFindings = "N/A";
@@ -678,9 +701,6 @@ export class BeneficiaryRegistrationPage implements OnInit {
       userId
     };
 
-    console.log("Ben Registration form is submitted, below are the values");
-    // console.log(values);
-
     console.log(
       "Object of benRegFormDetails -> " + JSON.stringify(benRegFormDetails)
     );
@@ -709,6 +729,10 @@ export class BeneficiaryRegistrationPage implements OnInit {
       alert("Please Select age unit ");
       return false;
     }
+    if (genderId == 2 && (!pregnancyStatus || pregnancyStatus == null)) {
+      alert("Please Select Pregnancy status ");
+      return false;
+    }
     if (!dob || dob == null) {
       alert("Please Select Date of birth ");
       return false;
@@ -717,8 +741,24 @@ export class BeneficiaryRegistrationPage implements OnInit {
       alert("Please Enter personal number ");
       return false;
     }
+    if (personalNumber.length < 10 || personalNumber.length > 10) {
+      alert("Please Enter valid personal number Number");
+      return false;
+    }
+    if (parseInt(personalNumber[0]) < 6) {
+      alert("Personal Number first digit should be between 6-9");
+      return false;
+    }
     if (!familyOrRelativeNumber || familyOrRelativeNumber == null) {
       alert("Please Enter Family Or Relative number ");
+      return false;
+    }
+    if (familyOrRelativeNumber.length < 10 || familyOrRelativeNumber.length > 10) {
+      alert("Please Enter valid Family Or Relative number Number");
+      return false;
+    }
+    if (parseInt(familyOrRelativeNumber[0]) < 6) {
+      alert("Phone Number first digit should be between 6-9");
       return false;
     }
     if (!communityId || communityId == null) {
@@ -734,8 +774,9 @@ export class BeneficiaryRegistrationPage implements OnInit {
       return false;
     }
     if (!this.isPhotoCaptured) {
-      alert("Please Capture photo");
-      return false;
+      // alert("Please Capture photo");
+      // return false;
+      imageUrl = null;
     }
 
     this.db
@@ -752,7 +793,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
             .then(res => {
               console.log(
                 "Beneficiary Visit details inserted successfully...!" +
-                  JSON.stringify(res)
+                JSON.stringify(res)
               );
               if (res) {
                 this.router.navigate(["/vitals"]);
@@ -761,7 +802,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
             .catch(error => {
               console.error(
                 "Error -> Beneficiary Visit details insertion failed - " +
-                  JSON.stringify(error)
+                JSON.stringify(error)
               );
             });
         } else {

@@ -70,9 +70,9 @@
                   Gender
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select formControlName="gender" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  <ion-select (ionChange)="genderChange()" formControlName="gender" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option *ngFor="let gender of genders" value="{{gender.genderId}}">{{gender.gender}}
+                    <ion-select-option *ngFor="let gender of genders" [value]="gender.genderId">{{gender.gender}}
                     </ion-select-option>
                   </ion-select>
                 </ion-col>
@@ -92,7 +92,7 @@
                       <ion-col>
                         <ion-select (ionChange)="ageUnitChange()" formControlName="ageUnit" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                         background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                          <ion-select-option *ngFor="let ageUnit of ageUnits" value="{{ageUnit.ageUnitId}}"
+                          <ion-select-option *ngFor="let ageUnit of ageUnits" [value]="ageUnit.ageUnitId"
                             selected="{{ageUnit.isSelected}}">{{ageUnit.ageUnitName}}
                           </ion-select-option>
                         </ion-select>
@@ -109,8 +109,8 @@
                 <ion-col size="12" size-sm>
                   <ion-select formControlName="pregnancyStatus" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option *ngFor="let pregnancyStatus of pregnancyStatuses" value="{{pregnancyStatus.Id}}">
-                      {{pregnancyStatus.status}}
+                    <ion-select-option *ngFor="let pregnancyStatuss of pregnancyStatuses" [value]="pregnancyStatuss.Id">
+                      {{pregnancyStatuss.status}}
                     </ion-select-option>
                   </ion-select>
                 </ion-col>
@@ -131,7 +131,7 @@
                 <ion-col size="12" size-sm>
                   <ion-select formControlName="ageCategory" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option *ngFor="let ageCategory of ageCategories" value="{{ageCategory.ageCategoryId}}">
+                    <ion-select-option *ngFor="let ageCategory of ageCategories" [value]="ageCategory.ageCategoryId">
                       {{ageCategory.ageCategoryName}}
                     </ion-select-option>
                   </ion-select>
@@ -145,8 +145,10 @@
                   <ion-grid style="padding: 0; margin: 0;">
                     <ion-row style="width: 95%;" align-items-center justify-content-center>
                       <ion-col size="10" style="padding-left: 0;">
-                        <ion-input formControlName="personalNumber" class="field-input" value="" style="width: 100%;"
-                          [disabled]="disablePersonalNumber"></ion-input>
+                        <ion-input type="text" maxlength="10" formControlName="personalNumber" class="field-input"
+                          (keypress)="onlyNumberMaxLength($event)" value="" style="width: 100%;"
+                          [disabled]="disablePersonalNumber">
+                        </ion-input>
                       </ion-col>
                       <ion-col size="auto" size-sm>
                         <ion-checkbox (ionChange)="personalNumberCheckbox($event)" [checked]='personalNumberChecked'
@@ -165,8 +167,10 @@
                   <ion-grid style="padding: 0; margin: 0;">
                     <ion-row style="width: 95%;" align-items-center justify-content-center>
                       <ion-col size="10" style="padding-left: 0;">
-                        <ion-input formControlName="familyOrRelativeNumber" class="field-input" value=""
-                          style="width: 100%;" [disabled]="disableFamilyOrRelativeNumber"></ion-input>
+                        <ion-input type="text" maxlength="10" formControlName="familyOrRelativeNumber"
+                          class="field-input" (keypress)="onlyNumberMaxLength($event)" value="" style="width: 100%;"
+                          [disabled]="disableFamilyOrRelativeNumber">
+                        </ion-input>
                       </ion-col>
                       <ion-col size="auto" size-sm>
                         <ion-checkbox (ionChange)="familyOrRelativeNumberCheckbox($event)"
@@ -183,7 +187,7 @@
                 <ion-col size="12" size-sm>
                   <ion-select formControlName="caste" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option *ngFor="let community of castes" value="{{community.communityId}}">
+                    <ion-select-option *ngFor="let community of castes" [value]="community.communityId">
                       {{community.communityName}}
                     </ion-select-option>
                   </ion-select>
@@ -196,7 +200,7 @@
                 <ion-col size="12" size-sm>
                   <ion-select formControlName="religion" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option *ngFor="let religion of religions" value="{{religion.religionId}}">
+                    <ion-select-option *ngFor="let religion of religions" [value]="religion.religionId">
                       {{religion.religionName}}
                     </ion-select-option>
                   </ion-select>

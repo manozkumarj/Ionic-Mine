@@ -126,7 +126,7 @@ export class StaffRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -144,7 +144,7 @@ export class StaffRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -360,7 +360,7 @@ export class StaffRegistrationPage implements OnInit {
       return false;
     }
     if (parseInt(phone[0]) < 6) {
-      alert("Phone Number first digit should between 6-9");
+      alert("Phone Number first digit should be between 6-9");
       return false;
     }
     if (!email || email == null) {

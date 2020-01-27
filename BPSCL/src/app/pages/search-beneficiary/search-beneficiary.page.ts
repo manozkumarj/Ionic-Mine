@@ -48,7 +48,7 @@ export class SearchBeneficiaryPage implements OnInit {
   servicePointName: string = this.commonService.sessionDetails[
     "servicePointName"
   ];
-  servicePointId = this.commonService.sessionDetails["servicePointId"];
+  servicePointId: string;
 
   constructor(
     private db: DatabaseService,
@@ -67,8 +67,9 @@ export class SearchBeneficiaryPage implements OnInit {
   }
 
   ngOnInit() {
-    // this.loadAgeUnits();
-    // this.loadGenders();
+    this.loadAgeUnits();
+    this.loadGenders();
+    this.loadSessionDetails();
   }
 
   loadAgeUnits() {
@@ -84,7 +85,7 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -99,7 +100,23 @@ export class SearchBeneficiaryPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
+        );
+      });
+  }
+
+  loadSessionDetails() {
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("Session Details are -> " + JSON.stringify(data));
+
+        this.servicePointName = data["servicePointName"];
+        this.servicePointId = data["servicePointId"];
+      })
+      .catch(error => {
+        console.error(
+          "Session Details were not set -> " + JSON.stringify(error)
         );
       });
   }
@@ -133,16 +150,16 @@ export class SearchBeneficiaryPage implements OnInit {
       return false;
     }
 
-    this.beneficiaries = [
-      {
-        imageUrl: "assets/profile_pic.jpg",
-        patientId: "SP0002000002B00TEST",
-        name: "test",
-        surname: "jumbo",
-        gender: "Female",
-        age: 25
-      }
-    ];
+    // this.beneficiaries = [
+    //   {
+    //     imageUrl: "assets/profile_pic.jpg",
+    //     patientId: "SP0002000002B00TEST",
+    //     name: "test",
+    //     surname: "jumbo",
+    //     gender: "Female",
+    //     age: 25
+    //   }
+    // ];
 
     // alert("Form can be submitted");
 
@@ -183,12 +200,14 @@ export class SearchBeneficiaryPage implements OnInit {
           ) {
             this.beneficiaries["imageUrl"] = "assets/profile_pic.jpg";
           }
+        } else {
+          this.beneficiaries = [];
         }
       })
       .catch(error => {
         console.error(
           "Error -> searchBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }

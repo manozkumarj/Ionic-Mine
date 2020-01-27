@@ -148,9 +148,8 @@ export class ReportsPage implements OnInit {
     }
   ];
 
-  servicePointName: string = this.commonService.sessionDetails[
-    "servicePointName"
-  ];
+  servicePointName: string;
+  servicePointId: string;
 
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
@@ -168,7 +167,10 @@ export class ReportsPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadReports();
+    this.loadSessionDetails();
+  }
 
   loadReports() {
     this.db
@@ -180,7 +182,23 @@ export class ReportsPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getReports() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
+        );
+      });
+  }
+
+  loadSessionDetails() {
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("Session Details are -> " + JSON.stringify(data));
+
+        this.servicePointName = data["servicePointName"];
+        this.servicePointId = data["servicePointId"];
+      })
+      .catch(error => {
+        console.error(
+          "Session Details were not set -> " + JSON.stringify(error)
         );
       });
   }
@@ -248,7 +266,7 @@ export class ReportsPage implements OnInit {
         .catch(e => {
           console.error(
             "Error -> beneficiarywiseDrugReports returned error" +
-              JSON.stringify(e)
+            JSON.stringify(e)
           );
         });
     } else if (report == 3) {
@@ -299,7 +317,7 @@ export class ReportsPage implements OnInit {
         .catch(e => {
           console.error(
             "Error -> regAndRevisitCountReports returned error" +
-              JSON.stringify(e)
+            JSON.stringify(e)
           );
         });
     } else if (report == 6) {
@@ -318,7 +336,7 @@ export class ReportsPage implements OnInit {
         .catch(e => {
           console.error(
             "Error -> checkUploadedCountReports returned error" +
-              JSON.stringify(e)
+            JSON.stringify(e)
           );
         });
     }
