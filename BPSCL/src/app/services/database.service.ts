@@ -11,7 +11,7 @@ export class DatabaseService {
   dbObject: SQLiteObject;
   isDbReady: boolean = false;
 
-  database_name: string = "bpscl_dev14.db";
+  database_name: string = "bpscl_dev15.db";
 
   table_users: string = "du_User";
   table_genders: string = "mp_Gender";
@@ -807,7 +807,7 @@ export class DatabaseService {
   }
 
   getBeneficiaryMeasurementsData(patientId) {
-    let sql = `SELECT insertedDate,bpSystolic,bpDiastolic,height,weight,bmi,pulseRate,temperature,respiratoryRate FROM ${this.table_vitals} WHERE patientId = ${patientId}`;
+    let sql = `SELECT insertedDate,bpSystolic,bpDiastolic,height,weight,bmi,pulseRate,temperature,respiratoryRate FROM ${this.table_vitals} WHERE patientId = '${patientId}'`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let measurementsData = [];
       if (data.rows.length > 0) {
@@ -832,7 +832,7 @@ export class DatabaseService {
   }
 
   getBeneficiaryDiseasesData(patientId) {
-    let sql = `SELECT dp.insertedDate,mpd.provisionalDiagnosisName,dp.provisionalDiagnosisId,hospitalName FROM ${this.table_provisionalDiagnosis} dp INNER JOIN ${this.table_provisionalDiagnosis_m} mpd ON mpd.provisionalDiagnosisId=dp.provisionalDiagnosisId LEFT JOIN ${this.table_referredTo} dpr ON dpr.patientId=dp.patientId and dpr.visitId=dp.visitId LEFT JOIN ${this.table_referredTo_m} ON hospitalId=dpr.referralTypeId WHERE patientId = ${patientId}`;
+    let sql = `SELECT dp.insertedDate,mpd.provisionalDiagnosisName,dp.provisionalDiagnosisId,hospitalName FROM ${this.table_provisionalDiagnosis} dp INNER JOIN ${this.table_provisionalDiagnosis_m} mpd ON mpd.provisionalDiagnosisId=dp.provisionalDiagnosisId LEFT JOIN ${this.table_referredTo} dpr ON dpr.patientId=dp.patientId and dpr.visitId=dp.visitId LEFT JOIN ${this.table_referredTo_m} ON hospitalId=dpr.referralTypeId WHERE dp.patientId = '${patientId}'`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let diseasesData = [];
       if (data.rows.length > 0) {
@@ -849,7 +849,7 @@ export class DatabaseService {
   }
 
   getBeneficiaryLabtestData(patientId) {
-    let sql = `SELECT dpa.insertedDate,mpa.labTestName,labTestResult,dpa.labTestId FROM ${this.table_labTests} dpa INNER JOIN ${this.table_labTests_m} mpa ON dpa.labTestId=mpa.labTestId WHERE patientId = ${patientId}`;
+    let sql = `SELECT dpa.insertedDate,mpa.labTestName,labTestResult,dpa.labTestId FROM ${this.table_labTests} dpa INNER JOIN ${this.table_labTests_m} mpa ON dpa.labTestId=mpa.labTestId WHERE dpa.patientId = '${patientId}'`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let labtestData = [];
       if (data.rows.length > 0) {
@@ -866,7 +866,10 @@ export class DatabaseService {
   }
 
   getBeneficiaryDispensesData(patientId) {
-    let sql = `SELECT dpi.insertedDate,dpi.quantityGiven, mit.genericName,dpi.itemId from ${this.table_dispenses} dpi INNER JOIN ${this.table_dispenses_m} mit dpi.itemId = mit.itemId WHERE patientId = ${patientId} AND dpi.insertedDate IN (SELECT dpi.insertedDate FROM ${this.table_dispenses} WHERE patientId = ${patientId})`;
+    let sql = `SELECT dpi.insertedDate,dpi.quantityGiven, mit.genericName,dpi.itemId from ${this.table_dispenses} dpi INNER JOIN ${this.table_dispenses_m} mit ON dpi.itemId = mit.itemId WHERE patientId = '${patientId}' AND dpi.insertedDate IN (SELECT dpi.insertedDate FROM ${this.table_dispenses} WHERE patientId = '${patientId}')`;
+
+    console.log("getBeneficiaryDispensesData() sql is -> "+ sql);
+
     return this.dbObject.executeSql(sql, []).then(data => {
       let dispensesData = [];
       if (data.rows.length > 0) {
@@ -1067,7 +1070,8 @@ export class DatabaseService {
       });
   }
 
-  findDispense(patientId, servicePointId, vanId, itemId, visitId) {    
+  findDispense(patientId, servicePointId, vanId, itemId, visitId) {   
+    let returnPatientId = 0; 
     let sql = `SELECT patientId FROM ${this.table_dispenses} WHERE patientId = '${patientId}' AND servicePointId = ${servicePointId} AND vanId = ${vanId} AND itemId = ${itemId} AND visitId = '${visitId}' LIMIT 1`;
 
     console.log('Execute query is --> ' + sql);
@@ -1075,14 +1079,16 @@ export class DatabaseService {
     return this.dbObject
       .executeSql(sql, [])
       .then(data => {
-        let patientId;
-        patientId = data.rows.item(0).patientId;
-        return patientId;
+        if(data.rows.length > 0){
+          returnPatientId = data.rows.item(0).patientId;
+        }
+        return returnPatientId;
       })
       .catch(error => {
         console.error(
           "database - findDispense - Error -> " + JSON.stringify(error)
         );
+        return returnPatientId;
       });
   }
 
@@ -1541,7 +1547,8 @@ export class DatabaseService {
   }
 
   insertDispense(data) {
-    let sql = `INSERT INTO ${this.table_referredTo} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, itemId, itemTypeId, batchNo, brandName, expiryDate, duration, quantityGiven, quantityNeeded, dosage, remarks, insertedBy, insertedDate, updatedBy, updatedDate, uploadStatus) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'),?)`;
+    console.log("Received data to insert is -> " + JSON.stringify(data));
+    let sql = `INSERT INTO ${this.table_dispenses} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, itemId, itemTypeId, batchNo, brandName, expiryDate, duration, quantityGiven, quantityNeeded, dosage, remarks, insertedBy, insertedDate, updatedBy, updatedDate, uploadStatus) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'),?)`;
     return this.dbObject
       .executeSql(sql, [
         data.patientId,
@@ -1553,6 +1560,7 @@ export class DatabaseService {
         data.compoundPatientId,
         data.visitCount,
         data.itemId,
+        data.itemTypeId,
         data.batchNo,
         data.brandName,
         data.expiryDate,

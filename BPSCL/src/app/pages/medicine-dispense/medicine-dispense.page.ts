@@ -13,6 +13,8 @@ import { Router } from "@angular/router";
 export class MedicineDispensePage implements OnInit {
   medicineDispenseForm: FormGroup;
 
+  itemTypeId = 1;
+
   showDispenses: boolean = false;
   benIds: any[] = [];
   freshDispenses: any[] = [];
@@ -42,10 +44,10 @@ export class MedicineDispensePage implements OnInit {
     private router: Router,
     private storageService: StorageService
   ) {
+    this.loadDispenses();
     this.loadUserDetails();
     this.loadSessionDetails();
     this.loadBeneficiaries();
-    this.loadDispenses();
 
     this.medicineDispenseForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -74,7 +76,7 @@ export class MedicineDispensePage implements OnInit {
 
   loadDispenses() {
     this.db
-      .getDispenses(1)
+      .getDispenses(this.itemTypeId)
       .then(dispenses => {
         console.log("Fetched Dispenses -> " + JSON.stringify(dispenses));
 
@@ -204,7 +206,7 @@ export class MedicineDispensePage implements OnInit {
     this.db
       .findDispense(patientId, servicePointId, vanId, itemId, visitId)
       .then(data => {
-        if (data.length > 0) {
+        if (data > 0) {
           // Need to update the Dispense
           let updateData = {
             quantityGiven,
@@ -240,6 +242,7 @@ export class MedicineDispensePage implements OnInit {
             compoundPatientId: this.compoundPatientId,
             visitCount: this.visitCount,
             itemId,
+            itemTypeId: this.itemTypeId,
             batchNo: -1,
             brandName: "N/A",
             expiryDate: -1,
@@ -255,7 +258,7 @@ export class MedicineDispensePage implements OnInit {
             .insertDispense(insertData)
             .then(data => {
               console.log(
-                "Success -> insertDispense is inserted Successfully..."
+                "Success -> insertDispense is inserted Successfully..." + data
               );
             })
             .catch(e => {

@@ -13,6 +13,8 @@ import { Router } from "@angular/router";
 export class ConsumableDispensePage implements OnInit {
   consumableDispenseForm: FormGroup;
 
+  itemTypeId = 2;
+
   showDispenses: boolean = false;
   benIds: any[] = [
     {
@@ -51,10 +53,10 @@ export class ConsumableDispensePage implements OnInit {
     private router: Router,
     private storageService: StorageService
   ) {
+    this.loadDispenses();
     this.loadUserDetails();
     this.loadSessionDetails();
     this.loadBeneficiaries();
-    this.loadDispenses();
 
     this.consumableDispenseForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -97,15 +99,19 @@ export class ConsumableDispensePage implements OnInit {
 
   loadDispenses() {
     this.db
-      .getDispenses(2)
-      .then(dispenses => {
+      .getDispenses(this.itemTypeId)
+      .then(async dispenses => {
         console.log("Fetched Dispenses -> " + JSON.stringify(dispenses));
-        this.freshDispenses = dispenses.map(dispense => ({
+        this.freshDispenses = await dispenses.map(async dispense => ({
           ...dispense,
           allowQuantity: false,
           quantity: null
         }));
-        this.consumableDispenses = this.freshDispenses;
+        this.consumableDispenses = await this.freshDispenses;
+        console.log("********-----------************");
+        console.log(
+          "freshDispenses -> " + JSON.stringify(this.consumableDispenses)
+        );
       })
       .catch(error => {
         console.error(
@@ -149,11 +155,11 @@ export class ConsumableDispensePage implements OnInit {
 
   dispenseCheckbox(id, e) {
     if (e.target.checked) {
+      console.log(id + " -> dispenseCheckbox is checked");
       this.consumableDispenses[id - 1]["allowQuantity"] = true;
-      // console.log(id + " -> dispenseCheckbox is checked");
     } else {
+      console.log(id + " -> dispenseCheckbox is unchecked");
       this.consumableDispenses[id - 1]["allowQuantity"] = false;
-      // console.log(id + " -> dispenseCheckbox is unchecked");
     }
   }
 
@@ -209,7 +215,7 @@ export class ConsumableDispensePage implements OnInit {
     this.db
       .findDispense(patientId, servicePointId, vanId, itemId, visitId)
       .then(data => {
-        if (data.length > 0) {
+        if (data > 0) {
           // Need to update the Dispense
           let updateData = {
             quantityGiven,
@@ -245,6 +251,7 @@ export class ConsumableDispensePage implements OnInit {
             compoundPatientId: this.compoundPatientId,
             visitCount: this.visitCount,
             itemId,
+            itemTypeId: this.itemTypeId,
             batchNo: -1,
             brandName: "N/A",
             expiryDate: -1,
@@ -321,21 +328,19 @@ export class ConsumableDispensePage implements OnInit {
 
     console.log("Form can be submited");
 
+    let userId = this.userId;
+    let vanId = this.vanId;
+    let servicePointId = this.servicePointId;
+
     this.visitId = this.commonService.beneficiaryDetails["userVisitId"];
     this.deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
-    this.vanId = this.commonService.beneficiaryDetails["userVanId"];
     this.routeVillageId = this.commonService.beneficiaryDetails[
       "userRouteVillageId"
-    ];
-    this.servicePointId = this.commonService.beneficiaryDetails[
-      "userServicePointId"
     ];
     this.compoundPatientId = this.commonService.beneficiaryDetails[
       "userCompoundPatientId"
     ];
     this.visitCount = this.commonService.beneficiaryDetails["userVisitCount"];
-
-    this.userId = this.commonService.userDetails["userId"];
 
     if (this.showDispenses === false) {
       console.log("Upsert for Dispenses");
@@ -345,6 +350,24 @@ export class ConsumableDispensePage implements OnInit {
         let remarks = null;
         console.log("Dispense Id --> " + itemId);
         console.log("quantityGiven is --> " + quantityGiven);
+
+        console.log(
+          patientId +
+            " *** " +
+            servicePointId +
+            " *** " +
+            vanId +
+            " *** " +
+            itemId +
+            " *** " +
+            this.visitId +
+            " *** " +
+            quantityGiven +
+            " *** " +
+            remarks +
+            " *** " +
+            userId
+        );
 
         this.findAndUpsertDispense(
           patientId,
