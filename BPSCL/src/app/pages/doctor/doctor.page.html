@@ -57,7 +57,7 @@
                 <ion-col size="12" size-sm>
                   <ion-select formControlName="rch" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option *ngFor="let rch of rchs" value="{{rch.beneficiaryTypeId}}">
+                    <ion-select-option *ngFor="let rch of rchs" [value]="rch.beneficiaryTypeId">
                       {{rch.beneficiaryTypeName}}
                     </ion-select-option>
                   </ion-select>
@@ -71,14 +71,9 @@
                   <ion-select (ionChange)="cdChange()" [disabled]="showRemarks" formControlName="cd" multiple="true"
                     class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option value="1">111</ion-select-option>
-                    <ion-select-option value="2">222</ion-select-option>
-                    <ion-select-option value="3">333</ion-select-option>
-                    <ion-select-option value="4">444</ion-select-option>
-                    <ion-select-option value="5">555</ion-select-option>
-                    <ion-select-option value="6">666</ion-select-option>
-                    <ion-select-option value="7">777</ion-select-option>
-                    <ion-select-option value="12">CD_Other</ion-select-option>
+                    <ion-select-option *ngFor="let singleCd of cds" [value]="singleCd.provisionalDiagnosisId">
+                      {{singleCd.provisionalDiagnosisName}}
+                    </ion-select-option>
                   </ion-select>
                 </ion-col>
               </ion-row>
@@ -99,14 +94,9 @@
                   <ion-select (ionChange)="ncdChange()" [disabled]="showRemarks" formControlName="ncd" multiple="true"
                     class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option value="1">111</ion-select-option>
-                    <ion-select-option value="2">222</ion-select-option>
-                    <ion-select-option value="3">333</ion-select-option>
-                    <ion-select-option value="4">444</ion-select-option>
-                    <ion-select-option value="5">555</ion-select-option>
-                    <ion-select-option value="6">666</ion-select-option>
-                    <ion-select-option value="7">777</ion-select-option>
-                    <ion-select-option value="13">NCD_Other</ion-select-option>
+                    <ion-select-option *ngFor="let singleNcd of ncds" [value]="singleNcd.provisionalDiagnosisId">
+                      {{singleNcd.provisionalDiagnosisName}}
+                    </ion-select-option>
                   </ion-select>
                 </ion-col>
               </ion-row>
@@ -127,14 +117,9 @@
                   <ion-select (ionChange)="minorAilmentChange()" [disabled]="showRemarks"
                     formControlName="minorAilments" multiple="true" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option value="1">111</ion-select-option>
-                    <ion-select-option value="2">222</ion-select-option>
-                    <ion-select-option value="3">333</ion-select-option>
-                    <ion-select-option value="4">444</ion-select-option>
-                    <ion-select-option value="5">555</ion-select-option>
-                    <ion-select-option value="6">666</ion-select-option>
-                    <ion-select-option value="7">777</ion-select-option>
-                    <ion-select-option value="34">MinorAilment_Other</ion-select-option>
+                    <ion-select-option *ngFor="let singleMinorAilment of minorAilments" [value]="singleMinorAilment.provisionalDiagnosisId">
+                      {{singleMinorAilment.provisionalDiagnosisName}}
+                    </ion-select-option>
                   </ion-select>
                 </ion-col>
               </ion-row>
@@ -168,9 +153,9 @@
                   <ion-select (ionChange)="referredToChange()" [disabled]="showRemarks" formControlName="referredTo"
                     class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option value="1">Female</ion-select-option>
-                    <ion-select-option value="3">Male</ion-select-option>
-                    <ion-select-option value="2">ReferredTo_Other</ion-select-option>
+                    <ion-select-option *ngFor="let hospital of hospitals" [value]="hospital.hospitalId">
+                      {{hospital.hospitalName}}
+                    </ion-select-option>
                   </ion-select>
                 </ion-col>
               </ion-row>

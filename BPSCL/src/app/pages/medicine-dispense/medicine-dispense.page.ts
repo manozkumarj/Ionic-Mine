@@ -177,9 +177,9 @@ export class MedicineDispensePage implements OnInit {
     this.db
       .getBeneficiaryDetails(selectedBenID)
       .then(benDetails => {
-        console.log(
-          "Received Ben details are -> " + JSON.stringify(benDetails)
-        );
+        // console.log(
+        //   "Received Ben details are -> " + JSON.stringify(benDetails)
+        // );
         this.commonService.setBenDetails(benDetails[0]);
       })
       .catch(error => {
@@ -211,7 +211,7 @@ export class MedicineDispensePage implements OnInit {
     this.db
       .findDispense(patientId, servicePointId, vanId, itemId, visitId)
       .then(data => {
-        if (data > 0) {
+        if (data) {
           // Need to update the Dispense
           let updateData = {
             quantityGiven,
@@ -220,6 +220,7 @@ export class MedicineDispensePage implements OnInit {
             patientId,
             servicePointId,
             vanId,
+            itemId,
             visitId
           };
 
@@ -227,7 +228,7 @@ export class MedicineDispensePage implements OnInit {
             .updateDispense(updateData)
             .then(data => {
               console.log(
-                "Success -> updateDispense is updated Successfully..."
+                "Success -> updateDispense is updated Successfully..." + data
               );
             })
             .catch(e => {

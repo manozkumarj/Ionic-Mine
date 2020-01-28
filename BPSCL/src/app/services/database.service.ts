@@ -600,7 +600,6 @@ export class DatabaseService {
             mandalId: data.rows.item(i).mandalId,
             districtId: data.rows.item(i).districtId,
             stateId: data.rows.item(i).stateId,
-            imageUrl: data.rows.item(i).imageUrl,
             insertedBy: data.rows.item(i).insertedBy,
             insertedDate: data.rows.item(i).insertedDate,
             updatedBy: data.rows.item(i).updatedBy,
@@ -615,7 +614,8 @@ export class DatabaseService {
             gender: data.rows.item(i).gender,
             districtName: data.rows.item(i).districtName,
             mandalName: data.rows.item(i).mandalName,
-            villageName: data.rows.item(i).villageName
+            villageName: data.rows.item(i).villageName,
+            imageUrl: data.rows.item(i).imageUrl,
           });
         }
       }
@@ -1043,7 +1043,7 @@ export class DatabaseService {
     provisionalDiagnosisId,
     visitId
   ) {
-    let sql = `SELECT provisionalDiagnosisId FROM ${this.table_provisionalDiagnosis} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND provisionalDiagnosisId = ? AND visitId = ? LIMIT 1`;
+    let sql = `SELECT COUNT(provisionalDiagnosisId) FROM ${this.table_provisionalDiagnosis} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND provisionalDiagnosisId = ? AND visitId = ? LIMIT 1`;
     return this.dbObject
       .executeSql(sql, [
         patientId,
@@ -1053,42 +1053,43 @@ export class DatabaseService {
         visitId
       ])
       .then(data => {
-        let provisionalDiagnosis = [];
-        provisionalDiagnosisId = data.rows.item(0).provisionalDiagnosisId;
-        return provisionalDiagnosis;
+        if(data.rows.length > 0){
+          return true;
+        }
+        return false;
       });
   }
 
   findReferredTo(patientId, servicePointId, vanId, visitId) {
-    let sql = `SELECT patientId FROM ${this.table_referredTo} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND AND visitId = ? LIMIT 1`;
+    let sql = `SELECT COUNT(patientId) FROM ${this.table_referredTo} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ? LIMIT 1`;
     return this.dbObject
       .executeSql(sql, [patientId, servicePointId, vanId, visitId])
       .then(data => {
-        let patientIds = [];
-        patientId = data.rows.item(0).patientId;
-        return patientIds;
+        if(data.rows.length > 0){
+          return true;
+        }
+        return false;
       });
   }
 
-  findDispense(patientId, servicePointId, vanId, itemId, visitId) {   
-    let returnPatientId = 0; 
-    let sql = `SELECT patientId FROM ${this.table_dispenses} WHERE patientId = '${patientId}' AND servicePointId = ${servicePointId} AND vanId = ${vanId} AND itemId = ${itemId} AND visitId = '${visitId}' LIMIT 1`;
+  findDispense(patientId, servicePointId, vanId, itemId, visitId) {
+    let sql = `SELECT COUNT(patientId) as count FROM ${this.table_dispenses} WHERE patientId = '${patientId}' AND servicePointId = ${servicePointId} AND vanId = ${vanId} AND itemId = ${itemId} AND visitId = '${visitId}' LIMIT 1`;
 
     console.log('Execute query is --> ' + sql);
 
     return this.dbObject
       .executeSql(sql, [])
       .then(data => {
-        if(data.rows.length > 0){
-          returnPatientId = data.rows.item(0).patientId;
+        if(data.rows.item(0).count > 0){
+          return true;
         }
-        return returnPatientId;
+        return false;
       })
       .catch(error => {
         console.error(
           "database - findDispense - Error -> " + JSON.stringify(error)
         );
-        return returnPatientId;
+        return false;
       });
   }
 
@@ -1520,7 +1521,7 @@ export class DatabaseService {
   }
 
   updateReferredTo(data) {
-    let sql = `UPDATE ${this.table_referredTo} SET referralTypeId = ?, otherPhc = ?, remarks = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND provisionalDiagnosisId = ? AND visitId = ?`;
+    let sql = `UPDATE ${this.table_referredTo} SET referralTypeId = ?, otherPhc = ?, remarks = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ?`;
     return this.dbObject
       .executeSql(sql, [
         data.referralTypeId,
@@ -1636,7 +1637,7 @@ export class DatabaseService {
   }
 
   updateDispense(data) {
-    let sql = `UPDATE ${this.table_dispenses} SET quantityGiven = ?, remarks = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ?`;
+    let sql = `UPDATE ${this.table_dispenses} SET quantityGiven = ?, remarks = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND itemId = ? AND visitId = ?`;
     return this.dbObject
       .executeSql(sql, [
         data.quantityGiven,
@@ -1645,6 +1646,7 @@ export class DatabaseService {
         data.patientId,
         data.servicePointId,
         data.vanId,
+        data.itemId,
         data.visitId
       ])
       .then(res => {

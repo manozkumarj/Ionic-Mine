@@ -109,7 +109,7 @@
                 <ion-col size="12" size-sm>
                   <ion-select formControlName="pregnancyStatus" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option *ngFor="let pregnancyStatuss of pregnancyStatuses" [value]="pregnancyStatuss.Id">
+                    <ion-select-option *ngFor="let pregnancyStatuss of pregnancyStatuses" [value]="pregnancyStatuss.id">
                       {{pregnancyStatuss.status}}
                     </ion-select-option>
                   </ion-select>

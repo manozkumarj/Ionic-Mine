@@ -700,6 +700,8 @@ export class BeneficiaryRegistrationPage implements OnInit {
       userId
     };
 
+    console.log("pregnancyStatus is -> " + pregnancyStatus);
+
     console.log(
       "Object of benRegFormDetails -> " + JSON.stringify(benRegFormDetails)
     );

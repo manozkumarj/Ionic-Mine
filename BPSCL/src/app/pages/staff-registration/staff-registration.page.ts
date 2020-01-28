@@ -171,7 +171,7 @@ export class StaffRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -189,7 +189,7 @@ export class StaffRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -343,7 +343,7 @@ export class StaffRegistrationPage implements OnInit {
     let firstName = this.staffRegForm.get("firstName").value.trim();
     let lastName = this.staffRegForm.get("lastName").value.trim();
     let fatherName = this.staffRegForm.get("fatherName").value.trim();
-    let genderId = this.staffRegForm.get("gender").value.trim();
+    let genderId = this.staffRegForm.get("gender").value;
     let age = this.staffRegForm.get("age").value;
     let ageTypeId = this.staffRegForm.get("ageUnit").value;
     let dob = this.staffRegForm.get("dateOfBirth").value.trim();
@@ -493,7 +493,8 @@ export class StaffRegistrationPage implements OnInit {
             });
         } else {
           console.warn(
-            "Error -> getMaxUserId function returned 0 -> " + JSON.stringify(data)
+            "Error -> getMaxUserId function returned 0 -> " +
+              JSON.stringify(data)
           );
         }
       })

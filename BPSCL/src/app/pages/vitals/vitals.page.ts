@@ -58,7 +58,9 @@ export class VitalsPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log("User details are " + JSON.stringify(this.commonService.userDetails));
+    console.log(
+      "User details are " + JSON.stringify(this.commonService.userDetails)
+    );
   }
 
   loadUserDetails() {
@@ -108,7 +110,7 @@ export class VitalsPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -117,7 +119,7 @@ export class VitalsPage implements OnInit {
     let weight = this.vitalForm.get("weight").value;
     let height = this.vitalForm.get("height").value;
 
-    if (value == 'height') {
+    if (value == "height") {
       if (height < 36 || height > 245) {
         alert("Height should be between 36-245");
         this.vitalForm.patchValue({ height: null });
@@ -140,32 +142,25 @@ export class VitalsPage implements OnInit {
     }
   }
 
-  temperatureChange(){
+  temperatureChange() {
     let enteredTemperature = this.vitalForm.get("temperature").value;
-    if(enteredTemperature < 92 || enteredTemperature > 105){
+    if (enteredTemperature < 92 || enteredTemperature > 105) {
       alert("Temperature should be between 92-105");
       this.vitalForm.patchValue({ temperature: null });
       return false;
     }
   }
 
-  bpChange(bpType){
-    if(bpType == 'systolic'){
-
-    }else{
-
-    }
+  bpChange(bpType) {
     let enteredTemperature = this.vitalForm.get("temperature").value;
-    if(enteredTemperature < 92 || enteredTemperature > 105){
-      alert("Temperature should be between 92-105");
-      this.vitalForm.patchValue({ temperature: null });
-      return false;
+    if (bpType == "systolic") {
+    } else {
     }
   }
 
-  respiratoryRateChange(){
+  respiratoryRateChange() {
     let enteredTemperature = this.vitalForm.get("respiratoryRate").value;
-    if(enteredTemperature < 92 || enteredTemperature > 105){
+    if (enteredTemperature < 92 || enteredTemperature > 105) {
       alert("Temperature should be between 92-105");
       this.vitalForm.patchValue({ temperature: null });
       return false;
@@ -198,13 +193,15 @@ export class VitalsPage implements OnInit {
     this.db
       .getBeneficiaryDetails(selectedBenID)
       .then(benDetails => {
-        console.log("Received Ben details are -> " + JSON.stringify(benDetails));
+        console.log(
+          "Received Ben details are -> " + JSON.stringify(benDetails)
+        );
         this.commonService.setBenDetails(benDetails[0]);
       })
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryDetails() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -228,10 +225,14 @@ export class VitalsPage implements OnInit {
     let vanId = this.vanId;
     let servicePointId = this.servicePointId;
 
-    let visitId = this.commonService.beneficiaryDetails['userVisitId'];
-    let routeVillageId = this.commonService.beneficiaryDetails['userRouteVillageId'];
-    let compoundPatientId = this.commonService.beneficiaryDetails['userCompoundPatientId'];
-    let visitCount = this.commonService.beneficiaryDetails['userVisitCount'];
+    let visitId = this.commonService.beneficiaryDetails["userVisitId"];
+    let routeVillageId = this.commonService.beneficiaryDetails[
+      "userRouteVillageId"
+    ];
+    let compoundPatientId = this.commonService.beneficiaryDetails[
+      "userCompoundPatientId"
+    ];
+    let visitCount = this.commonService.beneficiaryDetails["userVisitCount"];
 
     let muac = this.muac;
     let hc = this.hc;
@@ -295,7 +296,7 @@ export class VitalsPage implements OnInit {
       return false;
     }
 
-    alert("Form can be submitted...!");
+    console.log("Form can be submitted...!");
 
     let vitalFormDetails = {
       patientId,
@@ -318,17 +319,18 @@ export class VitalsPage implements OnInit {
       doctorBpDiastolic,
       muac,
       hc,
-      userId,
-    }
+      userId
+    };
 
-    console.log("Passable vitals details Object is " + JSON.stringify(vitalFormDetails));
+    console.log(
+      "Passable vitals details Object is " + JSON.stringify(vitalFormDetails)
+    );
 
     this.db
       .insertVital(vitalFormDetails)
       .then(res => {
         console.log(
-          "Vital details inserted successfully...!" +
-          JSON.stringify(res)
+          "Vital details inserted successfully...!" + JSON.stringify(res)
         );
         if (res) {
           console.log("Can be redirected...");
@@ -338,10 +340,8 @@ export class VitalsPage implements OnInit {
       })
       .catch(error => {
         console.error(
-          "Error -> Vital details insertion failed - " +
-          JSON.stringify(error)
+          "Error -> Vital details insertion failed - " + JSON.stringify(error)
         );
       });
-
   }
 }

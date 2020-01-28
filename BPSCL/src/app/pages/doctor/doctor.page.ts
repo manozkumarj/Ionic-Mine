@@ -14,40 +14,10 @@ export class DoctorPage implements OnInit {
   doctorForm: FormGroup;
 
   showRemarks: boolean = false;
-  benIds: any[] = [
-    {
-      patientId: "a01",
-      name: "aaa"
-    },
-    {
-      patientId: "b02",
-      name: "bbb"
-    }
-  ];
+  benIds: any[] = [];
   hospitals: any[] = [];
   dbRchs: any[] = [];
-  rchs: any[] = [
-    {
-      beneficiaryTypeId: 1,
-      beneficiaryTypeName: "ANC"
-    },
-    {
-      beneficiaryTypeId: 2,
-      beneficiaryTypeName: "PNC"
-    },
-    {
-      beneficiaryTypeId: 3,
-      beneficiaryTypeName: "NEONATE"
-    },
-    {
-      beneficiaryTypeId: 4,
-      beneficiaryTypeName: "INFANT"
-    },
-    {
-      beneficiaryTypeId: 5,
-      beneficiaryTypeName: "CHILD (1 - 5 YRS)"
-    }
-  ];
+  rchs: any[] = [];
   cds: any[] = [];
   ncds: any[] = [];
   minorAilments: any[] = [];
@@ -77,6 +47,7 @@ export class DoctorPage implements OnInit {
     private router: Router,
     private storageService: StorageService
   ) {
+    this.loadUserDetails();
     this.loadSessionDetails();
     this.loadBeneficiaries();
     this.loadHospitals();
@@ -147,7 +118,7 @@ export class DoctorPage implements OnInit {
     this.db
       .getProvisionalDiagnoses(category)
       .then(results => {
-        console.log(`Fetched ${categoryName} ->  + JSON.stringify(results)`);
+        console.log(`Fetched ${categoryName} ->  + ${JSON.stringify(results)}`);
         if (category == 1) {
           this.cds = results;
         } else if (category == 2) {
@@ -179,18 +150,39 @@ export class DoctorPage implements OnInit {
       });
   }
 
+  loadUserDetails() {
+    this.storageService
+      .getObject("userDetails")
+      .then(data => {
+        console.log("User details are -> " + JSON.stringify(data));
+        this.userId = data.userId;
+        this.vanId = data.vanId;
+        this.deviceId = data.deviceId;
+      })
+      .catch(error => {
+        console.error("User details were not set -> " + JSON.stringify(error));
+      });
+  }
+
   loadSessionDetails() {
-    this.stateId = this.commonService.sessionDetails["stateId"];
-    this.districtId = this.commonService.sessionDetails["districtId"];
-    this.mandalId = this.commonService.sessionDetails["mandalId"];
-    this.villageId = this.commonService.sessionDetails["villageId"];
-    this.servicePointId = this.commonService.sessionDetails["servicePointId"];
-    this.servicePointName = this.commonService.sessionDetails[
-      "servicePointName"
-    ];
-    this.servicePointCode = this.commonService.sessionDetails[
-      "servicePointCode"
-    ];
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("Session Details are -> " + JSON.stringify(data));
+
+        this.stateId = data["stateId"];
+        this.districtId = data["districtId"];
+        this.mandalId = data["mandalId"];
+        this.villageId = data["villageId"];
+        this.servicePointName = data["servicePointName"];
+        this.servicePointCode = data["servicePointCode"];
+        this.servicePointId = data["servicePointId"];
+      })
+      .catch(error => {
+        console.error(
+          "Session Details were not set -> " + JSON.stringify(error)
+        );
+      });
   }
 
   remarksCheckbox(e) {
@@ -300,7 +292,9 @@ export class DoctorPage implements OnInit {
         let benAge = benDetails[0]["age"];
         let benAgeTypeId = benDetails[0]["ageTypeId"];
         let benPregnancyStatus = benDetails[0]["pregnancyStatus"];
-        let benGender = benDetails[0]["gender"];
+        let benGender = benDetails[0]["genderId"];
+
+        console.log("Ben genderId -> " + benGender);
 
         this.commonService.setBenDetails(benDetails[0]);
 
@@ -323,7 +317,7 @@ export class DoctorPage implements OnInit {
         }
 
         let pickedRch = this.doctorForm.get("rch").value;
-        console.log(pickedRch);
+        console.log("pickedRch -> " + pickedRch);
       })
       .catch(error => {
         console.error(
@@ -425,23 +419,21 @@ export class DoctorPage implements OnInit {
       }
     }
 
-    alert("Form can be submitted");
+    console.log("Form can be submitted");
+
+    let userId = this.userId;
+    let deviceId = this.deviceId;
+    let vanId = this.vanId;
+    let servicePointId = this.servicePointId;
 
     let visitId = this.commonService.beneficiaryDetails["userVisitId"];
-    let deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
-    let vanId = this.commonService.beneficiaryDetails["userVanId"];
     let routeVillageId = this.commonService.beneficiaryDetails[
       "userRouteVillageId"
-    ];
-    let servicePointId = this.commonService.beneficiaryDetails[
-      "userServicePointId"
     ];
     let compoundPatientId = this.commonService.beneficiaryDetails[
       "userCompoundPatientId"
     ];
     let visitCount = this.commonService.beneficiaryDetails["userVisitCount"];
-
-    let userId = this.commonService.userDetails["userId"];
 
     let provisionals = [cds, ncds, minorAilments, remarksArray];
 
@@ -481,7 +473,7 @@ export class DoctorPage implements OnInit {
               visitId
             )
             .then(data => {
-              if (data.length > 0) {
+              if (data) {
                 let updateData = {
                   provisionalDiagnosisId,
                   setOtherFieldValue,
@@ -497,7 +489,7 @@ export class DoctorPage implements OnInit {
                   .updateProvisionalDiagnose(updateData)
                   .then(data => {
                     console.log(
-                      "Success -> ProvisionalDiagnose is updated Successfully..."
+                      "Success -> ProvisionalDiagnose is updated Successfully..." + data
                     );
                   })
                   .catch(e => {
@@ -527,7 +519,7 @@ export class DoctorPage implements OnInit {
                   .insertProvisionalDiagnose(insertData)
                   .then(data => {
                     console.log(
-                      "Success -> ProvisionalDiagnose is inserted Successfully..."
+                      "Success -> ProvisionalDiagnose is inserted Successfully..." + data
                     );
                   })
                   .catch(e => {
@@ -564,7 +556,7 @@ export class DoctorPage implements OnInit {
       this.db
         .findReferredTo(patientId, servicePointId, vanId, visitId)
         .then(data => {
-          if (data.length > 0) {
+          if (data) {
             let updateData = {
               referralTypeId,
               otherPhc,
@@ -579,7 +571,7 @@ export class DoctorPage implements OnInit {
             this.db
               .updateReferredTo(updateData)
               .then(data => {
-                console.log("Success -> ReferredTo is updated Successfully...");
+                console.log("Success -> ReferredTo is updated Successfully..." + data);
               })
               .catch(e => {
                 console.error(

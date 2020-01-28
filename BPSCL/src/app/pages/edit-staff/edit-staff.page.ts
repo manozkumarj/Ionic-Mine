@@ -189,7 +189,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -207,7 +207,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -236,7 +236,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -282,7 +282,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getUserDetails() function returned error." +
-          JSON.stringify(error)
+            JSON.stringify(error)
         );
       });
   }
@@ -420,7 +420,7 @@ export class EditStaffPage implements OnInit {
     let firstName = this.editStaffForm.get("firstName").value.trim();
     let lastName = this.editStaffForm.get("lastName").value.trim();
     let fatherName = this.editStaffForm.get("fatherName").value.trim();
-    let genderId = this.editStaffForm.get("gender").value.trim();
+    let genderId = this.editStaffForm.get("gender").value;
     let age = this.editStaffForm.get("age").value;
     let ageTypeId = this.editStaffForm.get("ageUnit").value;
     let dob = this.editStaffForm.get("dateOfBirth").value.trim();
