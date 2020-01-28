@@ -98,11 +98,11 @@
                 <ion-row
                   class="row-border"
                   style="border-bottom: 2px solid #ccc;text-align: center;"
-                  *ngFor="let medicineDispense of medicineDispenses"
+                  *ngFor="let medicineDispense of medicineDispenses; let i = index"
                 >
                   <ion-col class="col-border-right" size="1">
                     <ion-checkbox
-                      (ionChange)="dispenseCheckbox(medicineDispense.itemId, $event)"
+                      (ionChange)="dispenseCheckbox(i, $event)"
                     ></ion-checkbox>
                   </ion-col>
                   <ion-col class="col-border-right" size="12" size-sm>
@@ -117,7 +117,7 @@
                         placeholder="Enter Quantity"
                         class="field-input"
                         value=""
-                        (ionBlur)="quantityInput(medicineDispense.itemId, $event)"
+                        (ionBlur)="quantityInput(i, $event)"
                       ></ion-input>
                     </div>
                   </ion-col>

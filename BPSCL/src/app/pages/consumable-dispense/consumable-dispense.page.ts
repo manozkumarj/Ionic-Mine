@@ -100,18 +100,17 @@ export class ConsumableDispensePage implements OnInit {
   loadDispenses() {
     this.db
       .getDispenses(this.itemTypeId)
-      .then(async dispenses => {
+      .then(dispenses => {
         console.log("Fetched Dispenses -> " + JSON.stringify(dispenses));
-        this.freshDispenses = await dispenses.map(async dispense => ({
-          ...dispense,
-          allowQuantity: false,
-          quantity: null
-        }));
-        this.consumableDispenses = await this.freshDispenses;
-        console.log("********-----------************");
-        console.log(
-          "freshDispenses -> " + JSON.stringify(this.consumableDispenses)
+        this.freshDispenses = this.consumableDispenses = dispenses.map(
+          dispense => ({
+            ...dispense,
+            allowQuantity: false,
+            quantity: null
+          })
         );
+        console.log("********-----------************");
+        console.log("freshDispenses -> " + JSON.stringify(this.freshDispenses));
       })
       .catch(error => {
         console.error(
@@ -154,12 +153,16 @@ export class ConsumableDispensePage implements OnInit {
   }
 
   dispenseCheckbox(id, e) {
+    console.log(
+      "clicked dispense array of OBJ is + " +
+        JSON.stringify(this.consumableDispenses[id])
+    );
     if (e.target.checked) {
       console.log(id + " -> dispenseCheckbox is checked");
-      this.consumableDispenses[id - 1]["allowQuantity"] = true;
+      this.consumableDispenses[id]["allowQuantity"] = true;
     } else {
       console.log(id + " -> dispenseCheckbox is unchecked");
-      this.consumableDispenses[id - 1]["allowQuantity"] = false;
+      this.consumableDispenses[id]["allowQuantity"] = false;
     }
   }
 
@@ -167,7 +170,7 @@ export class ConsumableDispensePage implements OnInit {
     // console.log("Id is -> " + id);
     // console.log("quantity is -> " + quantity.target.value);
     // console.log(quantity);
-    this.consumableDispenses[id - 1]["quantity"] = +quantity.target.value;
+    this.consumableDispenses[id]["quantity"] = +quantity.target.value;
   }
 
   benIdChange() {
@@ -267,7 +270,7 @@ export class ConsumableDispensePage implements OnInit {
             .insertDispense(insertData)
             .then(data => {
               console.log(
-                "Success -> insertDispense is inserted Successfully..."
+                "Success -> insertDispense is inserted Successfully..." + data
               );
             })
             .catch(e => {

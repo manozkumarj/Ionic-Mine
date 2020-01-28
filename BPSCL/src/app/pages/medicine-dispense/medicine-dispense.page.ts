@@ -80,12 +80,13 @@ export class MedicineDispensePage implements OnInit {
       .then(dispenses => {
         console.log("Fetched Dispenses -> " + JSON.stringify(dispenses));
 
-        this.freshDispenses = dispenses.map(dispense => ({
-          ...dispense,
-          allowQuantity: false,
-          quantity: null
-        }));
-        this.medicineDispenses = this.freshDispenses;
+        this.freshDispenses = this.medicineDispenses = dispenses.map(
+          dispense => ({
+            ...dispense,
+            allowQuantity: false,
+            quantity: null
+          })
+        );
         console.log("********-----------************");
         console.log("freshDispenses -> " + JSON.stringify(this.freshDispenses));
       })
@@ -145,11 +146,15 @@ export class MedicineDispensePage implements OnInit {
   }
 
   dispenseCheckbox(id, e) {
+    console.log(
+      "clicked dispense array of OBJ is + " +
+        JSON.stringify(this.medicineDispenses[id])
+    );
     if (e.target.checked) {
-      this.medicineDispenses[id - 1]["allowQuantity"] = true;
+      this.medicineDispenses[id]["allowQuantity"] = true;
       // console.log(id + " -> dispenseCheckbox is checked");
     } else {
-      this.medicineDispenses[id - 1]["allowQuantity"] = false;
+      this.medicineDispenses[id]["allowQuantity"] = false;
       // console.log(id + " -> dispenseCheckbox is unchecked");
     }
   }
@@ -158,7 +163,7 @@ export class MedicineDispensePage implements OnInit {
     // console.log("Id is -> " + id);
     // console.log("quantity is -> " + quantity.target.value);
     // console.log(quantity);
-    this.medicineDispenses[id - 1]["quantity"] = +quantity.target.value;
+    this.medicineDispenses[id]["quantity"] = +quantity.target.value;
   }
 
   benIdChange() {
