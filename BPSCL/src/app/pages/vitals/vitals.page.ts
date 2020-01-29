@@ -40,9 +40,9 @@ export class VitalsPage implements OnInit {
     private router: Router,
     private storageService: StorageService
   ) {
-    this.loadBeneficiaries();
-    this.loadUserDetails();
-    this.loadSessionDetails();
+    // this.loadBeneficiaries();
+    // this.loadUserDetails();
+    // this.loadSessionDetails();
 
     this.vitalForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -110,7 +110,7 @@ export class VitalsPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -122,13 +122,13 @@ export class VitalsPage implements OnInit {
     if (value == "height") {
       if (height < 36 || height > 245) {
         alert("Height should be between 36-245");
-        this.vitalForm.patchValue({ height: null });
+        // this.vitalForm.patchValue({ height: null });
         return false;
       }
     } else {
       if (weight < 1.5 || weight > 200) {
         alert("Weight should be between 1.5-200");
-        this.vitalForm.patchValue({ weight: null });
+        // this.vitalForm.patchValue({ weight: null });
         return false;
       }
     }
@@ -146,23 +146,40 @@ export class VitalsPage implements OnInit {
     let enteredTemperature = this.vitalForm.get("temperature").value;
     if (enteredTemperature < 92 || enteredTemperature > 105) {
       alert("Temperature should be between 92-105");
-      this.vitalForm.patchValue({ temperature: null });
+      // this.vitalForm.patchValue({ temperature: null });
       return false;
     }
   }
 
   bpChange(bpType) {
-    let enteredTemperature = this.vitalForm.get("temperature").value;
-    if (bpType == "systolic") {
-    } else {
+    console.log("bpChange() Triggered");
+    let bpSystolic = this.vitalForm.get("bpSystolic").value;
+    let bpDiastolic = this.vitalForm.get("bpDiastolic").value;
+
+    console.log("bpSystolic -> " + bpSystolic);
+    console.log("bpDiastolic -> " + bpDiastolic);
+
+    if (bpType == "systolic" && bpSystolic && (bpSystolic < 0 || bpSystolic > 300)) {
+      alert("Systolic should be less than 300 and greater then the Diastolic");
+      return false;
+    }
+
+    if (bpType == "diastolic" && bpDiastolic && bpDiastolic < 0 || bpDiastolic >= 1000) {
+      alert("Diastolic should be less than 1000");
+      return false;
+    }
+
+    if (+bpSystolic <= +bpDiastolic) {
+      alert("Systolic should be less than 300 and greater then the Diastolic");
+      return false;
     }
   }
 
   respiratoryRateChange() {
-    let enteredTemperature = this.vitalForm.get("respiratoryRate").value;
-    if (enteredTemperature < 92 || enteredTemperature > 105) {
-      alert("Temperature should be between 92-105");
-      this.vitalForm.patchValue({ temperature: null });
+    let respiratoryRate = this.vitalForm.get("respiratoryRate").value;
+    if (respiratoryRate < 10 || respiratoryRate > 60) {
+      alert("Respiratory Rate should be between 10-60");
+      // this.vitalForm.patchValue({ respiratoryRate: null });
       return false;
     }
   }
@@ -201,14 +218,13 @@ export class VitalsPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryDetails() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
 
   onSubmit(values) {
-    console.log("Vital form is submitted, below are the values");
-    console.log(values);
+    console.clear();
 
     let patientId = this.vitalForm.get("beneficiaryId").value.trim();
     let height = this.vitalForm.get("height").value;
@@ -263,40 +279,47 @@ export class VitalsPage implements OnInit {
       alert("Enter Beneficiary bmi");
       return false;
     }
-    if (!temperature || temperature == null) {
-      alert("Enter Beneficiary temperature");
-      return false;
-    }
-    if (temperature < 90 || temperature > 105) {
+    if (temperature == '') {
+      temperature = '0.0'
+    } else if (temperature && (temperature < 90 || temperature > 105)) {
       alert("Temperature should be between 90-105");
       return false;
     }
-    if (!pulseRate || pulseRate == null) {
-      alert("Enter Beneficiary pulse");
-      return false;
-    }
-    if (pulseRate < 40 || pulseRate > 130) {
+    if (pulseRate == '') {
+      pulseRate = 0;
+    } else if (!pulseRate || pulseRate == null) {
+      pulseRate = 0;
+    } else if (pulseRate && (pulseRate < 40 || pulseRate > 130)) {
       alert("PulseRate should be between 40-130");
       return false;
     }
-    if (!bpSystolic || bpSystolic == null) {
-      alert("Enter Beneficiary bpSystolic");
-      return false;
+    if (bpSystolic == '') {
+      bpSystolic = 0;
     }
-    if (!bpDiastolic || bpDiastolic == null) {
-      alert("Enter Beneficiary bpDiastolic");
-      return false;
+    if (bpDiastolic == '') {
+      bpDiastolic = 0;
     }
-    if (!respiratoryRate || respiratoryRate == null) {
-      alert("Enter Beneficiary respiratoryRate");
-      return false;
-    }
-    if (respiratoryRate < 10 || respiratoryRate > 60) {
+
+    if (bpSystolic != 0 && bpDiastolic != 0)
+      this.bpChange('systolic');
+
+    if (respiratoryRate == '') {
+      respiratoryRate = 0;
+    } else if (respiratoryRate && (respiratoryRate < 10 || respiratoryRate > 60)) {
       alert("RespiratoryRate should be between 10-60");
       return false;
     }
 
+    console.log("Temperature is -> " + temperature);
+    console.log("pulseRate is -> " + pulseRate);
+    console.log("bpSystolic is -> " + bpSystolic);
+    console.log("bpDiastolic is -> " + bpDiastolic);
+    console.log("respiratoryRate is -> " + respiratoryRate);
+
     console.log("Form can be submitted...!");
+    console.log("Vital form is submitted, below are the values");
+    console.log(values);
+    // return false;
 
     let vitalFormDetails = {
       patientId,
