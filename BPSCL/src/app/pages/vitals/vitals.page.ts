@@ -40,9 +40,9 @@ export class VitalsPage implements OnInit {
     private router: Router,
     private storageService: StorageService
   ) {
-    // this.loadBeneficiaries();
-    // this.loadUserDetails();
-    // this.loadSessionDetails();
+    this.loadBeneficiaries();
+    this.loadUserDetails();
+    this.loadSessionDetails();
 
     this.vitalForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),

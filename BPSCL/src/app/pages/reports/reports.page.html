@@ -144,11 +144,11 @@
     </div>
   </ion-grid>
 
-  <ion-grid *ngIf="isLoadingOrNotFound">
+  <ion-grid *ngIf="isLoadingOrNoDataFound">
     <ion-row align-items-center justify-content-center
       style="padding: 150px; text-align: center; font-size: 20px; color: #000; margin-top: 3px;">
       <ion-col>
-        {{loadingOrNotFound}}
+        {{loadingOrNoDataFound}}
       </ion-col>
     </ion-row>
   </ion-grid>

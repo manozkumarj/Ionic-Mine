@@ -105,7 +105,7 @@ export class DatabaseService {
       });
   }
 
-  exportDatabase() {
+  exportDatabaseToSql() {
     this.sqlitePorter.exportDbToSql(this.database_name).then(
       (data) => {
         console.log("Database has been exported" + JSON.stringify(data));
@@ -868,7 +868,7 @@ export class DatabaseService {
   getBeneficiaryDispensesData(patientId) {
     let sql = `SELECT dpi.insertedDate,dpi.quantityGiven, mit.genericName,dpi.itemId from ${this.table_dispenses} dpi INNER JOIN ${this.table_dispenses_m} mit ON dpi.itemId = mit.itemId WHERE patientId = '${patientId}' AND dpi.insertedDate IN (SELECT dpi.insertedDate FROM ${this.table_dispenses} WHERE patientId = '${patientId}')`;
 
-    console.log("getBeneficiaryDispensesData() sql is -> "+ sql);
+    console.log("getBeneficiaryDispensesData() sql is -> " + sql);
 
     return this.dbObject.executeSql(sql, []).then(data => {
       let dispensesData = [];
@@ -999,7 +999,7 @@ export class DatabaseService {
           name: data.rows.item(i).name,
           surname: data.rows.item(i).surname,
           GENDER: data.rows.item(i).GENDER,
-          Age: data.rows.item(i).Age,
+          Age: data.rows.item(i).age,
           Type: data.rows.item(i).Type
         });
       }
@@ -1043,7 +1043,7 @@ export class DatabaseService {
     provisionalDiagnosisId,
     visitId
   ) {
-    let sql = `SELECT COUNT(provisionalDiagnosisId) FROM ${this.table_provisionalDiagnosis} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND provisionalDiagnosisId = ? AND visitId = ? LIMIT 1`;
+    let sql = `SELECT COUNT(provisionalDiagnosisId) AS count FROM ${this.table_provisionalDiagnosis} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND provisionalDiagnosisId = ? AND visitId = ? LIMIT 1`;
     return this.dbObject
       .executeSql(sql, [
         patientId,
@@ -1053,7 +1053,8 @@ export class DatabaseService {
         visitId
       ])
       .then(data => {
-        if(data.rows.length > 0){
+        console.log("database - findProvisionalDiagnose() - data --> " + JSON.stringify(data));
+        if (data.rows.item(0).count > 0) {
           return true;
         }
         return false;
@@ -1061,11 +1062,11 @@ export class DatabaseService {
   }
 
   findReferredTo(patientId, servicePointId, vanId, visitId) {
-    let sql = `SELECT COUNT(patientId) FROM ${this.table_referredTo} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ? LIMIT 1`;
+    let sql = `SELECT COUNT(patientId) AS count FROM ${this.table_referredTo} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ? LIMIT 1`;
     return this.dbObject
       .executeSql(sql, [patientId, servicePointId, vanId, visitId])
       .then(data => {
-        if(data.rows.length > 0){
+        if (data.rows.item(0).count > 0) {
           return true;
         }
         return false;
@@ -1080,7 +1081,7 @@ export class DatabaseService {
     return this.dbObject
       .executeSql(sql, [])
       .then(data => {
-        if(data.rows.item(0).count > 0){
+        if (data.rows.item(0).count > 0) {
           return true;
         }
         return false;

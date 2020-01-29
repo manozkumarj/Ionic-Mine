@@ -12,38 +12,7 @@ import { Router } from "@angular/router";
 })
 export class ReportsPage implements OnInit {
   reportsForm: FormGroup;
-  reports: any[] = [
-    {
-      reportId: "1",
-      reportName: "aaa",
-      reportQuery: "aaa Query"
-    },
-    {
-      reportId: "2",
-      reportName: "bbb",
-      reportQuery: "bbb Query"
-    },
-    {
-      reportId: "3",
-      reportName: "ccc",
-      reportQuery: "ccc Query"
-    },
-    {
-      reportId: "4",
-      reportName: "ddd",
-      reportQuery: "ddd Query"
-    },
-    {
-      reportId: "5",
-      reportName: "eee",
-      reportQuery: "eee Query"
-    },
-    {
-      reportId: "6",
-      reportName: "fff",
-      reportQuery: "fff Query"
-    }
-  ];
+  reports: any[] = [];
 
   drugwiseDataHeadings: any[] = [
     "DrugId",
@@ -101,7 +70,6 @@ export class ReportsPage implements OnInit {
 
   headings: any[] = [];
 
-  reportsData: any[] = [];
   drugwiseReports: any[] = [];
   beneficiarywiseDrugReports: any[] = [];
   benSummaryReports: any[] = [];
@@ -111,8 +79,8 @@ export class ReportsPage implements OnInit {
 
   servicePointName: string;
   servicePointId: string;
-  isLoadingOrNotFound: boolean = true;
-  loadingOrNotFound: string = 'No Data Found';
+  isLoadingOrNoDataFound: boolean = true;
+  loadingOrNoDataFound: string = 'No Data Found';
 
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
@@ -131,7 +99,7 @@ export class ReportsPage implements OnInit {
   }
 
   ngOnInit() {
-    // this.loadReports();
+    this.loadReports();
     this.loadSessionDetails();
   }
 
@@ -172,8 +140,8 @@ export class ReportsPage implements OnInit {
     console.log(values);
     console.log("Is CSV export -> " + csv);
 
-    this.isLoadingOrNotFound = true;
-    this.loadingOrNotFound = 'Loading...';
+    this.isLoadingOrNoDataFound = true;
+    this.loadingOrNoDataFound = 'Loading...';
 
     this.drugwiseReports.length = 0;
     this.beneficiarywiseDrugReports.length = 0;
@@ -214,14 +182,15 @@ export class ReportsPage implements OnInit {
         .then(data => {
           if (data.length > 0) {
             this.drugwiseReports = data;
-            this.isLoadingOrNotFound = false;
+            this.isLoadingOrNoDataFound = false;
             console.log("Fetched drugwiseReports " + JSON.stringify(data));
           } else {
-            this.loadingOrNotFound = 'No Data Found';
+            this.loadingOrNoDataFound = 'No Data Found';
             console.log("No drugwiseReports found");
           }
         })
         .catch(e => {
+          this.loadingOrNoDataFound = 'No Data Found';
           console.error(
             "Error -> drugwiseReports returned error" + JSON.stringify(e)
           );
@@ -233,16 +202,17 @@ export class ReportsPage implements OnInit {
         .then(data => {
           if (data.length > 0) {
             this.beneficiarywiseDrugReports = data;
-            this.isLoadingOrNotFound = false;
+            this.isLoadingOrNoDataFound = false;
             console.log(
               "Fetched beneficiarywiseDrugReports " + JSON.stringify(data)
             );
           } else {
-            this.loadingOrNotFound = 'No Data Found';
+            this.loadingOrNoDataFound = 'No Data Found';
             console.log("No beneficiarywiseDrugReports found");
           }
         })
         .catch(e => {
+          this.loadingOrNoDataFound = 'No Data Found';
           console.error(
             "Error -> beneficiarywiseDrugReports returned error" +
             JSON.stringify(e)
@@ -255,14 +225,15 @@ export class ReportsPage implements OnInit {
         .then(data => {
           if (data.length > 0) {
             this.benSummaryReports = data;
-            this.isLoadingOrNotFound = false;
+            this.isLoadingOrNoDataFound = false;
             console.log("Fetched benSummaryReports " + JSON.stringify(data));
           } else {
-            this.loadingOrNotFound = 'No Data Found';
+            this.loadingOrNoDataFound = 'No Data Found';
             console.log("No benSummaryReports found");
           }
         })
         .catch(e => {
+          this.loadingOrNoDataFound = 'No Data Found';
           console.error(
             "Error -> benSummaryReports returned error" + JSON.stringify(e)
           );
@@ -274,14 +245,15 @@ export class ReportsPage implements OnInit {
         .then(data => {
           if (data.length > 0) {
             this.benVisitReports = data;
-            this.isLoadingOrNotFound = false;
+            this.isLoadingOrNoDataFound = false;
             console.log("Fetched benVisitReports " + JSON.stringify(data));
           } else {
-            this.loadingOrNotFound = 'No Data Found';
+            this.loadingOrNoDataFound = 'No Data Found';
             console.log("No benVisitReports found");
           }
         })
         .catch(e => {
+          this.loadingOrNoDataFound = 'No Data Found';
           console.error(
             "Error -> benVisitReports returned error" + JSON.stringify(e)
           );
@@ -293,16 +265,17 @@ export class ReportsPage implements OnInit {
         .then(data => {
           if (data.length > 0) {
             this.regAndRevisitCountReports = data;
-            this.isLoadingOrNotFound = false;
+            this.isLoadingOrNoDataFound = false;
             console.log(
               "Fetched regAndRevisitCountReports " + JSON.stringify(data)
             );
           } else {
-            this.loadingOrNotFound = 'No Data Found';
+            this.loadingOrNoDataFound = 'No Data Found';
             console.log("No regAndRevisitCountReports found");
           }
         })
         .catch(e => {
+          this.loadingOrNoDataFound = 'No Data Found';
           console.error(
             "Error -> regAndRevisitCountReports returned error" +
             JSON.stringify(e)
@@ -315,16 +288,17 @@ export class ReportsPage implements OnInit {
         .then(data => {
           if (data.length > 0) {
             this.checkUploadedCountReports = data;
-            this.isLoadingOrNotFound = false;
+            this.isLoadingOrNoDataFound = false;
             console.log(
               "Fetched checkUploadedCountReports " + JSON.stringify(data)
             );
           } else {
-            this.loadingOrNotFound = 'No Data Found';
+            this.loadingOrNoDataFound = 'No Data Found';
             console.log("No checkUploadedCountReports found");
           }
         })
         .catch(e => {
+          this.loadingOrNoDataFound = 'No Data Found';
           console.error(
             "Error -> checkUploadedCountReports returned error" +
             JSON.stringify(e)
