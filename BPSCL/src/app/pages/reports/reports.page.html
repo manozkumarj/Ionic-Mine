@@ -66,30 +66,89 @@
   </form>
 
   <ion-grid class="forecast_container scroll" *ngIf="headings.length > 0">
-    <ion-row nowrap class="header" *ngIf="headings.length > 0">
+    <ion-row nowrap class="header">
       <ion-col *ngFor="let heading of headings">
         {{heading}}
       </ion-col>
     </ion-row>
-    <ion-row *ngIf='reportsData.length > 0' nowrap class="data">
-      <ion-col>dataimd_forecastforecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-      <ion-col>dataimd_forecast</ion-col>
-    </ion-row>
+    <div *ngIf='(drugwiseReports.length > 0)' nowrap class="data">
+      <ion-row nowrap class="data" *ngFor="let drugwiseReport of drugwiseReports">
+        <ion-col>{{drugwiseReport.DrugId}}</ion-col>
+        <ion-col>{{drugwiseReport.Drugname}}</ion-col>
+        <ion-col>{{drugwiseReport.Total_Quantity}}</ion-col>
+        <ion-col>{{drugwiseReport.servicePoint}}</ion-col>
+      </ion-row>
+    </div>
+
+    <div *ngIf='(beneficiarywiseDrugReports.length > 0)' nowrap class="data">
+      <ion-row nowrap class="data" *ngFor="let beneficiarywiseDrugReport of beneficiarywiseDrugReports">
+        <ion-col>{{beneficiarywiseDrugReport.patientId}}</ion-col>
+        <ion-col>{{beneficiarywiseDrugReport.visitId}}</ion-col>
+        <ion-col>{{beneficiarywiseDrugReport.itemId}}</ion-col>
+        <ion-col>{{beneficiarywiseDrugReport.DrugName}}</ion-col>
+        <ion-col>{{beneficiarywiseDrugReport.quantityGiven}}</ion-col>
+        <ion-col>{{beneficiarywiseDrugReport.servicePointName}}</ion-col>
+        <ion-col>{{beneficiarywiseDrugReport.insertedDate}}</ion-col>
+      </ion-row>
+    </div>
+
+    <div *ngIf='(benSummaryReports.length > 0)' nowrap class="data">
+      <ion-row nowrap class="data" *ngFor="let benSummaryReport of benSummaryReports">
+        <ion-col>{{benSummaryReport.patientId}}</ion-col>
+        <ion-col>{{benSummaryReport.visitId}}</ion-col>
+        <ion-col>{{benSummaryReport.itemId}}</ion-col>
+        <ion-col>{{benSummaryReport.DrugName}}</ion-col>
+        <ion-col>{{benSummaryReport.quantityGiven}}</ion-col>
+        <ion-col>{{benSummaryReport.servicePointName}}</ion-col>
+        <ion-col>{{benSummaryReport.registrationDate}}</ion-col>
+        <ion-col>{{benSummaryReport.visitDate}}</ion-col>
+        <ion-col>{{benSummaryReport.name}}</ion-col>
+        <ion-col>{{benSummaryReport.surname}}</ion-col>
+        <ion-col>{{benSummaryReport.GenderType}}</ion-col>
+        <ion-col>{{benSummaryReport.Age}}</ion-col>
+        <ion-col>{{benSummaryReport.height}}</ion-col>
+        <ion-col>{{benSummaryReport.weight}}</ion-col>
+        <ion-col>{{benSummaryReport.bmi}}</ion-col>
+        <ion-col>{{benSummaryReport.respiratoryRate}}</ion-col>
+      </ion-row>
+    </div>
+
+    <div *ngIf='(benVisitReports.length > 0)' nowrap class="data">
+      <ion-row nowrap class="data" *ngFor="let benVisitReport of benVisitReports">
+        <ion-col>{{benVisitReport.visitId}}</ion-col>
+        <ion-col>{{benVisitReport.patientId}}</ion-col>
+        <ion-col>{{benVisitReport.servicePointName}}</ion-col>
+        <ion-col>{{benVisitReport.registrationDate}}</ion-col>
+        <ion-col>{{benVisitReport.visitDate}}</ion-col>
+        <ion-col>{{benVisitReport.name}}</ion-col>
+        <ion-col>{{benVisitReport.surname}}</ion-col>
+        <ion-col>{{benVisitReport.GENDER}}</ion-col>
+        <ion-col>{{benVisitReport.Age}}</ion-col>
+        <ion-col>{{benVisitReport.Type}}</ion-col>
+      </ion-row>
+    </div>
+
+    <div *ngIf='(regAndRevisitCountReports.length > 0)' nowrap class="data">
+      <ion-row nowrap class="data" *ngFor="let regAndRevisitCountReport of regAndRevisitCountReports">
+        <ion-col>{{regAndRevisitCountReport.count}}</ion-col>
+        <ion-col>{{regAndRevisitCountReport.countNo}}</ion-col>
+      </ion-row>
+    </div>
+
+    <div *ngIf='(checkUploadedCountReports.length > 0)' nowrap class="data">
+      <ion-row nowrap class="data" *ngFor="let checkUploadedCountReport of checkUploadedCountReports">
+        <ion-col>{{checkUploadedCountReport.tableName}}</ion-col>
+        <ion-col>{{checkUploadedCountReport.uploadesType}}</ion-col>
+        <ion-col>{{checkUploadedCountReport.Count}}</ion-col>
+      </ion-row>
+    </div>
   </ion-grid>
 
-  <ion-grid *ngIf="reportsData.length == 0">
+  <ion-grid *ngIf="isLoadingOrNotFound">
     <ion-row align-items-center justify-content-center
       style="padding: 150px; text-align: center; font-size: 20px; color: #000; margin-top: 3px;">
       <ion-col>
-        No Data found
+        {{loadingOrNotFound}}
       </ion-col>
     </ion-row>
   </ion-grid>

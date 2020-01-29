@@ -100,10 +100,19 @@ export class ReportsPage implements OnInit {
   uploadedCountDataHeadings: any[] = ["TableName", "Uploads Type", "Count(*)"];
 
   headings: any[] = [];
+
   reportsData: any[] = [];
+  drugwiseReports: any[] = [];
+  beneficiarywiseDrugReports: any[] = [];
+  benSummaryReports: any[] = [];
+  benVisitReports: any[] = [];
+  regAndRevisitCountReports: any[] = [];
+  checkUploadedCountReports: any[] = [];
 
   servicePointName: string;
   servicePointId: string;
+  isLoadingOrNotFound: boolean = true;
+  loadingOrNotFound: string = 'No Data Found';
 
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
@@ -122,7 +131,7 @@ export class ReportsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.loadReports();
+    // this.loadReports();
     this.loadSessionDetails();
   }
 
@@ -163,6 +172,16 @@ export class ReportsPage implements OnInit {
     console.log(values);
     console.log("Is CSV export -> " + csv);
 
+    this.isLoadingOrNotFound = true;
+    this.loadingOrNotFound = 'Loading...';
+
+    this.drugwiseReports.length = 0;
+    this.beneficiarywiseDrugReports.length = 0;
+    this.benSummaryReports.length = 0;
+    this.benVisitReports.length = 0;
+    this.regAndRevisitCountReports.length = 0;
+    this.checkUploadedCountReports.length = 0;
+
     let report = this.reportsForm.get("report").value;
     let fromDate = this.reportsForm.get("fromDate").value.trim();
     let toDate = this.reportsForm.get("toDate").value.trim();
@@ -194,8 +213,11 @@ export class ReportsPage implements OnInit {
         .drugwiseReports(startDate, endDate)
         .then(data => {
           if (data.length > 0) {
+            this.drugwiseReports = data;
+            this.isLoadingOrNotFound = false;
             console.log("Fetched drugwiseReports " + JSON.stringify(data));
           } else {
+            this.loadingOrNotFound = 'No Data Found';
             console.log("No drugwiseReports found");
           }
         })
@@ -210,10 +232,13 @@ export class ReportsPage implements OnInit {
         .beneficiarywiseDrugReports(startDate, endDate)
         .then(data => {
           if (data.length > 0) {
+            this.beneficiarywiseDrugReports = data;
+            this.isLoadingOrNotFound = false;
             console.log(
               "Fetched beneficiarywiseDrugReports " + JSON.stringify(data)
             );
           } else {
+            this.loadingOrNotFound = 'No Data Found';
             console.log("No beneficiarywiseDrugReports found");
           }
         })
@@ -229,8 +254,11 @@ export class ReportsPage implements OnInit {
         .benSummaryReports(startDate, endDate)
         .then(data => {
           if (data.length > 0) {
+            this.benSummaryReports = data;
+            this.isLoadingOrNotFound = false;
             console.log("Fetched benSummaryReports " + JSON.stringify(data));
           } else {
+            this.loadingOrNotFound = 'No Data Found';
             console.log("No benSummaryReports found");
           }
         })
@@ -245,8 +273,11 @@ export class ReportsPage implements OnInit {
         .benVisitReports(startDate, endDate)
         .then(data => {
           if (data.length > 0) {
+            this.benVisitReports = data;
+            this.isLoadingOrNotFound = false;
             console.log("Fetched benVisitReports " + JSON.stringify(data));
           } else {
+            this.loadingOrNotFound = 'No Data Found';
             console.log("No benVisitReports found");
           }
         })
@@ -261,10 +292,13 @@ export class ReportsPage implements OnInit {
         .regAndRevisitCountReports(startDate, endDate)
         .then(data => {
           if (data.length > 0) {
+            this.regAndRevisitCountReports = data;
+            this.isLoadingOrNotFound = false;
             console.log(
               "Fetched regAndRevisitCountReports " + JSON.stringify(data)
             );
           } else {
+            this.loadingOrNotFound = 'No Data Found';
             console.log("No regAndRevisitCountReports found");
           }
         })
@@ -280,10 +314,13 @@ export class ReportsPage implements OnInit {
         .checkUploadedCountReports(startDate, endDate)
         .then(data => {
           if (data.length > 0) {
+            this.checkUploadedCountReports = data;
+            this.isLoadingOrNotFound = false;
             console.log(
               "Fetched checkUploadedCountReports " + JSON.stringify(data)
             );
           } else {
+            this.loadingOrNotFound = 'No Data Found';
             console.log("No checkUploadedCountReports found");
           }
         })
