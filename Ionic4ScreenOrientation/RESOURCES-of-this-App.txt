@@ -1,1 +1,4 @@
 * https://www.freakyjolly.com/ionic-4-set-screen-orientation-in-landscape-portrait-and-lock-unlock-using-ionic-native-plugin/
+
+--> Below solution makes entire app landscape/potrait mode
+* https://stackoverflow.com/questions/27755208/how-to-restrict-app-to-portrait-mode-only-in-ionic-for-all-platforms
