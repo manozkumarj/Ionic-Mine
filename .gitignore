@@ -33,6 +33,7 @@ karma.conf.js
 */platforms
 */plugins
 */www
+*/resources
 
 project-developers/node_modules
 project-developers/dist
@@ -70,6 +71,7 @@ Default-Side-Menu-App/config.xml
 BPSCL/node_modules
 BPSCL/dist
 BPSCL/platforms
+BPSCL/resources
 BPSCL/plugins
 BPSCL/www
 BPSCL/package-lock.json
