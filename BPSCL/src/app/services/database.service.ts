@@ -1061,6 +1061,18 @@ export class DatabaseService {
       });
   }
 
+  findVital(patientId, servicePointId, vanId, visitId) {
+    let sql = `SELECT COUNT(patientId) AS count FROM ${this.table_vitals} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ? LIMIT 1`;
+    return this.dbObject
+      .executeSql(sql, [patientId, servicePointId, vanId, visitId])
+      .then(data => {
+        if (data.rows.item(0).count > 0) {
+          return true;
+        }
+        return false;
+      });
+  }
+
   findReferredTo(patientId, servicePointId, vanId, visitId) {
     let sql = `SELECT COUNT(patientId) AS count FROM ${this.table_referredTo} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ? LIMIT 1`;
     return this.dbObject
@@ -1358,6 +1370,40 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - insertVital() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  updateVital(data) {
+    let sql = `UPDATE ${this.table_vitals} SET height = ?, weight = ?, bmi = ?, pulseRate = ?, temperature = ?, respiratoryRate = ?, bpSystolic = ?, bpDiastolic = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ?`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.height,
+        data.weight,
+        data.bmi,
+        data.pulseRate,
+        data.temperature,
+        data.respiratoryRate,
+        data.bpSystolic,
+        data.bpDiastolic,
+        data.userId,
+        data.patientId,
+        data.servicePointId,
+        data.vanId,
+        data.visitId
+      ])
+      .then(res => {
+        console.log(
+          "database - updateVital() - Success -> " +
+          JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - updateVital() - Error -> " +
+          JSON.stringify(error)
         );
         return false;
       });

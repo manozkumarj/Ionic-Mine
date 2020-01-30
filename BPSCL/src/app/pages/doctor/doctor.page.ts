@@ -617,6 +617,7 @@ export class DoctorPage implements OnInit {
           );
         });
     }
+    this.commonService.makeBenObjectEmpty();
     this.router.navigate(["/lab-test"]);
   }
 }

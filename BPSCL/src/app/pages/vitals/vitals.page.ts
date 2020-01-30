@@ -349,21 +349,56 @@ export class VitalsPage implements OnInit {
       "Passable vitals details Object is " + JSON.stringify(vitalFormDetails)
     );
 
+
     this.db
-      .insertVital(vitalFormDetails)
-      .then(res => {
-        console.log(
-          "Vital details inserted successfully...!" + JSON.stringify(res)
-        );
-        if (res) {
-          console.log("Can be redirected...");
-          this.commonService.makeBenObjectEmpty();
-          this.router.navigate(["/doctor"]);
+      .findVital(
+        patientId,
+        servicePointId,
+        vanId,
+        visitId
+      )
+      .then(data => {
+        if (data) {
+
+          this.db
+            .updateVital(vitalFormDetails)
+            .then(data => {
+              console.log("Success -> updateVital is updated Successfully..." + data);
+              this.commonService.makeBenObjectEmpty();
+              this.router.navigate(["/doctor"]);
+            })
+            .catch(e => {
+              console.error(
+                "Error -> updateVital is not updated" + JSON.stringify(e)
+              );
+            });
+          // Need to update the Vital
+        } else {
+
+          this.db
+            .insertVital(vitalFormDetails)
+            .then(res => {
+              console.log(
+                "Vital details inserted successfully...!" + JSON.stringify(res)
+              );
+              if (res) {
+                console.log("Can be redirected...");
+                this.commonService.makeBenObjectEmpty();
+                this.router.navigate(["/doctor"]);
+              }
+              // Need to insert the Vital
+            })
+            .catch(error => {
+              console.error(
+                "Error -> Vital details insertion failed - " + JSON.stringify(error)
+              );
+            });
         }
       })
-      .catch(error => {
+      .catch(e => {
         console.error(
-          "Error -> Vital details insertion failed - " + JSON.stringify(error)
+          "Error -> findVital returned error" +
+          JSON.stringify(e)
         );
       });
   }
