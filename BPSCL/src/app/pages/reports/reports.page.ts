@@ -107,7 +107,7 @@ export class ReportsPage implements OnInit {
     this.db
       .getReports()
       .then(reports => {
-        console.log("Fetched reports -> " + JSON.stringify(reports));
+        // console.log("Fetched reports -> " + JSON.stringify(reports));
         this.reports = reports;
       })
       .catch(error => {
@@ -122,7 +122,7 @@ export class ReportsPage implements OnInit {
     this.storageService
       .getObject("sessionDetails")
       .then(data => {
-        console.log("Session Details are -> " + JSON.stringify(data));
+        // console.log("Session Details are -> " + JSON.stringify(data));
 
         this.servicePointName = data["servicePointName"];
         this.servicePointId = data["servicePointId"];

@@ -15,37 +15,8 @@ import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 export class StaffRegistrationPage implements OnInit {
   staffRegForm: FormGroup;
   genders: any[] = [];
-  ageUnits: any[] = [
-    {
-      ageUnitId: 1,
-      ageUnitName: "Days",
-      isSelected: false
-    },
-    {
-      ageUnitId: 2,
-      ageUnitName: "Months",
-      isSelected: false
-    },
-    {
-      ageUnitId: 3,
-      ageUnitName: "Years",
-      isSelected: false
-    }
-  ];
-  roles: any[] = [
-    {
-      roleId: 1,
-      roleName: "Admin"
-    },
-    {
-      roleId: 1,
-      roleName: "Driver"
-    },
-    {
-      roleId: 1,
-      roleName: "ANM"
-    }
-  ];
+  ageUnits: any[] = [];
+  roles: any[] = [];
 
   isPhotoCaptured: boolean = false;
   benPhoto: string = "assets/profile_pic.jpg";
@@ -171,7 +142,7 @@ export class StaffRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -189,7 +160,7 @@ export class StaffRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -389,7 +360,7 @@ export class StaffRegistrationPage implements OnInit {
       return false;
     }
     if (!doj || doj == null) {
-      alert("Please Enter Date of Joining");
+      alert("Please Select Date of Joining");
       return false;
     }
     if (!address || address == null) {
@@ -437,10 +408,11 @@ export class StaffRegistrationPage implements OnInit {
       return false;
     }
 
-    // if (!this.isPhotoCaptured) {
-    //   alert("Please Capture photo");
-    //   return false;
-    // }
+    if (!this.isPhotoCaptured) {
+      // alert("Please Capture photo");
+      // return false;
+      userImageUrl = null;
+    }
 
     let userId = this.userId;
     let deviceId = this.deviceId;
@@ -469,14 +441,15 @@ export class StaffRegistrationPage implements OnInit {
       userId
     };
 
-    console.log("insertData -> " + JSON.stringify(insertData));
-
     this.db
       .getMaxUserId()
       .then(data => {
         if (data) {
           userIdIncrement = data;
           insertData["userIdIncrement"] = data;
+
+          console.log("insertData -> " + JSON.stringify(insertData));
+          // return false;
 
           this.db
             .registerStaff(insertData)
@@ -494,7 +467,7 @@ export class StaffRegistrationPage implements OnInit {
         } else {
           console.warn(
             "Error -> getMaxUserId function returned 0 -> " +
-              JSON.stringify(data)
+            JSON.stringify(data)
           );
         }
       })

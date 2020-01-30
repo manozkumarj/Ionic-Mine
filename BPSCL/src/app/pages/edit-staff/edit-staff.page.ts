@@ -17,52 +17,10 @@ export class EditStaffPage implements OnInit {
 
   selectedUseId: number;
 
-  users: any[] = [
-    {
-      userId: 1,
-      username: "AAA"
-    },
-    {
-      userId: 2,
-      username: "BBB"
-    },
-    {
-      userId: 3,
-      username: "CCC"
-    }
-  ];
+  users: any[] = [];
   genders: any[] = [];
-  ageUnits: any[] = [
-    {
-      ageUnitId: 1,
-      ageUnitName: "Days",
-      isSelected: false
-    },
-    {
-      ageUnitId: 1,
-      ageUnitName: "Months",
-      isSelected: false
-    },
-    {
-      ageUnitId: 1,
-      ageUnitName: "Years",
-      isSelected: false
-    }
-  ];
-  roles: any[] = [
-    {
-      roleId: 1,
-      roleName: "Admin"
-    },
-    {
-      roleId: 1,
-      roleName: "Driver"
-    },
-    {
-      roleId: 1,
-      roleName: "ANM"
-    }
-  ];
+  ageUnits: any[] = [];
+  roles: any[] = [];
 
   isPhotoCaptured: boolean = false;
   benPhoto: string = "assets/profile_pic.jpg";
@@ -189,7 +147,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -207,7 +165,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -236,7 +194,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -244,15 +202,16 @@ export class EditStaffPage implements OnInit {
   usernameChange() {
     let selectedUserID = this.editStaffForm.get("username").value;
     console.log("selectedUserID is -> " + selectedUserID);
-    // if (selectedUserID && selectedUserID != null)
-    //   this.getUserDetails(selectedUserID);
+    if (selectedUserID && selectedUserID != null)
+      this.getUserDetails(selectedUserID);
   }
 
   getUserDetails(selectedUserID) {
     this.selectedUseId = selectedUserID;
     this.db
       .getUserDetails(selectedUserID)
-      .then(userDetails => {
+      .then(userData => {
+        let userDetails = userData[0];
         console.log(
           "Received User details are -> " + JSON.stringify(userDetails)
         );
@@ -260,10 +219,10 @@ export class EditStaffPage implements OnInit {
           firstName: userDetails["firstName"],
           lastName: userDetails["lastName"],
           fatherName: userDetails["fatherName"],
-          gender: userDetails["gender"],
+          gender: userDetails["genderId"],
           age: userDetails["age"],
-          ageUnit: userDetails["ageUnit"],
-          dateOfBirth: userDetails["dateOfBirth"],
+          ageUnit: userDetails["ageTypeId"],
+          dateOfBirth: userDetails["dob"],
           doj: userDetails["doj"],
           address: userDetails["address"],
           phone: userDetails["phone"],
@@ -282,7 +241,7 @@ export class EditStaffPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getUserDetails() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -429,7 +388,7 @@ export class EditStaffPage implements OnInit {
     let phone = this.editStaffForm.get("phone").value.trim();
     let email = this.editStaffForm.get("email").value.trim();
     let roleId = this.editStaffForm.get("roleId").value;
-    let username = this.editStaffForm.get("username").value.trim();
+    let username = this.editStaffForm.get("username").value;
     let password = this.editStaffForm.get("password").value.trim();
     let confirmPassword = this.editStaffForm
       .get("confirmPassword")
@@ -516,10 +475,11 @@ export class EditStaffPage implements OnInit {
       return false;
     }
 
-    // if (!this.isPhotoCaptured) {
-    //   alert("Please Capture photo");
-    //   return false;
-    // }
+    if (!this.isPhotoCaptured) {
+      // alert("Please Capture photo");
+      // return false;
+      userImageUrl = null;
+    }
 
     let userId = this.userId;
     let deviceId = this.deviceId;
@@ -549,7 +509,7 @@ export class EditStaffPage implements OnInit {
       selectedUserId
     };
 
-    console.log("updateData -> " + updateData);
+    console.log("updateData -> " + JSON.stringify(updateData));
 
     this.db
       .updateStaff(updateData)

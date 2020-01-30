@@ -13,9 +13,7 @@ import { Router } from "@angular/router";
 export class StaffAttendancePage implements OnInit {
   staffAttendanceForm: FormGroup;
   sessionTypes: any[] = [];
-
   sessionPeriods: any[] = [];
-
   selectedUserId: number;
 
   users: any[] = [];
@@ -25,9 +23,16 @@ export class StaffAttendancePage implements OnInit {
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
 
-  servicePointName: string = this.commonService.sessionDetails[
-    "servicePointName"
-  ];
+  userId: number;
+  vanId: number;
+  deviceId: number;
+  stateId: number;
+  districtId: number;
+  mandalId: number;
+  villageId: number;
+  servicePointId: number;
+  servicePointName: string;
+  servicePointCode: string;
 
   constructor(
     private db: DatabaseService,
@@ -44,8 +49,45 @@ export class StaffAttendancePage implements OnInit {
   }
 
   ngOnInit() {
+    this.loadUserDetails();
+    this.loadSessionDetails();
     this.getSessionTypes();
     this.loadUsers();
+  }
+
+  loadUserDetails() {
+    this.storageService
+      .getObject("userDetails")
+      .then(data => {
+        console.log("User details are -> " + JSON.stringify(data));
+        this.userId = data.userId;
+        this.vanId = data.vanId;
+        this.deviceId = data.deviceId;
+      })
+      .catch(error => {
+        console.error("User details were not set -> " + JSON.stringify(error));
+      });
+  }
+
+  loadSessionDetails() {
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("Session Details are -> " + JSON.stringify(data));
+
+        this.stateId = data["stateId"];
+        this.districtId = data["districtId"];
+        this.mandalId = data["mandalId"];
+        this.villageId = data["villageId"];
+        this.servicePointName = data["servicePointName"];
+        this.servicePointCode = data["servicePointCode"];
+        this.servicePointId = data["servicePointId"];
+      })
+      .catch(error => {
+        console.error(
+          "Session Details were not set -> " + JSON.stringify(error)
+        );
+      });
   }
 
   getSessionTypes() {
@@ -145,9 +187,9 @@ export class StaffAttendancePage implements OnInit {
     let sessionTypeId = this.staffAttendanceForm.get("sessionType").value;
     let sessionPeriodId = this.staffAttendanceForm.get("sessionPeriod").value;
     let staffName = this.staffAttendanceForm.get("staffName").value;
-    let staffDesignation = this.staffAttendanceForm
-      .get("staffDesignation")
-      .value.trim();
+    // let staffDesignation = this.staffAttendanceForm
+    //   .get("staffDesignation")
+    //   .value.trim();
 
     if (!sessionTypeId || sessionTypeId <= 0) {
       alert("Please Select Session Type");
@@ -161,16 +203,16 @@ export class StaffAttendancePage implements OnInit {
       alert("Please Select Staff Name");
       return false;
     }
-    if (!staffDesignation || staffDesignation == null) {
-      alert("Please Enter Staff Designation");
-      return false;
-    }
+    // if (!staffDesignation || staffDesignation == null) {
+    //   alert("Please Enter Staff Designation");
+    //   return false;
+    // }
 
-    alert("Form can be submitted");
+    console.log("Form can be submitted");
 
-    let userId = this.commonService.userDetails["userId"];
-    let deviceId = this.commonService.beneficiaryDetails["userDeviceId"];
-    let vanId = this.commonService.beneficiaryDetails["userVanId"];
+    let userId = this.userId;
+    let deviceId = this.deviceId;
+    let vanId = this.vanId;
     let dateYMD = this.commonService.dateTime;
 
     let queryData = {
@@ -182,9 +224,12 @@ export class StaffAttendancePage implements OnInit {
       dateYMD
     };
 
+    console.log("object which is being sent to insert -> " + JSON.stringify(queryData));
+
     this.db
       .findAttendanceId(queryData)
       .then(attendanceId => {
+        console.log("Result of findAttendanceId() -> " + attendanceId);
         if (attendanceId && attendanceId > 0) {
           this.db
             .updateAttendance(queryData)

@@ -522,21 +522,24 @@ export class DatabaseService {
   }
 
   getMaxUserId() {
-    let maxVisitId = 1;
+    let maxUserId = 1;
     let sql = `SELECT max(userId) as maxUserId FROM ${this.table_users}`;
     console.log("Query is -> " + sql);
     return this.dbObject
       .executeSql(sql, [])
       .then(data => {
+
+        console.log("Response of getMaxUserId() is -> " + JSON.stringify(data));
+
         if (data.rows.length > 0) {
-          maxVisitId += data.rows.item(0).maxVisitId;
+          maxUserId += +data.rows.item(0).maxUserId;
         } else {
           console.warn(
             "database - getMaxUserId() returned empty results - Warning -> " +
             JSON.stringify(data)
           );
         }
-        return maxVisitId;
+        return maxUserId;
       })
       .catch(error => {
         console.error(
@@ -688,14 +691,14 @@ export class DatabaseService {
   }
 
   getRoles() {
-    let sql = `SELECT roleId, roleName FROM ${this.table_roles} WHERE isActive = ${this.status.active}`;
+    let sql = `SELECT roleId, rolename FROM ${this.table_roles} WHERE isActive = ${this.status.active}`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let roles = [];
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
           roles.push({
             roleId: data.rows.item(i).roleId,
-            roleName: data.rows.item(i).roleName
+            roleName: data.rows.item(i).rolename
           });
         }
       }
@@ -927,6 +930,7 @@ export class DatabaseService {
         drugwiseReports.push({
           DrugId: data.rows.item(i).DrugId,
           Drugname: data.rows.item(i).Drugname,
+          itemTypeName: data.rows.item(i).itemTypeName,
           Total_Quantity: data.rows.item(i).Total_Quantity,
           servicePoint: data.rows.item(i).servicePoint
         });
@@ -1107,12 +1111,17 @@ export class DatabaseService {
   }
 
   findAttendanceId(data) {
-    let attendanceId = 0;
+    let attendanceId: number = 0;
     let sql = `SELECT attendanceId FROM ${this.table_attendances} WHERE sessionPeriodId = ? AND userId = ? AND insertedDate LIKE '%${data.dateYMD}%' LIMIT 1`;
+
+    console.log("findAttendanceId() SQL is -> " + sql);
+
     return this.dbObject
       .executeSql(sql, [data.sessionPeriodId, data.userId])
       .then(data => {
-        attendanceId = data.rows.item(0).attendanceId;
+        if (data.rows.item(0).count > 0) {
+          attendanceId = data.rows.item(0).attendanceId;
+        }
         return attendanceId;
       })
       .catch(error => {
@@ -1248,7 +1257,7 @@ export class DatabaseService {
   }
 
   registerStaff(data) {
-    let sql = `INSERT INTO ${this.table_users} (userId, firstName, lastName, userName, password, genderId, dob, fatherName, phone, address, email, age, ageTypeId, doj, roleId, userImageUrl, isActive, deviceId, vanId, insertedBy, insertedDate, updatedBy, updatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'))`;
+    let sql = `INSERT INTO ${this.table_users} (userId, firstName, lastName, userName, password, genderId, dob, fatherName, phone, address, email, age, ageTypeId, doj, roleId, userImageUrl, isActive, deviceId, vanId, insertedBy, insertedDate, updatedBy, updatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'))`;
     return this.dbObject
       .executeSql(sql, [
         data.userIdIncrement,
@@ -1711,12 +1720,12 @@ export class DatabaseService {
   }
 
   updateStaff(data) {
-    let sql = `UPDATE ${this.table_users} SET firstName = ?, lastName = ?, userName = ?, password = ?, genderId = ?, dob = ?, fatherName = ?, phone = ?, address = ?, email = ?, age = ?, ageTypeId = ?, doj = ?, roleId = ?, userImageUrl = ?, isActive = ?, deviceId = ?, vanId = ?, updatedBy = ?, updatedDate = datetime('now') WHERE userId = ?,`;
+    let sql = `UPDATE ${this.table_users} SET firstName = ?, lastName = ?, password = ?, genderId = ?, dob = ?, fatherName = ?, phone = ?, address = ?, email = ?, age = ?, ageTypeId = ?, doj = ?, roleId = ?, userImageUrl = ?, isActive = ?, deviceId = ?, vanId = ?, updatedBy = ?, updatedDate = datetime('now') WHERE userId = ?`;
+
     return this.dbObject
       .executeSql(sql, [
         data.firstName,
         data.lastName,
-        data.username,
         data.password,
         data.genderId,
         data.dob,
