@@ -71,7 +71,7 @@ export class DoctorPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   loadBeneficiaries() {
     this.db
@@ -85,7 +85,7 @@ export class DoctorPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -100,7 +100,7 @@ export class DoctorPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> geReferredTos() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -130,7 +130,7 @@ export class DoctorPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getProvisionalDiagnosis() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -322,7 +322,7 @@ export class DoctorPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryDetails() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -495,7 +495,7 @@ export class DoctorPage implements OnInit {
                   .catch(e => {
                     console.error(
                       "Error -> ProvisionalDiagnose is not updated" +
-                        JSON.stringify(e)
+                      JSON.stringify(e)
                     );
                   });
                 // Need to update the ProvisionalDiagnose
@@ -525,7 +525,7 @@ export class DoctorPage implements OnInit {
                   .catch(e => {
                     console.error(
                       "Error -> ProvisionalDiagnose is not inserted" +
-                        JSON.stringify(e)
+                      JSON.stringify(e)
                     );
                   });
                 // Need to insert the ProvisionalDiagnose
@@ -534,7 +534,7 @@ export class DoctorPage implements OnInit {
             .catch(e => {
               console.error(
                 "Error -> findProvisionalDiagnose returned error" +
-                  JSON.stringify(e)
+                JSON.stringify(e)
               );
             });
         }
@@ -599,10 +599,9 @@ export class DoctorPage implements OnInit {
               .insertReferredTo(insertData)
               .then(data => {
                 console.log(
-                  "Success -> ReferredTo is inserted Successfully..."
+                  "Success -> ReferredTo is inserted Successfully..." + data
                 );
                 this.commonService.makeBenObjectEmpty();
-                this.router.navigate(["/lab-test"]);
               })
               .catch(e => {
                 console.error(
@@ -618,5 +617,6 @@ export class DoctorPage implements OnInit {
           );
         });
     }
+    this.router.navigate(["/lab-test"]);
   }
 }
