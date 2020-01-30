@@ -33,7 +33,6 @@ karma.conf.js
 */platforms
 */plugins
 */www
-*/resources
 
 project-developers/node_modules
 project-developers/dist
@@ -71,7 +70,6 @@ Default-Side-Menu-App/config.xml
 BPSCL/node_modules
 BPSCL/dist
 BPSCL/platforms
-BPSCL/resources
 BPSCL/plugins
 BPSCL/www
 BPSCL/package-lock.json
@@ -87,3 +85,5 @@ myfreaky/package-lock.json
 myfreaky/tsconfig.spec.json
 myfreaky/karma.conf.js
 myfreaky/config.xml
+
+ionic4-push-WithoutPushNotification/resources/
