@@ -32,11 +32,13 @@
                               <h2>Select Session Type</h2>
                             </ion-label>
                           </ion-list-header>
-                          <ion-item *ngFor="let sessionType of sessionTypes">
-                            <ion-label>{{sessionType.sessionTypeName}}</ion-label>
-                            <ion-radio [value]="sessionType.sessionTypeId"
-                              (ionSelect)="sessionChange(sessionType.sessionTypeId)"></ion-radio>
-                          </ion-item>
+                          <ion-radio-group>
+                            <ion-item *ngFor="let sessionType of sessionTypes">
+                              <ion-label>{{sessionType.sessionTypeName}}</ion-label>
+                              <ion-radio name='sess' [value]="sessionType.sessionTypeId"
+                                (ionSelect)="sessionChange(sessionType.sessionTypeId)"></ion-radio>
+                            </ion-item>
+                          </ion-radio-group>
                         </ion-list>
                       </ion-col>
                     </ion-row>
