@@ -121,10 +121,10 @@ export class CommonService {
             role: "cancel"
           },
           {
-            text: "Delete",
+            text: "Logout",
             handler: () => {
-              alert("User will be logged out");
-              // this.storageService.clear();
+              // alert("User will be logged out");
+              this.storageService.clear();
             }
           }
         ]

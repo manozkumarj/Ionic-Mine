@@ -71,7 +71,6 @@ Default-Side-Menu-App/config.xml
 BPSCL/node_modules
 BPSCL/dist
 BPSCL/platforms
-BPSCL/resources
 BPSCL/plugins
 BPSCL/www
 BPSCL/package-lock.json
