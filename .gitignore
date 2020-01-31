@@ -49,7 +49,6 @@ project-developers/config.xml
 Ionic-Sqlite/node_modules
 Ionic-Sqlite/dist
 Ionic-Sqlite/platforms
-Ionic-Sqlite/resources
 Ionic-Sqlite/plugins
 Ionic-Sqlite/www
 Ionic-Sqlite/package-lock.json
