@@ -93,10 +93,12 @@ export class LoginPage implements OnInit {
             });
           this.router.navigate(["/session-selection"]);
         } else {
+          alert("No user found with provided credentials.");
           console.warn("User didn't exist -> " + res);
         }
       })
       .catch(error => {
+        alert("Something went wrong. Please contact Admin.");
         console.error(
           "Error -> onSubmit() function returned error." + JSON.stringify(error)
         );

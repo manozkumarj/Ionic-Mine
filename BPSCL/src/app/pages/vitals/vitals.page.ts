@@ -181,12 +181,12 @@ export class VitalsPage implements OnInit, OnDestroy {
   }
 
   respiratoryRateChange() {
-    let respiratoryRate = this.vitalForm.get("respiratoryRate").value;
-    if (respiratoryRate < 10 || respiratoryRate > 60) {
-      alert("Respiratory Rate should be between 10-60");
-      // this.vitalForm.patchValue({ respiratoryRate: null });
-      return false;
-    }
+    // let respiratoryRate = this.vitalForm.get("respiratoryRate").value;
+    // if (respiratoryRate < 10 || respiratoryRate > 60) {
+    //   alert("Respiratory Rate should be between 10-60");
+    // this.vitalForm.patchValue({ respiratoryRate: null });
+    // return false;
+    // }
   }
 
   resetValues() {

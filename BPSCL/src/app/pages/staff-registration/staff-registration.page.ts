@@ -296,14 +296,6 @@ export class StaffRegistrationPage implements OnInit {
     this.isPhotoCaptured = false;
   }
 
-  onlyNumberMaxLength(event) {
-    const pattern = /[0-9]/;
-    let inputChar = String.fromCharCode(event.charCode);
-    if (!pattern.test(inputChar)) {
-      event.preventDefault();
-    }
-  }
-
   onSubmit(values) {
     console.clear();
     console.log("Staff Registration form is submitted, below are the values");
@@ -329,20 +321,28 @@ export class StaffRegistrationPage implements OnInit {
     let userImageUrl = this.benPhoto;
     let isActive = 1;
 
-    let emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
     if (!firstName || firstName == null) {
       alert("Enter First Name");
       return false;
+    } else {
+      this.commonService.checkAlphabetPatternNLength('First Name', firstName);
     }
+
     if (!lastName || lastName == null) {
       alert("Enter Last Name");
       return false;
+    } else {
+      this.commonService.checkAlphabetPatternNLength('Last Name', firstName);
     }
+
     if (!fatherName || fatherName == null) {
       alert("Enter Father Name");
       return false;
+    } else {
+      this.commonService.checkAlphabetPatternNLength('Father Name', firstName);
     }
+
     if (!genderId || genderId == null) {
       alert("Please Select Gender");
       return false;
@@ -383,7 +383,7 @@ export class StaffRegistrationPage implements OnInit {
       alert("Please Enter Email Address");
       return false;
     }
-    if (!email.match(emailPattern)) {
+    if (!email.match(this.commonService.emailPattern)) {
       alert("Please Enter Valid Email Address");
       return false;
     }
@@ -394,7 +394,10 @@ export class StaffRegistrationPage implements OnInit {
     if (!username || username == null) {
       alert("Please Enter username");
       return false;
+    } else {
+      this.commonService.checkAlphabetPatternNLength('Username', firstName);
     }
+
     if (!password || password == null) {
       alert("Please Enter Password");
       return false;

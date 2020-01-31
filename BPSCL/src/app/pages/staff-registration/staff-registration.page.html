@@ -132,7 +132,7 @@
                 </ion-col>
                 <ion-col size="12" size-sm>
                   <ion-input type="text" maxlength="10" formControlName="phone" class="field-input"
-                    (keypress)="onlyNumberMaxLength($event)" value="">
+                    (keypress)="commonService.validatePhoneNumber($event)" value="">
                   </ion-input>
                 </ion-col>
               </ion-row>

@@ -8,6 +8,9 @@ import { StorageService } from "./storage.service";
 export class CommonService {
   newDate = new Date();
   dateTime: string;
+  alphabetsRegex = "^[A-Za-z]+$";
+  numbersRegex = "^[0-9]$";
+  emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
   constructor(
     private alertCtrl: AlertController,
@@ -108,6 +111,30 @@ export class CommonService {
       benDetails["servicePointId"];
     this.beneficiaryDetails["userCompoundPatientId"] =
       benDetails["compoundPatientId"];
+  }
+
+  validatePhoneNumber(fieldName, mobileNumber) {
+    if (!mobileNumber.match(this.numbersRegex)) {
+      alert(`${fieldName} should contain mobileNumbers only.`);
+      return false;
+    } else if (mobileNumber.length != 10) {
+      alert(`${fieldName} should contain 10 digits.`);
+      return false;
+    }
+    if (parseInt(mobileNumber[0]) < 6) {
+      alert(`${fieldName} first digit should be between 6-9`);
+      return false;
+    }
+  }
+
+  checkAlphabetPatternNLength(fieldName, string) {
+    if (!string.match(this.alphabetsRegex)) {
+      alert(`${fieldName} should contain alphabets only.`);
+      return false;
+    } else if (string.length > 15) {
+      alert(`${fieldName} should contain maximum 15 characters only.`);
+      return false;
+    }
   }
 
   logout() {

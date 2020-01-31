@@ -129,7 +129,7 @@
                   Age Group
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select formControlName="ageCategory" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  <ion-select [disabled]="disableAgeCategory" formControlName="ageCategory" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
                     <ion-select-option *ngFor="let ageCategory of ageCategories" [value]="ageCategory.ageCategoryId">
                       {{ageCategory.ageCategoryName}}
@@ -145,9 +145,8 @@
                   <ion-grid style="padding: 0; margin: 0;">
                     <ion-row style="width: 95%;" align-items-center justify-content-center>
                       <ion-col size="10" style="padding-left: 0;">
-                        <ion-input type="text" maxlength="10" formControlName="personalNumber" class="field-input"
-                          (keypress)="onlyNumberMaxLength($event)" value="" style="width: 100%;"
-                          [disabled]="disablePersonalNumber">
+                        <ion-input type="number" formControlName="personalNumber" class="field-input" value=""
+                          style="width: 100%;" [disabled]="disablePersonalNumber">
                         </ion-input>
                       </ion-col>
                       <ion-col size="auto" size-sm>
@@ -167,9 +166,8 @@
                   <ion-grid style="padding: 0; margin: 0;">
                     <ion-row style="width: 95%;" align-items-center justify-content-center>
                       <ion-col size="10" style="padding-left: 0;">
-                        <ion-input type="text" maxlength="10" formControlName="familyOrRelativeNumber"
-                          class="field-input" (keypress)="onlyNumberMaxLength($event)" value="" style="width: 100%;"
-                          [disabled]="disableFamilyOrRelativeNumber">
+                        <ion-input type="number" formControlName="familyOrRelativeNumber" class="field-input" value=""
+                          style="width: 100%;" [disabled]="disableFamilyOrRelativeNumber">
                         </ion-input>
                       </ion-col>
                       <ion-col size="auto" size-sm>
@@ -211,7 +209,8 @@
                   Number of Family Members
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input type='number' formControlName="numberOfFamilyMembers" class="field-input" value=""></ion-input>
+                  <ion-input type='number' formControlName="numberOfFamilyMembers" class="field-input" value="">
+                  </ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45" align-items-center justify-content-center>

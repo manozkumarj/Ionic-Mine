@@ -45,6 +45,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
 
   disablePersonalNumber: boolean = false;
   disableFamilyOrRelativeNumber: boolean = false;
+  disableAgeCategory: boolean = false;
   isBpl: boolean = false;
   isHandicapped: boolean = false;
 
@@ -136,7 +137,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       });
   }
 
-  prefixZeros = function(str, padStr, len) {
+  prefixZeros = function (str, padStr, len) {
     while (str.length < len) str = padStr + str;
     return str;
   };
@@ -198,7 +199,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryId() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -256,7 +257,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryId() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -296,7 +297,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getGenders() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -311,7 +312,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getCastes() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -326,7 +327,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getReligions() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -344,7 +345,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeUnits() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -361,7 +362,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getAgeCategories() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -547,6 +548,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
     }
 
     let selectedAgeCategory = this.benRegForm.get("ageCategory").value;
+    this.disableAgeCategory = true;
     console.log("Picked selectedAgeCategory -> " + selectedAgeCategory);
   }
 
@@ -713,11 +715,17 @@ export class BeneficiaryRegistrationPage implements OnInit {
     if (!name || name == null) {
       alert("Enter Beneficiary Name");
       return false;
+    } else {
+      this.commonService.checkAlphabetPatternNLength('Name', name);
     }
+
     if (!surname || surname == null) {
       alert("Enter Beneficiary Surname");
       return false;
+    } else {
+      this.commonService.checkAlphabetPatternNLength('Surname', surname);
     }
+
     if (!genderId || genderId == null) {
       alert("Please Select gender");
       return false;
@@ -730,7 +738,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
       alert("Please Select age unit ");
       return false;
     }
-    if (genderId == 2 && (!pregnancyStatus || pregnancyStatus == null)) {
+    if (genderId == 2 && this.showPregnancyField && (!pregnancyStatus || pregnancyStatus == null)) {
       alert("Please Select Pregnancy status ");
       return false;
     }
@@ -744,39 +752,20 @@ export class BeneficiaryRegistrationPage implements OnInit {
     ) {
       alert("Please Enter personal number ");
       return false;
+    } else if(!this.disablePersonalNumber) {
+      this.commonService.validatePhoneNumber('Personal Number', personalNumber);
     }
-    if (
-      !this.disablePersonalNumber &&
-      (personalNumber.length < 10 || personalNumber.length > 10)
-    ) {
-      alert("Please Enter valid personal number Number");
-      return false;
-    }
-    if (!this.disablePersonalNumber && parseInt(personalNumber[0]) < 6) {
-      alert("Personal Number first digit should be between 6-9");
-      return false;
-    }
+
     if (
       !this.disableFamilyOrRelativeNumber &&
       (!familyOrRelativeNumber || familyOrRelativeNumber == null)
     ) {
-      alert("Please Enter Family Or Relative number ");
+      alert("Please Enter Family/Relative number ");
       return false;
+    } else if(!this.disableFamilyOrRelativeNumber) {
+      this.commonService.validatePhoneNumber('Family/Relative Number', familyOrRelativeNumber);
     }
-    if (
-      !this.disableFamilyOrRelativeNumber &&
-      (familyOrRelativeNumber.length < 10 || familyOrRelativeNumber.length > 10)
-    ) {
-      alert("Please Enter valid Family Or Relative number Number");
-      return false;
-    }
-    if (
-      !this.disableFamilyOrRelativeNumber &&
-      parseInt(familyOrRelativeNumber[0]) < 6
-    ) {
-      alert("Phone Number first digit should be between 6-9");
-      return false;
-    }
+
     if (!communityId || communityId == null) {
       alert("Please Select Caste");
       return false;
@@ -809,7 +798,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
             .then(res => {
               console.log(
                 "Beneficiary Visit details inserted successfully...!" +
-                  JSON.stringify(res)
+                JSON.stringify(res)
               );
               if (res) {
                 this.router.navigate(["/vitals"]);
@@ -818,7 +807,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
             .catch(error => {
               console.error(
                 "Error -> Beneficiary Visit details insertion failed - " +
-                  JSON.stringify(error)
+                JSON.stringify(error)
               );
             });
         } else {

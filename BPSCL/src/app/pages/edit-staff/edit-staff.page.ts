@@ -396,24 +396,27 @@ export class EditStaffPage implements OnInit {
     let userImageUrl = this.benPhoto;
     let isActive = 1;
 
-    let emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
-
-    if (!username || username == null) {
-      alert("Please Enter username");
-      return false;
-    }
     if (!firstName || firstName == null) {
       alert("Enter First Name");
       return false;
+    } else {
+      this.commonService.checkAlphabetPatternNLength('First Name', firstName);
     }
+
     if (!lastName || lastName == null) {
       alert("Enter Last Name");
       return false;
+    } else {
+      this.commonService.checkAlphabetPatternNLength('Last Name', firstName);
     }
+
     if (!fatherName || fatherName == null) {
       alert("Enter Father Name");
       return false;
+    } else {
+      this.commonService.checkAlphabetPatternNLength('Father Name', firstName);
     }
+
     if (!genderId || genderId == null) {
       alert("Please Select Gender");
       return false;
@@ -454,7 +457,7 @@ export class EditStaffPage implements OnInit {
       alert("Please Enter Email Address");
       return false;
     }
-    if (!email.match(emailPattern)) {
+    if (!email.match(this.commonService.emailPattern)) {
       alert("Please Enter Valid Email Address");
       return false;
     }
