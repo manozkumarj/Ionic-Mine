@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
   templateUrl: "./medicine-dispense.page.html",
   styleUrls: ["./medicine-dispense.page.scss"]
 })
-export class MedicineDispensePage implements OnInit {
+export class MedicineDispensePage implements OnInit, OnDestroy {
   medicineDispenseForm: FormGroup;
 
   itemTypeId = 1;
@@ -55,7 +55,12 @@ export class MedicineDispensePage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
+
+  ngOnDestroy() {
+    console.log("ngOnDestroy triggered...");
+    this.commonService.makeBenObjectEmpty();
+  }
 
   loadBeneficiaries() {
     this.db
@@ -69,7 +74,7 @@ export class MedicineDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -93,7 +98,7 @@ export class MedicineDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getDispenses() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -148,7 +153,7 @@ export class MedicineDispensePage implements OnInit {
   dispenseCheckbox(id, e) {
     console.log(
       "clicked dispense array of OBJ is + " +
-        JSON.stringify(this.medicineDispenses[id])
+      JSON.stringify(this.medicineDispenses[id])
     );
     if (e.target.checked) {
       this.medicineDispenses[id]["allowQuantity"] = true;
@@ -185,7 +190,7 @@ export class MedicineDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryDetails() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -349,20 +354,20 @@ export class MedicineDispensePage implements OnInit {
 
         console.log(
           patientId +
-            " *** " +
-            servicePointId +
-            " *** " +
-            vanId +
-            " *** " +
-            itemId +
-            " *** " +
-            this.visitId +
-            " *** " +
-            quantityGiven +
-            " *** " +
-            remarks +
-            " *** " +
-            userId
+          " *** " +
+          servicePointId +
+          " *** " +
+          vanId +
+          " *** " +
+          itemId +
+          " *** " +
+          this.visitId +
+          " *** " +
+          quantityGiven +
+          " *** " +
+          remarks +
+          " *** " +
+          userId
         );
 
         this.findAndUpsertDispense(

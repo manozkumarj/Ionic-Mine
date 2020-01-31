@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
   templateUrl: "./vitals.page.html",
   styleUrls: ["./vitals.page.scss"]
 })
-export class VitalsPage implements OnInit {
+export class VitalsPage implements OnInit, OnDestroy {
   vitalForm: FormGroup;
 
   benIds: any[] = [];
@@ -61,6 +61,11 @@ export class VitalsPage implements OnInit {
     console.log(
       "User details are " + JSON.stringify(this.commonService.userDetails)
     );
+  }
+
+  ngOnDestroy() {
+    console.log("ngOnDestroy triggered...");
+    this.commonService.makeBenObjectEmpty();
   }
 
   loadUserDetails() {
@@ -364,7 +369,6 @@ export class VitalsPage implements OnInit {
             .updateVital(vitalFormDetails)
             .then(data => {
               console.log("Success -> updateVital is updated Successfully..." + data);
-              this.commonService.makeBenObjectEmpty();
               this.router.navigate(["/doctor"]);
             })
             .catch(e => {
@@ -383,7 +387,6 @@ export class VitalsPage implements OnInit {
               );
               if (res) {
                 console.log("Can be redirected...");
-                this.commonService.makeBenObjectEmpty();
                 this.router.navigate(["/doctor"]);
               }
               // Need to insert the Vital

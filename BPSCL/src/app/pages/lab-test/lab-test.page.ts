@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { StorageService } from "./../../services/storage.service";
@@ -11,7 +11,7 @@ import { IonSelect } from '@ionic/angular';
   templateUrl: './lab-test.page.html',
   styleUrls: ['./lab-test.page.scss'],
 })
-export class LabTestPage implements OnInit {
+export class LabTestPage implements OnInit, OnDestroy {
   @ViewChild('mySelect', { static: false }) selectRef: IonSelect;
   labTestForm: FormGroup;
   benIds: any[] = [];
@@ -69,6 +69,11 @@ export class LabTestPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    console.log("ngOnDestroy triggered...");
+    this.commonService.makeBenObjectEmpty();
   }
 
   loadBeneficiaries() {

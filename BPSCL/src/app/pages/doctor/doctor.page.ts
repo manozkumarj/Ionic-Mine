@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
   templateUrl: "./doctor.page.html",
   styleUrls: ["./doctor.page.scss"]
 })
-export class DoctorPage implements OnInit {
+export class DoctorPage implements OnInit, OnDestroy {
   doctorForm: FormGroup;
 
   showRemarks: boolean = false;
@@ -72,6 +72,11 @@ export class DoctorPage implements OnInit {
   }
 
   ngOnInit() { }
+
+  ngOnDestroy() {
+    console.log("ngOnDestroy triggered...");
+    this.commonService.makeBenObjectEmpty();
+  }
 
   loadBeneficiaries() {
     this.db
@@ -601,7 +606,6 @@ export class DoctorPage implements OnInit {
                 console.log(
                   "Success -> ReferredTo is inserted Successfully..." + data
                 );
-                this.commonService.makeBenObjectEmpty();
               })
               .catch(e => {
                 console.error(
@@ -617,7 +621,6 @@ export class DoctorPage implements OnInit {
           );
         });
     }
-    this.commonService.makeBenObjectEmpty();
     this.router.navigate(["/lab-test"]);
   }
 }

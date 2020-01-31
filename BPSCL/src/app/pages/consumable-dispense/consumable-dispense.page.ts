@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
   templateUrl: "./consumable-dispense.page.html",
   styleUrls: ["./consumable-dispense.page.scss"]
 })
-export class ConsumableDispensePage implements OnInit {
+export class ConsumableDispensePage implements OnInit, OnDestroy {
   consumableDispenseForm: FormGroup;
 
   itemTypeId = 2;
@@ -64,7 +64,12 @@ export class ConsumableDispensePage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
+
+  ngOnDestroy() {
+    console.log("ngOnDestroy triggered...");
+    this.commonService.makeBenObjectEmpty();
+  }
 
   loadBeneficiaries() {
     this.db
@@ -78,7 +83,7 @@ export class ConsumableDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaries() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -115,7 +120,7 @@ export class ConsumableDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getDispenses() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -155,7 +160,7 @@ export class ConsumableDispensePage implements OnInit {
   dispenseCheckbox(id, e) {
     console.log(
       "clicked dispense array of OBJ is + " +
-        JSON.stringify(this.consumableDispenses[id])
+      JSON.stringify(this.consumableDispenses[id])
     );
     if (e.target.checked) {
       console.log(id + " -> dispenseCheckbox is checked");
@@ -192,7 +197,7 @@ export class ConsumableDispensePage implements OnInit {
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryDetails() function returned error." +
-            JSON.stringify(error)
+          JSON.stringify(error)
         );
       });
   }
@@ -357,20 +362,20 @@ export class ConsumableDispensePage implements OnInit {
 
         console.log(
           patientId +
-            " *** " +
-            servicePointId +
-            " *** " +
-            vanId +
-            " *** " +
-            itemId +
-            " *** " +
-            this.visitId +
-            " *** " +
-            quantityGiven +
-            " *** " +
-            remarks +
-            " *** " +
-            userId
+          " *** " +
+          servicePointId +
+          " *** " +
+          vanId +
+          " *** " +
+          itemId +
+          " *** " +
+          this.visitId +
+          " *** " +
+          quantityGiven +
+          " *** " +
+          remarks +
+          " *** " +
+          userId
         );
 
         this.findAndUpsertDispense(
