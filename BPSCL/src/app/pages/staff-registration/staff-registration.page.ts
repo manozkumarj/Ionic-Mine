@@ -182,6 +182,7 @@ export class StaffRegistrationPage implements OnInit {
   ageChange() {
     let enteredAge = this.staffRegForm.get("age").value;
     console.log("ageChange() - enteredAge -> " + enteredAge);
+    this.staffRegForm.patchValue({ ageUnit: 3 });
     this.ageUnitChange();
 
     // this.staffRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });

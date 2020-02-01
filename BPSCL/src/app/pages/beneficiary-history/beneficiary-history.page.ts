@@ -14,17 +14,7 @@ export class BeneficiaryHistoryPage implements OnInit {
   benHistoryForm: FormGroup;
   selectedBenId = 0;
   selectedHistoryId = 0;
-  benIds: any[] = [
-    {
-      patientId: 'SP0001000036B000574'
-    },
-    {
-      patientId: 'SP0001000036B000575'
-    },
-    {
-      patientId: 'SP0001000036B000576'
-    }
-  ];
+  benIds: any[] = [];
 
   measurementDetails_headings = [
     "Date of Visit",
@@ -44,14 +34,7 @@ export class BeneficiaryHistoryPage implements OnInit {
   labTestsAndAnswers_headings = ["Visit Date", "Test Name", "Result"];
   medicinesDispensation_headings = ["Issued ID", "Name", "Quantity Given"];
 
-  otherResults: any[] = [
-    {
-      rowOneData: "2019-12-29",
-      rowTwoData: "test",
-      rowThreeData: "jumbo"
-    }
-  ];
-
+  otherResults: any[] = [];
   measurementResults: any[] = [];
   showMeasurementResults: boolean = false;
   showOtherResults: boolean = false;
@@ -98,6 +81,20 @@ export class BeneficiaryHistoryPage implements OnInit {
   ngOnInit() {
     this.loadBeneficiaries();
     this.loadSessionDetails();
+  }
+
+  ngOnDestroy() {
+    this.benHistoryForm.patchValue({
+      beneficiaryId: null,
+      beneficiaryHistory: null
+    });
+    this.benIds = [];
+    this.otherResults = [];
+    this.measurementResults = [];
+    this.showMeasurementResults = false;
+    this.showOtherResults = false;
+    this.selectedBenId = 0;
+    this.selectedHistoryId = 0;
   }
 
   onChange() {

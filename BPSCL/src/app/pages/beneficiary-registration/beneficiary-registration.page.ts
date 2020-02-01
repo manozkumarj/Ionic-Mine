@@ -1,5 +1,5 @@
 import { LoginPageRoutingModule } from "./../login/login-routing.module";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
@@ -13,7 +13,7 @@ import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
   templateUrl: "./beneficiary-registration.page.html",
   styleUrls: ["./beneficiary-registration.page.scss"]
 })
-export class BeneficiaryRegistrationPage implements OnInit {
+export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
   benRegForm: FormGroup;
   genders: any[] = [];
   ageUnits: any[] = [];
@@ -269,6 +269,10 @@ export class BeneficiaryRegistrationPage implements OnInit {
     this.loadAgeUnits();
     this.loadAgeCategories();
     // this.resetValues();
+  }
+
+  ngOnDestroy() {
+    this.resetValues();
   }
 
   takeSnap() {
@@ -752,7 +756,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
     ) {
       alert("Please Enter personal number ");
       return false;
-    } else if(!this.disablePersonalNumber) {
+    } else if (!this.disablePersonalNumber) {
       this.commonService.validatePhoneNumber('Personal Number', personalNumber);
     }
 
@@ -762,7 +766,7 @@ export class BeneficiaryRegistrationPage implements OnInit {
     ) {
       alert("Please Enter Family/Relative number ");
       return false;
-    } else if(!this.disableFamilyOrRelativeNumber) {
+    } else if (!this.disableFamilyOrRelativeNumber) {
       this.commonService.validatePhoneNumber('Family/Relative Number', familyOrRelativeNumber);
     }
 
@@ -776,6 +780,9 @@ export class BeneficiaryRegistrationPage implements OnInit {
     }
     if (!noOfFamilyNumbers || noOfFamilyNumbers == null) {
       alert("Please Enter Number of Family Members");
+      return false;
+    } else if (noOfFamilyNumbers < 1 || noOfFamilyNumbers > 99) {
+      alert("Number of Family Members should be between 1-99");
       return false;
     }
     if (!this.isPhotoCaptured) {

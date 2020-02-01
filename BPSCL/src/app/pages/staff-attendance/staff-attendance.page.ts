@@ -134,7 +134,7 @@ export class StaffAttendancePage implements OnInit {
           "Received User details are -> " + JSON.stringify(userDetails)
         );
         this.staffAttendanceForm.patchValue({
-          staffDesignation: userDetails["roleName"]
+          staffDesignation: userDetails[0]["roleName"]
         });
       })
       .catch(error => {
