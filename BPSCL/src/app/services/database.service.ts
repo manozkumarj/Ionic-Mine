@@ -575,7 +575,7 @@ export class DatabaseService {
   }
 
   getBeneficiaryDetails(benId) {
-    let sql = `SELECT ben.patientId, ben.deviceId, ben.vanId, ben.routeVillageId, ben.servicePointId, ben.compoundPatientId, ben.registrationDate, ben.name, ben.surname, ben.genderId, ben.dob, ben.communityId, ben.religionId, ben.fatherName, ben.spouseName, ben.motherName, ben.aadharNo, ben.mctsId, ben.villageId, ben.mandalId, ben.districtId, ben.stateId, ben.imageUrl, ben.insertedBy, ben.insertedDate, ben.updatedBy, ben.updatedDate, ben.imageUploadStatus, ben.uploadStatus, visit.visitId, visit.visitCount, visit.age, visit.ageTypeId, visit.pregnancyStatus, g.gender, d.districtName, m.mandalName, v.villageName FROM ${this.table_beneficiaries} AS ben LEFT JOIN ${this.table_visits} AS visit ON ben.patientId = visit.patientId LEFT JOIN mp_gender AS g ON ben.genderId = g.genderId LEFT JOIN m_District AS d ON ben.districtId = d.districtId LEFT JOIN m_Mandal AS m ON ben.mandalId = m.mandalId LEFT JOIN m_Village AS v ON ben.villageId = v.villageId WHERE ben.patientId = '${benId}'`;
+    let sql = `SELECT ben.patientId, ben.deviceId, ben.vanId, ben.routeVillageId, ben.servicePointId, ben.compoundPatientId, ben.registrationDate, ben.name, ben.surname, ben.genderId, ben.dob, ben.communityId, ben.religionId, ben.fatherName, ben.spouseName, ben.motherName, ben.aadharNo, ben.mctsId, ben.villageId, ben.mandalId, ben.districtId, ben.stateId, ben.imageUrl, ben.insertedBy, ben.insertedDate, ben.updatedBy, ben.updatedDate, ben.imageUploadStatus, ben.uploadStatus, visit.visitId, visit.visitCount, visit.visitDate, visit.age, visit.ageTypeId, visit.ageGroupId, visit.contactNo, visit.familyContactNo, visit.economicStatusId, visit.pregnancyStatus, visit.noOfFamilyNumbers, g.gender, d.districtName, m.mandalName, v.villageName FROM ${this.table_beneficiaries} AS ben LEFT JOIN ${this.table_visits} AS visit ON ben.patientId = visit.patientId LEFT JOIN mp_gender AS g ON ben.genderId = g.genderId LEFT JOIN m_District AS d ON ben.districtId = d.districtId LEFT JOIN m_Mandal AS m ON ben.mandalId = m.mandalId LEFT JOIN m_Village AS v ON ben.villageId = v.villageId WHERE ben.patientId = '${benId}'`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let beneficiaryDetails = [];
       if (data.rows.length > 0) {
@@ -611,9 +611,16 @@ export class DatabaseService {
             uploadStatus: data.rows.item(i).uploadStatus,
             visitId: data.rows.item(i).visitId,
             visitCount: data.rows.item(i).visitCount,
+            visitDate: data.rows.item(i).visitDate,
             age: data.rows.item(i).age,
             ageTypeId: data.rows.item(i).ageTypeId,
+            ageGroupId: data.rows.item(i).ageGroupId,
+            contactNo: data.rows.item(i).contactNo,
+            familyContactNo: data.rows.item(i).familyContactNo,
+            economicStatusId: data.rows.item(i).economicStatusId,
             pregnancyStatus: data.rows.item(i).pregnancyStatus,
+            noOfFamilyNumbers: data.rows.item(i).noOfFamilyNumbers,
+            isHandicaped: data.rows.item(i).isHandicaped,
             gender: data.rows.item(i).gender,
             districtName: data.rows.item(i).districtName,
             mandalName: data.rows.item(i).mandalName,

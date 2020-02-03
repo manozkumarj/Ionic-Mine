@@ -9,11 +9,11 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 
 @Component({
-  selector: "app-beneficiary-registration",
-  templateUrl: "./beneficiary-registration.page.html",
-  styleUrls: ["./beneficiary-registration.page.scss"]
+  selector: 'app-edit-beneficiary',
+  templateUrl: './edit-beneficiary.page.html',
+  styleUrls: ['./edit-beneficiary.page.scss'],
 })
-export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
+export class EditBeneficiaryPage implements OnInit, OnDestroy {
   benRegForm: FormGroup;
   genders: any[] = [];
   ageUnits: any[] = [];
@@ -65,6 +65,7 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
   visitId: string;
   type: string;
   paramID: string;
+  VisitDate: string;
 
   constructor(
     private db: DatabaseService,
@@ -104,6 +105,9 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
 
     console.log("this.type -> " + this.type);
     console.log("this.paramID -> " + this.paramID);
+
+    if (this.type && this.paramID)
+      this.getBenDetails(this.paramID);
 
     this.loadGenders();
     this.loadCastes();
@@ -166,6 +170,23 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
     while (str.length < len) str = padStr + str;
     return str;
   };
+
+  getBenDetails(selectedBenID) {
+    this.db
+      .getBeneficiaryDetails(selectedBenID)
+      .then(benDetails => {
+        console.log(
+          "Received Ben details are -> " + JSON.stringify(benDetails)
+        );
+        // this.commonService.setBenDetails(benDetails[0]);
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getBeneficiaryDetails() function returned error." +
+          JSON.stringify(error)
+        );
+      });
+  }
 
   getMaxBeneficiaryId(servicePointId) {
     console.log("Sending servicePointId is -> " + servicePointId);
@@ -608,9 +629,10 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
   onSubmit(values) {
     console.log("Ben Registration form is submitted, below are the values");
     console.log(values);
+    // return false;
 
     // let patientId = "SP0002000010B000500";
-    let patientId = this.randomPatientId;
+    let patientId = this.paramID;
     let visitId = this.visitId;
     let visitCount = 1;
     let deviceId = this.deviceId;

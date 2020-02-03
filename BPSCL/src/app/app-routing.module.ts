@@ -95,6 +95,10 @@ const routes: Routes = [
   {
     path: 'lab-test',
     loadChildren: () => import('./pages/lab-test/lab-test.module').then(m => m.LabTestPageModule)
+  },
+  {
+    path: 'edit-beneficiary',
+    loadChildren: () => import('./pages/edit-beneficiary/edit-beneficiary.module').then( m => m.EditBeneficiaryPageModule)
   }
 
 ];
