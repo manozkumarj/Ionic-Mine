@@ -141,8 +141,7 @@
                   Phone Number
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input type="text" maxlength="10" formControlName="phone" class="field-input"
-                    (keypress)="commonService.onlyNumberMaxLength($event)" #myValue value="">
+                  <ion-input type="number" formControlName="phone" class="field-input" value="">
                   </ion-input>
                 </ion-col>
               </ion-row>

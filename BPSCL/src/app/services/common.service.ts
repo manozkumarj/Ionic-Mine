@@ -9,7 +9,7 @@ export class CommonService {
   newDate = new Date();
   dateTime: string;
   alphabetsRegex = "^[A-Za-z]+$";
-  numbersRegex = "^[0-9]$";
+  numbersRegex = "^[0-9]*$";
   emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
 
   constructor(
@@ -114,8 +114,11 @@ export class CommonService {
   }
 
   validatePhoneNumber(fieldName, mobileNumber) {
+    console.log('Received mobileNumber is -> ' + mobileNumber);
+    console.log('Received fieldName is -> ' + fieldName);
+    mobileNumber = mobileNumber.toString();
     if (!mobileNumber.match(this.numbersRegex)) {
-      alert(`${fieldName} should contain mobileNumbers only.`);
+      alert(`${fieldName} should contain digits only.`);
       return false;
     } else if (mobileNumber.length != 10) {
       alert(`${fieldName} should contain 10 digits.`);
@@ -125,6 +128,7 @@ export class CommonService {
       alert(`${fieldName} first digit should be between 6-9`);
       return false;
     }
+    return true;
   }
 
   checkAlphabetPatternNLength(fieldName, string) {
@@ -135,6 +139,7 @@ export class CommonService {
       alert(`${fieldName} should contain maximum 15 characters only.`);
       return false;
     }
+    return true;
   }
 
   logout() {

@@ -44,9 +44,11 @@
                   Beneficiary ID
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-select (ionChange)="benIdChange()" formControlName="beneficiaryId" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
+                  <ion-select interface="popover" (ionChange)="benIdChange()" formControlName="beneficiaryId"
+                    class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option *ngFor="let benId of benIds" [value]="benId.patientId">{{benId.patientId}}</ion-select-option>
+                    <ion-select-option *ngFor="let benId of benIds" [value]="benId.patientId">{{benId.patientId}}
+                    </ion-select-option>
                   </ion-select>
                 </ion-col>
               </ion-row>
@@ -56,7 +58,7 @@
                 </ion-col>
                 <ion-col size="12" size-sm>
                   <ion-select formControlName="rch" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
-                  background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
+                  background-image: linear-gradient(#3b4bad, #FFF)" [disabled]='true' placeholder="Select">
                     <ion-select-option *ngFor="let rch of rchs" [value]="rch.beneficiaryTypeId">
                       {{rch.beneficiaryTypeName}}
                     </ion-select-option>
@@ -117,7 +119,8 @@
                   <ion-select (ionChange)="minorAilmentChange()" [disabled]="showRemarks"
                     formControlName="minorAilments" multiple="true" class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option *ngFor="let singleMinorAilment of minorAilments" [value]="singleMinorAilment.provisionalDiagnosisId">
+                    <ion-select-option *ngFor="let singleMinorAilment of minorAilments"
+                      [value]="singleMinorAilment.provisionalDiagnosisId">
                       {{singleMinorAilment.provisionalDiagnosisName}}
                     </ion-select-option>
                   </ion-select>

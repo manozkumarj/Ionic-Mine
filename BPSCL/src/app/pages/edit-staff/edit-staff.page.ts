@@ -385,7 +385,7 @@ export class EditStaffPage implements OnInit {
     let dob = this.editStaffForm.get("dateOfBirth").value.trim();
     let doj = this.editStaffForm.get("doj").value.trim();
     let address = this.editStaffForm.get("address").value.trim();
-    let phone = this.editStaffForm.get("phone").value.trim();
+    let phone = this.editStaffForm.get("phone").value;
     let email = this.editStaffForm.get("email").value.trim();
     let roleId = this.editStaffForm.get("roleId").value;
     let username = this.editStaffForm.get("username").value;
@@ -400,21 +400,24 @@ export class EditStaffPage implements OnInit {
       alert("Enter First Name");
       return false;
     } else {
-      this.commonService.checkAlphabetPatternNLength('First Name', firstName);
+      let res = this.commonService.checkAlphabetPatternNLength('First Name', firstName);
+      if (!res) return false;
     }
 
     if (!lastName || lastName == null) {
       alert("Enter Last Name");
       return false;
     } else {
-      this.commonService.checkAlphabetPatternNLength('Last Name', firstName);
+      let res = this.commonService.checkAlphabetPatternNLength('Last Name', lastName);
+      if (!res) return false;
     }
 
     if (!fatherName || fatherName == null) {
       alert("Enter Father Name");
       return false;
     } else {
-      this.commonService.checkAlphabetPatternNLength('Father Name', firstName);
+      let res = this.commonService.checkAlphabetPatternNLength('Father Name', fatherName);
+      if (!res) return false;
     }
 
     if (!genderId || genderId == null) {
@@ -444,11 +447,11 @@ export class EditStaffPage implements OnInit {
     if (!phone || phone == null) {
       alert("Please Enter Phone Number");
       return false;
+    } else {
+      let res = this.commonService.validatePhoneNumber('Phone Number', phone);
+      if (!res) return false;
     }
-    if (phone.length < 10 || phone.length > 10) {
-      alert("Please Enter valid Phone Number");
-      return false;
-    }
+
     if (parseInt(phone[0]) < 6) {
       alert("Phone Number first digit should between 6-9");
       return false;

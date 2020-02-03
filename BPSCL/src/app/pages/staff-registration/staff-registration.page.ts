@@ -313,7 +313,7 @@ export class StaffRegistrationPage implements OnInit {
     let dob = this.staffRegForm.get("dateOfBirth").value.trim();
     let doj = this.staffRegForm.get("doj").value.trim();
     let address = this.staffRegForm.get("address").value.trim();
-    let phone = this.staffRegForm.get("phone").value.trim();
+    let phone = this.staffRegForm.get("phone").value;
     let email = this.staffRegForm.get("email").value.trim();
     let roleId = this.staffRegForm.get("roleId").value;
     let username = this.staffRegForm.get("username").value.trim();
@@ -327,21 +327,24 @@ export class StaffRegistrationPage implements OnInit {
       alert("Enter First Name");
       return false;
     } else {
-      this.commonService.checkAlphabetPatternNLength('First Name', firstName);
+      let res = this.commonService.checkAlphabetPatternNLength('First Name', firstName);
+      if (!res) return false;
     }
 
     if (!lastName || lastName == null) {
       alert("Enter Last Name");
       return false;
     } else {
-      this.commonService.checkAlphabetPatternNLength('Last Name', firstName);
+      let res = this.commonService.checkAlphabetPatternNLength('Last Name', lastName);
+      if (!res) return false;
     }
 
     if (!fatherName || fatherName == null) {
       alert("Enter Father Name");
       return false;
     } else {
-      this.commonService.checkAlphabetPatternNLength('Father Name', firstName);
+      let res = this.commonService.checkAlphabetPatternNLength('Father Name', fatherName);
+      if (!res) return false;
     }
 
     if (!genderId || genderId == null) {
@@ -367,15 +370,11 @@ export class StaffRegistrationPage implements OnInit {
     if (!address || address == null) {
       alert("Please Enter Address");
       return false;
+    } else {
+      let res = this.commonService.validatePhoneNumber('Phone Number', phone);
+      if (!res) return false;
     }
-    if (!phone || phone == null) {
-      alert("Please Enter Phone Number");
-      return false;
-    }
-    if (phone.length < 10 || phone.length > 10) {
-      alert("Please Enter valid Phone Number");
-      return false;
-    }
+
     if (parseInt(phone[0]) < 6) {
       alert("Phone Number first digit should be between 6-9");
       return false;
@@ -396,7 +395,8 @@ export class StaffRegistrationPage implements OnInit {
       alert("Please Enter username");
       return false;
     } else {
-      this.commonService.checkAlphabetPatternNLength('Username', firstName);
+      let res = this.commonService.checkAlphabetPatternNLength('Username', username);
+      if (!res) return false;
     }
 
     if (!password || password == null) {

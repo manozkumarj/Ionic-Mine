@@ -5,7 +5,7 @@ import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
 import { StorageService } from "./../../services/storage.service";
 import { ConstantsService } from "../../services/constants.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 
 @Component({
@@ -63,6 +63,8 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
   randomPatientId: string;
 
   visitId: string;
+  type: string;
+  paramID: string;
 
   constructor(
     private db: DatabaseService,
@@ -70,8 +72,10 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
     private router: Router,
     private camera: Camera,
     private storageService: StorageService,
-    public constants: ConstantsService
+    public constants: ConstantsService,
+    public activatedRoute: ActivatedRoute
   ) {
+
     this.loadUserDetails();
     this.loadSessionDetails();
 
@@ -90,6 +94,27 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
       religion: new FormControl("", Validators.required),
       numberOfFamilyMembers: new FormControl("", Validators.required)
     });
+  }
+
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.type = params['type'];
+      this.paramID = params['paramID'];
+    });
+
+    console.log("this.type -> " + this.type);
+    console.log("this.paramID -> " + this.paramID);
+
+    this.loadGenders();
+    this.loadCastes();
+    this.loadReligions();
+    this.loadAgeUnits();
+    this.loadAgeCategories();
+    // this.resetValues();
+  }
+
+  ngOnDestroy() {
+    this.resetValues();
   }
 
   cameraOptions: CameraOptions = {
@@ -260,19 +285,6 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
           JSON.stringify(error)
         );
       });
-  }
-
-  ngOnInit() {
-    this.loadGenders();
-    this.loadCastes();
-    this.loadReligions();
-    this.loadAgeUnits();
-    this.loadAgeCategories();
-    // this.resetValues();
-  }
-
-  ngOnDestroy() {
-    this.resetValues();
   }
 
   takeSnap() {
@@ -619,10 +631,10 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
     let ageUnit = this.benRegForm.get("ageUnit").value;
     let pregnancyStatus = this.benRegForm.get("pregnancyStatus").value;
     let ageCategory = this.benRegForm.get("ageCategory").value;
-    let personalNumber = this.benRegForm.get("personalNumber").value.trim();
+    let personalNumber = this.benRegForm.get("personalNumber").value;
     let familyOrRelativeNumber = this.benRegForm
       .get("familyOrRelativeNumber")
-      .value.trim();
+      .value;
     let communityId = this.benRegForm.get("caste").value;
     let religionId = this.benRegForm.get("religion").value;
     let noOfFamilyNumbers = this.benRegForm.get("numberOfFamilyMembers").value;
@@ -720,14 +732,16 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
       alert("Enter Beneficiary Name");
       return false;
     } else {
-      this.commonService.checkAlphabetPatternNLength('Name', name);
+      let res = this.commonService.checkAlphabetPatternNLength('Name', name);
+      if (!res) return false;
     }
 
     if (!surname || surname == null) {
       alert("Enter Beneficiary Surname");
       return false;
     } else {
-      this.commonService.checkAlphabetPatternNLength('Surname', surname);
+      let res = this.commonService.checkAlphabetPatternNLength('Surname', surname);
+      if (!res) return false;
     }
 
     if (!genderId || genderId == null) {
@@ -757,7 +771,8 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
       alert("Please Enter personal number ");
       return false;
     } else if (!this.disablePersonalNumber) {
-      this.commonService.validatePhoneNumber('Personal Number', personalNumber);
+      let res = this.commonService.validatePhoneNumber('Personal Number', personalNumber);
+      if (!res) return false;
     }
 
     if (
@@ -767,7 +782,8 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
       alert("Please Enter Family/Relative number ");
       return false;
     } else if (!this.disableFamilyOrRelativeNumber) {
-      this.commonService.validatePhoneNumber('Family/Relative Number', familyOrRelativeNumber);
+      let res = this.commonService.validatePhoneNumber('Family/Relative Number', familyOrRelativeNumber);
+      if (!res) return false;
     }
 
     if (!communityId || communityId == null) {
