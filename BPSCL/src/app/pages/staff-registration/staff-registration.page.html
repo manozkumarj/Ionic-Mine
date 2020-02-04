@@ -81,7 +81,7 @@
                 </ion-col>
                 <ion-col style="padding: 0;" size="12" size-sm>
                   <ion-grid style="padding: 0; margin: 0;">
-                    <ion-row style="width: 95%;">
+                    <ion-row style="width: 100%;">
                       <ion-col style="padding-left: 0;">
                         <ion-input formControlName="age" class="field-input" type="number" value=""
                           (ionBlur)="ageChange()">
@@ -183,12 +183,13 @@
                   </ion-input>
                 </ion-col>
               </ion-row>
-              <ion-row class="row-border row-height-45">
-                <ion-col size="12" size-sm>
-                  <ion-button style="width: 90%; font-weight: bold;" type="submit" color="primary">Submit</ion-button>
+              <ion-row class="row-border row-height-45 margin-top-20">
+                <ion-col size="12" size-sm class='pad-zero'>
+                  <ion-button style="font-weight: bold;" class='width-full' type="submit" color="primary">Submit
+                  </ion-button>
                 </ion-col>
-                <ion-col size="12" size-sm>
-                  <ion-button (click)="resetValues()" style="width: 90%; font-weight: bold;" type="button"
+                <ion-col size="12" size-sm class='pad-zero pad-left-10'>
+                  <ion-button (click)="resetValues()" style="width: 95%; font-weight: bold;" type="button"
                     color="primary">Reset</ion-button>
                 </ion-col>
               </ion-row>

@@ -47,7 +47,7 @@
 .field-input {
   border: 2px solid #3b4bad;
   border-radius: 5px;
-  width: 90%;
+  width: 100%;
 }
 .hider {
   display: none;
@@ -58,6 +58,22 @@ ion-content {
 ion-toolbar {
   --background: #3b4bad;
   --color: #fff;
+}
+
+.pad-zero{
+  padding: 0px;
+}
+
+.pad-left-10{
+  padding-left: 10px;
+}
+
+.width-full{
+  width: 100%;
+}
+
+.margin-top-20{
+margin-top: 20px;
 }
 
 // .alert-wrapper{
