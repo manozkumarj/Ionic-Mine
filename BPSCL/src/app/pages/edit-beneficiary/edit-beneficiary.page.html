@@ -32,7 +32,7 @@
 
 <ion-content style="background-color: #e6e9f2;">
   <!-- Parent Grid - starts here -->
-  <form [formGroup]="benRegForm" (ngSubmit)="onSubmit(benRegForm.value)" style="margin-bottom: 25px;">
+  <form [formGroup]="benUpdateForm" (ngSubmit)="onSubmit(benUpdateForm.value)" style="margin-bottom: 25px;">
     <ion-grid style="padding: 0px;">
       <ion-row style="min-height: 640px;">
         <ion-col size="12" size-sm>
@@ -44,7 +44,7 @@
                   Beneficiary Id
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input class="field-input" [value]="paramID"></ion-input>
+                  <ion-input class="field-input" [value]="paramID" [disabled]='true'></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -52,7 +52,7 @@
                   Visit Date
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input class="field-input" [value]="VisitDate"></ion-input>
+                  <ion-input class="field-input" [value]="visitDate" [disabled]='true'></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">
@@ -60,7 +60,7 @@
                   Date of Registration
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-input class="field-input" readonly [value]="dateTime"></ion-input>
+                  <ion-input class="field-input" readonly [value]="registrationDate" [disabled]='true'></ion-input>
                 </ion-col>
               </ion-row>
               <ion-row class="row-border row-height-45">

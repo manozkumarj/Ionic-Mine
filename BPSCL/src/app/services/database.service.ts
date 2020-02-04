@@ -575,7 +575,7 @@ export class DatabaseService {
   }
 
   getBeneficiaryDetails(benId) {
-    let sql = `SELECT ben.patientId, ben.deviceId, ben.vanId, ben.routeVillageId, ben.servicePointId, ben.compoundPatientId, ben.registrationDate, ben.name, ben.surname, ben.genderId, ben.dob, ben.communityId, ben.religionId, ben.fatherName, ben.spouseName, ben.motherName, ben.aadharNo, ben.mctsId, ben.villageId, ben.mandalId, ben.districtId, ben.stateId, ben.imageUrl, ben.insertedBy, ben.insertedDate, ben.updatedBy, ben.updatedDate, ben.imageUploadStatus, ben.uploadStatus, visit.visitId, visit.visitCount, visit.visitDate, visit.age, visit.ageTypeId, visit.ageGroupId, visit.contactNo, visit.familyContactNo, visit.economicStatusId, visit.pregnancyStatus, visit.noOfFamilyNumbers, g.gender, d.districtName, m.mandalName, v.villageName FROM ${this.table_beneficiaries} AS ben LEFT JOIN ${this.table_visits} AS visit ON ben.patientId = visit.patientId LEFT JOIN mp_gender AS g ON ben.genderId = g.genderId LEFT JOIN m_District AS d ON ben.districtId = d.districtId LEFT JOIN m_Mandal AS m ON ben.mandalId = m.mandalId LEFT JOIN m_Village AS v ON ben.villageId = v.villageId WHERE ben.patientId = '${benId}'`;
+    let sql = `SELECT ben.patientId, ben.deviceId, ben.vanId, ben.routeVillageId, ben.servicePointId, ben.compoundPatientId, ben.registrationDate, ben.name, ben.surname, ben.genderId, ben.dob, ben.communityId, ben.religionId, ben.fatherName, ben.spouseName, ben.motherName, ben.aadharNo, ben.mctsId, ben.villageId, ben.mandalId, ben.districtId, ben.stateId, ben.imageUrl, ben.insertedBy, ben.insertedDate, ben.updatedBy, ben.updatedDate, ben.imageUploadStatus, ben.uploadStatus, visit.visitId, visit.visitCount, visit.visitDate, visit.age, visit.ageTypeId, visit.ageGroupId, visit.contactNo, visit.familyContactNo, visit.economicStatusId, visit.pregnancyStatus, visit.noOfFamilyNumbers, visit.isHandicaped, g.gender, d.districtName, m.mandalName, v.villageName FROM ${this.table_beneficiaries} AS ben LEFT JOIN ${this.table_visits} AS visit ON ben.patientId = visit.patientId LEFT JOIN mp_gender AS g ON ben.genderId = g.genderId LEFT JOIN m_District AS d ON ben.districtId = d.districtId LEFT JOIN m_Mandal AS m ON ben.mandalId = m.mandalId LEFT JOIN m_Village AS v ON ben.villageId = v.villageId WHERE ben.patientId = '${benId}'`;
     return this.dbObject.executeSql(sql, []).then(data => {
       let beneficiaryDetails = [];
       if (data.rows.length > 0) {
@@ -1258,6 +1258,68 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - registerBeneficiary() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  updateBeneficiary(data) {
+    let sql = `UPDATE ${this.table_beneficiaries} SET name = ?, surname = ?, genderId = ?, dob = ?, communityId = ?, religionId = ?, imageUrl = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ?`;
+
+    return this.dbObject
+      .executeSql(sql, [
+        data.name,
+        data.surname,
+        data.genderId,
+        data.dob,
+        data.communityId,
+        data.religionId,
+        data.imageUrl,
+        data.userId,
+        data.patientId,
+        data.servicePointId
+      ])
+      .then(res => {
+        console.log(
+          "database - updateBeneficiary() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - updateBeneficiary() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  updateVisit(data) {
+    let sql = `UPDATE ${this.table_visits} SET age = ?, ageTypeId = ?, ageGroupId = ?, contactNo = ?, familyContactNo = ?, economicStatusId = ?, pregnancyStatus = ?, noOfFamilyNumbers = ?, isHandicaped = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ?`;
+
+    return this.dbObject
+      .executeSql(sql, [
+        data.age,
+        data.ageUnit,
+        data.ageCategory,
+        data.personalNumber,
+        data.familyOrRelativeNumber,
+        data.economicStatusId,
+        data.pregnancyStatus,
+        data.noOfFamilyNumbers,
+        data.isHandicapped,
+        data.userId,
+        data.patientId,
+        data.servicePointId
+      ])
+      .then(res => {
+        console.log(
+          "database - updateVisit() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - updateVisit() - Error -> " + JSON.stringify(error)
         );
         return false;
       });

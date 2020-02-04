@@ -1,4 +1,3 @@
-import { LoginPageRoutingModule } from "./../login/login-routing.module";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { DatabaseService } from "src/app/services/database.service";
@@ -14,7 +13,7 @@ import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
   styleUrls: ['./edit-beneficiary.page.scss'],
 })
 export class EditBeneficiaryPage implements OnInit, OnDestroy {
-  benRegForm: FormGroup;
+  benUpdateForm: FormGroup;
   genders: any[] = [];
   ageUnits: any[] = [];
   ageCategories: any[] = [];
@@ -42,6 +41,8 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
   servicePointId: number;
   servicePointName: string;
   servicePointCode: string;
+  registrationDate: string;
+  visitDate: string;
 
   disablePersonalNumber: boolean = false;
   disableFamilyOrRelativeNumber: boolean = false;
@@ -65,7 +66,6 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
   visitId: string;
   type: string;
   paramID: string;
-  VisitDate: string;
 
   constructor(
     private db: DatabaseService,
@@ -80,7 +80,7 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
     this.loadUserDetails();
     this.loadSessionDetails();
 
-    this.benRegForm = new FormGroup({
+    this.benUpdateForm = new FormGroup({
       benificiaryName: new FormControl("", Validators.required),
       surname: new FormControl("", Validators.required),
       gender: new FormControl("", Validators.required),
@@ -106,15 +106,15 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
     console.log("this.type -> " + this.type);
     console.log("this.paramID -> " + this.paramID);
 
-    if (this.type && this.paramID)
-      this.getBenDetails(this.paramID);
-
     this.loadGenders();
     this.loadCastes();
     this.loadReligions();
     this.loadAgeUnits();
     this.loadAgeCategories();
     // this.resetValues();
+
+    if (this.type && this.paramID)
+      this.getBenDetails(this.paramID);
   }
 
   ngOnDestroy() {
@@ -156,8 +156,6 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
         this.servicePointCode = data["servicePointCode"];
 
         this.servicePointId = data["servicePointId"];
-        this.getMaxBeneficiaryId(this.servicePointId);
-        this.getMaxVisitId(this.servicePointId);
       })
       .catch(error => {
         console.error(
@@ -175,134 +173,43 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
     this.db
       .getBeneficiaryDetails(selectedBenID)
       .then(benDetails => {
-        console.log(
-          "Received Ben details are -> " + JSON.stringify(benDetails)
-        );
-        // this.commonService.setBenDetails(benDetails[0]);
+        console.log("Received Ben details are below -> ");
+        console.log(JSON.stringify(benDetails));
+
+        this.benUpdateForm.patchValue({
+          benificiaryName: benDetails[0]['name'],
+          surname: benDetails[0]['surname'],
+          gender: benDetails[0]['genderId'],
+          dateOfBirth: benDetails[0]['dob'],
+          age: benDetails[0]['age'],
+          ageUnit: benDetails[0]['ageTypeId'],
+          pregnancyStatus: benDetails[0]['pregnancyStatus'],
+          ageCategory: benDetails[0]['ageGroupId'],
+          personalNumber: benDetails[0]['contactNo'],
+          familyOrRelativeNumber: benDetails[0]['familyContactNo'],
+          caste: benDetails[0]['communityId'],
+          religion: benDetails[0]['religionId'],
+          numberOfFamilyMembers: benDetails[0]['noOfFamilyNumbers']
+        });
+
+        let isHandicapped = benDetails[0]['isHandicaped'];
+        let isBpl = benDetails[0]['economicStatusId'];
+        this.registrationDate = benDetails[0]['registrationDate'];
+        this.visitDate = benDetails[0]['visitDate'];
+        let imageUrl = benDetails[0]['imageUrl'];
+
+        this.isHandicapped = (isHandicapped == 1) ? true : false;
+        this.isBpl = (isBpl == 1) ? true : false;
+
+        if (imageUrl) {
+          this.benPhoto = imageUrl;
+          this.isPhotoCaptured = true;
+        }
+
       })
       .catch(error => {
         console.error(
           "Error -> getBeneficiaryDetails() function returned error." +
-          JSON.stringify(error)
-        );
-      });
-  }
-
-  getMaxBeneficiaryId(servicePointId) {
-    console.log("Sending servicePointId is -> " + servicePointId);
-    this.db
-      .getMaxBeneficiaryId(servicePointId)
-      .then(maxbeneficiaryId => {
-        let id;
-        console.log(
-          "Fetched maxbeneficiaryId -> " + JSON.stringify(maxbeneficiaryId)
-        );
-        console.log(maxbeneficiaryId);
-        let receivedData = maxbeneficiaryId[0]["maxbeneficiaryId"];
-
-        if (!receivedData || receivedData == null) {
-          receivedData = this.servicePointCode + "B000001";
-        }
-
-        if (receivedData) {
-          console.log("Inside if");
-
-          if (receivedData.length > 0) {
-            let benId = receivedData;
-            if (benId != null && benId != "") {
-              id = parseInt(benId.substring(benId.indexOf("B") + 1)) + 1;
-            } else {
-              id = 1;
-            }
-          } else {
-            id = 1;
-          }
-        } else {
-          console.log("Inside else");
-          id = 1;
-        }
-
-        id = id.toString();
-
-        let createBeneficiaryId = "";
-
-        if (id.length >= 6) {
-          console.log("Inside if 2");
-          createBeneficiaryId = this.servicePointCode + "B" + id;
-        } else {
-          console.log("Inside else 2");
-          console.log("this.servicePointCode -> " + this.servicePointCode);
-          let addLeadingZeros = this.prefixZeros(id, "0", 6);
-          createBeneficiaryId = this.servicePointCode + "B" + addLeadingZeros;
-        }
-
-        this.randomPatientId = createBeneficiaryId;
-
-        console.log(
-          "Random patient ID is set dynamically -> " + this.randomPatientId
-        );
-      })
-      .catch(error => {
-        console.error(
-          "Error -> getBeneficiaryId() function returned error." +
-          JSON.stringify(error)
-        );
-      });
-  }
-
-  getMaxVisitId(servicePointId) {
-    console.log("Sending servicePointId is -> " + servicePointId);
-    this.db
-      .getMaxVisitId(servicePointId)
-      .then(maxVisitId => {
-        let id;
-        console.log("Fetched maxVisitId -> " + JSON.stringify(maxVisitId));
-        console.log(maxVisitId);
-        let receivedData = maxVisitId[0]["maxVisitId"];
-
-        if (!receivedData || receivedData == null) {
-          receivedData = this.servicePointCode + "V000001";
-        }
-
-        if (receivedData) {
-          console.log("Inside if");
-
-          if (receivedData.length > 0) {
-            let visitId = receivedData;
-            if (visitId != null && visitId != "") {
-              id = parseInt(visitId.substring(visitId.indexOf("V") + 1)) + 1;
-            } else {
-              id = 1;
-            }
-          } else {
-            id = 1;
-          }
-        } else {
-          console.log("Inside else");
-          id = 1;
-        }
-
-        id = id.toString();
-
-        let createVisitId = "";
-
-        if (id.length >= 6) {
-          console.log("Inside if 2");
-          createVisitId = this.servicePointCode + "V" + id;
-        } else {
-          console.log("Inside else 2");
-          console.log("this.servicePointCode -> " + this.servicePointCode);
-          let addLeadingZeros = this.prefixZeros(id, "0", 6);
-          createVisitId = this.servicePointCode + "V" + addLeadingZeros;
-        }
-
-        this.visitId = createVisitId;
-
-        console.log("Visit ID is set dynamically -> " + this.visitId);
-      })
-      .catch(error => {
-        console.error(
-          "Error -> getBeneficiaryId() function returned error." +
           JSON.stringify(error)
         );
       });
@@ -405,19 +312,22 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
   }
 
   genderChange() {
-    let selectedGender = this.benRegForm.get("gender").value;
+    let selectedGender = this.benUpdateForm.get("gender").value;
     if (selectedGender != 2) this.showPregnancyField = false;
-    else this.showPregnancyField = true;
+    else {
+      this.showPregnancyField = true;
+      this.benUpdateForm.patchValue({ pregnancyStatus: null });
+    }
   }
 
   personalNumberCheckbox(e) {
     if (e.target.checked) {
       this.disablePersonalNumber = true;
-      this.benRegForm.patchValue({ personalNumber: "N/A" });
+      this.benUpdateForm.patchValue({ personalNumber: "N/A" });
       console.log("personalNumberCheckbox is checked");
     } else {
       this.disablePersonalNumber = false;
-      this.benRegForm.patchValue({ personalNumber: "" });
+      this.benUpdateForm.patchValue({ personalNumber: "" });
       console.log("personalNumberCheckbox is unchecked");
     }
   }
@@ -425,11 +335,11 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
   familyOrRelativeNumberCheckbox(e) {
     if (e.target.checked) {
       this.disableFamilyOrRelativeNumber = true;
-      this.benRegForm.patchValue({ familyOrRelativeNumber: "N/A" });
+      this.benUpdateForm.patchValue({ familyOrRelativeNumber: "N/A" });
       console.log("familyOrRelativeNumberCheckbox is checked");
     } else {
       this.disableFamilyOrRelativeNumber = false;
-      this.benRegForm.patchValue({ familyOrRelativeNumber: "" });
+      this.benUpdateForm.patchValue({ familyOrRelativeNumber: "" });
       console.log("familyOrRelativeNumberCheckbox is unchecked");
     }
   }
@@ -455,16 +365,16 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
   }
 
   ageChange() {
-    let enteredAge = this.benRegForm.get("age").value;
+    let enteredAge = this.benUpdateForm.get("age").value;
     console.log("ageChange() - enteredAge -> " + enteredAge);
     this.ageUnitChange();
 
-    // this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+    // this.benUpdateForm.patchValue({ ageUnit: "", dateOfBirth: "" });
   }
 
   ageUnitChange() {
-    let enteredAge = this.benRegForm.get("age").value;
-    let selectedAgeUnit = this.benRegForm.get("ageUnit").value;
+    let enteredAge = this.benUpdateForm.get("age").value;
+    let selectedAgeUnit = this.benUpdateForm.get("ageUnit").value;
     let manageAction = false;
 
     console.log("enteredAge -> " + enteredAge);
@@ -477,7 +387,7 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
       manageAction = true;
       if (enteredAge > 100) {
         alert("Years should be between 1-100");
-        this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+        this.benUpdateForm.patchValue({ ageUnit: "", dateOfBirth: "" });
         return false;
       }
       let currentYear = today.getFullYear();
@@ -487,7 +397,7 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
       manageAction = true;
       if (enteredAge > 11) {
         alert("Months should be between 1-11");
-        this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+        this.benUpdateForm.patchValue({ ageUnit: "", dateOfBirth: "" });
         return false;
       }
       let currentMonth = today.getMonth();
@@ -497,7 +407,7 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
       manageAction = true;
       if (enteredAge > 30) {
         alert("Days should be between 1-30");
-        this.benRegForm.patchValue({ ageUnit: "", dateOfBirth: "" });
+        this.benUpdateForm.patchValue({ ageUnit: "", dateOfBirth: "" });
         return false;
       }
       let currentDate = today.getDate();
@@ -508,13 +418,13 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
     if (manageAction) {
       console.log("Set calender value as -> " + dob);
       let assignDob = this.commonService.getDateTime(dob);
-      this.benRegForm.patchValue({ dateOfBirth: assignDob });
+      this.benUpdateForm.patchValue({ dateOfBirth: assignDob });
     }
   }
 
   dateOfBirthChange() {
-    let selectedDob = new Date(this.benRegForm.get("dateOfBirth").value);
-    let selectedGender = this.benRegForm.get("gender").value;
+    let selectedDob = new Date(this.benUpdateForm.get("dateOfBirth").value);
+    let selectedGender = this.benUpdateForm.get("gender").value;
     let selectedDobSeconds = selectedDob.getTime();
     let ageWillBe;
     let ageUnitWillBe;
@@ -544,7 +454,7 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
         this.ageUnits[2]["isSelected"] = true;
       }
 
-      this.benRegForm.patchValue({ ageUnit: ageUnitWillBe, age: ageWillBe });
+      this.benUpdateForm.patchValue({ ageUnit: ageUnitWillBe, age: ageWillBe });
       console.log("asigning year to ageUnit & age here ");
       console.log("ageUnit was set and value is " + ageUnitWillBe);
       this.selectAgeCategory(ageWillBe, ageUnitWillBe, selectedGender);
@@ -559,32 +469,32 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
 
     if (ageType == 1) {
       if (ageValue >= 0 && ageValue <= 28) {
-        this.benRegForm.patchValue({ ageCategory: 5 });
+        this.benUpdateForm.patchValue({ ageCategory: 5 });
       } else if (ageValue > 28 && ageValue <= 31) {
-        this.benRegForm.patchValue({ ageCategory: 6 });
+        this.benUpdateForm.patchValue({ ageCategory: 6 });
       }
     } else if (ageType == 2) {
       if (ageValue >= 1 && ageValue <= 12) {
-        this.benRegForm.patchValue({ ageCategory: 6 });
+        this.benUpdateForm.patchValue({ ageCategory: 6 });
       }
     } else if (ageType == 3) {
       if (ageValue == 1) {
-        this.benRegForm.patchValue({ ageCategory: 6 });
+        this.benUpdateForm.patchValue({ ageCategory: 6 });
       } else if (ageValue > 1 && ageValue <= 5) {
-        this.benRegForm.patchValue({ ageCategory: 7 });
+        this.benUpdateForm.patchValue({ ageCategory: 7 });
       } else if (ageValue > 5 && ageValue <= 10) {
-        this.benRegForm.patchValue({ ageCategory: 8 });
+        this.benUpdateForm.patchValue({ ageCategory: 8 });
       } else if (ageValue > 15 && ageValue < 45 && gender == 2) {
         this.showPregnancyField = true;
-        this.benRegForm.patchValue({ ageCategory: 4 });
+        this.benUpdateForm.patchValue({ ageCategory: 4 });
       } else if (ageValue > 10 && ageValue < 20) {
-        this.benRegForm.patchValue({ ageCategory: 9 });
+        this.benUpdateForm.patchValue({ ageCategory: 9 });
       } else if (ageValue > 19) {
-        this.benRegForm.patchValue({ ageCategory: 10 });
+        this.benUpdateForm.patchValue({ ageCategory: 10 });
       }
     }
 
-    let selectedAgeCategory = this.benRegForm.get("ageCategory").value;
+    let selectedAgeCategory = this.benUpdateForm.get("ageCategory").value;
     this.disableAgeCategory = true;
     console.log("Picked selectedAgeCategory -> " + selectedAgeCategory);
   }
@@ -598,14 +508,14 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
   }
 
   resetValues() {
-    this.benRegForm.patchValue({
+    this.benUpdateForm.patchValue({
       benificiaryName: "",
       surname: "",
       gender: "",
       dateOfBirth: "",
       age: "",
       ageUnit: "",
-      pregnancyStatus: "",
+      pregnancyStatus: null,
       ageCategory: "",
       personalNumber: "",
       familyOrRelativeNumber: "",
@@ -631,122 +541,69 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
     console.log(values);
     // return false;
 
-    // let patientId = "SP0002000010B000500";
     let patientId = this.paramID;
-    let visitId = this.visitId;
-    let visitCount = 1;
-    let deviceId = this.deviceId;
-    let vanId = this.vanId;
-    let routeVillageId = this.villageId;
     let servicePointId = this.servicePointId;
-    let compoundPatientId = "N/A";
-    let fatherName = "N/A";
-    let spouseName = "N/A";
-    let motherName = "N/A";
-    let aadharNo = "N/A";
-    let mctsId = "N/A";
-    let name = this.benRegForm.get("benificiaryName").value.trim();
-    let surname = this.benRegForm.get("surname").value.trim();
-    let genderId = this.benRegForm.get("gender").value;
-    let dob = this.benRegForm.get("dateOfBirth").value.trim();
-    let age = +this.benRegForm.get("age").value;
-    let ageUnit = this.benRegForm.get("ageUnit").value;
-    let pregnancyStatus = this.benRegForm.get("pregnancyStatus").value;
-    let ageCategory = this.benRegForm.get("ageCategory").value;
-    let personalNumber = this.benRegForm.get("personalNumber").value;
-    let familyOrRelativeNumber = this.benRegForm
+    let name = this.benUpdateForm.get("benificiaryName").value.trim();
+    let surname = this.benUpdateForm.get("surname").value.trim();
+    let genderId = this.benUpdateForm.get("gender").value;
+    let dob = this.benUpdateForm.get("dateOfBirth").value.trim();
+    let age = +this.benUpdateForm.get("age").value;
+    let ageUnit = this.benUpdateForm.get("ageUnit").value;
+    let pregnancyStatus = this.benUpdateForm.get("pregnancyStatus").value;
+    let ageCategory = this.benUpdateForm.get("ageCategory").value;
+    let personalNumber = this.benUpdateForm.get("personalNumber").value;
+    let familyOrRelativeNumber = this.benUpdateForm
       .get("familyOrRelativeNumber")
       .value;
-    let communityId = this.benRegForm.get("caste").value;
-    let religionId = this.benRegForm.get("religion").value;
-    let noOfFamilyNumbers = this.benRegForm.get("numberOfFamilyMembers").value;
+    let communityId = this.benUpdateForm.get("caste").value;
+    let religionId = this.benUpdateForm.get("religion").value;
+    let noOfFamilyNumbers = this.benUpdateForm.get("numberOfFamilyMembers").value;
     let userId = this.userId;
 
-    let isBpl = this.isBpl ? 1 : 2;
     let isHandicapped = this.isHandicapped ? 1 : 2;
-
-    let stateId = this.stateId;
-    let districtId = this.districtId;
-    let mandalId = this.mandalId;
-    let villageId = this.villageId;
     let imageUrl = this.benPhoto;
-
-    // Visit tabe related data
     let economicStatusId = this.isBpl ? 1 : 0;
-    let educationStatusId = -1;
-    let maritalStatusId = -1;
-    let occupationStatusId = -1;
-    let serviceProvidedId = -1;
 
     if (genderId != 2) {
       pregnancyStatus = 0;
     }
 
-    let benTypeId = 0;
-    let provisonalDiagnosis = "N/A";
-    let impClinicalFindings = "N/A";
-
-    let benRegFormDetails = {
+    let benUpdateFormDetails = {
       patientId,
-      deviceId,
-      vanId,
-      routeVillageId,
       servicePointId,
-      compoundPatientId,
       name,
       surname,
       genderId,
       dob,
       communityId,
       religionId,
-      fatherName,
-      spouseName,
-      motherName,
-      aadharNo,
-      mctsId,
-      villageId,
-      mandalId,
-      districtId,
-      stateId,
-      imageUrl,
-      userId
+      userId,
+      imageUrl
     };
 
     let visitDetails = {
       patientId,
-      visitId,
-      deviceId,
-      vanId,
-      routeVillageId,
       servicePointId,
-      compoundPatientId,
-      visitCount,
       age,
       ageUnit,
       ageCategory,
       personalNumber,
       familyOrRelativeNumber,
       economicStatusId,
-      educationStatusId,
-      maritalStatusId,
-      occupationStatusId,
-      serviceProvidedId,
       pregnancyStatus,
-      benTypeId,
       noOfFamilyNumbers,
       isHandicapped,
-      provisonalDiagnosis,
-      impClinicalFindings,
       userId
     };
 
     console.log("pregnancyStatus is -> " + pregnancyStatus);
 
     console.log(
-      "Object of benRegFormDetails -> " + JSON.stringify(benRegFormDetails)
+      "Object of benUpdateFormDetails -> " + JSON.stringify(benUpdateFormDetails)
     );
 
     console.log("Object of visitDetails -> " + JSON.stringify(visitDetails));
+    // return false;
 
     console.log("Ben patientId -> " + patientId);
 
@@ -830,41 +687,41 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
     }
 
     this.db
-      .registerBeneficiary(benRegFormDetails)
+      .updateBeneficiary(benUpdateFormDetails)
       .then(async res => {
         console.log(
-          "Beneficiary registered successfully...!" + JSON.stringify(res)
+          "Beneficiary updated successfully...!" + JSON.stringify(res)
         );
         let status = await res;
-        // insertVisit functionality - starts
+        // updateVisit functionality - starts
         if (status) {
           this.db
-            .insertVisit(visitDetails)
+            .updateVisit(visitDetails)
             .then(res => {
               console.log(
-                "Beneficiary Visit details inserted successfully...!" +
+                "Beneficiary Visit details updated successfully...!" +
                 JSON.stringify(res)
               );
               if (res) {
-                this.router.navigate(["/vitals"]);
+                this.router.navigate(["/search-beneficiary"]);
               }
             })
             .catch(error => {
               console.error(
-                "Error -> Beneficiary Visit details insertion failed - " +
+                "Error -> Beneficiary Visit details updation failed - " +
                 JSON.stringify(error)
               );
             });
         } else {
           console.log(
-            "insertVisit() function not triggered... :(" + JSON.stringify(res)
+            "updateVisit() function not triggered... :(" + JSON.stringify(res)
           );
         }
-        // insertVisit functionality - ends
+        // updateVisit functionality - ends
       })
       .catch(error => {
         console.error(
-          "Error -> Beneficiary registration failed - " + JSON.stringify(error)
+          "Error -> Beneficiary updation failed - " + JSON.stringify(error)
         );
       });
   }

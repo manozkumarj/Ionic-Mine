@@ -96,8 +96,7 @@
       <div *ngIf="beneficiaries.length > 0">
         <ion-row *ngFor="let ben of beneficiaries" align-items-center justify-content-center style="text-align: center;
        color: #3b4bad; border: 2px solid #3b4bad;
-         margin-top: 3px;" [routerLink]="['/beneficiary-registration']"
-          [queryParams]="{type:'edit', paramID:ben.patientId}">
+         margin-top: 3px;" [routerLink]="['/edit-beneficiary']" [queryParams]="{type:'edit', paramID:ben.patientId}">
           <ion-col size="12" size-sm>
             <div>
               <img [src]="ben.imageUrl" alt="user-avatar" width="60px" />

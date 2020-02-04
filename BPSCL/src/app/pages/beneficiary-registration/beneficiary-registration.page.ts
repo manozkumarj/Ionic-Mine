@@ -386,7 +386,10 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
   genderChange() {
     let selectedGender = this.benRegForm.get("gender").value;
     if (selectedGender != 2) this.showPregnancyField = false;
-    else this.showPregnancyField = true;
+    else {
+      this.showPregnancyField = true;
+      this.benRegForm.patchValue({ pregnancyStatus: null });
+    }
   }
 
   personalNumberCheckbox(e) {
@@ -584,7 +587,7 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
       dateOfBirth: "",
       age: "",
       ageUnit: "",
-      pregnancyStatus: "",
+      pregnancyStatus: null,
       ageCategory: "",
       personalNumber: "",
       familyOrRelativeNumber: "",

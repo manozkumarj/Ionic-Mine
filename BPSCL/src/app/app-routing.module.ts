@@ -30,13 +30,6 @@ const routes: Routes = [
       ).then(m => m.BeneficiaryRegistrationPageModule)
   },
   {
-    path: "beneficiary-registration/:type/:paramID",
-    loadChildren: () =>
-      import(
-        "./pages/beneficiary-registration/beneficiary-registration.module"
-      ).then(m => m.BeneficiaryRegistrationPageModule)
-  },
-  {
     path: 'vitals',
     loadChildren: () => import('./pages/vitals/vitals.module').then(m => m.VitalsPageModule)
   },
@@ -98,7 +91,7 @@ const routes: Routes = [
   },
   {
     path: 'edit-beneficiary',
-    loadChildren: () => import('./pages/edit-beneficiary/edit-beneficiary.module').then( m => m.EditBeneficiaryPageModule)
+    loadChildren: () => import('./pages/edit-beneficiary/edit-beneficiary.module').then(m => m.EditBeneficiaryPageModule)
   }
 
 ];
