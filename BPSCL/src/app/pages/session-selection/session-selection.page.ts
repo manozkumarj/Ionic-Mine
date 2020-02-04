@@ -175,6 +175,7 @@ export class SessionSelectionPage implements OnInit {
 
   stateChanged() {
     console.log("State changed -> " + this.sessionForm.get("stateId").value);
+    this.sessionForm.patchValue({ districtId: null, mandal: null, villageId: null, servicePointId: null });
     this.districts = [];
     this.mandals = [];
     this.villages = [];
@@ -187,6 +188,7 @@ export class SessionSelectionPage implements OnInit {
     console.log(
       "District changed -> " + this.sessionForm.get("districtId").value
     );
+    this.sessionForm.patchValue({ mandalId: null, villageId: null, servicePointId: null });
     this.mandals = [];
     this.villages = [];
     this.servicePoints = [];
@@ -196,6 +198,7 @@ export class SessionSelectionPage implements OnInit {
 
   mandalChanged() {
     console.log("Mandal changed -> " + this.sessionForm.get("mandalId").value);
+    this.sessionForm.patchValue({ villageId: null, servicePointId: null });
     this.villages = [];
     this.servicePoints = [];
     this.mandalId = this.sessionForm.get("mandalId").value;
@@ -206,6 +209,7 @@ export class SessionSelectionPage implements OnInit {
     console.log(
       "Village changed -> " + this.sessionForm.get("villageId").value
     );
+    this.sessionForm.patchValue({ servicePointId: null });
     this.servicePoints = [];
     this.villageId = this.sessionForm.get("villageId").value;
     this.getServicePoints(
@@ -217,6 +221,14 @@ export class SessionSelectionPage implements OnInit {
   }
 
   sessionChange(id) {
+
+    this.districts = [];
+    this.mandals = [];
+    this.villages = [];
+    this.servicePoints = [];
+
+    this.sessionForm.patchValue({ stateId: null, districtId: null, mandal: null, villageId: null, servicePointId: null });
+
     console.log("Session selected " + id);
     this.sessionTypeId = id;
     this.db

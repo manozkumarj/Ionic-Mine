@@ -103,7 +103,7 @@ export class AppComponent {
     {
       title: "Logout",
       url: "/logout",
-      icon: "list"
+      icon: "log-out"
     }
     // {
     //   title: "Care Provided",

@@ -63,8 +63,6 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
   randomPatientId: string;
 
   visitId: string;
-  type: string;
-  paramID: string;
 
   constructor(
     private db: DatabaseService,
@@ -97,14 +95,6 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.type = params['type'];
-      this.paramID = params['paramID'];
-    });
-
-    console.log("this.type -> " + this.type);
-    console.log("this.paramID -> " + this.paramID);
-
     this.loadGenders();
     this.loadCastes();
     this.loadReligions();
