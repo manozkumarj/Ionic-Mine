@@ -66,7 +66,7 @@
                   </ion-col>
                 </ion-row>
 
-                <ion-row [ngClass]="{'hider' : !showLabTests}" class="labTests">
+                <!-- <ion-row [ngClass]="{'hider' : !showLabTests}" class="labTests">
                   <ion-col size="12" size-sm>
                     <ion-input (ionFocus)="openSelect()" type="number" value="" placeholder="Select Lab Test">
                     </ion-input>
@@ -79,26 +79,35 @@
                     <ion-input disabled='disabled' value="Units">
                     </ion-input>
                   </ion-col>
-                </ion-row>
+                </ion-row> -->
 
+                <div [ngClass]="{'hider' : !showLabTests}">
+                  <ion-row class="labTests" *ngFor="let labTest of labTests">
+                    <ion-col size="12" size-sm>
+                      <ion-select placeholder="Select Lab Test">
+                        <ion-select-option [value]="labTest.labTestId">
+                          {{labTest.labTestName}}
+                        </ion-select-option>
+                      </ion-select>
+                    </ion-col>
+                    <ion-col size="12" size-sm>
 
-                <ion-row [ngClass]="{'hider' : !showLabTests}" class="labTests">
-                  <ion-col size="12" size-sm>
-                    <ion-select placeholder="Select Lab Test" (ionChange)="labTestChange(two.value)" #two>
-                      <ion-select-option *ngFor="let labTest of labTests" [value]="labTest.id">
-                        {{labTest.name}}
-                      </ion-select-option>
-                    </ion-select>
-                  </ion-col>
-                  <ion-col size="12" size-sm>
-                    <ion-input type="number" value="" placeholder="Result">
-                    </ion-input>
-                  </ion-col>
-                  <ion-col size="12" size-sm>
-                    <ion-input disabled='disabled' value="Units">
-                    </ion-input>
-                  </ion-col>
-                </ion-row>
+                      <ion-select placeholder="Select Lab Test" *ngIf="labTest.input == 'select'">
+                        <ion-select-option *ngFor="let option of labTest.options" [value]="option">
+                          {{option}}
+                        </ion-select-option>
+                      </ion-select>
+
+                      <ion-input *ngIf="labTest.input == 'input'" type="number" value="" placeholder="Result">
+                      </ion-input>
+
+                    </ion-col>
+                    <ion-col size="12" size-sm>
+                      <ion-input disabled='disabled' [value]="labTest.units">
+                      </ion-input>
+                    </ion-col>
+                  </ion-row>
+                </div>
 
               </div>
 

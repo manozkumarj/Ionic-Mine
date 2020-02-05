@@ -17,24 +17,28 @@ export class LabTestPage implements OnInit, OnDestroy {
   benIds: any[] = [];
   selectedLabTests: any[] = [];
   ecgs: any[] = [];
-  labTests: any[] = [
+  labTests: any[] = [];
+  dummyLabTests: any[] = [
     {
-      id: 1,
-      name: 'One',
-      result: '',
-      unit: 'mg%'
+      labTestId: 1,
+      labTestName: 'Urine-Albumin',
+      validValues: 'Select~Nil~Trace~1+~2+~3+',
+      units: 'null',
+      result: ''
     },
     {
-      id: 2,
-      name: 'Two',
-      result: '',
-      unit: 'null'
+      labTestId: 2,
+      labTestName: 'Urine-Sugar',
+      validValues: 'Select~Nil~1+~2+~3+',
+      units: 'null',
+      result: ''
     },
     {
-      id: 3,
-      name: 'Three',
-      result: '',
-      unit: 'kms'
+      labTestId: 3,
+      labTestName: 'HB %',
+      validValues: '4--18',
+      units: 'gm/100ml',
+      result: ''
     }
   ];
 
@@ -69,6 +73,21 @@ export class LabTestPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    console.clear();
+    // console.log("1st Logging this.dummyLabTests");
+    // console.log(this.dummyLabTests);
+
+    this.labTests = this.dummyLabTests.map(labtest => ({
+      ...labtest,
+      input: labtest['validValues'].toLowerCase().includes('select') ? 'select' : 'input',
+      options: (labtest['validValues'].split("~")).filter(l => l != 'Select')
+    })
+    );
+
+    console.log("Logging this.labTests");
+    console.log(this.labTests);
+
   }
 
   ngOnDestroy() {
@@ -146,7 +165,7 @@ export class LabTestPage implements OnInit, OnDestroy {
   labTestChange(val) {
     console.log("selected val is -> " + val);
     this.selectedLabTests.push(val);
-    let filtered = this.labTests.filter(labTest => !this.selectedLabTests.includes(labTest.id));
+    let filtered = this.dummyLabTests.filter(labTest => !this.selectedLabTests.includes(labTest.id));
 
     console.log("filtered labtests are -> " + JSON.stringify(filtered));
 
