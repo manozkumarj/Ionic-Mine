@@ -23,22 +23,61 @@ export class LabTestPage implements OnInit, OnDestroy {
       labTestId: 1,
       labTestName: 'Urine-Albumin',
       validValues: 'Select~Nil~Trace~1+~2+~3+',
-      units: 'null',
-      result: ''
+      units: 'null'
     },
     {
       labTestId: 2,
       labTestName: 'Urine-Sugar',
       validValues: 'Select~Nil~1+~2+~3+',
-      units: 'null',
-      result: ''
+      units: 'null'
     },
     {
       labTestId: 3,
       labTestName: 'HB %',
       validValues: '4--18',
-      units: 'gm/100ml',
-      result: ''
+      units: 'gm/100ml'
+    },
+    {
+      labTestId: 9,
+      labTestName: 'Fasting Blood Sugar',
+      validValues: '60--500',
+      units: 'mg%'
+    },
+    {
+      labTestId: 10,
+      labTestName: 'Post Lunch Blood Sugar',
+      validValues: '100--500',
+      units: 'mg%'
+    },
+    {
+      labTestId: 12,
+      labTestName: 'RBS',
+      validValues: '60--500',
+      units: 'mg%'
+    },
+    {
+      labTestId: 14,
+      labTestName: 'Pregnancy Confirmation',
+      validValues: 'Select~Negative~Positive',
+      units: 'null'
+    },
+    {
+      labTestId: 17,
+      labTestName: 'Others',
+      validValues: 'null',
+      units: 'null'
+    },
+    {
+      labTestId: 18,
+      labTestName: 'Malaria',
+      validValues: 'Select~Negative~Positive',
+      units: 'null'
+    },
+    {
+      labTestId: 11,
+      labTestName: 'ECG',
+      validValues: 'Select~No~Yes',
+      units: ''
     }
   ];
 
@@ -51,7 +90,7 @@ export class LabTestPage implements OnInit, OnDestroy {
   servicePointName: string;
   servicePointCode: string;
 
-  showLabTests: boolean = true;
+  showLabTests: boolean = false;
 
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
@@ -77,11 +116,14 @@ export class LabTestPage implements OnInit, OnDestroy {
     console.clear();
     // console.log("1st Logging this.dummyLabTests");
     // console.log(this.dummyLabTests);
-
+    let i = 0;
     this.labTests = this.dummyLabTests.map(labtest => ({
+      id: i++,
       ...labtest,
+      isSelected: false,
       input: labtest['validValues'].toLowerCase().includes('select') ? 'select' : 'input',
-      options: (labtest['validValues'].split("~")).filter(l => l != 'Select')
+      options: (labtest['validValues'].split("~")).filter(l => l != 'Select'),
+      result: null
     })
     );
 
@@ -146,6 +188,25 @@ export class LabTestPage implements OnInit, OnDestroy {
       });
   }
 
+  labTestSelection(id, selectedLabTest) {
+    console.log("selectedLabTest is --> " + selectedLabTest);
+    if (selectedLabTest && selectedLabTest != '') {
+      this.labTests[id]['isSelected'] = true;
+    } else {
+      this.labTests[id]['isSelected'] = false;
+    }
+
+    console.log("labTestSelection() Logging this.labTests");
+    console.log(this.labTests);
+  }
+
+  resultChange(id, result) {
+    console.log(`resultChange - id is ${id} & result is ${result}`);
+    if (id && id != '') {
+      this.labTests[id]['result'] = result;
+    }
+  }
+
   loadSessionDetails() {
     this.stateId = this.commonService.sessionDetails['stateId'];
     this.districtId = this.commonService.sessionDetails['districtId'];
@@ -160,31 +221,39 @@ export class LabTestPage implements OnInit, OnDestroy {
     let selectedBenID = this.labTestForm.get("beneficiaryId").value;
     console.log("selectedBenID is -> " + selectedBenID);
     this.showLabTests = true;
+    // Un-comment below two lines when go live
+    // if (selectedBenID && selectedBenID != null)
+    //   this.getBenDetails(selectedBenID);
   }
 
-  labTestChange(val) {
-    console.log("selected val is -> " + val);
-    this.selectedLabTests.push(val);
-    let filtered = this.dummyLabTests.filter(labTest => !this.selectedLabTests.includes(labTest.id));
-
-    console.log("filtered labtests are -> " + JSON.stringify(filtered));
-
-    this.labTests = filtered;
-
-  }
-
-  openSelect() {
-    this.selectRef.open();
-  }
-
-  closeSelect() {
-    // this.selectRef.close();
+  getBenDetails(selectedBenID) {
+    this.db
+      .getBeneficiaryDetails(selectedBenID)
+      .then(benDetails => {
+        // console.log(
+        //   "Received Ben details are -> " + JSON.stringify(benDetails)
+        // );
+        this.commonService.setBenDetails(benDetails[0]);
+      })
+      .catch(error => {
+        console.error(
+          "Error -> getBeneficiaryDetails() function returned error." +
+          JSON.stringify(error)
+        );
+      });
   }
 
   resetValues() {
     this.labTestForm.patchValue({
       beneficiaryId: ""
     });
+
+    this.labTests = this.labTests.map(labtest => ({
+      isSelected: false,
+      result: null
+    })
+    );
+    this.showLabTests = false;
   }
 
 
@@ -200,7 +269,32 @@ export class LabTestPage implements OnInit, OnDestroy {
       return false;
     }
 
-    alert("Form can be submitted");
+    console.log("Form can be submitted");
+    console.log("submit() Logging this.labTests");
+    console.log(this.labTests);
+
+    let selectedLabTests = this.labTests.filter(
+      labTest => labTest.isSelected
+    );
+
+    if (selectedLabTests.length == 0) {
+      alert("Please select atleast one LabTest");
+      return false;
+    }
+
+    let getErrors = this.labTests.filter(
+      labTest => {
+        // console.log(labTest.isSelected + '-' + labTest.result);
+        return labTest.isSelected && !labTest.result
+      }
+    );
+
+    console.log("Errors are showing below");
+    console.log(getErrors);
+    if (getErrors.length > 0) {
+      alert("Please Enter/Select result for selected LabTests");
+      return false;
+    }
 
     let visitId = this.commonService.beneficiaryDetails['userVisitId'];
     let deviceId = this.commonService.beneficiaryDetails['userDeviceId'];
@@ -211,6 +305,11 @@ export class LabTestPage implements OnInit, OnDestroy {
     let visitCount = this.commonService.beneficiaryDetails['userVisitCount'];
 
     let userId = this.commonService.userDetails['userId'];
+
+
+    console.log("selectedLabTests are showing below");
+    console.log(selectedLabTests);
+
   }
 
 }
