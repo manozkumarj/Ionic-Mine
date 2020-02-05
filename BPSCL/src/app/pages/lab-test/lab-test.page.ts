@@ -81,6 +81,9 @@ export class LabTestPage implements OnInit, OnDestroy {
     }
   ];
 
+  userId: number;
+  vanId: number;
+  deviceId: number;
   visitCount: number;
   stateId: number;
   districtId: number;
@@ -101,6 +104,7 @@ export class LabTestPage implements OnInit, OnDestroy {
     private router: Router,
     private storageService: StorageService
   ) {
+    this.loadUserDetails();
     this.loadSessionDetails();
     // this.loadBeneficiaries();
     // loadLabTests();
@@ -200,21 +204,62 @@ export class LabTestPage implements OnInit, OnDestroy {
     console.log(this.labTests);
   }
 
-  resultChange(id, result) {
+  resultChange(id, result, input = null, values = null) {
     console.log(`resultChange - id is ${id} & result is ${result}`);
+    console.log("input is --> " + input);
+    console.log("values is --> " + values);
     if (id && id != '') {
+      if (input && values && values != 'null') {
+        let getMinMax = values.split('--');
+        console.log("getMinMax array is --> " + JSON.stringify(getMinMax));
+        let min = getMinMax[0];
+        let max = getMinMax[1];
+
+        if (result < min || result > max) {
+          alert(`${this.labTests[id]['labTestName']} result should be between ${min} to ${max}`);
+          this.labTests[id]['result'] = null;
+          return false;
+        }
+
+      }
+
       this.labTests[id]['result'] = result;
     }
   }
 
+  loadUserDetails() {
+    this.storageService
+      .getObject("userDetails")
+      .then(data => {
+        console.log("User details are -> " + JSON.stringify(data));
+        this.userId = data.userId;
+        this.vanId = data.vanId;
+        this.deviceId = data.deviceId;
+      })
+      .catch(error => {
+        console.error("User details were not set -> " + JSON.stringify(error));
+      });
+  }
+
   loadSessionDetails() {
-    this.stateId = this.commonService.sessionDetails['stateId'];
-    this.districtId = this.commonService.sessionDetails['districtId'];
-    this.mandalId = this.commonService.sessionDetails['mandalId'];
-    this.villageId = this.commonService.sessionDetails['villageId'];
-    this.servicePointId = this.commonService.sessionDetails['servicePointId'];
-    this.servicePointName = this.commonService.sessionDetails['servicePointName'];
-    this.servicePointCode = this.commonService.sessionDetails['servicePointCode'];
+    this.storageService
+      .getObject("sessionDetails")
+      .then(data => {
+        console.log("Session Details are -> " + JSON.stringify(data));
+
+        this.stateId = data["stateId"];
+        this.districtId = data["districtId"];
+        this.mandalId = data["mandalId"];
+        this.villageId = data["villageId"];
+        this.servicePointName = data["servicePointName"];
+        this.servicePointCode = data["servicePointCode"];
+        this.servicePointId = data["servicePointId"];
+      })
+      .catch(error => {
+        console.error(
+          "Session Details were not set -> " + JSON.stringify(error)
+        );
+      });
   }
 
   benIdChange() {
@@ -257,14 +302,82 @@ export class LabTestPage implements OnInit, OnDestroy {
   }
 
 
+  findAndUpsertLabTest(
+    patientId,
+    visitId,
+    deviceId,
+    vanId,
+    routeVillageId,
+    servicePointId,
+    compoundPatientId,
+    visitCount,
+    labTestId,
+    labTestResult,
+    userId
+  ) {
+    let dataObject = {
+      patientId,
+      visitId,
+      deviceId,
+      vanId,
+      routeVillageId,
+      servicePointId,
+      compoundPatientId,
+      visitCount,
+      labTestId,
+      labTestResult,
+      userId
+    };
+
+    this.db
+      .findBenLabtest(dataObject)
+      .then(data => {
+        if (data) {
+          // Need to update the Dispense
+          this.db
+            .updateLabtest(dataObject)
+            .then(data => {
+              console.log(
+                "Success -> updateLabtest is updated Successfully..." + data
+              );
+            })
+            .catch(e => {
+              console.error(
+                "Error -> updateLabtest is not updated" + JSON.stringify(e)
+              );
+            });
+        } else {
+          // Need to insert the Dispense
+          this.db
+            .insertLabtest(dataObject)
+            .then(data => {
+              console.log(
+                "Success -> insertLabtest is inserted Successfully..." + data
+              );
+            })
+            .catch(e => {
+              console.error(
+                "Error -> insertLabtest is not inserted" + JSON.stringify(e)
+              );
+            });
+        }
+      })
+      .catch(e => {
+        console.error(
+          "Error -> findDispense returned error" + JSON.stringify(e)
+        );
+      });
+  }
+
+
   onSubmit(values) {
     console.clear();
     console.log("Lab Tests form is submitted, below are the values");
     console.log(values);
 
-    let beneficiaryId = this.labTestForm.get("beneficiaryId").value;
+    let patientId = this.labTestForm.get("beneficiaryId").value;
 
-    if (!beneficiaryId || beneficiaryId <= 0) {
+    if (!patientId || patientId <= 0) {
       alert("Please Select Beneficiary ID");
       return false;
     }
@@ -296,19 +409,68 @@ export class LabTestPage implements OnInit, OnDestroy {
       return false;
     }
 
-    let visitId = this.commonService.beneficiaryDetails['userVisitId'];
-    let deviceId = this.commonService.beneficiaryDetails['userDeviceId'];
-    let vanId = this.commonService.beneficiaryDetails['userVanId'];
-    let routeVillageId = this.commonService.beneficiaryDetails['userRouteVillageId'];
-    let servicePointId = this.commonService.beneficiaryDetails['userServicePointId'];
-    let compoundPatientId = this.commonService.beneficiaryDetails['userCompoundPatientId'];
-    let visitCount = this.commonService.beneficiaryDetails['userVisitCount'];
 
-    let userId = this.commonService.userDetails['userId'];
+    let userId = this.userId;
+    let vanId = this.vanId;
+    let servicePointId = this.servicePointId;
+    let deviceId = this.deviceId;
 
+    let visitId = this.commonService.beneficiaryDetails["userVisitId"];
+    let routeVillageId = this.commonService.beneficiaryDetails[
+      "userRouteVillageId"
+    ];
+    let compoundPatientId = this.commonService.beneficiaryDetails[
+      "userCompoundPatientId"
+    ];
+    let visitCount = this.commonService.beneficiaryDetails["userVisitCount"];
 
     console.log("selectedLabTests are showing below");
     console.log(selectedLabTests);
+
+    console.log(
+      patientId +
+      " *** " +
+      routeVillageId +
+      " *** " +
+      compoundPatientId +
+      " *** " +
+      visitId +
+      " *** " +
+      servicePointId +
+      " *** " +
+      vanId +
+      " *** " +
+      userId +
+      " *** " +
+      visitCount
+    );
+
+    console.log("**********************************************");
+
+    for (let i = 0; i < selectedLabTests.length; i++) {
+
+      let labTestId = selectedLabTests[i]["labTestId"];
+      let result = selectedLabTests[i]["result"];
+      console.log("labTestId --> " + labTestId);
+      console.log("result is --> " + result);
+
+      console.log("-----------------------------------");
+
+      this.findAndUpsertLabTest(
+        patientId,
+        visitId,
+        deviceId,
+        vanId,
+        routeVillageId,
+        servicePointId,
+        compoundPatientId,
+        visitCount,
+        labTestId,
+        result,
+        userId
+      );
+
+    }
 
   }
 

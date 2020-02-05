@@ -80,14 +80,15 @@
                     <ion-col size="12" size-sm>
 
                       <ion-select (ionChange)="resultChange(labTest.id, resultt.value)" placeholder="Select Lab Test"
-                        *ngIf="labTest.input == 'select'" #resultt>
+                        *ngIf="labTest.input == 'select'" [value]="labTest.result" #resultt>
                         <ion-select-option *ngFor="let option of labTest.options" [value]="option">
                           {{option}}
                         </ion-select-option>
                       </ion-select>
 
-                      <ion-input (ionBlur)="resultChange(labTest.id, result.value)" *ngIf="labTest.input == 'input'"
-                        type="number" value="" placeholder="Result" #result>
+                      <ion-input (ionBlur)="resultChange(labTest.id, result.value, labTest.input, labTest.validValues)"
+                        *ngIf="labTest.input == 'input'" type="number" [value]="labTest.result" placeholder="Result"
+                        #result>
                       </ion-input>
 
                     </ion-col>
