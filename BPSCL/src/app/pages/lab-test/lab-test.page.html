@@ -47,8 +47,8 @@
                   <ion-select interface="popover" formControlName="beneficiaryId" (ionChange)="benIdChange()"
                     class="field-input" style="color: #000; font-weight: bold; background: #3b4bad; 
                   background-image: linear-gradient(#3b4bad, #FFF)" placeholder="Select">
-                    <ion-select-option value="f">Female</ion-select-option>
-                    <ion-select-option value="m">Male</ion-select-option>
+                    <ion-select-option *ngFor="let benId of benIds" [value]="benId.patientId">{{benId.patientId}}
+                    </ion-select-option>
                   </ion-select>
                 </ion-col>
               </ion-row>
@@ -79,7 +79,7 @@
                     </ion-col>
                     <ion-col size="12" size-sm>
 
-                      <ion-select (ionChange)="resultChange(labTest.id, resultt.value)" placeholder="Select Lab Test"
+                      <ion-select (ionChange)="resultChange(labTest.id, resultt.value)" placeholder="Result"
                         *ngIf="labTest.input == 'select'" [value]="labTest.result" #resultt>
                         <ion-select-option *ngFor="let option of labTest.options" [value]="option">
                           {{option}}

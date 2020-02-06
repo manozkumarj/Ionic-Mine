@@ -106,8 +106,8 @@ export class LabTestPage implements OnInit, OnDestroy {
   ) {
     this.loadUserDetails();
     this.loadSessionDetails();
-    // this.loadBeneficiaries();
-    // loadLabTests();
+    this.loadBeneficiaries();
+    this.loadLabTests();
     // loadEcgs();
 
     this.labTestForm = new FormGroup({
@@ -121,15 +121,15 @@ export class LabTestPage implements OnInit, OnDestroy {
     // console.log("1st Logging this.dummyLabTests");
     // console.log(this.dummyLabTests);
     let i = 0;
-    this.labTests = this.dummyLabTests.map(labtest => ({
-      id: i++,
-      ...labtest,
-      isSelected: false,
-      input: labtest['validValues'].toLowerCase().includes('select') ? 'select' : 'input',
-      options: (labtest['validValues'].split("~")).filter(l => l != 'Select'),
-      result: null
-    })
-    );
+    // this.labTests = this.dummyLabTests.map(labtest => ({
+    //   id: i++,
+    //   ...labtest,
+    //   isSelected: false,
+    //   input: labtest['validValues'].toLowerCase().includes('select') ? 'select' : 'input',
+    //   options: (labtest['validValues'].split("~")).filter(l => l != 'Select'),
+    //   result: null
+    // })
+    // );
 
     console.log("Logging this.labTests");
     console.log(this.labTests);
@@ -165,7 +165,17 @@ export class LabTestPage implements OnInit, OnDestroy {
         console.log(
           "Fetched labTests -> " + JSON.stringify(labTests)
         );
-        this.labTests = labTests;
+
+        let i = 0;
+        this.labTests = labTests.map(labtest => ({
+          id: i++,
+          ...labtest,
+          isSelected: false,
+          input: labtest['validValues'].toLowerCase().includes('select') ? 'select' : 'input',
+          options: (labtest['validValues'].split("~")).filter(l => l != 'Select'),
+          result: null
+        })
+        );
       })
       .catch(error => {
         console.error(
@@ -208,23 +218,23 @@ export class LabTestPage implements OnInit, OnDestroy {
     console.log(`resultChange - id is ${id} & result is ${result}`);
     console.log("input is --> " + input);
     console.log("values is --> " + values);
-    if (id && id != '') {
-      if (input && values && values != 'null') {
-        let getMinMax = values.split('--');
-        console.log("getMinMax array is --> " + JSON.stringify(getMinMax));
-        let min = getMinMax[0];
-        let max = getMinMax[1];
+    if (input && input == 'input' && values && values != 'null') {
+      result = +result;
+      let getMinMax = values.split('--');
+      console.log("getMinMax array is --> " + JSON.stringify(getMinMax));
+      let min = +getMinMax[0];
+      let max = +getMinMax[1];
 
-        if (result < min || result > max) {
-          alert(`${this.labTests[id]['labTestName']} result should be between ${min} to ${max}`);
-          this.labTests[id]['result'] = null;
-          return false;
-        }
-
+      if (result < min || result > max) {
+        alert(`'${this.labTests[id]['labTestName']}' result should be between ${min} to ${max}`);
+        this.labTests[id]['result'] = result;
+        return false;
       }
 
-      this.labTests[id]['result'] = result;
     }
+
+    this.labTests[id]['result'] = result;
+    return true;
   }
 
   loadUserDetails() {
@@ -267,8 +277,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     console.log("selectedBenID is -> " + selectedBenID);
     this.showLabTests = true;
     // Un-comment below two lines when go live
-    // if (selectedBenID && selectedBenID != null)
-    //   this.getBenDetails(selectedBenID);
+    if (selectedBenID && selectedBenID != null)
+      this.getBenDetails(selectedBenID);
   }
 
   getBenDetails(selectedBenID) {
@@ -404,11 +414,38 @@ export class LabTestPage implements OnInit, OnDestroy {
 
     console.log("Errors are showing below");
     console.log(getErrors);
-    if (getErrors.length > 0) {
-      alert("Please Enter/Select result for selected LabTests");
-      return false;
+
+    let getLoopStatus = true;
+    if (selectedLabTests.length > 0) {
+      for (let labTest of selectedLabTests) {
+        let labtestName = labTest['labTestName'];
+        let inputType = labTest['input'];
+        let id = labTest['id'];
+        let result = labTest['result'];
+        let validValues = labTest['validValues'];
+
+        let type = (inputType == 'input') ? 'Enter' : 'Select';
+
+        if (!result || result == '') {
+          alert(`Please ${type} result for '${labtestName}' labTest`);
+          getLoopStatus = false;
+          return false;
+        } else {
+          let getStatus = this.resultChange(id, result, inputType, validValues);
+          console.log("getStatus is -> " + getStatus);
+          if (!getStatus) {
+            getLoopStatus = false;
+            return false;
+          }
+
+          if (!getLoopStatus)
+            return false;
+        }
+      }
     }
 
+    if (!getLoopStatus)
+      return false;
 
     let userId = this.userId;
     let vanId = this.vanId;
@@ -471,6 +508,7 @@ export class LabTestPage implements OnInit, OnDestroy {
       );
 
     }
+    this.router.navigate(["/medicine-dispense"]);
 
   }
 
