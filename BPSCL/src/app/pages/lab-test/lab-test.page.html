@@ -101,13 +101,33 @@
 
               </div>
 
+
+              <ion-row [ngClass]="{'hider' : !showEcgSection}" style="text-align: center; padding: 5px; background-color: #3b4bad;
+              color: #FFF; margin-top: 20px;">
+                <ion-col size="12" size-sm>
+                  <div>ECG Result</div>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <div>Referral</div>
+                </ion-col>
+              </ion-row>
+
+              <ion-row [ngClass]="{'hider' : !showEcgSection}" style="text-align: center;">
+                <ion-col size="12" size-sm>
+                  <div>{{selectedEcgName}}</div>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <div>{{selectedEcgReferral}}</div>
+                </ion-col>
+              </ion-row>
+
               <ion-row class="row-border row-height-45 margin-top-20" align-items-center justify-content-center>
                 <ion-col size="12" size-sm>
                   <ion-button style="width: 90%; font-weight: bold;" type="submit" color="primary"
                     [disabled]='!showLabTests'>Save</ion-button>
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-button (click)="resetValues()" style="width: 90%; font-weight: bold;" type="button"
+                  <ion-button (click)="openSelect()" style="width: 90%; font-weight: bold;" type="button"
                     color="primary" [disabled]='!showLabTests'>Reset
                   </ion-button>
                 </ion-col>
@@ -115,6 +135,21 @@
                   <ion-button style="width: 90%; font-weight: bold;" type="reset" color="primary">Skip</ion-button>
                 </ion-col>
               </ion-row>
+
+
+              <ion-row>
+                <ion-col size="12" size-sm>
+                  <ion-item style="display: none;">
+                    <ion-label>ECG Result</ion-label>
+                    <ion-select #mySelect (ionChange)="ecgSelection(mySelect.value)">
+                      <ion-select-option *ngFor="let ecg of ecgs" [value]="ecg.ecgId">
+                        {{ecg.ecgName}}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+
 
             </ion-grid>
             <!-- left side Grid - starts here -->

@@ -14,28 +14,67 @@ import { IonSelect } from '@ionic/angular';
 export class LabTestPage implements OnInit, OnDestroy {
   @ViewChild('mySelect', { static: false }) selectRef: IonSelect;
   labTestForm: FormGroup;
-  benIds: any[] = [];
+  benIds: any[] = [
+    {
+      patientId: 'one'
+    }, {
+      patientId: 'two'
+    }
+  ];
   selectedLabTests: any[] = [];
-  ecgs: any[] = [];
-  labTests: any[] = [];
-  dummyLabTests: any[] = [
+
+  ecgs: any[] = [
+    {
+      ecgId: 1,
+      ecgName: 'Ecg 1',
+      referral: 'Yes',
+      concatValue: 1 + ',Yes'
+    }, {
+      ecgId: 2,
+      ecgName: 'Ecg 2',
+      referral: 'No',
+      concatValue: 2 + ',No'
+    }, {
+      ecgId: 3,
+      ecgName: 'Ecg 3',
+      referral: 'Yes',
+      concatValue: 3 + ',Yes'
+    }, {
+      ecgId: 4,
+      ecgName: 'Ecg 4',
+      referral: 'No',
+      concatValue: 4 + ',No'
+    }
+  ];
+
+  labTests: any[] = [
     {
       labTestId: 1,
       labTestName: 'Urine-Albumin',
       validValues: 'Select~Nil~Trace~1+~2+~3+',
-      units: 'null'
+      units: 'null',
+      id: 0,
+      isSelected: false,
+      input: 'select',
+      options: ['aaa', 'bbb', 'ccc']
     },
     {
       labTestId: 2,
       labTestName: 'Urine-Sugar',
       validValues: 'Select~Nil~1+~2+~3+',
-      units: 'null'
+      units: 'null',
+      id: 1,
+      isSelected: false,
+      input: 'select'
     },
     {
       labTestId: 3,
       labTestName: 'HB %',
       validValues: '4--18',
-      units: 'gm/100ml'
+      units: 'gm/100ml',
+      id: 2,
+      isSelected: false,
+      input: 'input'
     },
     {
       labTestId: 9,
@@ -93,7 +132,11 @@ export class LabTestPage implements OnInit, OnDestroy {
   servicePointName: string;
   servicePointCode: string;
 
+  selectedEcgName: string;
+  selectedEcgReferral: string;
+
   showLabTests: boolean = false;
+  showEcgSection: boolean = false;
 
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
@@ -104,10 +147,10 @@ export class LabTestPage implements OnInit, OnDestroy {
     private router: Router,
     private storageService: StorageService
   ) {
-    this.loadUserDetails();
-    this.loadSessionDetails();
-    this.loadBeneficiaries();
-    this.loadLabTests();
+    // this.loadUserDetails();
+    // this.loadSessionDetails();
+    // this.loadBeneficiaries();
+    // this.loadLabTests();
     // loadEcgs();
 
     this.labTestForm = new FormGroup({
@@ -122,6 +165,10 @@ export class LabTestPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     console.log("ngOnDestroy triggered...");
     this.commonService.makeBenObjectEmpty();
+  }
+
+  openSelect() {
+    this.selectRef.open();
   }
 
   loadBeneficiaries() {
@@ -218,6 +265,24 @@ export class LabTestPage implements OnInit, OnDestroy {
 
     this.labTests[id]['result'] = result;
     return true;
+  }
+
+  ecgSelection(id) {
+    console.log("selected ECG is -> " + id);
+    // this.showEcgSection = true;
+    // let splitValue = ecgValue.split(',');
+    // let id = splitValue[0];
+    // let referral = splitValue[1];
+    // console.log("id is -> " + id + " & referral is -> " + referral);
+
+    let selectedEcgElement = this.ecgs.find(ecg => ecg.ecgId == id);
+
+    console.log(selectedEcgElement);
+
+    this.selectedEcgName = selectedEcgElement['ecgName'];
+    this.selectedEcgReferral = selectedEcgElement['referral'];
+
+    this.showEcgSection = true;
   }
 
   loadUserDetails() {
