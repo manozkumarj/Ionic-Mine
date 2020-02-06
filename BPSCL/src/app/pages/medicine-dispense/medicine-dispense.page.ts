@@ -55,7 +55,9 @@ export class MedicineDispensePage implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.commonService.makeBenObjectEmpty();
+  }
 
   ngOnDestroy() {
     console.log("ngOnDestroy triggered...");
@@ -318,7 +320,7 @@ export class MedicineDispensePage implements OnInit, OnDestroy {
       console.log("Empty dispense IDs are below");
       console.log(getErrors);
       if (getErrors.length > 0) {
-        alert("Please Enter quantity for checked Medicine Dispenses");
+        alert(`Please Enter quantity for '${getErrors[0]['genericName']}' Medicine dispense`);
         return false;
       }
     } else {
@@ -398,7 +400,7 @@ export class MedicineDispensePage implements OnInit, OnDestroy {
         userId
       );
 
-      this.router.navigate(["/consumable-dispense"]);
+      this.commonService.makeBenObjectEmpty();
     }
   }
 }

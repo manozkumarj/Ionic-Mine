@@ -116,24 +116,7 @@ export class LabTestPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-    console.clear();
-    // console.log("1st Logging this.dummyLabTests");
-    // console.log(this.dummyLabTests);
-    let i = 0;
-    // this.labTests = this.dummyLabTests.map(labtest => ({
-    //   id: i++,
-    //   ...labtest,
-    //   isSelected: false,
-    //   input: labtest['validValues'].toLowerCase().includes('select') ? 'select' : 'input',
-    //   options: (labtest['validValues'].split("~")).filter(l => l != 'Select'),
-    //   result: null
-    // })
-    // );
-
-    console.log("Logging this.labTests");
-    console.log(this.labTests);
-
+    this.commonService.makeBenObjectEmpty();
   }
 
   ngOnDestroy() {

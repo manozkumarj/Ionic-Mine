@@ -64,7 +64,9 @@ export class ConsumableDispensePage implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.commonService.makeBenObjectEmpty();
+  }
 
   ngOnDestroy() {
     console.log("ngOnDestroy triggered...");

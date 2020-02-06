@@ -176,6 +176,9 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
         console.log("Received Ben details are below -> ");
         console.log(JSON.stringify(benDetails));
 
+        let personalNumber = benDetails[0]['contactNo'];
+        let familyOrRelativeNumber = benDetails[0]['familyContactNo'];
+
         this.benUpdateForm.patchValue({
           benificiaryName: benDetails[0]['name'],
           surname: benDetails[0]['surname'],
@@ -191,6 +194,18 @@ export class EditBeneficiaryPage implements OnInit, OnDestroy {
           religion: benDetails[0]['religionId'],
           numberOfFamilyMembers: benDetails[0]['noOfFamilyNumbers']
         });
+
+        if (personalNumber == '' || personalNumber == 'N/A') {
+          this.disablePersonalNumber = true;
+        } else {
+          this.disablePersonalNumber = false;
+        }
+
+        if (familyOrRelativeNumber == '' || familyOrRelativeNumber == 'N/A') {
+          this.disableFamilyOrRelativeNumber = true;
+        } else {
+          this.disableFamilyOrRelativeNumber = false;
+        }
 
         let isHandicapped = benDetails[0]['isHandicaped'];
         let isBpl = benDetails[0]['economicStatusId'];

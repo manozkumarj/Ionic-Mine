@@ -71,7 +71,9 @@ export class DoctorPage implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.commonService.makeBenObjectEmpty();
+  }
 
   ngOnDestroy() {
     console.log("ngOnDestroy triggered...");

@@ -58,6 +58,7 @@ export class VitalsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.commonService.makeBenObjectEmpty();
     console.log(
       "User details are " + JSON.stringify(this.commonService.userDetails)
     );
