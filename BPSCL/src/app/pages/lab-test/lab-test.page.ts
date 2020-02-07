@@ -50,6 +50,7 @@ export class LabTestPage implements OnInit, OnDestroy {
   labTests: any[] = [
     {
       labTestId: 1,
+      orderId: 2,
       labTestName: 'Urine-Albumin',
       validValues: 'Select~Nil~Trace~1+~2+~3+',
       units: 'null',
@@ -61,6 +62,7 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 2,
+      orderId: 1,
       labTestName: 'Urine-Sugar',
       validValues: 'Select~Nil~1+~2+~3+',
       units: 'null',
@@ -71,6 +73,7 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 3,
+      orderId: 3,
       labTestName: 'HB %',
       validValues: '4--18',
       units: 'gm/100ml',
@@ -81,6 +84,7 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 9,
+      orderId: 4,
       id: 3,
       labTestName: 'Fasting Blood Sugar',
       validValues: '60--500',
@@ -89,6 +93,7 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 10,
+      orderId: 5,
       id: 4,
       labTestName: 'Post Lunch Blood Sugar',
       validValues: '100--500',
@@ -97,6 +102,7 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 12,
+      orderId: 6,
       id: 5,
       labTestName: 'RBS',
       validValues: '60--500',
@@ -105,6 +111,7 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 14,
+      orderId: 7,
       id: 6,
       labTestName: 'Pregnancy Confirmation',
       validValues: 'Select~Negative~Positive',
@@ -113,6 +120,7 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 17,
+      orderId: 8,
       id: 7,
       labTestName: 'Others',
       validValues: 'null',
@@ -121,6 +129,7 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 18,
+      orderId: 9,
       id: 8,
       labTestName: 'Malaria',
       validValues: 'Select~Negative~Positive',
@@ -129,6 +138,7 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 11,
+      orderId: 10,
       id: 9,
       labTestName: 'ECG',
       validValues: 'Select~No~Yes',
@@ -218,9 +228,11 @@ export class LabTestPage implements OnInit, OnDestroy {
         );
 
         let i = 0;
+        let j = 1;
         this.labTests = labTests.map(labtest => ({
-          id: i++,
           ...labtest,
+          id: i++,
+          orderId: j++,
           isSelected: false,
           input: labtest['validValues'].toLowerCase().includes('select') ? 'select' : 'input',
           options: (labtest['validValues'].split("~")).filter(l => l != 'Select'),
@@ -658,7 +670,8 @@ export class LabTestPage implements OnInit, OnDestroy {
 
     }
 
-    this.router.navigate(["/medicine-dispense"]);
+    // this.router.navigate(["/medicine-dispense"]);
+    alert("Form is submitted successfully.");
 
   }
 

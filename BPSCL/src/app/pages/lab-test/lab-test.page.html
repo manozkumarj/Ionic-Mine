@@ -66,8 +66,8 @@
                   </ion-col>
                 </ion-row>
 
-                <div [ngClass]="{'hider' : !showLabTests}">
-                  <ion-row class="labTests" *ngFor="let labTest of labTests">
+                <div [ngClass]="{'hider' : !showLabTests}" style="display: flex; flex-direction: column;">
+                  <ion-row class="labTests" *ngFor="let labTest of labTests" [style.order]="labTest.orderId">
                     <ion-col size="12" size-sm>
                       <ion-select placeholder="Select Lab Test"
                         (ionChange)="labTestSelection(labTest.id, labTestValue.value)" #labTestValue>
