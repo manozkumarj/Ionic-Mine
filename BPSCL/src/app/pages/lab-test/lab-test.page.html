@@ -66,8 +66,10 @@
                   </ion-col>
                 </ion-row>
 
-                <div [ngClass]="{'hider' : !showLabTests}" style="display: flex; flex-direction: column;">
-                  <ion-row class="labTests" *ngFor="let labTest of labTests" [style.order]="labTest.orderId">
+
+                <div [ngClass]="{'hider' : !showLabTests}" *ngFor="let labTest of labTests"
+                  style="display: flex; flex-direction: column;">
+                  <ion-row class="labTests" *ngIf="labTest.showField" [style.order]="labTest.orderId">
                     <ion-col size="12" size-sm>
                       <ion-select placeholder="Select Lab Test"
                         (ionChange)="labTestSelection(labTest.id, labTestValue.value)" #labTestValue>
@@ -99,6 +101,32 @@
                     </ion-col>
                   </ion-row>
                 </div>
+
+
+                <!-- Displays all labtests row - starts -->
+                <div *ngIf="showLabTestSelectorSection" style="display: flex; flex-direction: column;">
+                  <ion-row class="labTests">
+                    <ion-col size="12" size-sm>
+                      <ion-select placeholder="Select Lab Test" formControlName="labTestSelector"
+                        (ionChange)="selectedLabTestId()">
+                        <ion-select-option *ngFor="let labTest of labTests" [value]="labTest.id">
+                          {{labTest.labTestName}}
+                        </ion-select-option>
+                      </ion-select>
+                    </ion-col>
+                    <ion-col size="12" size-sm>
+
+                      <ion-input type="number" placeholder="Result">
+                      </ion-input>
+
+                    </ion-col>
+                    <ion-col size="12" size-sm>
+                      <ion-input disabled='disabled'>
+                      </ion-input>
+                    </ion-col>
+                  </ion-row>
+                </div>
+                <!-- Displays all labtests row - ends -->
 
               </div>
 

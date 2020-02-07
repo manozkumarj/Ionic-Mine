@@ -58,7 +58,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       isSelected: false,
       input: 'select',
       options: ['aaa', 'bbb', 'ccc'],
-      result: null
+      result: null,
+      showField: false
     },
     {
       labTestId: 2,
@@ -69,7 +70,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       id: 1,
       isSelected: false,
       input: 'select',
-      result: null
+      result: null,
+      showField: false
     },
     {
       labTestId: 3,
@@ -80,7 +82,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       id: 2,
       isSelected: false,
       input: 'input',
-      result: null
+      result: null,
+      showField: false
     },
     {
       labTestId: 9,
@@ -89,7 +92,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       labTestName: 'Fasting Blood Sugar',
       validValues: '60--500',
       units: 'mg%',
-      result: null
+      result: null,
+      showField: false
     },
     {
       labTestId: 10,
@@ -98,7 +102,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       labTestName: 'Post Lunch Blood Sugar',
       validValues: '100--500',
       units: 'mg%',
-      result: null
+      result: null,
+      showField: false
     },
     {
       labTestId: 12,
@@ -107,7 +112,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       labTestName: 'RBS',
       validValues: '60--500',
       units: 'mg%',
-      result: null
+      result: null,
+      showField: false
     },
     {
       labTestId: 14,
@@ -116,7 +122,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       labTestName: 'Pregnancy Confirmation',
       validValues: 'Select~Negative~Positive',
       units: 'null',
-      result: null
+      result: null,
+      showField: false
     },
     {
       labTestId: 17,
@@ -125,7 +132,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       labTestName: 'Others',
       validValues: 'null',
       units: 'null',
-      result: null
+      result: null,
+      showField: false
     },
     {
       labTestId: 18,
@@ -134,7 +142,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       labTestName: 'Malaria',
       validValues: 'Select~Negative~Positive',
       units: 'null',
-      result: null
+      result: null,
+      showField: false
     },
     {
       labTestId: 11,
@@ -146,7 +155,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       options: ['Yes', 'No'],
       isSelected: false,
       input: 'select',
-      result: null
+      result: null,
+      showField: false
     }
   ];
 
@@ -168,6 +178,7 @@ export class LabTestPage implements OnInit, OnDestroy {
 
   showLabTests: boolean = false;
   showEcgSection: boolean = false;
+  showLabTestSelectorSection: boolean = true;
 
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
@@ -185,7 +196,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     // loadEcgs();
 
     this.labTestForm = new FormGroup({
-      beneficiaryId: new FormControl("", Validators.required)
+      beneficiaryId: new FormControl("", Validators.required),
+      labTestSelector: new FormControl("", Validators.required)
     });
   }
 
@@ -236,7 +248,8 @@ export class LabTestPage implements OnInit, OnDestroy {
           isSelected: false,
           input: labtest['validValues'].toLowerCase().includes('select') ? 'select' : 'input',
           options: (labtest['validValues'].split("~")).filter(l => l != 'Select'),
-          result: null
+          result: null,
+          showField: false
         })
         );
       })
@@ -311,6 +324,17 @@ export class LabTestPage implements OnInit, OnDestroy {
 
     this.labTests[id]['result'] = result;
     return true;
+  }
+
+  selectedLabTestId() {
+    let selectedLabTestID = +this.labTestForm.get("labTestSelector").value;
+    console.log("selectedLabTestID is -> " + selectedLabTestID);
+    this.labTests[selectedLabTestID]['showField'] = true;
+    this.showLabTestSelectorSection = false;
+    this.labTestForm.patchValue({
+      labTestSelector: null
+    });
+    return false;
   }
 
   ecgSelection(id) {
