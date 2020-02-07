@@ -1084,6 +1084,24 @@ export class DatabaseService {
       });
   }
 
+  findEcg(data) {
+    let sql = `SELECT COUNT(patientId) AS count FROM ${this.table_ecgs} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ? AND ecgId = ? LIMIT 1`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.patientId,
+        data.servicePointId,
+        data.vanId,
+        data.visitId,
+        data.ecgId
+      ])
+      .then(data => {
+        if (data.rows.item(0).count > 0) {
+          return true;
+        }
+        return false;
+      });
+  }
+
   findReferredTo(patientId, servicePointId, vanId, visitId) {
     let sql = `SELECT COUNT(patientId) AS count FROM ${this.table_referredTo} WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ? LIMIT 1`;
     return this.dbObject
@@ -1668,6 +1686,64 @@ export class DatabaseService {
       .catch(error => {
         console.warn(
           "database - updateReferredTo() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  insertEcg(data) {
+    let sql = `INSERT INTO ${this.table_ecgs} (patientId, visitId, deviceId, vanId, routeVillageId, servicePointId, compoundPatientId, visitCount, ecgId, isReferred, insertedBy, insertedDate, updatedBy, updatedDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,datetime('now'),?,datetime('now'))`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.patientId,
+        data.visitId,
+        data.deviceId,
+        data.vanId,
+        data.routeVillageId,
+        data.servicePointId,
+        data.compoundPatientId,
+        data.visitCount,
+        data.ecgId,
+        data.isEcgReferred,
+        data.userId,
+        data.userId
+      ])
+      .then(res => {
+        console.log(
+          "database - insertEcg() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - insertEcg() - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+
+  updateEcg(data) {
+    let sql = `UPDATE ${this.table_ecgs} SET ecgId = ?, isReferred = ?, updatedBy = ?, updatedDate = datetime('now') WHERE patientId = ? AND servicePointId = ? AND vanId = ? AND visitId = ? ecgId = ?`;
+    return this.dbObject
+      .executeSql(sql, [
+        data.ecgId,
+        data.isEcgReferred,
+        data.userId,
+        data.patientId,
+        data.servicePointId,
+        data.vanId,
+        data.visitId,
+        data.ecgId
+      ])
+      .then(res => {
+        console.log(
+          "database - updateEcg() - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch(error => {
+        console.warn(
+          "database - updateEcg() - Error -> " + JSON.stringify(error)
         );
         return false;
       });

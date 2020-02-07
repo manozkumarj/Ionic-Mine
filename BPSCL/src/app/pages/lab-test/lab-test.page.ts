@@ -56,7 +56,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       id: 0,
       isSelected: false,
       input: 'select',
-      options: ['aaa', 'bbb', 'ccc']
+      options: ['aaa', 'bbb', 'ccc'],
+      result: null
     },
     {
       labTestId: 2,
@@ -65,7 +66,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       units: 'null',
       id: 1,
       isSelected: false,
-      input: 'select'
+      input: 'select',
+      result: null
     },
     {
       labTestId: 3,
@@ -74,49 +76,67 @@ export class LabTestPage implements OnInit, OnDestroy {
       units: 'gm/100ml',
       id: 2,
       isSelected: false,
-      input: 'input'
+      input: 'input',
+      result: null
     },
     {
       labTestId: 9,
+      id: 3,
       labTestName: 'Fasting Blood Sugar',
       validValues: '60--500',
-      units: 'mg%'
+      units: 'mg%',
+      result: null
     },
     {
       labTestId: 10,
+      id: 4,
       labTestName: 'Post Lunch Blood Sugar',
       validValues: '100--500',
-      units: 'mg%'
+      units: 'mg%',
+      result: null
     },
     {
       labTestId: 12,
+      id: 5,
       labTestName: 'RBS',
       validValues: '60--500',
-      units: 'mg%'
+      units: 'mg%',
+      result: null
     },
     {
       labTestId: 14,
+      id: 6,
       labTestName: 'Pregnancy Confirmation',
       validValues: 'Select~Negative~Positive',
-      units: 'null'
+      units: 'null',
+      result: null
     },
     {
       labTestId: 17,
+      id: 7,
       labTestName: 'Others',
       validValues: 'null',
-      units: 'null'
+      units: 'null',
+      result: null
     },
     {
       labTestId: 18,
+      id: 8,
       labTestName: 'Malaria',
       validValues: 'Select~Negative~Positive',
-      units: 'null'
+      units: 'null',
+      result: null
     },
     {
       labTestId: 11,
+      id: 9,
       labTestName: 'ECG',
       validValues: 'Select~No~Yes',
-      units: ''
+      units: '',
+      options: ['Yes', 'No'],
+      isSelected: false,
+      input: 'select',
+      result: null
     }
   ];
 
@@ -134,6 +154,7 @@ export class LabTestPage implements OnInit, OnDestroy {
 
   selectedEcgName: string;
   selectedEcgReferral: string;
+  selectedEcgId: number;
 
   showLabTests: boolean = false;
   showEcgSection: boolean = false;
@@ -244,8 +265,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     console.log(this.labTests);
   }
 
-  resultChange(id, result, input = null, values = null) {
-    console.log(`resultChange - id is ${id} & result is ${result}`);
+  resultChange(labTestId, id, result, input = null, values = null, fromSubmit = false) {
+    console.log(`resultChange - labTestId is ${labTestId} & id is ${id} & result is ${result}`);
     console.log("input is --> " + input);
     console.log("values is --> " + values);
     if (input && input == 'input' && values && values != 'null') {
@@ -260,7 +281,20 @@ export class LabTestPage implements OnInit, OnDestroy {
         this.labTests[id]['result'] = result;
         return false;
       }
+    }
 
+    // Since 'ECG' labTest ID is 11 - so we are comparing with 11
+    if (labTestId == 11) {
+      if (result.toLowerCase() == 'yes') {
+        if (!fromSubmit || !this.selectedEcgId) {
+          this.selectRef.open();
+        }
+      } else {
+        this.selectedEcgName = null;
+        this.selectedEcgReferral = null;
+        this.selectedEcgId = null;
+        this.showEcgSection = false;
+      }
     }
 
     this.labTests[id]['result'] = result;
@@ -281,6 +315,7 @@ export class LabTestPage implements OnInit, OnDestroy {
 
     this.selectedEcgName = selectedEcgElement['ecgName'];
     this.selectedEcgReferral = selectedEcgElement['referral'];
+    this.selectedEcgId = id;
 
     this.showEcgSection = true;
   }
@@ -434,6 +469,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     console.log(values);
 
     let patientId = this.labTestForm.get("beneficiaryId").value;
+    let ecgId = +this.selectedEcgId;
+    let isEcgReferred = this.selectedEcgReferral;
 
     if (!patientId || patientId <= 0) {
       alert("Please Select Beneficiary ID");
@@ -469,6 +506,7 @@ export class LabTestPage implements OnInit, OnDestroy {
         let labtestName = labTest['labTestName'];
         let inputType = labTest['input'];
         let id = labTest['id'];
+        let labTestId = labTest['labTestId'];
         let result = labTest['result'];
         let validValues = labTest['validValues'];
 
@@ -479,7 +517,7 @@ export class LabTestPage implements OnInit, OnDestroy {
           getLoopStatus = false;
           return false;
         } else {
-          let getStatus = this.resultChange(id, result, inputType, validValues);
+          let getStatus = this.resultChange(labTestId, id, result, inputType, validValues, true);
           console.log("getStatus is -> " + getStatus);
           if (!getStatus) {
             getLoopStatus = false;
@@ -527,7 +565,9 @@ export class LabTestPage implements OnInit, OnDestroy {
       " *** " +
       userId +
       " *** " +
-      visitCount
+      visitCount +
+      " *** " +
+      ecgId
     );
 
     console.log("**********************************************");
@@ -554,8 +594,70 @@ export class LabTestPage implements OnInit, OnDestroy {
         result,
         userId
       );
+    }
+
+    if (ecgId && ecgId > 0) {
+
+      let ecgDbData = {
+        patientId,
+        visitId,
+        deviceId,
+        vanId,
+        routeVillageId,
+        servicePointId,
+        compoundPatientId,
+        visitCount,
+        ecgId,
+        isEcgReferred
+      }
+
+      console.log("ecgDbData is below");
+      console.log(ecgDbData);
+
+      this.db
+        .findEcg(ecgDbData)
+        .then(data => {
+          if (data) {
+
+            this.db
+              .updateEcg(ecgDbData)
+              .then(data => {
+                console.log("Success -> updateEcg is updated Successfully..." + data);
+              })
+              .catch(e => {
+                console.error(
+                  "Error -> updateEcg is not updated" + JSON.stringify(e)
+                );
+              });
+
+            // Need to update the Ecg
+          } else {
+
+            this.db
+              .insertEcg(ecgDbData)
+              .then(data => {
+                console.log(
+                  "Success -> insertEcg is inserted Successfully..." + data
+                );
+              })
+              .catch(e => {
+                console.error(
+                  "Error -> insertEcg is not inserted" + JSON.stringify(e)
+                );
+              });
+
+            // Need to insert the Ecg
+          }
+
+        })
+        .catch(e => {
+          console.error(
+            "Error -> findEcg returned error" + JSON.stringify(e)
+          );
+        });
 
     }
+
     this.router.navigate(["/medicine-dispense"]);
 
   }
