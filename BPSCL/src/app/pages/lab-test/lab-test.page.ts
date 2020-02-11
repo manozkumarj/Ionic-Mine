@@ -50,11 +50,12 @@ export class LabTestPage implements OnInit, OnDestroy {
   labTests: any[] = [
     {
       labTestId: 1,
-      orderId: 2,
+      orderId: null,
       labTestName: 'Urine-Albumin',
       validValues: 'Select~Nil~Trace~1+~2+~3+',
       units: 'null',
       id: 0,
+      intId: 1,
       isSelected: false,
       input: 'select',
       options: ['aaa', 'bbb', 'ccc'],
@@ -63,7 +64,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 2,
-      orderId: 1,
+      intId: 2,
+      orderId: null,
       labTestName: 'Urine-Sugar',
       validValues: 'Select~Nil~1+~2+~3+',
       units: 'null',
@@ -75,7 +77,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 3,
-      orderId: 3,
+      intId: 3,
+      orderId: null,
       labTestName: 'HB %',
       validValues: '4--18',
       units: 'gm/100ml',
@@ -87,7 +90,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 9,
-      orderId: 4,
+      intId: 4,
+      orderId: null,
       id: 3,
       labTestName: 'Fasting Blood Sugar',
       validValues: '60--500',
@@ -97,7 +101,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 10,
-      orderId: 5,
+      intId: 5,
+      orderId: null,
       id: 4,
       labTestName: 'Post Lunch Blood Sugar',
       validValues: '100--500',
@@ -107,7 +112,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 12,
-      orderId: 6,
+      intId: 6,
+      orderId: null,
       id: 5,
       labTestName: 'RBS',
       validValues: '60--500',
@@ -117,7 +123,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 14,
-      orderId: 7,
+      intId: 7,
+      orderId: null,
       id: 6,
       labTestName: 'Pregnancy Confirmation',
       validValues: 'Select~Negative~Positive',
@@ -127,7 +134,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 17,
-      orderId: 8,
+      intId: 8,
+      orderId: null,
       id: 7,
       labTestName: 'Others',
       validValues: 'null',
@@ -137,7 +145,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 18,
-      orderId: 9,
+      intId: 9,
+      orderId: null,
       id: 8,
       labTestName: 'Malaria',
       validValues: 'Select~Negative~Positive',
@@ -147,7 +156,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     },
     {
       labTestId: 11,
-      orderId: 10,
+      intId: 10,
+      orderId: null,
       id: 9,
       labTestName: 'ECG',
       validValues: 'Select~No~Yes',
@@ -159,6 +169,8 @@ export class LabTestPage implements OnInit, OnDestroy {
       showField: false
     }
   ];
+
+  copyOfLabTests: any[] = this.labTests;
 
   userId: number;
   vanId: number;
@@ -249,6 +261,7 @@ export class LabTestPage implements OnInit, OnDestroy {
           input: labtest['validValues'].toLowerCase().includes('select') ? 'select' : 'input',
           options: (labtest['validValues'].split("~")).filter(l => l != 'Select'),
           result: null,
+          intId: j++,
           showField: false
         })
         );
@@ -326,15 +339,27 @@ export class LabTestPage implements OnInit, OnDestroy {
     return true;
   }
 
-  selectedLabTestId() {
-    let selectedLabTestID = +this.labTestForm.get("labTestSelector").value;
-    console.log("selectedLabTestID is -> " + selectedLabTestID);
-    this.labTests[selectedLabTestID]['showField'] = true;
-    this.showLabTestSelectorSection = false;
-    this.labTestForm.patchValue({
-      labTestSelector: null
-    });
-    return false;
+  selectedLabTestId(selectedLabTestID) {
+    let selectedIntId = selectedLabTestID;
+    console.log("selectedIntId is -> " + selectedIntId);
+    if (selectedLabTestID) {
+      selectedLabTestID = --selectedLabTestID;
+      this.selectedLabTests.push(selectedLabTestID);
+      let getSelectedLabTestsCount = this.selectedLabTests.length;
+      // let selectedLabTestID = +this.labTestForm.get("labTestSelector").value;
+      this.labTests[selectedLabTestID]['showField'] = true;
+      this.labTests[selectedLabTestID]['orderId'] = getSelectedLabTestsCount;
+      this.labTestForm.patchValue({
+        labTestSelector: null
+      });
+      this.copyOfLabTests = this.copyOfLabTests.filter(labTest => {
+        return labTest.intId != selectedIntId
+      });
+      // this.showLabTestSelectorSection = false;
+      console.log("selectedLabTestId() Logging this.labTests");
+      console.log(this.labTests);
+      // return false;
+    }
   }
 
   ecgSelection(id) {

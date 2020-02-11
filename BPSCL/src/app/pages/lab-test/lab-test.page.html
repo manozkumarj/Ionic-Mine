@@ -73,7 +73,6 @@
                     <ion-col size="12" size-sm>
                       <ion-select placeholder="Select Lab Test"
                         (ionChange)="labTestSelection(labTest.id, labTestValue.value)" #labTestValue>
-                        <ion-select-option value="">Select</ion-select-option>
                         <ion-select-option [value]="labTest.labTestId">
                           {{labTest.labTestName}}
                         </ion-select-option>
@@ -108,8 +107,8 @@
                   <ion-row class="labTests">
                     <ion-col size="12" size-sm>
                       <ion-select placeholder="Select Lab Test" formControlName="labTestSelector"
-                        (ionChange)="selectedLabTestId()">
-                        <ion-select-option *ngFor="let labTest of labTests" [value]="labTest.id">
+                        (ionChange)="selectedLabTestId(selector.value)" #selector>
+                        <ion-select-option *ngFor="let labTest of copyOfLabTests" [value]="labTest.intId">
                           {{labTest.labTestName}}
                         </ion-select-option>
                       </ion-select>
