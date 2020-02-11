@@ -19,6 +19,12 @@ export class LabTestPage implements OnInit, OnDestroy {
       patientId: 'one'
     }, {
       patientId: 'two'
+    }, {
+      patientId: 'three'
+    }, {
+      patientId: 'four'
+    }, {
+      patientId: 'five'
     }
   ];
   selectedLabTests: any[] = [];
@@ -190,7 +196,7 @@ export class LabTestPage implements OnInit, OnDestroy {
 
   showLabTests: boolean = false;
   showEcgSection: boolean = false;
-  showLabTestSelectorSection: boolean = true;
+  showLabTestSelectorSection: boolean = false;
 
   newDate = new Date();
   dateTime: string = this.commonService.getDateTime(this.newDate);
@@ -201,15 +207,16 @@ export class LabTestPage implements OnInit, OnDestroy {
     private router: Router,
     private storageService: StorageService
   ) {
-    this.loadUserDetails();
-    this.loadSessionDetails();
-    this.loadBeneficiaries();
-    this.loadLabTests();
-    this.loadEcgs();
+    // this.loadUserDetails();
+    // this.loadSessionDetails();
+    // this.loadBeneficiaries();
+    // this.loadLabTests();
+    // this.loadEcgs();
 
     this.labTestForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
-      labTestSelector: new FormControl("", Validators.required)
+      labTestSelector: new FormControl("", Validators.required),
+      ecgSelector: new FormControl("", Validators.required)
     });
   }
 
@@ -349,13 +356,23 @@ export class LabTestPage implements OnInit, OnDestroy {
       // let selectedLabTestID = +this.labTestForm.get("labTestSelector").value;
       this.labTests[selectedLabTestID]['showField'] = true;
       this.labTests[selectedLabTestID]['orderId'] = getSelectedLabTestsCount;
+      let id = this.labTests[selectedLabTestID]['id'];
+      let name = this.labTests[selectedLabTestID]['labTestName'];
       this.labTestForm.patchValue({
         labTestSelector: null
       });
+
       this.copyOfLabTests = this.copyOfLabTests.filter(labTest => {
         return labTest.intId != selectedIntId
       });
-      // this.showLabTestSelectorSection = false;
+
+      this.labTestSelection(id, name);
+
+      if (this.copyOfLabTests.length === 0) {
+        this.showLabTestSelectorSection = false;
+      } else {
+        this.showLabTestSelectorSection = true;
+      }
       console.log("selectedLabTestId() Logging this.labTests");
       console.log(this.labTests);
       // return false;
@@ -420,6 +437,7 @@ export class LabTestPage implements OnInit, OnDestroy {
     let selectedBenID = this.labTestForm.get("beneficiaryId").value;
     console.log("selectedBenID is -> " + selectedBenID);
     this.showLabTests = true;
+    this.showLabTestSelectorSection = true;
     // Un-comment below two lines when go live
     if (selectedBenID && selectedBenID != null)
       this.getBenDetails(selectedBenID);
@@ -442,17 +460,47 @@ export class LabTestPage implements OnInit, OnDestroy {
       });
   }
 
+  skip() {
+    console.clear();
+    console.log("Skip button clicked...");
+    let selectedBenID = this.labTestForm.get("beneficiaryId").value;
+    console.log("Currently selectedBenID is -> " + selectedBenID);
+
+    let selectedBenIndex = null;
+    let selectableIndex = 0;
+    if (selectedBenID && selectedBenID != '') {
+      selectedBenIndex = +this.benIds.findIndex(function (e) {
+        return e.patientId === selectedBenID;
+      });
+      selectableIndex = (selectedBenIndex + 1);
+    }
+    console.log("Currently selectedBenIndex is -> " + selectedBenIndex);
+
+    let totalBens = this.benIds.length;
+    console.log("totalBens are -> " + totalBens);
+
+    console.log("selectableIndex is -> " + selectableIndex);
+
+    if (selectableIndex === totalBens) {
+      console.log("Next will be empty");
+    }
+
+  }
+
   resetValues() {
     this.labTestForm.patchValue({
-      beneficiaryId: ""
+      beneficiaryId: "",
+      labTestSelector: null,
+      ecgSelector: null
     });
 
-    this.labTests = this.labTests.map(labtest => ({
-      isSelected: false,
-      result: null
-    })
-    );
+    // this.loadBeneficiaries();
+    // this.loadLabTests();
+    // this.loadEcgs();
+
     this.showLabTests = false;
+    this.showEcgSection = false;
+    this.showLabTestSelectorSection = false;
   }
 
 
@@ -722,7 +770,7 @@ export class LabTestPage implements OnInit, OnDestroy {
 
     // this.router.navigate(["/medicine-dispense"]);
     console.log("Form is submitted successfully.");
-    this.router.navigate(["/medicine-dispense"]);
+    // this.router.navigate(["/medicine-dispense"]);
 
   }
 

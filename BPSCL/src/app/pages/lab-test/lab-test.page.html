@@ -72,8 +72,9 @@
                   <ion-row class="labTests" *ngIf="labTest.showField" [style.order]="labTest.orderId">
                     <ion-col size="12" size-sm>
                       <ion-select placeholder="Select Lab Test"
-                        (ionChange)="labTestSelection(labTest.id, labTestValue.value)" #labTestValue>
-                        <ion-select-option [value]="labTest.labTestId">
+                        (ionChange)="labTestSelection(labTest.id, labTestValue.value)" #labTestValue
+                        [value]="labTest.labTestId">
+                        <ion-select-option [value]="labTest.labTestId" [selected]='true'>
                           {{labTest.labTestName}}
                         </ion-select-option>
                       </ion-select>
@@ -140,7 +141,8 @@
                 </ion-col>
               </ion-row>
 
-              <ion-row [ngClass]="{'hider' : !showEcgSection}" style="text-align: center;">
+              <ion-row [ngClass]="{'hider' : !showEcgSection}"
+                style="text-align: center;border-bottom: 1px solid black">
                 <ion-col size="12" size-sm>
                   <div>{{selectedEcgName}}</div>
                 </ion-col>
@@ -149,18 +151,35 @@
                 </ion-col>
               </ion-row>
 
-              <ion-row class="row-border row-height-45 margin-top-20" align-items-center justify-content-center>
+
+
+              <ion-row [ngClass]="{'hider' : !showEcgSection}" class="row-border row-height-45" align-items-center
+                justify-content-center>
+                <ion-col size="12" size-sm>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                </ion-col>
+                <ion-col size="12" size-sm>
+                  <ion-button (click)="openSelect()" style="width: 90%; font-weight: bold;" type="button"
+                    color="primary">Edit ECG</ion-button>
+                </ion-col>
+              </ion-row>
+
+
+
+              <ion-row class="row-border row-height-45 margin-top-30" align-items-center justify-content-center>
                 <ion-col size="12" size-sm>
                   <ion-button style="width: 90%; font-weight: bold;" type="submit" color="primary"
                     [disabled]='!showLabTests'>Save</ion-button>
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-button (click)="openSelect()" style="width: 90%; font-weight: bold;" type="button"
+                  <ion-button (click)="resetValues()" style="width: 90%; font-weight: bold;" type="button"
                     color="primary" [disabled]='!showLabTests'>Reset
                   </ion-button>
                 </ion-col>
                 <ion-col size="12" size-sm>
-                  <ion-button style="width: 90%; font-weight: bold;" type="reset" color="primary">Skip</ion-button>
+                  <ion-button (click)="skip()" style="width: 90%; font-weight: bold;" type="button" color="primary">Skip
+                  </ion-button>
                 </ion-col>
               </ion-row>
 
@@ -169,7 +188,7 @@
                 <ion-col size="12" size-sm>
                   <ion-item style="display: none;">
                     <ion-label>ECG Result</ion-label>
-                    <ion-select #mySelect (ionChange)="ecgSelection(mySelect.value)">
+                    <ion-select #mySelect (ionChange)="ecgSelection(mySelect.value)" formControlName="ecgSelector">
                       <ion-select-option *ngFor="let ecg of ecgs" [value]="ecg.ecgId">
                         {{ecg.ecgName}}
                       </ion-select-option>
