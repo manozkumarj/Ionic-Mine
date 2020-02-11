@@ -201,11 +201,11 @@ export class LabTestPage implements OnInit, OnDestroy {
     private router: Router,
     private storageService: StorageService
   ) {
-    // this.loadUserDetails();
-    // this.loadSessionDetails();
-    // this.loadBeneficiaries();
-    // this.loadLabTests();
-    // loadEcgs();
+    this.loadUserDetails();
+    this.loadSessionDetails();
+    this.loadBeneficiaries();
+    this.loadLabTests();
+    this.loadEcgs();
 
     this.labTestForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -669,7 +669,8 @@ export class LabTestPage implements OnInit, OnDestroy {
         compoundPatientId,
         visitCount,
         ecgId,
-        isEcgReferred
+        isEcgReferred,
+        userId
       }
 
       console.log("ecgDbData is below");
@@ -720,7 +721,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     }
 
     // this.router.navigate(["/medicine-dispense"]);
-    alert("Form is submitted successfully.");
+    console.log("Form is submitted successfully.");
+    this.router.navigate(["/medicine-dispense"]);
 
   }
 
