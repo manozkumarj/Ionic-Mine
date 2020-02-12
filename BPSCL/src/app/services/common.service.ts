@@ -142,6 +142,35 @@ export class CommonService {
     return true;
   }
 
+
+  skipButtonFunctionality(selectedBenID, benIds) {
+    let selectedBenIndex = null;
+    let selectableIndex = 0;
+    if (selectedBenID && selectedBenID != '') {
+      selectedBenIndex = +benIds.findIndex(function (e) {
+        return e.patientId === selectedBenID;
+      });
+      selectableIndex = (selectedBenIndex + 1);
+    }
+
+    console.log("Currently selectedBenIndex is -> " + selectedBenIndex);
+
+    let totalBens = benIds.length;
+
+    console.log("totalBens are -> " + totalBens);
+    console.log("selectableIndex is -> " + selectableIndex);
+
+    if (selectableIndex === totalBens) {
+      console.log("Next will be empty");
+      console.log("selectable patient ID is -> null");
+      return -1;
+    } else {
+      console.log("selectable patient ID is -> " + benIds[selectableIndex].patientId);
+      return selectableIndex;
+    }
+  }
+
+
   logout() {
     this.alertCtrl
       .create({

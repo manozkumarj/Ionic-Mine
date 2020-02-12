@@ -205,11 +205,27 @@ export class ConsumableDispensePage implements OnInit, OnDestroy {
   }
 
   skipper() {
-    // this.consumableDispenseForm.patchValue({
-    //   beneficiaryId: "",
-    //   remarks: ""
-    // });
-    // this.dispenses = this.freshDispenses;
+    console.clear();
+    console.log("Skip button clicked...");
+    let selectedBenID = this.consumableDispenseForm.get("beneficiaryId").value;
+    console.log("Currently selectedBenID is -> " + selectedBenID);
+
+    let skipResponse = this.commonService.skipButtonFunctionality(selectedBenID, this.benIds);
+
+    console.log("skipResponse is -> " + skipResponse);
+
+    if (skipResponse == -1) {
+      console.log("Next will be empty");
+      console.log("selectable patient ID is -> null");
+      this.consumableDispenseForm.patchValue({
+        beneficiaryId: null
+      });
+    } else {
+      console.log("selectable patient ID is -> " + this.benIds[skipResponse].patientId);
+      this.consumableDispenseForm.patchValue({
+        beneficiaryId: this.benIds[skipResponse].patientId
+      });
+    }
   }
 
   findAndUpsertDispense(

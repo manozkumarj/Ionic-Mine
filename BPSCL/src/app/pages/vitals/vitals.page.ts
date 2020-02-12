@@ -190,6 +190,30 @@ export class VitalsPage implements OnInit, OnDestroy {
     // }
   }
 
+  skipper() {
+    console.clear();
+    console.log("Skip button clicked...");
+    let selectedBenID = this.vitalForm.get("beneficiaryId").value;
+    console.log("Currently selectedBenID is -> " + selectedBenID);
+
+    let skipResponse = this.commonService.skipButtonFunctionality(selectedBenID, this.benIds);
+
+    console.log("skipResponse is -> " + skipResponse);
+
+    if (skipResponse == -1) {
+      console.log("Next will be empty");
+      console.log("selectable patient ID is -> null");
+      this.vitalForm.patchValue({
+        beneficiaryId: null
+      });
+    } else {
+      console.log("selectable patient ID is -> " + this.benIds[skipResponse].patientId);
+      this.vitalForm.patchValue({
+        beneficiaryId: this.benIds[skipResponse].patientId
+      });
+    }
+  }
+
   resetValues() {
     this.vitalForm.patchValue({
       beneficiaryId: "",

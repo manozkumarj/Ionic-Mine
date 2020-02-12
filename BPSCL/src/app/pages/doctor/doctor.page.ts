@@ -334,6 +334,30 @@ export class DoctorPage implements OnInit, OnDestroy {
       });
   }
 
+  skipper() {
+    console.clear();
+    console.log("Skip button clicked...");
+    let selectedBenID = this.doctorForm.get("beneficiaryId").value;
+    console.log("Currently selectedBenID is -> " + selectedBenID);
+
+    let skipResponse = this.commonService.skipButtonFunctionality(selectedBenID, this.benIds);
+
+    console.log("skipResponse is -> " + skipResponse);
+
+    if (skipResponse == -1) {
+      console.log("Next will be empty");
+      console.log("selectable patient ID is -> null");
+      this.doctorForm.patchValue({
+        beneficiaryId: null
+      });
+    } else {
+      console.log("selectable patient ID is -> " + this.benIds[skipResponse].patientId);
+      this.doctorForm.patchValue({
+        beneficiaryId: this.benIds[skipResponse].patientId
+      });
+    }
+  }
+
   resetValues() {
     this.doctorForm.patchValue({
       beneficiaryId: "",

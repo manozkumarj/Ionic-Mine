@@ -198,11 +198,27 @@ export class MedicineDispensePage implements OnInit, OnDestroy {
   }
 
   skipper() {
-    // this.medicineDispenseForm.patchValue({
-    //   beneficiaryId: "",
-    //   remarks: ""
-    // });
-    // this.dispenses = this.freshDispenses;
+    console.clear();
+    console.log("Skip button clicked...");
+    let selectedBenID = this.medicineDispenseForm.get("beneficiaryId").value;
+    console.log("Currently selectedBenID is -> " + selectedBenID);
+
+    let skipResponse = this.commonService.skipButtonFunctionality(selectedBenID, this.benIds);
+
+    console.log("skipResponse is -> " + skipResponse);
+
+    if (skipResponse == -1) {
+      console.log("Next will be empty");
+      console.log("selectable patient ID is -> null");
+      this.medicineDispenseForm.patchValue({
+        beneficiaryId: null
+      });
+    } else {
+      console.log("selectable patient ID is -> " + this.benIds[skipResponse].patientId);
+      this.medicineDispenseForm.patchValue({
+        beneficiaryId: this.benIds[skipResponse].patientId
+      });
+    }
   }
 
   findAndUpsertDispense(

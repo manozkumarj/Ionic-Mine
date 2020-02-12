@@ -439,8 +439,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     this.showLabTests = true;
     this.showLabTestSelectorSection = true;
     // Un-comment below two lines when go live
-    if (selectedBenID && selectedBenID != null)
-      this.getBenDetails(selectedBenID);
+    // if (selectedBenID && selectedBenID != null)
+    //   this.getBenDetails(selectedBenID);
   }
 
   getBenDetails(selectedBenID) {
@@ -460,31 +460,28 @@ export class LabTestPage implements OnInit, OnDestroy {
       });
   }
 
-  skip() {
+  skipper() {
     console.clear();
     console.log("Skip button clicked...");
     let selectedBenID = this.labTestForm.get("beneficiaryId").value;
     console.log("Currently selectedBenID is -> " + selectedBenID);
 
-    let selectedBenIndex = null;
-    let selectableIndex = 0;
-    if (selectedBenID && selectedBenID != '') {
-      selectedBenIndex = +this.benIds.findIndex(function (e) {
-        return e.patientId === selectedBenID;
-      });
-      selectableIndex = (selectedBenIndex + 1);
-    }
-    console.log("Currently selectedBenIndex is -> " + selectedBenIndex);
+    let skipResponse = this.commonService.skipButtonFunctionality(selectedBenID, this.benIds);
 
-    let totalBens = this.benIds.length;
-    console.log("totalBens are -> " + totalBens);
+    console.log("skipResponse is -> " + skipResponse);
 
-    console.log("selectableIndex is -> " + selectableIndex);
-
-    if (selectableIndex === totalBens) {
+    if (skipResponse == -1) {
       console.log("Next will be empty");
+      console.log("selectable patient ID is -> null");
+      this.labTestForm.patchValue({
+        beneficiaryId: null
+      });
+    } else {
+      console.log("selectable patient ID is -> " + this.benIds[skipResponse].patientId);
+      this.labTestForm.patchValue({
+        beneficiaryId: this.benIds[skipResponse].patientId
+      });
     }
-
   }
 
   resetValues() {
