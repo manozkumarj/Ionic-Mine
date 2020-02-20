@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="hero">
+    <div class="form-box">
+      <div class="button-box">
+        <div id="btn" [ngStyle]="{'left': btnLeftValue }"></div>
+        <button type="button" class="toggle-btn" (click)="login()">Login</button>
+        <button type="button" class="toggle-btn" (click)="register()">Register</button>
+      </div>
+      <div class="social-icons">
+        <img src="./../../assets/images/fb.png" alt="Facebook" />
+        <img src="./../../assets/images/tw.png" alt="Twitter" />
+        <img src="./../../assets/images/gp.png" alt="Google" />
+      </div>
+      <form id="login" action="#" class="input-group" [ngStyle]="{'left': loginLeftValue }">
+        <input type="text" class="input-field" placeholder="User Id" />
+        <input type="text" class="input-field" placeholder="Password" />
+        <input type="checkbox" class="check-box" />
+        <span>Remember Password</span>
+        <button type="submit" class="submit-btn">Login</button>
+      </form>
+      <form id="register" action="#" class="input-group" [ngStyle]="{'left': registerLeftValue }">
+        <input type="text" class="input-field" placeholder="Password" />
+        <input type="email" class="input-field" placeholder="Email" />
+        <input type="text" class="input-field" placeholder="User Id" />
+        <input type="checkbox" class="check-box" />
+        <span>I agree to the terms & conditions</span>
+        <button type="submit" class="submit-btn">Register</button>
+      </form>
+    </div>
+  </div>
+</ion-content>
