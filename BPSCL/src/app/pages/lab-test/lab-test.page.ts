@@ -373,6 +373,10 @@ export class LabTestPage implements OnInit, OnDestroy {
       } else {
         this.showLabTestSelectorSection = true;
       }
+
+      // let cloneOfLabTests = [...this.labTests];
+      // this.labTests = [...cloneOfLabTests];
+
       console.log("selectedLabTestId() Logging this.labTests");
       console.log(this.labTests);
       // return false;
@@ -608,6 +612,9 @@ export class LabTestPage implements OnInit, OnDestroy {
 
     let getLoopStatus = true;
     if (selectedLabTests.length > 0) {
+      selectedLabTests.sort((a, b) => {
+        return a.orderId - b.orderId;
+      });
       for (let labTest of selectedLabTests) {
         let labtestName = labTest['labTestName'];
         let inputType = labTest['input'];
