@@ -34,6 +34,7 @@ karma.conf.js
 */plugins
 */www
 */resources
+*/.gitignore
 
 project-developers/node_modules
 project-developers/dist

@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
+  formsDivHeight = '215px';
+
   loginLeftValue;
   registerLeftValue;
   btnLeftValue;
@@ -14,6 +16,7 @@ export class HomePage {
   constructor() { }
 
   register() {
+    this.formsDivHeight = "315px";
     this.loginLeftValue = "-400px";
     this.registerLeftValue = "50px";
     this.btnLeftValue = "110px";
@@ -21,6 +24,7 @@ export class HomePage {
   }
 
   login() {
+    this.formsDivHeight = "215px";
     this.loginLeftValue = "50px";
     this.registerLeftValue = "450px";
     this.btnLeftValue = "0px";
