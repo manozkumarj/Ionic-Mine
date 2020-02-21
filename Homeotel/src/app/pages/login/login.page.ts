@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-login',
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
 })
-export class HomePage {
+export class LoginPage implements OnInit {
 
   formsDivHeight = '215px';
 
@@ -14,6 +14,9 @@ export class HomePage {
   btnLeftValue;
 
   constructor() { }
+
+  ngOnInit() {
+  }
 
   register() {
     this.formsDivHeight = "315px";
