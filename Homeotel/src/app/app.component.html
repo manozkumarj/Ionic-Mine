@@ -6,21 +6,22 @@
 
           <ion-title style="background-image: url('assets/images/banner.jpg');font-size: 16px;">
             <p style="margin: 0; margin-top: 30px; padding: 10px;">
-              <img src="assets/images/avatar.png" height="75px" /></p>
+              <img src="assets/images/zuck.jpg" height="75px" style="border-radius: 100%;" /></p>
             <p style="color: #fff;margin: 0; ">Uday Kumar</p>
             <p style="color: #fff; margin-top: 10px;">uday@gmail.com</p>
           </ion-title>
 
           <div *ngFor="let p of appPages">
 
-            <ion-item *ngIf="p.title != 'Logout'" [routerDirection]="'root'" [routerLink]="[p.url]">
+            <ion-item *ngIf="p.title != 'Logout'" [routerDirection]="'root'" [routerLink]="[p.url]"
+              class="border-bottom">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{ p.title }}
               </ion-label>
             </ion-item>
 
-            <ion-item *ngIf="p.title == 'Logout'" (click)="logout()">
+            <ion-item *ngIf="p.title == 'Logout'" (click)="commonService.logout()" class="white-border-bottom">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{ p.title }}
