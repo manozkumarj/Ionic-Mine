@@ -400,6 +400,7 @@ export class MedicineDispensePage implements OnInit, OnDestroy {
         );
       }
 
+      this.commonService.makeBenObjectEmpty();
       this.router.navigate(["/consumable-dispense"]);
     } else {
       console.log("Upsert for Remarks");
@@ -417,6 +418,7 @@ export class MedicineDispensePage implements OnInit, OnDestroy {
       );
 
       this.commonService.makeBenObjectEmpty();
+      this.router.navigate(["/consumable-dispense"]);
     }
   }
 }

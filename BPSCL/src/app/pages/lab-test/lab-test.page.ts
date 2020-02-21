@@ -207,11 +207,11 @@ export class LabTestPage implements OnInit, OnDestroy {
     private router: Router,
     private storageService: StorageService
   ) {
-    // this.loadUserDetails();
-    // this.loadSessionDetails();
-    // this.loadBeneficiaries();
-    // this.loadLabTests();
-    // this.loadEcgs();
+    this.loadUserDetails();
+    this.loadSessionDetails();
+    this.loadBeneficiaries();
+    this.loadLabTests();
+    this.loadEcgs();
 
     this.labTestForm = new FormGroup({
       beneficiaryId: new FormControl("", Validators.required),
@@ -443,8 +443,8 @@ export class LabTestPage implements OnInit, OnDestroy {
     this.showLabTests = true;
     this.showLabTestSelectorSection = true;
     // Un-comment below two lines when go live
-    // if (selectedBenID && selectedBenID != null)
-    //   this.getBenDetails(selectedBenID);
+    if (selectedBenID && selectedBenID != null)
+      this.getBenDetails(selectedBenID);
   }
 
   getBenDetails(selectedBenID) {
@@ -495,9 +495,9 @@ export class LabTestPage implements OnInit, OnDestroy {
       ecgSelector: null
     });
 
-    // this.loadBeneficiaries();
-    // this.loadLabTests();
-    // this.loadEcgs();
+    this.loadBeneficiaries();
+    this.loadLabTests();
+    this.loadEcgs();
 
     this.showLabTests = false;
     this.showEcgSection = false;
@@ -774,7 +774,7 @@ export class LabTestPage implements OnInit, OnDestroy {
 
     // this.router.navigate(["/medicine-dispense"]);
     console.log("Form is submitted successfully.");
-    // this.router.navigate(["/medicine-dispense"]);
+    this.router.navigate(["/medicine-dispense"]);
 
   }
 

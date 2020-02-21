@@ -408,6 +408,7 @@ export class ConsumableDispensePage implements OnInit, OnDestroy {
         );
       }
 
+      this.commonService.makeBenObjectEmpty();
       this.router.navigate(["/beneficiary-history"]);
     } else {
       console.log("Upsert for Remarks");
@@ -424,6 +425,7 @@ export class ConsumableDispensePage implements OnInit, OnDestroy {
         this.userId
       );
 
+      this.commonService.makeBenObjectEmpty();
       this.router.navigate(["/beneficiary-history"]);
     }
   }
