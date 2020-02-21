@@ -1,9 +1,43 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-grid>
+      <ion-row style="text-align: center; font-size: 25px;">
+        <ion-col>
+          <div>
+            Homeotel
+          </div>
+        </ion-col>
+        <ion-col size="2" (click)="search()">
+          <div>
+            <ion-icon name="search-outline"></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <ion-grid class="secondHeader" style="padding: 0px;">
+    <ion-row style="height: 40px; text-align: center; background-color: #cf4034;
+    color: #FFF;">
+      <ion-col class="active">
+        <div>Home</div>
+      </ion-col>
+      <ion-col>
+        <div>Doctors</div>
+      </ion-col>
+      <ion-col>
+        <div>History</div>
+      </ion-col>
+      <ion-col>
+        <div>Wallet</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

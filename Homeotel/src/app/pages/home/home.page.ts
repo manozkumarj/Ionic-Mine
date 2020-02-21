@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from "./../../services/common.service";
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePage implements OnInit {
 
-  constructor() { }
+  constructor(private commonService: CommonService) { }
 
   ngOnInit() {
+  }
+
+  search() {
+    console.log("Clicked on Search");
   }
 
 }
