@@ -46,18 +46,26 @@
         <div>Family</div>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row align-items-center justify-content-center>
       <ion-col class="card-col">
-        <div>
-          <span><img src="assets/images/milinda.jpg" height="50px" class="roundBorder" /></span>
-          <span>Wife</span>
-        </div>
+        <ion-row>
+          <ion-col size="auto">
+            <img src="assets/images/milinda.jpg" height="50px" class="roundBorder" />
+          </ion-col>
+          <ion-col>
+            <span>Wife</span>
+          </ion-col>
+        </ion-row>
       </ion-col>
       <ion-col class="card-col">
-        <div>
-          <span><img src="assets/images/sergey.jpg" height="50px" class="roundBorder" /></span>
-          <span>Son</span>
-        </div>
+        <ion-row>
+          <ion-col size="auto">
+            <img src="assets/images/sergey.jpg" height="50px" class="roundBorder" />
+          </ion-col>
+          <ion-col>
+            <span>Son</span>
+          </ion-col>
+        </ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -75,6 +83,45 @@
       </ion-col>
       <ion-col><img src="assets/images/kamineni.jpg" class="roundBorder" height="100px" />
       </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col class="card-heading">
+        <div>Health Tips</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="healthTips">
+      <ion-col>
+        <ion-row *ngFor="let healthTip of healthTips">
+          <ion-col>
+            {{healthTip.content}}
+          </ion-col>
+          <ion-col size="4">
+            <img [src]="healthTip.avatar" />
+          </ion-col>
+        </ion-row>
+      </ion-col>
+
+
+      <!-- <ion-list>
+        <ion-item button>
+          <ion-label text-wrap>
+            <h3>Crouching Tiger, Hidden Dragon</h3>
+            <p>
+              common.js:290 Native: tried calling StatusBar.styleDefault, but Cordova is not available. Make sure to
+              include cordova.js or run in a device/simulator
+            </p>
+            2000
+          </ion-label>
+          <ion-icon slot="start" name="logo-game-controller-b"></ion-icon>
+          <ion-avatar slot="end">
+            <img
+              src="https://m.media-amazon.com/images/M/MV5BNDdhMzMxOTctNDMyNS00NTZmLTljNWEtNTc4MDBmZTYxY2NmXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg" />
+          </ion-avatar>
+        </ion-item>
+      </ion-list> -->
     </ion-row>
   </ion-grid>
 

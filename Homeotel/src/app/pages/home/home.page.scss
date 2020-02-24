@@ -4,7 +4,7 @@
 }
 
 .childGrid{
-    height: 120px; 
+    height: 140px; 
     border-top: 1px solid #ccc; 
     margin-top: 5px; 
     border-bottom: 2px solid #5c5252; 
@@ -21,6 +21,7 @@
 
 .card-heading{
     font-size: 20px;
+    font-weight: bold;
     padding: 12px;
 }
 
@@ -38,4 +39,14 @@
 .roundBorder{
     border: 1px solid #ccc;
     border-radius: 100%;
+}
+
+.healthTips ion-row{
+    margin: 10px 0px;
+    border-bottom: 1px solid #000;
+}
+
+.healthTips img{
+    width: 250px;
+    height: 120px;
 }
