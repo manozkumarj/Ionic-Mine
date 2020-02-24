@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Profile</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="moreOptions()">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid class="mainGrid">
+    <ion-row>
+      <ion-col class="card-heading">
+        <div>Personal Info</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="fieldsRow">
+      <ion-col class="card-col">
+        <ion-input class="field-input" value="" placeholder="First Name"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row class="fieldsRow">
+      <ion-col class="card-col">
+        <ion-input class="field-input" value="" placeholder="Last Name"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row class="fieldsRow">
+      <ion-col class="card-col">
+        <ion-datetime class="paddTnB10 field-input" placeholder="Date of Birth" displayFormat="YYYY-MM-DD" value="">
+        </ion-datetime>
+      </ion-col>
+    </ion-row>
+    <ion-row class="genderRow fieldsRow">
+      <ion-col class="card-col" (click)="toggleGender(1)">
+        <div class="paddTnB10 field-input" [ngClass]="{'genderBackground' : selectedGender == 1}">Male</div>
+      </ion-col>
+      <ion-col class="card-col" (click)="toggleGender(2)">
+        <div class="paddTnB10 field-input" [ngClass]="{'genderBackground' : selectedGender == 2}">Female</div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="fieldsRow">
+      <ion-col class="card-col">
+        <ion-select class="paddTnB10 field-input" style="color: #000; font-weight: bold;" placeholder="Marital status">
+          <ion-select-option value="1">Married</ion-select-option>
+          <ion-select-option value="2">Single</ion-select-option>
+          <ion-select-option value="3">Divorced</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+    <ion-row class="fieldsRow">
+      <ion-col class="card-col">
+        <ion-select class="paddTnB10 field-input" style="color: #000; font-weight: bold;" placeholder="Occupation">
+          <ion-select-option value="1">Designer</ion-select-option>
+          <ion-select-option value="2">Developer</ion-select-option>
+          <ion-select-option value="3">Manager</ion-select-option>
+        </ion-select>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

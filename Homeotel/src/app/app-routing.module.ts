@@ -15,6 +15,10 @@ const routes: Routes = [
     path: 'initialization',
     loadChildren: () => import('./pages/initialization/initialization.module').then(m => m.InitializationPageModule)
   },
+  {
+    path: 'profile',
+    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+  },
 ];
 
 @NgModule({
