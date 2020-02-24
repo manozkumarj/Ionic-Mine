@@ -23,7 +23,7 @@ export class LoginPage implements OnInit {
     this.loginLeftValue = "-400px";
     this.registerLeftValue = "50px";
     this.btnLeftValue = "110px";
-    console.log("login() triggered");
+    console.log("register() triggered");
   }
 
   login() {
@@ -31,7 +31,7 @@ export class LoginPage implements OnInit {
     this.loginLeftValue = "50px";
     this.registerLeftValue = "450px";
     this.btnLeftValue = "0px";
-    console.log("register() triggered");
+    console.log("login() triggered");
   }
 
 }
