@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
   register() {
     this.formsDivHeight = "315px";
     this.loginLeftValue = "-400px";
-    this.registerLeftValue = "50px";
+    this.registerLeftValue = "25px";
     this.btnLeftValue = "110px";
 
     this.focusedForm = 'register';
@@ -33,7 +33,7 @@ export class LoginPage implements OnInit {
 
   login() {
     this.formsDivHeight = "215px";
-    this.loginLeftValue = "50px";
+    this.loginLeftValue = "25px";
     this.registerLeftValue = "450px";
     this.btnLeftValue = "0px";
 
