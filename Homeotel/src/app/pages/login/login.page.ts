@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,9 @@ export class LoginPage implements OnInit {
   registerLeftValue;
   btnLeftValue;
 
-  constructor() { }
+  focusedForm = 'login';
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
@@ -23,6 +26,8 @@ export class LoginPage implements OnInit {
     this.loginLeftValue = "-400px";
     this.registerLeftValue = "50px";
     this.btnLeftValue = "110px";
+
+    this.focusedForm = 'register';
     console.log("register() triggered");
   }
 
@@ -31,7 +36,22 @@ export class LoginPage implements OnInit {
     this.loginLeftValue = "50px";
     this.registerLeftValue = "450px";
     this.btnLeftValue = "0px";
+
+    this.focusedForm = 'login';
     console.log("login() triggered");
+  }
+
+  submit() {
+    let focused;
+    if (this.focusedForm == 'login') {
+      focused = 'login';
+      // this.register();
+      this.router.navigate(["/home"]);
+    } else {
+      focused = 'register';
+      this.login();
+    }
+    console.log("submit() triggered - focused form is -> " + focused);
   }
 
 }

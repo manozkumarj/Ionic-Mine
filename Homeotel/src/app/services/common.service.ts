@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { AlertController } from "@ionic/angular";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root"
@@ -7,7 +8,8 @@ import { AlertController } from "@ionic/angular";
 export class CommonService {
 
   constructor(
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private router: Router
   ) {
   }
 
@@ -24,7 +26,8 @@ export class CommonService {
           {
             text: "Logout",
             handler: () => {
-              alert("User will be logged out");
+              // alert("User will be logged out");
+              this.router.navigate(["/login"]);
               // this.storageService.clear();
             }
           }
