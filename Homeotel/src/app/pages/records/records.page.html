@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-grid>
+      <ion-row style="text-align: center; font-size: 25px;">
+        <ion-col>
+          <div>
+            Homeotel
+          </div>
+        </ion-col>
+        <ion-col size="2" (click)="search()">
+          <div>
+            <ion-icon name="search-outline"></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid class="secondHeader" style="padding: 0px;">
+    <ion-row style="height: 40px; text-align: center; background-color: #cf4034;
+    color: #FFF;">
+      <ion-col [routerLink]="['/home']">
+        <div>Home</div>
+      </ion-col>
+      <ion-col [routerLink]="['/doctors']">
+        <div>Doctors</div>
+      </ion-col>
+      <ion-col class="active">
+        <div>Records</div>
+      </ion-col>
+      <ion-col [routerLink]="['/family-members']">
+        <div>Family</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

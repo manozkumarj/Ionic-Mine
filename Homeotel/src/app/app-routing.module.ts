@@ -17,7 +17,23 @@ const routes: Routes = [
   },
   {
     path: 'profile',
-    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+    loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfilePageModule)
+  },
+  {
+    path: 'doctors',
+    loadChildren: () => import('./pages/doctors/doctors.module').then(m => m.DoctorsPageModule)
+  },
+  {
+    path: 'records',
+    loadChildren: () => import('./pages/records/records.module').then(m => m.RecordsPageModule)
+  },
+  {
+    path: 'family-members',
+    loadChildren: () => import('./pages/family-members/family-members.module').then(m => m.FamilyMembersPageModule)
+  },
+  {
+    path: 'view-doctor/:id',
+    loadChildren: () => import('./pages/view-doctor/view-doctor.module').then(m => m.ViewDoctorPageModule)
   },
 ];
 

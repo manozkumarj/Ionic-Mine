@@ -25,7 +25,7 @@
   <ion-grid class="secondHeader" style="padding: 0px;">
     <ion-row style="height: 40px; text-align: center; background-color: #cf4034;
     color: #FFF;">
-      <ion-col class="active">
+      <ion-col [routerLink]="['/home']">
         <div>Home</div>
       </ion-col>
       <ion-col [routerLink]="['/doctors']">
@@ -34,11 +34,12 @@
       <ion-col [routerLink]="['/records']">
         <div>Records</div>
       </ion-col>
-      <ion-col [routerLink]="['/family-members']">
+      <ion-col class="active">
         <div>Family</div>
       </ion-col>
     </ion-row>
   </ion-grid>
+
 
   <ion-grid class="childGrid">
     <ion-row>
@@ -67,61 +68,6 @@
           </ion-col>
         </ion-row>
       </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-grid class="childGrid clinicsGrid">
-    <ion-row>
-      <ion-col class="card-heading">
-        <div>Nearby Clinics</div>
-      </ion-col>
-    </ion-row>
-    <ion-row class="clinicsGridRow" align-items-center justify-content-center>
-      <ion-col><img src="assets/images/appollo.png" class="roundBorder" height="100px" />
-      </ion-col>
-      <ion-col><img src="assets/images/yashodha.png" class="roundBorder" height="100px" />
-      </ion-col>
-      <ion-col><img src="assets/images/kamineni.jpg" class="roundBorder" height="100px" />
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-grid>
-    <ion-row>
-      <ion-col class="card-heading">
-        <div>Health Tips</div>
-      </ion-col>
-    </ion-row>
-    <ion-row class="healthTips">
-      <ion-col>
-        <ion-row *ngFor="let healthTip of healthTips">
-          <ion-col>
-            {{healthTip.content}}
-          </ion-col>
-          <ion-col size="4">
-            <img [src]="healthTip.avatar" />
-          </ion-col>
-        </ion-row>
-      </ion-col>
-
-
-      <!-- <ion-list>
-        <ion-item button>
-          <ion-label text-wrap>
-            <h3>Crouching Tiger, Hidden Dragon</h3>
-            <p>
-              common.js:290 Native: tried calling StatusBar.styleDefault, but Cordova is not available. Make sure to
-              include cordova.js or run in a device/simulator
-            </p>
-            2000
-          </ion-label>
-          <ion-icon slot="start" name="logo-game-controller-b"></ion-icon>
-          <ion-avatar slot="end">
-            <img
-              src="https://m.media-amazon.com/images/M/MV5BNDdhMzMxOTctNDMyNS00NTZmLTljNWEtNTc4MDBmZTYxY2NmXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg" />
-          </ion-avatar>
-        </ion-item>
-      </ion-list> -->
     </ion-row>
   </ion-grid>
 
