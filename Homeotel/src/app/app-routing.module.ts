@@ -35,6 +35,34 @@ const routes: Routes = [
     path: 'view-doctor/:id',
     loadChildren: () => import('./pages/view-doctor/view-doctor.module').then(m => m.ViewDoctorPageModule)
   },
+  {
+    path: 'settings',
+    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+  },
+  {
+    path: 'help-center',
+    loadChildren: () => import('./pages/help-center/help-center.module').then( m => m.HelpCenterPageModule)
+  },
+  {
+    path: 'homeo-kits',
+    loadChildren: () => import('./pages/homeo-kits/homeo-kits.module').then( m => m.HomeoKitsPageModule)
+  },
+  {
+    path: 'health-records',
+    loadChildren: () => import('./pages/health-records/health-records.module').then( m => m.HealthRecordsPageModule)
+  },
+  {
+    path: 'appointments',
+    loadChildren: () => import('./pages/appointments/appointments.module').then( m => m.AppointmentsPageModule)
+  },
+  {
+    path: 'payments',
+    loadChildren: () => import('./pages/payments/payments.module').then( m => m.PaymentsPageModule)
+  },
+  {
+    path: 'my-doctors',
+    loadChildren: () => import('./pages/my-doctors/my-doctors.module').then( m => m.MyDoctorsPageModule)
+  },
 ];
 
 @NgModule({

@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Help Center</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list *ngIf="helpCenters.length > 0; else noHelpCenters">
+    <ion-item *ngFor="let helpCenter of helpCenters" [routerLink]="['/view-doctor/' + helpCenter.id]" detail>
+      <div style="font-size: 18px; font-weight: bold;"> {{helpCenter.name}} </div>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noHelpCenters>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> There are no Help Centers </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+
+</ion-content>

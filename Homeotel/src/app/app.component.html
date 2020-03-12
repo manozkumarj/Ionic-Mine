@@ -4,17 +4,28 @@
       <ion-list style="padding: 0px;">
         <ion-menu-toggle auto-hide="false">
 
-          <ion-title style="background-image: url('assets/images/banner.jpg');font-size: 16px;">
-            <p style="margin: 0; margin-top: 30px; padding: 10px;">
-              <img src="assets/images/zuck.jpg" height="75px" style="border-radius: 100%;" /></p>
-            <p style="color: #fff;margin: 0; ">Uday Kumar</p>
-            <p style="color: #fff; margin-top: 10px;">uday@gmail.com</p>
+          <ion-title style="font-size: 16px; border-bottom: 8px solid #ddd;">
+            <ion-grid style="padding: 0px;">
+              <ion-row style="color: #000; background: #fff;">
+                <ion-col [routerLink]="['/home']">
+                  <p style="margin: 0;padding: 6px; text-align: center;">
+                    <img src="assets/images/milinda.jpg" height="110px" style="border-radius: 100%;" /></p>
+                </ion-col>
+                <ion-col>
+                  <div style="color: #000;margin: 0; ">
+                    <h2 style="font-weight: bold;">Mary Jay</h2>
+                    <p style="font-weight: bold; color: #0a9f28;" [routerLink]="['/profile']">Edit Profile</p>
+                    <p>25% completed</p>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-title>
 
           <div *ngFor="let p of appPages">
 
             <ion-item *ngIf="p.title != 'Logout'" [routerDirection]="'root'" [routerLink]="[p.url]"
-              class="border-bottom" style="font-weight: bold;">
+              class="border-bottom" style="font-weight: bold;" detail>
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{ p.title }}
@@ -22,7 +33,7 @@
             </ion-item>
 
             <ion-item *ngIf="p.title == 'Logout'" (click)="commonService.logout()" class="border-bottom"
-              style="font-weight: bold;">
+              style="font-weight: bold;" detail>
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{ p.title }}

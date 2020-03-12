@@ -24,42 +24,37 @@ export class AppComponent {
     this.initializeApp();
     this.appPages = [
       {
-        title: "Profile",
-        url: "/profile",
-        icon: "person-outline"
-      },
-      {
-        title: "Family",
-        url: "/family",
+        title: "My Doctors",
+        url: "/my-doctors",
         icon: "heart-outline"
       }, {
-        title: "Consultations",
-        url: "/consultations",
+        title: "Appointments",
+        url: "/appointments",
         icon: "send-outline"
       },
       {
-        title: "Reminders",
-        url: "/reminders",
+        title: "Homeo Kits",
+        url: "/homeo-kits",
         icon: "alarm-outline"
       },
       {
-        title: "Transactions",
-        url: "/transactions",
+        title: "Health Records",
+        url: "/health-records",
         icon: "chatbubbles-outline"
       },
       {
-        title: "Feedback",
-        url: "/feedback",
+        title: "Payments",
+        url: "/payments",
         icon: "flag-outline"
       },
       {
-        title: "Promos",
-        url: "/promos",
+        title: "Settings",
+        url: "/settings",
         icon: "pricetag-outline"
       },
       {
-        title: "Purchases",
-        url: "/purchases",
+        title: "Help Center",
+        url: "/help-center",
         icon: "cart-outline"
       },
       {
