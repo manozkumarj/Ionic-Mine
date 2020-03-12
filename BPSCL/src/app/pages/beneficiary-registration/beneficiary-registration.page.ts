@@ -7,6 +7,7 @@ import { StorageService } from "./../../services/storage.service";
 import { ConstantsService } from "../../services/constants.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
+import { AlertController } from "@ionic/angular";
 
 @Component({
   selector: "app-beneficiary-registration",
@@ -71,7 +72,8 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
     private camera: Camera,
     private storageService: StorageService,
     public constants: ConstantsService,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    private alertCtrl: AlertController
   ) {
 
     this.loadUserDetails();
@@ -800,43 +802,70 @@ export class BeneficiaryRegistrationPage implements OnInit, OnDestroy {
       imageUrl = null;
     }
 
-    this.db
-      .registerBeneficiary(benRegFormDetails)
-      .then(async res => {
-        console.log(
-          "Beneficiary registered successfully...!" + JSON.stringify(res)
-        );
-        let status = await res;
-        // insertVisit functionality - starts
-        if (status) {
-          this.db
-            .insertVisit(visitDetails)
-            .then(res => {
-              console.log(
-                "Beneficiary Visit details inserted successfully...!" +
-                JSON.stringify(res)
-              );
-              if (res) {
-                this.router.navigate(["/vitals"]);
-              }
-            })
-            .catch(error => {
-              console.error(
-                "Error -> Beneficiary Visit details insertion failed - " +
-                JSON.stringify(error)
-              );
-            });
-        } else {
-          console.log(
-            "insertVisit() function not triggered... :(" + JSON.stringify(res)
-          );
-        }
-        // insertVisit functionality - ends
+    this.alertCtrl
+      .create({
+        header: "Do you want to save the Beneficiary Details?",
+        message: `
+                  <p>Name : ${name}</p>
+                  <p>Surname : ${surname}</p>
+                  <p>Gender : ${genderId == 1 ? 'Male' : (genderId == 2 ? 'Female' : 'Other')}</p>
+                  <p>Age : ${age} ${ageUnit == 1 ? 'Days' : (ageUnit == 2 ? 'Months' : 'Years')}</p>
+                  <p>Beneficiary ID : ${patientId}</p>
+                  `,
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel"
+          },
+          {
+            text: "Okay",
+            handler: () => {
+              // alert("Ben will be registered.");
+
+              this.db
+                .registerBeneficiary(benRegFormDetails)
+                .then(async res => {
+                  console.log(
+                    "Beneficiary registered successfully...!" + JSON.stringify(res)
+                  );
+                  let status = await res;
+                  // insertVisit functionality - starts
+                  if (status) {
+                    this.db
+                      .insertVisit(visitDetails)
+                      .then(res => {
+                        console.log(
+                          "Beneficiary Visit details inserted successfully...!" +
+                          JSON.stringify(res)
+                        );
+                        if (res) {
+                          this.router.navigate(["/vitals"]);
+                        }
+                      })
+                      .catch(error => {
+                        console.error(
+                          "Error -> Beneficiary Visit details insertion failed - " +
+                          JSON.stringify(error)
+                        );
+                      });
+                  } else {
+                    console.log(
+                      "insertVisit() function not triggered... :(" + JSON.stringify(res)
+                    );
+                  }
+                  // insertVisit functionality - ends
+                })
+                .catch(error => {
+                  console.error(
+                    "Error -> Beneficiary registration failed - " + JSON.stringify(error)
+                  );
+                });
+            }
+          }
+        ]
       })
-      .catch(error => {
-        console.error(
-          "Error -> Beneficiary registration failed - " + JSON.stringify(error)
-        );
+      .then(alertEl => {
+        alertEl.present();
       });
   }
 }

@@ -161,6 +161,7 @@ export class CommonService {
     console.log("selectableIndex is -> " + selectableIndex);
 
     if (selectableIndex === totalBens) {
+      this.makeBenObjectEmpty();
       console.log("Next will be empty");
       console.log("selectable patient ID is -> null");
       return -1;

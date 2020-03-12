@@ -6,6 +6,7 @@ import { StorageService } from "./../../services/storage.service";
 import { ConstantsService } from "../../services/constants.service";
 import { Router } from "@angular/router";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
+import { AlertController } from "@ionic/angular";
 
 @Component({
   selector: "app-staff-registration",
@@ -42,7 +43,8 @@ export class StaffRegistrationPage implements OnInit {
     private router: Router,
     private camera: Camera,
     private storageService: StorageService,
-    public constants: ConstantsService
+    public constants: ConstantsService,
+    private alertCtrl: AlertController
   ) {
     this.staffRegForm = new FormGroup({
       firstName: new FormControl("", Validators.required),
@@ -152,6 +154,7 @@ export class StaffRegistrationPage implements OnInit {
       .getAgeUnits()
       .then(ageUnits => {
         console.log("Fetched AgeUnits -> " + JSON.stringify(ageUnits));
+        ageUnits = ageUnits.filter(ageUnit => ageUnit['ageUnitId'] == 3);
         this.ageUnits = ageUnits.map(ageUnit => ({
           ...ageUnit,
           isSelected: false
@@ -418,67 +421,90 @@ export class StaffRegistrationPage implements OnInit {
       userImageUrl = null;
     }
 
-    let userId = this.userId;
-    let deviceId = this.deviceId;
-    let vanId = this.vanId;
+    this.alertCtrl
+      .create({
+        header: "Do you want to save the Staff Details?",
+        message: `
+                  <p>Username : ${username}</p>
+                  <p>Password : ${password}</p>
+                  `,
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel"
+          },
+          {
+            text: "Okay",
+            handler: () => {
 
-    let insertData = {
-      userIdIncrement,
-      firstName,
-      lastName,
-      username,
-      password,
-      genderId,
-      dob,
-      fatherName,
-      phone,
-      address,
-      email,
-      age,
-      ageTypeId,
-      doj,
-      roleId,
-      userImageUrl,
-      isActive,
-      deviceId,
-      vanId,
-      userId
-    };
+              let userId = this.userId;
+              let deviceId = this.deviceId;
+              let vanId = this.vanId;
 
-    this.db
-      .getMaxUserId()
-      .then(data => {
-        if (data) {
-          userIdIncrement = data;
-          insertData["userIdIncrement"] = data;
+              let insertData = {
+                userIdIncrement,
+                firstName,
+                lastName,
+                username,
+                password,
+                genderId,
+                dob,
+                fatherName,
+                phone,
+                address,
+                email,
+                age,
+                ageTypeId,
+                doj,
+                roleId,
+                userImageUrl,
+                isActive,
+                deviceId,
+                vanId,
+                userId
+              };
 
-          console.log("insertData -> " + JSON.stringify(insertData));
-          // return false;
+              this.db
+                .getMaxUserId()
+                .then(data => {
+                  if (data) {
+                    userIdIncrement = data;
+                    insertData["userIdIncrement"] = data;
 
-          this.db
-            .registerStaff(insertData)
-            .then(data => {
-              console.log(
-                "Success -> registerStaff is inserted Successfully..." + data
-              );
-              this.router.navigate(["/edit-staff"]);
-            })
-            .catch(e => {
-              console.error(
-                "Error -> registerStaff is not inserted" + JSON.stringify(e)
-              );
-            });
-        } else {
-          console.warn(
-            "Error -> getMaxUserId function returned 0 -> " +
-            JSON.stringify(data)
-          );
-        }
+                    console.log("insertData -> " + JSON.stringify(insertData));
+                    // return false;
+
+                    this.db
+                      .registerStaff(insertData)
+                      .then(data => {
+                        console.log(
+                          "Success -> registerStaff is inserted Successfully..." + data
+                        );
+                        this.router.navigate(["/edit-staff"]);
+                      })
+                      .catch(e => {
+                        console.error(
+                          "Error -> registerStaff is not inserted" + JSON.stringify(e)
+                        );
+                      });
+                  } else {
+                    console.warn(
+                      "Error -> getMaxUserId function returned 0 -> " +
+                      JSON.stringify(data)
+                    );
+                  }
+                })
+                .catch(e => {
+                  console.error(
+                    "Error -> getMaxUserId returned error" + JSON.stringify(e)
+                  );
+                });
+            }
+          }
+        ]
       })
-      .catch(e => {
-        console.error(
-          "Error -> getMaxUserId returned error" + JSON.stringify(e)
-        );
+      .then(alertEl => {
+        alertEl.present();
       });
   }
 }

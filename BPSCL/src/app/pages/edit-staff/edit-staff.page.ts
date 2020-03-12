@@ -6,6 +6,7 @@ import { StorageService } from "./../../services/storage.service";
 import { ConstantsService } from "../../services/constants.service";
 import { Router } from "@angular/router";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
+import { AlertController } from "@ionic/angular";
 
 @Component({
   selector: "app-edit-staff",
@@ -16,6 +17,7 @@ export class EditStaffPage implements OnInit {
   editStaffForm: FormGroup;
 
   selectedUseId: number;
+  selectedStaffUsername;
 
   users: any[] = [];
   genders: any[] = [];
@@ -46,7 +48,8 @@ export class EditStaffPage implements OnInit {
     private router: Router,
     private camera: Camera,
     private storageService: StorageService,
-    public constants: ConstantsService
+    public constants: ConstantsService,
+    private alertCtrl: AlertController
   ) {
     this.editStaffForm = new FormGroup({
       firstName: new FormControl("", Validators.required),
@@ -157,6 +160,7 @@ export class EditStaffPage implements OnInit {
       .getAgeUnits()
       .then(ageUnits => {
         console.log("Fetched AgeUnits -> " + JSON.stringify(ageUnits));
+        ageUnits = ageUnits.filter(ageUnit => ageUnit['ageUnitId'] == 3);
         this.ageUnits = ageUnits.map(ageUnit => ({
           ...ageUnit,
           isSelected: false
@@ -228,10 +232,12 @@ export class EditStaffPage implements OnInit {
           phone: userDetails["phone"],
           email: userDetails["email"],
           roleId: userDetails["roleId"],
-          userName: userDetails["userName"],
+          userName: userDetails["username"],
           password: userDetails["password"],
           confirmPassword: userDetails["password"]
         });
+
+        this.selectedStaffUsername = userDetails["username"];
 
         if (userDetails["userImageUrl"] && userDetails["userImageUrl"] != "") {
           this.benPhoto = userDetails["userImageUrl"];
@@ -487,46 +493,69 @@ export class EditStaffPage implements OnInit {
       userImageUrl = null;
     }
 
-    let userId = this.userId;
-    let deviceId = this.deviceId;
-    let vanId = this.vanId;
-    let selectedUserId = this.selectedUseId;
+    this.alertCtrl
+      .create({
+        header: "Do you want to update the Staff Details?",
+        message: `
+                  <p>Username : ${this.selectedStaffUsername}</p>
+                  <p>Password : ${password}</p>
+                  `,
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel"
+          },
+          {
+            text: "Okay",
+            handler: () => {
 
-    let updateData = {
-      firstName,
-      lastName,
-      username,
-      password,
-      genderId,
-      dob,
-      fatherName,
-      phone,
-      address,
-      email,
-      age,
-      ageTypeId,
-      doj,
-      roleId,
-      userImageUrl,
-      isActive,
-      deviceId,
-      vanId,
-      userId,
-      selectedUserId
-    };
+              let userId = this.userId;
+              let deviceId = this.deviceId;
+              let vanId = this.vanId;
+              let selectedUserId = this.selectedUseId;
 
-    console.log("updateData -> " + JSON.stringify(updateData));
+              let updateData = {
+                firstName,
+                lastName,
+                username,
+                password,
+                genderId,
+                dob,
+                fatherName,
+                phone,
+                address,
+                email,
+                age,
+                ageTypeId,
+                doj,
+                roleId,
+                userImageUrl,
+                isActive,
+                deviceId,
+                vanId,
+                userId,
+                selectedUserId
+              };
 
-    this.db
-      .updateStaff(updateData)
-      .then(data => {
-        console.log("Success -> updateStaff is updated Successfully..." + data);
-        this.router.navigate(["/staff-attendance"]);
+              console.log("updateData -> " + JSON.stringify(updateData));
+
+              this.db
+                .updateStaff(updateData)
+                .then(data => {
+                  console.log("Success -> updateStaff is updated Successfully..." + data);
+                  this.router.navigate(["/staff-attendance"]);
+                })
+                .catch(e => {
+                  console.error(
+                    "Error -> updateStaff is not updated" + JSON.stringify(e)
+                  );
+                });
+            }
+          }
+        ]
       })
-      .catch(e => {
-        console.error(
-          "Error -> updateStaff is not updated" + JSON.stringify(e)
-        );
+      .then(alertEl => {
+        alertEl.present();
       });
   }
 }
