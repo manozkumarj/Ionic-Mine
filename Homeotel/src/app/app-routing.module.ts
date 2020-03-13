@@ -63,6 +63,10 @@ const routes: Routes = [
     path: 'my-doctors',
     loadChildren: () => import('./pages/my-doctors/my-doctors.module').then( m => m.MyDoctorsPageModule)
   },
+  {
+    path: 'modal',
+    loadChildren: () => import('./pages/modal/modal.module').then( m => m.ModalPageModule)
+  },
 ];
 
 @NgModule({
