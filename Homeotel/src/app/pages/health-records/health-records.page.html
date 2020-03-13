@@ -9,4 +9,20 @@
 
 <ion-content>
 
-</ion-content>
+  <ion-content>
+
+    <ion-list *ngIf="healthRecords.length > 0; else noHealthRecords">
+      <ion-item *ngFor="let healthRecord of healthRecords" [routerLink]="['/view-doctor/' + healthRecord.id]" detail>
+        <div style="font-size: 18px; font-weight: bold;"> {{healthRecord.name}} </div>
+      </ion-item>
+    </ion-list>
+
+    <ng-template #noHealthRecords>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title> There are no Health Records </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ng-template>
+
+  </ion-content>

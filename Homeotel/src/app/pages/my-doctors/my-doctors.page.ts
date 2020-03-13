@@ -12,4 +12,21 @@ export class MyDoctorsPage implements OnInit {
   ngOnInit() {
   }
 
+  inputKeyUp(e) {
+    var target = e.srcElement;
+    var maxLength = parseInt(target.attributes["maxlength"].value, 6);
+    var myLength = target.value.length;
+    if (myLength >= maxLength) {
+      var next = target;
+      while (next = next.nextElementSibling) {
+        if (next == null)
+          break;
+        if (next.tagName.toLowerCase() == "input") {
+          next.focus();
+          break;
+        }
+      }
+    }
+  }
+
 }
