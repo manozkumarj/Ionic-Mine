@@ -1,0 +1,48 @@
+.grid{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 0;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+}
+
+p{
+    padding: 0;
+    margin: 5px;
+}
+
+.appointmentsGrid{
+    height: 178px;
+}
+
+.doctorGrid{
+    height: auto;
+}
+
+.card-heading{
+    font-size: 20px;
+    padding: 12px;
+    color: #fff;
+    background-color: #0a9f28;
+}
+
+.btn{
+    padding: 10px 12px;
+    border: 2px solid #0a9f28;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 3px;
+    -webkit-box-shadow: -1px 2px 7px -1px rgba(128,128,128,1);
+    -moz-box-shadow: -1px 2px 7px -1px rgba(128,128,128,1);
+    box-shadow: -1px 2px 7px -1px rgba(128,128,128,1);
+}
+
+.buyButton{
+    background: #fff;
+    color: #000;
+}
+
+.appoinmentButton{
+    background: #0a9f28;
+    color: #fff;
+}
