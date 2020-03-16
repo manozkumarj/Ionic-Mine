@@ -1,6 +1,6 @@
 <ion-content class="signInModal">
 
-  <ion-grid class="grid appointmentsGrid">
+  <ion-grid *ngIf="action == 'findDoctor'" class="grid appointmentsGrid">
     <ion-row>
       <ion-col class="card-heading">
         <ion-icon name="checkmark-outline"></ion-icon> Doctor Found
@@ -25,10 +25,33 @@
               <button class="cancelButton" (click)="onCancel()">Cancel</button>
             </ion-col>
             <ion-col>
-              <button class="addButton">Add</button>
+              <button class="okayButton" (click)="addDoctor()">Add</button>
             </ion-col>
           </ion-row>
         </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="action == 'makePayment'" class="grid appointmentsGrid">
+    <ion-row>
+      <ion-col>
+        <img src="assets/images/payment-success.png" width="100%" />
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <h2>Payment Successful</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <p style="font-size: 18px;">Your payment has been successfully processed.</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button class="okayButton" (click)="onCancel()">Okay</button>
       </ion-col>
     </ion-row>
   </ion-grid>

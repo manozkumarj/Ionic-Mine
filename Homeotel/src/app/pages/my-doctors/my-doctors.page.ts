@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from "@ionic/angular";
 import { ModalController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
+import { CommonService } from "../../services/common.service";
 
 @Component({
   selector: 'app-my-doctors',
@@ -10,10 +11,13 @@ import { ModalPage } from '../modal/modal.page';
 })
 export class MyDoctorsPage implements OnInit {
 
-  constructor(public alertCtrl: AlertController, public modalCtrl: ModalController) { }
+  constructor(
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController,
+    private commonService: CommonService
+  ) { }
 
   ngOnInit() {
-    this.showloginmodal();
   }
 
   inputKeyUp(e) {
@@ -32,6 +36,9 @@ export class MyDoctorsPage implements OnInit {
         }
       }
     }
+  }
+
+  lastInputKeyUp(e) {
     this.showloginmodal();
   }
 
@@ -45,9 +52,9 @@ export class MyDoctorsPage implements OnInit {
       component: ModalPage,
       showBackdrop: true,
       cssClass: "findDoctorModal",
-      // componentProps: {
-      //   'cssClass': 'findDoctorModal'
-      // }
+      componentProps: {
+        'action': 'findDoctor'
+      }
     });
     return await modal.present();
   }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
+import { CommonService } from "../../services/common.service";
 
 @Component({
   selector: 'app-modal',
@@ -9,12 +10,24 @@ import { ModalController } from '@ionic/angular';
 })
 export class ModalPage implements OnInit {
 
-  constructor(public modalCtrl: ModalController, navParams: NavParams) {
+  action;
+
+  constructor(
+    public modalCtrl: ModalController,
+    navParams: NavParams,
+    private commonService: CommonService
+  ) {
     // componentProps can also be accessed at construction time using NavParams
-    console.log(navParams.get('cssClass'));
+    console.log(navParams.get('action'));
+    this.action = navParams.get('action');
   }
 
   ngOnInit() {
+  }
+
+  addDoctor = () => {
+    this.commonService.foundDoctor = true;
+    this.onCancel();
   }
 
   onCancel = () =>

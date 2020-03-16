@@ -37,35 +37,39 @@ const routes: Routes = [
   },
   {
     path: 'settings',
-    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+    loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsPageModule)
   },
   {
     path: 'help-center',
-    loadChildren: () => import('./pages/help-center/help-center.module').then( m => m.HelpCenterPageModule)
+    loadChildren: () => import('./pages/help-center/help-center.module').then(m => m.HelpCenterPageModule)
   },
   {
     path: 'homeo-kits',
-    loadChildren: () => import('./pages/homeo-kits/homeo-kits.module').then( m => m.HomeoKitsPageModule)
+    loadChildren: () => import('./pages/homeo-kits/homeo-kits.module').then(m => m.HomeoKitsPageModule)
   },
   {
     path: 'health-records',
-    loadChildren: () => import('./pages/health-records/health-records.module').then( m => m.HealthRecordsPageModule)
+    loadChildren: () => import('./pages/health-records/health-records.module').then(m => m.HealthRecordsPageModule)
   },
   {
     path: 'appointments',
-    loadChildren: () => import('./pages/appointments/appointments.module').then( m => m.AppointmentsPageModule)
+    loadChildren: () => import('./pages/appointments/appointments.module').then(m => m.AppointmentsPageModule)
   },
   {
-    path: 'payments',
-    loadChildren: () => import('./pages/payments/payments.module').then( m => m.PaymentsPageModule)
+    path: 'payments/:id',
+    loadChildren: () => import('./pages/payments/payments.module').then(m => m.PaymentsPageModule)
   },
   {
     path: 'my-doctors',
-    loadChildren: () => import('./pages/my-doctors/my-doctors.module').then( m => m.MyDoctorsPageModule)
+    loadChildren: () => import('./pages/my-doctors/my-doctors.module').then(m => m.MyDoctorsPageModule)
   },
   {
     path: 'modal',
-    loadChildren: () => import('./pages/modal/modal.module').then( m => m.ModalPageModule)
+    loadChildren: () => import('./pages/modal/modal.module').then(m => m.ModalPageModule)
+  },
+  {
+    path: 'payment-gateways',
+    loadChildren: () => import('./pages/payment-gateways/payment-gateways.module').then(m => m.PaymentGatewaysPageModule)
   },
 ];
 

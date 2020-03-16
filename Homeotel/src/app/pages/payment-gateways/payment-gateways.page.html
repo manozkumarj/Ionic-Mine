@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Payment gateways</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        Amount : ${{amount}}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list *ngIf="paymentGateways.length > 0; else noPaymentGatewayss">
+    <ion-item *ngFor="let paymentGateway of paymentGateways" (click)="makePayment(paymentGateway.id)" detail>
+      <div style="font-size: 18px; font-weight: bold;"> {{paymentGateway.name}} </div>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noPaymentGatewayss>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> There are no Pyment gateways </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+
+</ion-content>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { CommonService } from "../../services/common.service";
 
 @Component({
   selector: 'app-homeo-kits',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeoKitsPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private commonService: CommonService
+  ) { }
 
   ngOnInit() {
+  }
+
+  buyKit = cost => {
+    console.log("Selected kit cost is -> " + cost);
+    this.commonService.selectedHomeKitCost = cost;
+    this.router.navigate(["/payment-gateways"]);
   }
 
 }

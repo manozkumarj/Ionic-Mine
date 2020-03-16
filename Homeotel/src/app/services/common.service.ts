@@ -9,6 +9,9 @@ export class CommonService {
 
   doctors;
   familyMembers;
+  foundDoctor: boolean = false;
+
+  selectedHomeKitCost;
 
   constructor(
     private alertCtrl: AlertController,
