@@ -1,21 +1,36 @@
 <ion-content class="signInModal">
-  <ion-list no-lines="">
-    <div class="login-top">
-      <h4 style="margin-top: 2%;" text-center="" text-white="">
-        Company Name
-      </h4>
-    </div>
-    <ion-item>
-      <ion-input email="" ngmodel="" placeholder="Email" type="email"></ion-input>
-    </ion-item>
 
-    <ion-item>
-      <ion-input ngmodel="" password="" placeholder="Password" type="password"></ion-input>
-    </ion-item>
+  <ion-grid class="grid appointmentsGrid">
+    <ion-row>
+      <ion-col class="card-heading">
+        <ion-icon name="checkmark-outline"></ion-icon> Doctor Found
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <ion-grid style="padding: 0px;">
+          <ion-row style="color: #000; background: #fff;">
+            <ion-col size='4'>
+              <p style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;">
+                <img src="assets/images/milinda.jpg" height="80px" style="border-radius: 100%;" /></p>
+            </ion-col>
+            <ion-col>
+              <p class="docName">Dr. Swapna Kunduru</p>
+              <p>Homeopathy Ayush</p>
+              <p>15 years experience</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <button class="cancelButton" (click)="onCancel()">Cancel</button>
+            </ion-col>
+            <ion-col>
+              <button class="addButton">Add</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-    <ion-item>
-      <button block="" click="" color="primary" ion-button="" signin="">Sign in</button>
-    </ion-item>
-
-  </ion-list>
 </ion-content>

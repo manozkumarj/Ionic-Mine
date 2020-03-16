@@ -13,18 +13,18 @@ export class MyDoctorsPage implements OnInit {
   constructor(public alertCtrl: AlertController, public modalCtrl: ModalController) { }
 
   ngOnInit() {
+    this.showloginmodal();
   }
 
   inputKeyUp(e) {
     var target = e.srcElement;
-    var maxLength = parseInt(target.attributes["maxlength"].value, 5);
+    var maxLength = parseInt(target.attributes["maxlength"].value);
     var myLength = target.value.length;
     if (myLength >= maxLength) {
       var next = target;
       while (next = next.nextElementSibling) {
         if (next == null) {
           this.showloginmodal();
-          break;
         }
         if (next.tagName.toLowerCase() == "input") {
           next.focus();
@@ -44,10 +44,10 @@ export class MyDoctorsPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ModalPage,
       showBackdrop: true,
-      cssClass: "signInModal",
-      componentProps: {
-        'cssClass': 'signInModal'
-      }
+      cssClass: "findDoctorModal",
+      // componentProps: {
+      //   'cssClass': 'findDoctorModal'
+      // }
     });
     return await modal.present();
   }
