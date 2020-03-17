@@ -26,7 +26,7 @@
         <button [routerLink]="['/homeo-kits']" class="btn buyButton">Buy Homeo Kits</button>
       </ion-col>
       <ion-col>
-        <button class="btn appoinmentButton">Book Appoinment</button>
+        <button class="btn appoinmentButton" (click)="presentDoctorContactModal()">Book Appoinment</button>
       </ion-col>
     </ion-row>
   </ion-grid>

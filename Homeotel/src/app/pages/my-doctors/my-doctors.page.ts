@@ -18,6 +18,7 @@ export class MyDoctorsPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.presentFindDoctorModal();
   }
 
   inputKeyUp(e) {
@@ -44,16 +45,28 @@ export class MyDoctorsPage implements OnInit {
 
   showloginmodal() {
     console.log("showloginmodal is triggered");
-    this.presentModal();
+    this.presentFindDoctorModal();
   }
 
-  async presentModal() {
+  async presentFindDoctorModal() {
     const modal = await this.modalCtrl.create({
       component: ModalPage,
       showBackdrop: true,
       cssClass: "findDoctorModal",
       componentProps: {
         'action': 'findDoctor'
+      }
+    });
+    return await modal.present();
+  }
+
+  async presentDoctorContactModal() {
+    const modal = await this.modalCtrl.create({
+      component: ModalPage,
+      showBackdrop: true,
+      cssClass: "findDoctorModal",
+      componentProps: {
+        'action': 'contactDoctor'
       }
     });
     return await modal.present();

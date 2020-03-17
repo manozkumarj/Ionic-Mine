@@ -33,6 +33,75 @@
     </ion-row>
   </ion-grid>
 
+  <ion-grid *ngIf="action == 'contactDoctor'" class="grid appointmentsGrid" id="contactDoctor">
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <ion-grid style="padding: 0px;" align-items-center justify-content-center>
+          <ion-row style="color: #000; background: #fff; border-bottom: 2px dashed #000; padding: 8px 0px;">
+            <ion-col size='3.5' align-items-center justify-content-center>
+              <p style="margin: 0;">
+                <img src="assets/images/milinda.jpg" height="80px" style="border-radius: 100%;" /></p>
+            </ion-col>
+            <ion-col style="padding-top: 25px;">
+              <p class="docName">Dr. Swapna Kunduru</p>
+              <p>Homeopathy Ayush</p>
+            </ion-col>
+          </ion-row>
+          <ion-row style="color: #000; background: #fff; border-bottom: 2px dashed #000; padding: 8px 0px;">
+            <ion-col>
+              <h2 style="margin: 0;">Select an option to book</h2>
+            </ion-col>
+          </ion-row>
+          <ion-row style="color: #000; background: #fff; border-bottom: 2px dashed #000; padding: 8px 0px;">
+            <ion-col size='3'>
+              <p style="margin: 0;">
+                <img src="assets/icons/video-icon.png" height="65px" style="border-radius: 100%;" /></p>
+            </ion-col>
+            <ion-col style="padding-top: 20px;">
+              <p class="docName">Video consultation</p>
+              <p>Min. session 10 mins $30/min</p>
+            </ion-col>
+          </ion-row>
+          <ion-row style="color: #000; background: #fff; border-bottom: 2px dashed #000; padding: 8px 0px;">
+            <ion-col size='3'>
+              <p style="margin: 0;">
+                <img src="assets/icons/whatsapp-icon.png" height="65px" style="border-radius: 100%;" /></p>
+            </ion-col>
+            <ion-col style="padding-top: 20px;">
+              <p class="docName">Audio consultation</p>
+              <p>Min. session 10 mins $20/min</p>
+            </ion-col>
+          </ion-row>
+          <ion-row style="color: #000; background: #fff; border-bottom: 2px dashed #000; padding: 8px 0px;">
+            <ion-col size='3'>
+              <p style="margin: 0;">
+                <img src="assets/icons/chat-icon.jpg" height="65px" style="border-radius: 100%;" /></p>
+            </ion-col>
+            <ion-col style="padding-top: 20px;">
+              <p class="docName">Chat consultation</p>
+              <p>Valid for 24 Hours $50</p>
+            </ion-col>
+          </ion-row>
+          <ion-row style="color: #000; background: #fff; border-bottom: 2px dashed #000; padding: 8px 0px;">
+            <ion-col size='3'>
+              <p style="margin: 0;">
+                <img src="assets/icons/todo-icon.png" height="65px" style="border-radius: 100%;" /></p>
+            </ion-col>
+            <ion-col style="padding-top: 20px;">
+              <p class="docName">Physical visit</p>
+              <p>Regular consultation $500</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col style="text-align: center;">
+        <button class="cancelButton" (click)="onCancel()">Close</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <ion-grid *ngIf="action == 'makePayment'" class="grid appointmentsGrid">
     <ion-row>
       <ion-col>
