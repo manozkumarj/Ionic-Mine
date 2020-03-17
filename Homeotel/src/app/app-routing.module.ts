@@ -75,6 +75,18 @@ const routes: Routes = [
     path: 'payment-gateways',
     loadChildren: () => import('./pages/payment-gateways/payment-gateways.module').then(m => m.PaymentGatewaysPageModule)
   },
+  {
+    path: 'slot-selection',
+    loadChildren: () => import('./pages/slot-selection/slot-selection.module').then( m => m.SlotSelectionPageModule)
+  },
+  {
+    path: 'consultation-details',
+    loadChildren: () => import('./pages/consultation-details/consultation-details.module').then( m => m.ConsultationDetailsPageModule)
+  },
+  {
+    path: 'issue-details',
+    loadChildren: () => import('./pages/issue-details/issue-details.module').then( m => m.IssueDetailsPageModule)
+  },
 ];
 
 @NgModule({

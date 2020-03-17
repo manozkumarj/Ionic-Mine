@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NavParams } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
@@ -15,7 +16,8 @@ export class ModalPage implements OnInit {
   constructor(
     public modalCtrl: ModalController,
     navParams: NavParams,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private router: Router
   ) {
     // componentProps can also be accessed at construction time using NavParams
     console.log(navParams.get('action'));
@@ -32,5 +34,11 @@ export class ModalPage implements OnInit {
 
   onCancel = () =>
     this.modalCtrl.dismiss('cancel');
+
+  selectConsultation = consultationType => {
+    console.log('consultationType -> ' + consultationType);
+    this.onCancel();
+    this.router.navigate(['/slot-selection']);
+  }
 
 }

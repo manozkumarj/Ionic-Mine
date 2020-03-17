@@ -57,7 +57,7 @@
               <p style="margin: 0;">
                 <img src="assets/icons/video-icon.png" height="65px" style="border-radius: 100%;" /></p>
             </ion-col>
-            <ion-col style="padding-top: 20px;">
+            <ion-col style="padding-top: 20px;" (click)="selectConsultation('video')">
               <p class="docName">Video consultation</p>
               <p>Min. session 10 mins $30/min</p>
             </ion-col>
@@ -67,7 +67,7 @@
               <p style="margin: 0;">
                 <img src="assets/icons/whatsapp-icon.png" height="65px" style="border-radius: 100%;" /></p>
             </ion-col>
-            <ion-col style="padding-top: 20px;">
+            <ion-col style="padding-top: 20px;" (click)="selectConsultation('audio')">
               <p class="docName">Audio consultation</p>
               <p>Min. session 10 mins $20/min</p>
             </ion-col>
@@ -77,7 +77,7 @@
               <p style="margin: 0;">
                 <img src="assets/icons/chat-icon.jpg" height="65px" style="border-radius: 100%;" /></p>
             </ion-col>
-            <ion-col style="padding-top: 20px;">
+            <ion-col style="padding-top: 20px;" (click)="selectConsultation('chat')">
               <p class="docName">Chat consultation</p>
               <p>Valid for 24 Hours $50</p>
             </ion-col>
@@ -87,7 +87,7 @@
               <p style="margin: 0;">
                 <img src="assets/icons/todo-icon.png" height="65px" style="border-radius: 100%;" /></p>
             </ion-col>
-            <ion-col style="padding-top: 20px;">
+            <ion-col style="padding-top: 20px;" (click)="selectConsultation('physical')">
               <p class="docName">Physical visit</p>
               <p>Regular consultation $500</p>
             </ion-col>

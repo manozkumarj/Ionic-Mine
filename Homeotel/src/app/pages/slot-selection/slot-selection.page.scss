@@ -1,0 +1,45 @@
+.grid{
+    height: 140px;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 0;
+    border-radius: 0 10px 10px;
+}
+
+.docName{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.designation{
+    font-size: 20px;
+}
+
+p{
+    padding: 0;
+    margin: 0;
+}
+
+.heading{
+    font-size: 22px;
+    font-weight: bold;
+    padding: 5px;
+    padding: 13px 0 8px 12px;
+}
+
+.slotsStatus{
+    padding: 5px;
+}
+
+.slotsAvailable{
+    color: #0a9f28;
+}
+
+.noSlots{
+    color: #000;
+}
+
+.boldBlack{
+    font-weight: bold;
+    color: #000;
+}
