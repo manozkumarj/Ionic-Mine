@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Appointment details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="padding: 0px;" align-items-center justify-content-center>
+    <ion-row
+      class="solidBorderBottom"
+      style="color: #000; background: #fff; padding: 8px 0px;"
+    >
+      <ion-col size="3.5" align-items-center justify-content-center>
+        <p style="margin: 0;">
+          <img
+            src="assets/images/milinda.jpg"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+      <ion-col style="padding-top: 25px;">
+        <p class="docName">Dr. Swapna Kunduru</p>
+        <p class="designation">Homeopathy Ayush</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="solidBorderBottom" style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Complaint </span>
+        </p>
+        <p>
+          <span style="padding: 13px 0 8px 12px;">Stomach pain, nausea</span>
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Complaint details</span>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="solidBorderBottom">
+      <ion-col>
+        <ion-item detail>
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Is it recurring?
+              </ion-col>
+              <ion-col>
+                Recurring
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item detail>
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Recurring since?
+              </ion-col>
+              <ion-col>
+                Since 3 years
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item detail>
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Aggravated by?
+              </ion-col>
+              <ion-col>
+                By wheat
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item detail>
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Pain description?
+              </ion-col>
+              <ion-col>
+                Pain in stomach
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row class="continue">
+      <ion-col>
+        <button [routerLink]="['/appointments']" class="btn buyButton">
+          Cancel
+        </button>
+      </ion-col>
+      <ion-col>
+        <button [routerLink]="['/slot-selection']" class="btn appoinmentButton">
+          Change Slot
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
