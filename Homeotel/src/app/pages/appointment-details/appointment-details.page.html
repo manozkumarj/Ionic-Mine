@@ -9,17 +9,10 @@
 
 <ion-content>
   <ion-grid style="padding: 0px;" align-items-center justify-content-center>
-    <ion-row
-      class="solidBorderBottom"
-      style="color: #000; background: #fff; padding: 8px 0px;"
-    >
+    <ion-row class="solidBorderBottom" style="color: #000; background: #fff; padding: 8px 0px;">
       <ion-col size="3.5" align-items-center justify-content-center>
         <p style="margin: 0;">
-          <img
-            src="assets/images/milinda.jpg"
-            height="80px"
-            style="border-radius: 100%;"
-          />
+          <img src="assets/images/milinda.jpg" height="80px" style="border-radius: 100%;" />
         </p>
       </ion-col>
       <ion-col style="padding-top: 25px;">
@@ -47,7 +40,7 @@
     </ion-row>
     <ion-row class="solidBorderBottom">
       <ion-col>
-        <ion-item detail>
+        <ion-item detail [routerLink]="['/appointment-questions', 1]">
           <ion-grid class="complaintDetailsList">
             <ion-row>
               <ion-col>
@@ -59,7 +52,7 @@
             </ion-row>
           </ion-grid>
         </ion-item>
-        <ion-item detail>
+        <ion-item detail [routerLink]="['/appointment-questions', 1,2]">
           <ion-grid class="complaintDetailsList">
             <ion-row>
               <ion-col>
@@ -71,7 +64,7 @@
             </ion-row>
           </ion-grid>
         </ion-item>
-        <ion-item detail>
+        <ion-item detail [routerLink]="['/appointment-questions', 1,2,3]">
           <ion-grid class="complaintDetailsList">
             <ion-row>
               <ion-col>
@@ -83,7 +76,7 @@
             </ion-row>
           </ion-grid>
         </ion-item>
-        <ion-item detail>
+        <ion-item detail [routerLink]="['/appointment-questions', 1,2,3,4]">
           <ion-grid class="complaintDetailsList">
             <ion-row>
               <ion-col>

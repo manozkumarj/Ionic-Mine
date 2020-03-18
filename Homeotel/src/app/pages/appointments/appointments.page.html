@@ -1,10 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button
-        (click)="backButton($event)"
-        defaultHref="/home"
-      ></ion-back-button>
+      <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Appointments</ion-title>
   </ion-toolbar>
@@ -14,14 +11,8 @@
   <ion-grid class="grid doctorGrid">
     <ion-row style="color: #000; background: #fff;">
       <ion-col size="2" [routerLink]="['/appointment-details']">
-        <p
-          style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;"
-        >
-          <img
-            src="assets/images/milinda.jpg"
-            height="50px"
-            style="border-radius: 100%;"
-          />
+        <p style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;">
+          <img src="assets/images/milinda.jpg" height="50px" style="border-radius: 100%;" />
         </p>
       </ion-col>
       <ion-col [routerLink]="['/appointment-details']">
@@ -40,14 +31,8 @@
   <ion-grid class="grid doctorGrid">
     <ion-row style="color: #000; background: #fff;">
       <ion-col size="2" [routerLink]="['/appointment-details']">
-        <p
-          style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;"
-        >
-          <img
-            src="assets/images/zuck.jpg"
-            height="50px"
-            style="border-radius: 100%;"
-          />
+        <p style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;">
+          <img src="assets/images/zuck.jpg" height="50px" style="border-radius: 100%;" />
         </p>
       </ion-col>
       <ion-col [routerLink]="['/appointment-details']">
@@ -55,7 +40,7 @@
         <p>Audio consultation for Rama Krishna</p>
         <p>24 Mar 4:45 PM</p>
       </ion-col>
-      <ion-col size="3">
+      <ion-col size="3" [routerLink]="['/appointment-questions', 1]">
         <button class="btn appoinmentButton">
           Add Details
         </button>

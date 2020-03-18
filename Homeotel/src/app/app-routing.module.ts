@@ -77,20 +77,36 @@ const routes: Routes = [
   },
   {
     path: 'slot-selection',
-    loadChildren: () => import('./pages/slot-selection/slot-selection.module').then( m => m.SlotSelectionPageModule)
+    loadChildren: () => import('./pages/slot-selection/slot-selection.module').then(m => m.SlotSelectionPageModule)
   },
   {
     path: 'consultation-details',
-    loadChildren: () => import('./pages/consultation-details/consultation-details.module').then( m => m.ConsultationDetailsPageModule)
+    loadChildren: () => import('./pages/consultation-details/consultation-details.module').then(m => m.ConsultationDetailsPageModule)
   },
   {
     path: 'issue-details',
-    loadChildren: () => import('./pages/issue-details/issue-details.module').then( m => m.IssueDetailsPageModule)
-  },  {
-    path: 'appointment-details',
-    loadChildren: () => import('./pages/appointment-details/appointment-details.module').then( m => m.AppointmentDetailsPageModule)
+    loadChildren: () => import('./pages/issue-details/issue-details.module').then(m => m.IssueDetailsPageModule)
   },
-
+  {
+    path: 'appointment-details',
+    loadChildren: () => import('./pages/appointment-details/appointment-details.module').then(m => m.AppointmentDetailsPageModule)
+  },
+  {
+    path: 'appointment-questions/:one/:two/:three/:four',
+    loadChildren: () => import('./pages/appointment-questions/appointment-questions.module').then(m => m.AppointmentQuestionsPageModule)
+  },
+  {
+    path: 'appointment-questions/:one/:two/:three',
+    loadChildren: () => import('./pages/appointment-questions/appointment-questions.module').then(m => m.AppointmentQuestionsPageModule)
+  },
+  {
+    path: 'appointment-questions/:one/:two',
+    loadChildren: () => import('./pages/appointment-questions/appointment-questions.module').then(m => m.AppointmentQuestionsPageModule)
+  },
+  {
+    path: 'appointment-questions/:one',
+    loadChildren: () => import('./pages/appointment-questions/appointment-questions.module').then(m => m.AppointmentQuestionsPageModule)
+  }
 ];
 
 @NgModule({

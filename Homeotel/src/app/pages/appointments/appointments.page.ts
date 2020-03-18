@@ -12,12 +12,4 @@ export class AppointmentsPage implements OnInit {
   ngOnInit() {
   }
 
-  backButton = e => {
-    console.log("Back button triggered");
-    e.preventDefault();
-    event.stopPropagation();
-    console.log('hello');
-    return false;
-  }
-
 }
