@@ -120,7 +120,30 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <button class="okayButton" (click)="onCancel()">Okay</button>
+        <button class="okayButton" (click)="onCancel(true)">Okay</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="action == 'submition'" class="grid appointmentsGrid">
+    <ion-row>
+      <ion-col>
+        <img src="assets/images/payment-success.png" width="100%" />
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <h2>Successfully submitted</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <p style="font-size: 18px;">Your issue has been successfully submitted.</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button class="okayButton" (click)="onCancel(true)">Okay</button>
       </ion-col>
     </ion-row>
   </ion-grid>

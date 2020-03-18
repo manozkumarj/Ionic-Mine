@@ -32,8 +32,12 @@ export class ModalPage implements OnInit {
     this.onCancel();
   }
 
-  onCancel = () =>
+  onCancel = (isRedirect = false) => {
     this.modalCtrl.dismiss('cancel');
+    if (isRedirect) {
+      this.router.navigate(['/home']);
+    }
+  }
 
   selectConsultation = consultationType => {
     console.log('consultationType -> ' + consultationType);
