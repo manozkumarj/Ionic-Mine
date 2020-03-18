@@ -22,7 +22,7 @@
 
 <ion-content>
 
-  <ion-grid class="grid appointmentsGrid">
+  <ion-grid class="grid appointmentsGrid" [routerLink]="['/my-doctors']">
     <ion-row>
       <ion-col class="card-heading">
         <div>Book Appointment</div>
@@ -37,7 +37,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid class="grid homeoKitsGrid">
+  <ion-grid class="grid homeoKitsGrid" [routerLink]="['/homeo-kits']">
     <ion-row>
       <ion-col class="card-heading">
         <div>Homeo Kits</div>
@@ -52,7 +52,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid class="grid scheduledAppointmentsGrid">
+  <ion-grid class="grid scheduledAppointmentsGrid" [routerLink]="['/appointments']">
     <ion-row>
       <ion-col class="card-heading">
         <div>Scheduled Appointments</div>

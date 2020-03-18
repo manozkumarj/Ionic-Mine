@@ -18,7 +18,7 @@ export class MyDoctorsPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.presentFindDoctorModal();
+    // this.presentFindDoctorModal();
   }
 
   inputKeyUp(e) {
