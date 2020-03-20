@@ -7,4 +7,42 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <ion-grid class="grid doctorGrid">
+    <ion-row style="color: #000; background: #fff;">
+      <ion-col size="3" [routerLink]="['/completed-consultation-details']">
+        <p style="margin: 0; padding: 6px; text-align: center;">
+          <img
+            src="assets/images/milinda.jpg"
+            height="50px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+      <ion-col [routerLink]="['/completed-consultation-details']">
+        <p class="docName">Dr. Swapna Kunduru</p>
+        <p>Audio consultation</p>
+        <p>20 Jan 2020</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="grid doctorGrid">
+    <ion-row style="color: #000; background: #fff;">
+      <ion-col size="3" [routerLink]="['/completed-consultation-details']">
+        <p style="margin: 0; padding: 6px; text-align: center;">
+          <img
+            src="assets/images/zuck.jpg"
+            height="50px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+      <ion-col [routerLink]="['/completed-consultation-details']">
+        <p class="docName">Dr. Abraham Gosh</p>
+        <p>Audio consultation</p>
+        <p>10 Dec 2019</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

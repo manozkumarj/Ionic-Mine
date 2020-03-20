@@ -225,7 +225,11 @@ const routes: Routes = [
       import(
         "./pages/previous-consultations/previous-consultations.module"
       ).then(m => m.PreviousConsultationsPageModule)
+  },  {
+    path: 'completed-consultation-details',
+    loadChildren: () => import('./pages/completed-consultation-details/completed-consultation-details.module').then( m => m.CompletedConsultationDetailsPageModule)
   }
+
 ];
 
 @NgModule({
