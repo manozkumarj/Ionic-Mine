@@ -7,4 +7,48 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <ion-grid class="grid doctorGrid">
+    <ion-row
+      style="color: #000; background: #fff;"
+      [routerLink]="['/edit-file']"
+    >
+      <ion-col size="3">
+        <p style="margin: 0; padding: 6px; text-align: center;">
+          <img
+            class="fileImage"
+            src="assets/images/milinda.jpg"
+            height="70px"
+          />
+        </p>
+      </ion-col>
+      <ion-col class="fileInfoCol">
+        <p class="fileName">Prescription</p>
+        <p>24 Mar 2020</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="grid doctorGrid">
+    <ion-row
+      style="color: #000; background: #fff;"
+      [routerLink]="['/edit-file']"
+    >
+      <ion-col size="3">
+        <p style="margin: 0; padding: 6px; text-align: center;">
+          <img class="fileImage" src="assets/images/zuck.jpg" height="70px" />
+        </p>
+      </ion-col>
+      <ion-col class="fileInfoCol">
+        <p class="fileName">Lab Results</p>
+        <p>15 Mar 2019</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-row>
+    <ion-col class="continue" (click)="openMenu()">
+      <button>Add File</button>
+    </ion-col>
+  </ion-row>
+</ion-content>

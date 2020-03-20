@@ -1,0 +1,50 @@
+.grid {
+  padding: 0;
+  border-bottom: 2px solid #ddd;
+}
+
+p {
+  padding: 0;
+  margin: 5px;
+}
+
+.appointmentsGrid {
+  height: 178px;
+}
+
+.doctorGrid {
+  height: auto;
+}
+
+.card-heading {
+  font-size: 20px;
+  padding: 12px;
+  color: #fff;
+  background-color: #0a9f28;
+}
+
+.fileImage {
+  border-radius: 5px;
+}
+
+.fileInfoCol {
+  margin-top: 16px;
+}
+
+.continue {
+  text-align: center;
+  background-color: #0a9f28;
+  color: #fff;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+}
+.continue button {
+  background-color: #0a9f28;
+  color: #fff;
+  border: none;
+  outline: none;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 10px;
+}

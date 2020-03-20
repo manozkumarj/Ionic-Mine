@@ -228,6 +228,10 @@ const routes: Routes = [
   },  {
     path: 'completed-consultation-details',
     loadChildren: () => import('./pages/completed-consultation-details/completed-consultation-details.module').then( m => m.CompletedConsultationDetailsPageModule)
+  },
+  {
+    path: 'edit-file',
+    loadChildren: () => import('./pages/edit-file/edit-file.module').then( m => m.EditFilePageModule)
   }
 
 ];

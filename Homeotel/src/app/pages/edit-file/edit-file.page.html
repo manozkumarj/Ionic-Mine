@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit File</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="height: 50%;padding: 0;">
+    <ion-row
+      style="height: 100%"
+      class="ion-justify-content-center ion-align-items-center"
+    >
+      <img
+        class="fileImage"
+        src="assets/images/zuck.jpg"
+        height="100%"
+        width="100%"
+      />
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row class="dashedBorderBottom" style="padding: 6px;">
+      <ion-col class="person">
+        <div class="add">
+          <ion-icon class="plusIcon" name="newspaper-outline"></ion-icon>
+        </div>
+        <p>Prescription</p>
+      </ion-col>
+      <ion-col class="person chosen">
+        <div class="add">
+          <ion-icon class="plusIcon" name="library-outline"></ion-icon>
+        </div>
+        <p>Labtests</p>
+      </ion-col>
+      <ion-col class="person">
+        <div class="add">
+          <ion-icon class="plusIcon" name="receipt-outline"></ion-icon>
+        </div>
+        <p>Bill</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-row>
+    <ion-col class="continue" [routerLink]="['/files']">
+      <button>Save</button>
+    </ion-col>
+  </ion-row>
+</ion-content>
