@@ -106,7 +106,11 @@ const routes: Routes = [
   {
     path: 'appointment-questions/:one',
     loadChildren: () => import('./pages/appointment-questions/appointment-questions.module').then(m => m.AppointmentQuestionsPageModule)
+  },  {
+    path: 'vitals',
+    loadChildren: () => import('./pages/vitals/vitals.module').then( m => m.VitalsPageModule)
   }
+
 ];
 
 @NgModule({

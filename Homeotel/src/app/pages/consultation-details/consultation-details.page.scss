@@ -1,71 +1,79 @@
-.grid{
-    height: 140px;
-    margin-bottom: 20px;
-    text-align: center;
-    padding: 0;
-    border-radius: 0 10px 10px;
+.grid {
+  height: 140px;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 0;
+  border-radius: 0 10px 10px;
 }
 
-.docName{
-    font-size: 22px;
-    font-weight: bold;
+.docName {
+  font-size: 22px;
+  font-weight: bold;
 }
 
-.designation{
-    font-size: 20px;
+.designation {
+  font-size: 20px;
 }
 
-p{
-    padding: 0;
-    margin: 0;
+p {
+  padding: 0;
+  margin: 0;
 }
 
-.dashedBorderBottom{
-    border-bottom: 2px dashed #000;
+.dashedBorderBottom {
+  border-bottom: 2px dashed #000;
 }
 
-.heading{
-    font-size: 20px;
-    font-weight: bold;
-    padding: 5px;
-    padding: 13px 0 8px 12px;
+.heading {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 5px;
+  padding: 13px 0 8px 12px;
 }
 
-.person{
-    font-size: 100px;
-    font-weight: bold;
-    color: #0a9f28;
-    border: 2px solid #0a9f28;
-    text-align: center;
-    padding: 8px;
-    border-radius: 5px;
+.person {
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+  padding: 8px;
+  border-radius: 5px;
+  margin: 10px;
 }
 
-.add{
-    height: 130px; 
-    line-height: 115px;
-    border-radius: 100%;
+.add {
+  font-size: 68px;
+  border-radius: 100%;
 }
 
-.complaintDescription{
-    font-size: 20px;
+.plusIcon {
+  border: 1px solid #0a9f28;
+  border-radius: 100%;
+  color: #0a9f28;
 }
 
-.continue{
-    text-align: center;
-    background-color: #0a9f28;
-    color: #fff;
-    padding: 10px;
-    position: absolute;
-    bottom: 0;
-}
-.continue button{
-    background-color: #0a9f28;
-    color: #fff;
-    border: none;
-    outline: none;
-    font-size: 22px;
-    font-weight: bold;
-    padding: 10px;
+.chosen {
+  border: 2px solid #0a9f28;
+  color: #0a9f28;
 }
 
+.complaintDescription {
+  font-size: 20px;
+}
+
+.continue {
+  text-align: center;
+  background-color: #0a9f28;
+  color: #fff;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+}
+.continue button {
+  background-color: #0a9f28;
+  color: #fff;
+  border: none;
+  outline: none;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 10px;
+}

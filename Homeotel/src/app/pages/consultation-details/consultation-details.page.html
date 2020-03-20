@@ -8,12 +8,19 @@
 </ion-header>
 
 <ion-content>
-
   <ion-grid style="padding: 0px;" align-items-center justify-content-center>
-    <ion-row class="dashedBorderBottom" style="color: #000; background: #fff; padding: 8px 0px;">
-      <ion-col size='3.5' align-items-center justify-content-center>
+    <ion-row
+      class="dashedBorderBottom"
+      style="color: #000; background: #fff; padding: 8px 0px;"
+    >
+      <ion-col size="3.5" align-items-center justify-content-center>
         <p style="margin: 0;">
-          <img src="assets/images/milinda.jpg" height="80px" style="border-radius: 100%;" /></p>
+          <img
+            src="assets/images/milinda.jpg"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
       </ion-col>
       <ion-col style="padding-top: 25px;">
         <p class="docName">Dr. Swapna Kunduru</p>
@@ -40,25 +47,40 @@
       </ion-col>
     </ion-row>
     <ion-row class="dashedBorderBottom" style="padding: 6px;">
-      <ion-col>
-        <div class="person add">
-          +
+      <ion-col class="person">
+        <div class="add">
+          <ion-icon class="plusIcon" name="add-outline"></ion-icon>
         </div>
+        <p>Add</p>
       </ion-col>
-      <ion-col>
-        <div class="person">
-          <img src="assets/images/milinda.jpg" height="80px" style="border-radius: 100%;" />
+      <ion-col class="person chosen">
+        <div>
+          <img
+            src="assets/images/milinda.jpg"
+            height="80px"
+            style="border-radius: 100%;"
+          />
         </div>
+        <p>Self</p>
       </ion-col>
-      <ion-col>
-        <div class="person">
-          <img src="assets/images/milinda.jpg" height="80px" style="border-radius: 100%;" />
+      <ion-col class="person">
+        <div>
+          <img
+            src="assets/images/sergey.jpg"
+            height="80px"
+            style="border-radius: 100%;"
+          />
         </div>
+        <p>Juli Jay</p>
       </ion-col>
     </ion-row>
     <ion-row class="dashedBorderBottom" style="padding: 6px;">
       <ion-col>
-        <ion-textarea class="complaintDescription" value='' placeholder="Compaint description...">
+        <ion-textarea
+          class="complaintDescription"
+          value=""
+          placeholder="Compaint description..."
+        >
         </ion-textarea>
       </ion-col>
     </ion-row>
@@ -68,5 +90,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

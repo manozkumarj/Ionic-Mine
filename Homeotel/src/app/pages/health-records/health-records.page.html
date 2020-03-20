@@ -8,21 +8,52 @@
 </ion-header>
 
 <ion-content>
+  <ion-row class="dashedBorderBottom" style="padding: 6px;">
+    <ion-col class="person">
+      <div class="add">
+        <ion-icon class="plusIcon" name="add-outline"></ion-icon>
+      </div>
+      <p>Add</p>
+    </ion-col>
+    <ion-col class="person chosen">
+      <div>
+        <img
+          src="assets/images/milinda.jpg"
+          height="80px"
+          style="border-radius: 100%;"
+        />
+      </div>
+      <p>Self</p>
+    </ion-col>
+    <ion-col class="person">
+      <div>
+        <img
+          src="assets/images/sergey.jpg"
+          height="80px"
+          style="border-radius: 100%;"
+        />
+      </div>
+      <p>Juli Jay</p>
+    </ion-col>
+  </ion-row>
 
-  <ion-content>
+  <ion-list *ngIf="healthRecords.length > 0; else noHealthRecords">
+    <ion-item
+      *ngFor="let healthRecord of healthRecords"
+      [routerLink]="['/view-doctor/' + healthRecord.id]"
+      detail
+    >
+      <div style="font-size: 18px; font-weight: bold;">
+        {{healthRecord.name}}
+      </div>
+    </ion-item>
+  </ion-list>
 
-    <ion-list *ngIf="healthRecords.length > 0; else noHealthRecords">
-      <ion-item *ngFor="let healthRecord of healthRecords" [routerLink]="['/view-doctor/' + healthRecord.id]" detail>
-        <div style="font-size: 18px; font-weight: bold;"> {{healthRecord.name}} </div>
-      </ion-item>
-    </ion-list>
-
-    <ng-template #noHealthRecords>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title> There are no Health Records </ion-card-title>
-        </ion-card-header>
-      </ion-card>
-    </ng-template>
-
-  </ion-content>
+  <ng-template #noHealthRecords>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> There are no Health Records </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+</ion-content>
