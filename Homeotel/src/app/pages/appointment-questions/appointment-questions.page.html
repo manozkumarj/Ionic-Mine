@@ -13,9 +13,13 @@
 </ion-header>
 
 <ion-content>
-
-  <ion-grid style="height: 40%; background-color: #eab841; color: #fff; font-size: 18px;">
-    <ion-row style="height: 100%" class="ion-justify-content-center ion-align-items-center">
+  <ion-grid
+    style="height: 30%; background-color: #eab841; color: #fff; font-size: 18px;"
+  >
+    <ion-row
+      style="height: 100%"
+      class="ion-justify-content-center ion-align-items-center"
+    >
       {{question}}
     </ion-row>
   </ion-grid>
@@ -76,11 +80,14 @@
   <ion-grid *ngIf="currentQuestion == 'four'">
     <ion-row>
       <ion-col>
-        <ion-textarea class="complaintDescription" [(ngModel)]="enteredDescription" value=''
-          placeholder="Write description...">
+        <ion-textarea
+          class="complaintDescription"
+          [(ngModel)]="enteredDescription"
+          value=""
+          placeholder="Write description..."
+        >
         </ion-textarea>
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

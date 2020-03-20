@@ -1,0 +1,23 @@
+.continue {
+  text-align: center;
+  background-color: #0a9f28;
+  color: #fff;
+  padding: 10px;
+  position: absolute;
+  bottom: 0;
+}
+.continue button {
+  background-color: #0a9f28;
+  color: #fff;
+  border: none;
+  outline: none;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 10px;
+}
+.dashedBorderBottom {
+  border-bottom: 2px dashed #000;
+}
+.pad5 {
+  padding: 10px 5px;
+}

@@ -40,7 +40,7 @@
   <ion-list *ngIf="healthRecords.length > 0; else noHealthRecords">
     <ion-item
       *ngFor="let healthRecord of healthRecords"
-      [routerLink]="['/view-doctor/' + healthRecord.id]"
+      [routerLink]="[healthRecord.redirectUrl]"
       detail
     >
       <div style="font-size: 18px; font-weight: bold;">

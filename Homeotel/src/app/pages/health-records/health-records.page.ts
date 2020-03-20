@@ -1,48 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-health-records',
-  templateUrl: './health-records.page.html',
-  styleUrls: ['./health-records.page.scss'],
+  selector: "app-health-records",
+  templateUrl: "./health-records.page.html",
+  styleUrls: ["./health-records.page.scss"]
 })
 export class HealthRecordsPage implements OnInit {
-
   healthRecords;
 
   constructor() {
     this.healthRecords = [
       {
         id: 1,
-        name: 'Vitals'
-      },
-      {
-        id: 2,
-        name: 'Health Tracker'
+        name: "Vitals",
+        redirectUrl: "/vitals"
       },
       {
         id: 3,
-        name: 'Medical History'
+        name: "Medical History",
+        redirectUrl: "/medical-history"
       },
       {
         id: 4,
-        name: 'Lifestyle'
+        name: "Lifestyle",
+        redirectUrl: "/lifestyle"
       },
       {
         id: 5,
-        name: 'Files'
+        name: "Files",
+        redirectUrl: "/files"
       },
       {
         id: 6,
-        name: 'Previous Consultations'
-      },
-      {
-        id: 7,
-        name: 'Share Health Records'
+        name: "Previous Consultations",
+        redirectUrl: "/previous-consultations"
       }
     ];
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

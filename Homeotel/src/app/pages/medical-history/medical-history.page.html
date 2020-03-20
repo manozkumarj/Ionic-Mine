@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Medical History</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="medicalHistories.length > 0; else noMedicalHistories">
+    <ion-item *ngFor="let medicalHistory of medicalHistories" detail>
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            {{medicalHistory.name}}
+          </ion-col>
+          <ion-col>
+            {{medicalHistory.list}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noMedicalHistories>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> There are no Medical Histories </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+</ion-content>

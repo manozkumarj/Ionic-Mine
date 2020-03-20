@@ -1,9 +1,79 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>vitals</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Vitals</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <div *ngFor="let vital of vitals" class="dashedBorderBottom pad5">
+      <ion-row style="font-size: 20px; font-weight: bold;">
+        <ion-col size="auto">
+          <ion-icon name="calendar-outline"></ion-icon>
+        </ion-col>
+        <ion-col>
+          {{vital.date}}
+        </ion-col>
+        <ion-col size="auto" (click)="openMenu(vital.id)">
+          <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+        </ion-col>
+      </ion-row>
 
+      <ion-row
+        *ngIf="vital.temparature != null"
+        style="font-size: 20px; padding: 5px;"
+      >
+        <ion-col>
+          Temparature
+        </ion-col>
+        <ion-col size="4">
+          {{vital.temparature}}
+        </ion-col>
+      </ion-row>
+      <ion-row
+        *ngIf="vital.pulseRate != null"
+        style="font-size: 20px; padding: 5px;"
+      >
+        <ion-col>
+          Pulse Rate
+        </ion-col>
+        <ion-col size="4">
+          {{vital.pulseRate}}
+        </ion-col>
+      </ion-row>
+      <ion-row
+        *ngIf="vital.respirationRate != null"
+        style="font-size: 20px; padding: 5px;"
+      >
+        <ion-col>
+          Respiration Rate
+        </ion-col>
+        <ion-col size="4">
+          {{vital.respirationRate}}
+        </ion-col>
+      </ion-row>
+      <ion-row
+        *ngIf="vital.bloodPressure != null"
+        style="font-size: 20px; padding: 5px;"
+      >
+        <ion-col>
+          Blood Pressure
+        </ion-col>
+        <ion-col size="4">
+          {{vital.bloodPressure}}
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col class="continue" [routerLink]="['/vital-questions', 1]">
+        <button>Add Vitals</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
