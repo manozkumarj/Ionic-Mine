@@ -9,11 +9,19 @@
 
 <ion-content>
   <ion-list style="margin: 0px; padding: 5px;background: #999;">
-    <ion-input placeholder="Search the issue" style="background: #999; color: #fff; padding: 5px;"></ion-input>
+    <ion-input
+      placeholder="Search the issue"
+      style="background: #999; color: #fff; padding: 5px;"
+    >
+    </ion-input>
   </ion-list>
   <ion-list *ngIf="helpCenters.length > 0; else noHelpCenters">
-    <ion-item *ngFor="let helpCenter of helpCenters" [routerLink]="['/issue-details/' + helpCenter.id]" detail>
-      <div style="font-size: 18px; font-weight: bold;"> {{helpCenter.name}} </div>
+    <ion-item
+      *ngFor="let helpCenter of helpCenters"
+      [routerLink]="['/issue-details/' + helpCenter.id]"
+      detail
+    >
+      <div style="font-size: 18px; font-weight: bold;">{{helpCenter.name}}</div>
     </ion-item>
   </ion-list>
 
@@ -24,5 +32,4 @@
       </ion-card-header>
     </ion-card>
   </ng-template>
-
 </ion-content>

@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Allergies</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="firstSelectedOptions.length > 0; else nothingSelected">
+    <ion-row>
+      <ion-col
+        size="auto"
+        class="optionsList"
+        *ngFor="let option of firstSelectedOptions"
+        (click)="remover(option)"
+      >
+        <span class="selectedOption">
+          {{firstQuestionList[option]['name']}} <span class="remover"> X </span>
+        </span>
+      </ion-col>
+    </ion-row>
+    <!-- <ng-template #nothingSelected>
+      <ion-row>
+        Nothing selected yet
+      </ion-row>
+    </ng-template> -->
+  </ion-grid>
+
+  <ion-list style="margin: 0px; padding: 5px;background: #999;">
+    <ion-input
+      placeholder="Type to Search..."
+      style="background: #999; color: #fff; padding: 5px;"
+      (keyup)="onChange(search.value)"
+      #search
+    >
+    </ion-input>
+  </ion-list>
+  <ion-list
+    *ngIf="clonedFirstQuestionList.length > 0; else noFirstQuestionList"
+  >
+    <div *ngFor="let question of clonedFirstQuestionList">
+      <div *ngIf="question.isSelected == false">
+        <ion-item (click)="chooser(question.id)">
+          <div style="font-size: 18px;">{{question.name}}</div>
+        </ion-item>
+      </div>
+    </div>
+  </ion-list>
+
+  <ng-template #noFirstQuestionList>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> There are no Questions </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+</ion-content>

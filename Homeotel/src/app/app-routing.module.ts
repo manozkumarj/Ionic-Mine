@@ -232,6 +232,10 @@ const routes: Routes = [
   {
     path: 'edit-file',
     loadChildren: () => import('./pages/edit-file/edit-file.module').then( m => m.EditFilePageModule)
+  },
+  {
+    path: 'allergies',
+    loadChildren: () => import('./pages/allergies/allergies.module').then( m => m.AllergiesPageModule)
   }
 
 ];

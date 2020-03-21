@@ -9,7 +9,11 @@
 
 <ion-content>
   <ion-list *ngIf="medicalHistories.length > 0; else noMedicalHistories">
-    <ion-item *ngFor="let medicalHistory of medicalHistories" detail>
+    <ion-item
+      *ngFor="let medicalHistory of medicalHistories"
+      detail
+      [routerLink]="[medicalHistory.redirectTo]"
+    >
       <ion-grid>
         <ion-row
           style="font-size: 16px;"
