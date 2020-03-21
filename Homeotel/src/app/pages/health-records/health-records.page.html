@@ -9,13 +9,21 @@
 
 <ion-content>
   <ion-row class="dashedBorderBottom" style="padding: 6px;">
-    <ion-col class="person">
+    <ion-col
+      class="person"
+      (click)="person(0)"
+      [style.border]="selectedPerson == 0 ? '2px solid #0a9f28' : '2px solid #fff' "
+    >
       <div class="add">
         <ion-icon class="plusIcon" name="add-outline"></ion-icon>
       </div>
       <p>Add</p>
     </ion-col>
-    <ion-col class="person chosen">
+    <ion-col
+      class="person"
+      (click)="person(1)"
+      [style.border]="selectedPerson == 1 ? '2px solid #0a9f28' : '2px solid #fff' "
+    >
       <div>
         <img
           src="assets/images/milinda.jpg"
@@ -25,7 +33,11 @@
       </div>
       <p>Self</p>
     </ion-col>
-    <ion-col class="person">
+    <ion-col
+      class="person"
+      (click)="person(2)"
+      [style.border]="selectedPerson == 2 ? '2px solid #0a9f28' : '2px solid #fff' "
+    >
       <div>
         <img
           src="assets/images/sergey.jpg"

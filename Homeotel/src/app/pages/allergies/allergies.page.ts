@@ -71,29 +71,35 @@ export class AllergiesPage implements OnInit {
   }
 
   remover(id) {
-    this.alertCtrl
-      .create({
-        header: "Are you sure?",
-        message: "Do you want to remove?",
-        buttons: [
-          {
-            text: "Cancel",
-            role: "cancel"
-          },
-          {
-            text: "Remove",
-            handler: () => {
-              console.log("Item will be removed " + id);
-              this.firstQuestionList[id]["isSelected"] = false;
-              this.firstSelectedOptions = this.firstSelectedOptions.filter(
-                option => option != id
-              );
-            }
-          }
-        ]
-      })
-      .then(alertEl => {
-        alertEl.present();
-      });
+    console.log("Item will be removed " + id);
+    this.firstQuestionList[id]["isSelected"] = false;
+    this.firstSelectedOptions = this.firstSelectedOptions.filter(
+      option => option != id
+    );
+
+    // this.alertCtrl
+    //   .create({
+    //     header: "Are you sure?",
+    //     message: "Do you want to remove?",
+    //     buttons: [
+    //       {
+    //         text: "Cancel",
+    //         role: "cancel"
+    //       },
+    //       {
+    //         text: "Remove",
+    //         handler: () => {
+    //           console.log("Item will be removed " + id);
+    //           this.firstQuestionList[id]["isSelected"] = false;
+    //           this.firstSelectedOptions = this.firstSelectedOptions.filter(
+    //             option => option != id
+    //           );
+    //         }
+    //       }
+    //     ]
+    //   })
+    //   .then(alertEl => {
+    //     alertEl.present();
+    //   });
   }
 }

@@ -8,6 +8,8 @@ import { Component, OnInit } from "@angular/core";
 export class HealthRecordsPage implements OnInit {
   healthRecords;
 
+  selectedPerson;
+
   constructor() {
     this.healthRecords = [
       {
@@ -39,4 +41,9 @@ export class HealthRecordsPage implements OnInit {
   }
 
   ngOnInit() {}
+
+  person(id) {
+    console.log("Selected person ID -> " + id);
+    this.selectedPerson = id;
+  }
 }
