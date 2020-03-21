@@ -236,6 +236,10 @@ const routes: Routes = [
   {
     path: 'allergies',
     loadChildren: () => import('./pages/allergies/allergies.module').then( m => m.AllergiesPageModule)
+  },
+  {
+    path: 'single-selection',
+    loadChildren: () => import('./pages/single-selection/single-selection.module').then( m => m.SingleSelectionPageModule)
   }
 
 ];
