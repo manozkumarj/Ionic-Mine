@@ -1,1 +1,8 @@
 * https://www.youtube.com/watch?v=L5WWrGMsnpw
+
+
+
+Links which helped to solve the errors I faced:
+----------------------------------------------------------------------------
+* https://forum.ionicframework.com/t/how-to-resolve-babel-error-when-installing-geolocation-in-ionic-app/185542/2
+

@@ -53,7 +53,7 @@ export class FilesPage implements OnInit {
     const options: CameraOptions = {
       quality: 100,
       sourceType: sourceType,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE
     };
@@ -61,10 +61,20 @@ export class FilesPage implements OnInit {
       imageData => {
         // imageData is either a base64 encoded string or a file URI
         // If it's base64 (DATA_URL):
-        // let base64Image = 'data:image/jpeg;base64,' + imageData;
+        let base64Image = "data:image/jpeg;base64," + imageData;
+        this.capturedSnapURL = base64Image;
+        let temp = {
+          id: 3,
+          imageUrl: this.capturedSnapURL,
+          fileName: "Newly added",
+          date: "22 Mar 2020"
+        };
+        this.files = [...this.files, temp];
       },
       err => {
         // Handle error
+        console.log(err);
+        alert("Something went wrong...");
       }
     );
   }
