@@ -12,6 +12,7 @@ import { ModalPage } from "./pages/modal/modal.page";
 
 import { Camera } from "@ionic-native/camera/ngx";
 import { File } from "@ionic-native/file/ngx";
+import { WheelSelector } from "@ionic-native/wheel-selector/ngx";
 
 @NgModule({
   declarations: [AppComponent, ModalPage],
@@ -22,6 +23,7 @@ import { File } from "@ionic-native/file/ngx";
     SplashScreen,
     Camera,
     File,
+    WheelSelector,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

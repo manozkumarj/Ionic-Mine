@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { WheelSelector } from "@ionic-native/wheel-selector/ngx";
 
 @Component({
   selector: "app-vital-questions",
@@ -18,7 +19,43 @@ export class VitalQuestionsPage implements OnInit {
   pulseRates;
   respiratoryRates;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {}
+  selectedSystolic = "-NA-";
+  selectedDiastolic = "-NA-";
+
+  systolicValue: number = 0;
+  diastolicValue: number = 0;
+
+  systolicOptions = [
+    { description: "1" },
+    { description: "2" },
+    { description: "3" },
+    { description: "4" },
+    { description: "5" },
+    { description: "6" },
+    { description: "7" },
+    { description: "8" },
+    { description: "9" },
+    { description: "10" }
+  ];
+
+  diastolicOptions = [
+    { description: "1" },
+    { description: "2" },
+    { description: "3" },
+    { description: "4" },
+    { description: "5" },
+    { description: "6" },
+    { description: "7" },
+    { description: "8" },
+    { description: "9" },
+    { description: "10" }
+  ];
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private selector: WheelSelector
+  ) {}
 
   ngOnInit() {
     this.currentQuestion = null;
@@ -154,5 +191,65 @@ export class VitalQuestionsPage implements OnInit {
         respiratoryRate: 21
       }
     ];
+  }
+
+  selectSystolic() {
+    this.selector
+      .show({
+        title: "Select systolic",
+        items: [this.systolicOptions],
+        positiveButtonText: "Done",
+        negativeButtonText: "Cancel",
+        theme: "dark",
+        wrapWheelText: true,
+        defaultItems: [
+          //the number '2'
+          {
+            index: 0,
+            value: this.systolicOptions[this.systolicValue].description
+          }
+        ]
+      })
+      .then(
+        result => {
+          console.log(
+            "Selected Systolic value is --> " + result[0].description
+          );
+          console.log(result[0].description + " at index: " + result[0].index);
+          this.systolicValue = result[0].index;
+          this.selectedSystolic = result[0].description;
+        },
+        err => console.log("Error: ", err)
+      );
+  }
+
+  selectDiastolic() {
+    this.selector
+      .show({
+        title: "Select diastolic",
+        items: [this.diastolicOptions],
+        positiveButtonText: "Done",
+        negativeButtonText: "Cancel",
+        theme: "dark",
+        wrapWheelText: true,
+        defaultItems: [
+          //the number '2'
+          {
+            index: 0,
+            value: this.diastolicOptions[this.diastolicValue].description
+          }
+        ]
+      })
+      .then(
+        result => {
+          console.log(
+            "Selected Diastolic value is --> " + result[0].description
+          );
+          console.log(result[0].description + " at index: " + result[0].index);
+          this.diastolicValue = result[0].index;
+          this.selectedDiastolic = result[0].description;
+        },
+        err => console.log("Error: ", err)
+      );
   }
 }
