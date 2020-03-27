@@ -1,0 +1,9 @@
+* https://www.youtube.com/watch?v=FwS9XlUc75A
+* App name in firebase account is --> Ionic4FireBase
+* 
+
+
+Links which helped to solve the errors I faced:
+----------------------------------------------------------------------------
+* https://forum.ionicframework.com/t/how-to-resolve-babel-error-when-installing-geolocation-in-ionic-app/185542/2
+
