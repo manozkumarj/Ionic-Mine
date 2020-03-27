@@ -1,155 +1,160 @@
-*{
-    margin: 0px;
-    padding: 0px;
-  }
-  
-  #main{
-    height: 35%;
-    background: #0a9f28;
-    background-image: linear-gradient(180deg, rgba(10, 159, 40,1) 40%, rgba(5, 72, 18,1) 100%);
-    color: #FFF;
-  }
-  
-  .siteHeading{
-    font-size: 50px;
-    padding: 10px;
-  }
-  
-  .padd10{
-    padding: 0 10px;
-  }
-  
-  .hero{
-    height: 76%;
-    width: 100%;
-    // background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
-    // url("./../../assets/images/banner.jpg");
-    background-position: center;
-    background-size: cover;
-    position: absolute;
-  }
-  
-  .form-box{
-    width: 90%;
-    position: relative;
-    margin: 4% auto;
-    // margin-top: 5%;
-    background: #FFF;
-    padding: 5px;
-    border-radius: 10px;
-    overflow: hidden;
-    -webkit-box-shadow: -1px 2px 15px -1px rgba(128,128,128,1);
-    -moz-box-shadow: -1px 2px 15px -1px rgba(128,128,128,1);
-    box-shadow: -1px 2px 15px -1px rgba(128,128,128,1);
-    transition: 0.5s;  
-  }
-  
-  .button-box{
-    width: 220px;
-    margin: 20px auto;
-    position: relative;
-    // box-shadow: 0 0 20px 9px #ff61241f;
-    // border-radius: 30px;
-  }
-  
-  .toggle-btn{
-    padding: 10px 30px;
-    cursor: pointer;
-    background: transparent;
-    border: 0;
-    outline: none;
-    position: relative;
-  }
-  
-  #btn{
-    top: 0;
-    left: 0;
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    // background: linear-gradient(to right, #ff105f, #ffad06);
-    // border-radius: 30px;
-    transition: 0.5s;    
-    border-bottom: 2px solid #0a9f28;
-  }
-  
-  .button-box button{
-    font-size: 17px;
-    // font-weight: bold;
-  }
-  
-  .social-icons{
-    position: absolute;
-    bottom: 5px;
-    // margin: 30px auto;
-    text-align: center;
-    left: 0;
-    right: 0;
-    margin: auto
-  }
-  
-  .social-icons img{
-    width: 65px;
-    margin: 0 12px;
-    box-shadow: 0 0 8px 0 #7f7f7f3d;
-    cursor: pointer;
-    border-radius: 50%;
-    padding: 15px;
-    border: 1px solid #ddd;
-  }
-  
-  .input-group{
-    // top: 180px;
-    position: absolute;
-    width: 280px;
-    transition: 0.5s;
-  }
-  
-  .input-field{
-    width: 100%;
-    padding: 10px 15px;
-    margin: 5px 0;
-    background: transparent;
-    outline: none;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-  }
-  
-  .submit-btn{
-    position: relative;
-    height: 80px;
-    width: 80px;
-    cursor: pointer;
-    display: block;
-    margin: auto;
-    margin-top: -50px; 
-    background: #0a9f28;
-    color: #FFF;
-    border: 10px solid #fff;
-    outline: none;
-    border-radius: 100%;
-    font-size: 30px;
-    -webkit-box-shadow: -1px 2px 4px -1px rgba(128,128,128,1);
-    -moz-box-shadow: -1px 2px 4px -1px rgba(128,128,128,1);
-    box-shadow: -1px 2px 4px -1px rgba(128,128,128,1);
-  }
-  
-  .tcs{
-    text-align: center;
-    color: #777;
-    font-size: 12px;
-    bottom: 68px;
-    margin: 14px 10px 0 0; 
-  }
-  
-  .tcs a{
-    color: #0a9f28;
-  }
-  
-  #login{
-    left: 25px;
-  }
-  
-  #register{
-    left: 450px;
-  }
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+#main {
+  height: 35%;
+  background: #0a9f28;
+  background-image: linear-gradient(
+    180deg,
+    rgba(10, 159, 40, 1) 40%,
+    rgba(5, 72, 18, 1) 100%
+  );
+  color: #fff;
+}
+
+.siteHeading {
+  font-size: 50px;
+  padding: 10px;
+}
+
+.padd10 {
+  padding: 0 10px;
+}
+
+.hero {
+  height: 76%;
+  width: 100%;
+  // background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
+  // url("./../../assets/images/banner.jpg");
+  background-position: center;
+  background-size: cover;
+  position: absolute;
+}
+
+.form-box {
+  width: 90%;
+  position: relative;
+  margin: 4% auto;
+  // margin-top: 5%;
+  background: #fff;
+  padding: 5px;
+  border-radius: 10px;
+  overflow: hidden;
+  -webkit-box-shadow: -1px 2px 15px -1px rgba(128, 128, 128, 1);
+  -moz-box-shadow: -1px 2px 15px -1px rgba(128, 128, 128, 1);
+  box-shadow: -1px 2px 15px -1px rgba(128, 128, 128, 1);
+  transition: 0.5s;
+}
+
+.button-box {
+  width: 220px;
+  margin: 20px auto;
+  position: relative;
+  // box-shadow: 0 0 20px 9px #ff61241f;
+  // border-radius: 30px;
+}
+
+.toggle-btn {
+  padding: 10px 30px;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  outline: none;
+  position: relative;
+}
+
+#btn {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  // background: linear-gradient(to right, #ff105f, #ffad06);
+  // border-radius: 30px;
+  transition: 0.5s;
+  border-bottom: 2px solid #0a9f28;
+}
+
+.button-box button {
+  font-size: 17px;
+  // font-weight: bold;
+}
+
+.social-icons {
+  position: absolute;
+  bottom: 5px;
+  // margin: 30px auto;
+  text-align: center;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.social-icons img {
+  width: 65px;
+  margin: 0 12px;
+  box-shadow: 0 0 8px 0 #7f7f7f3d;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 15px;
+  border: 1px solid #ddd;
+}
+
+.input-group {
+  // top: 180px;
+  position: absolute;
+  width: 280px;
+  transition: 0.5s;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px 15px;
+  margin: 5px 0;
+  background: transparent;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  color: #000;
+}
+
+.submit-btn {
+  position: relative;
+  height: 80px;
+  width: 80px;
+  cursor: pointer;
+  display: block;
+  margin: auto;
+  margin-top: -50px;
+  background: #0a9f28;
+  color: #fff;
+  border: 10px solid #fff;
+  outline: none;
+  border-radius: 100%;
+  font-size: 30px;
+  -webkit-box-shadow: -1px 2px 4px -1px rgba(128, 128, 128, 1);
+  -moz-box-shadow: -1px 2px 4px -1px rgba(128, 128, 128, 1);
+  box-shadow: -1px 2px 4px -1px rgba(128, 128, 128, 1);
+}
+
+.tcs {
+  text-align: center;
+  color: #777;
+  font-size: 12px;
+  bottom: 68px;
+  margin: 14px 10px 0 0;
+}
+
+.tcs a {
+  color: #0a9f28;
+}
+
+#login {
+  left: 25px;
+}
+
+#register {
+  left: 450px;
+}

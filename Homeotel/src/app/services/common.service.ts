@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 import { AlertController } from "@ionic/angular";
 import { Router } from "@angular/router";
+import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class CommonService {
-
   doctors;
   familyMembers;
   foundDoctor: boolean = false;
@@ -15,37 +15,38 @@ export class CommonService {
 
   constructor(
     private alertCtrl: AlertController,
-    private router: Router
+    private router: Router,
+    public auth: AuthService
   ) {
     this.doctors = [
       {
         id: 1,
-        name: 'Uday Kumar',
+        name: "Uday Kumar",
         img: "assets/images/bill.jpg"
       },
       {
         id: 2,
-        name: 'Bharat Raj',
+        name: "Bharat Raj",
         img: "assets/images/larry.jpg"
       },
       {
         id: 3,
-        name: 'Manoj Kumar',
+        name: "Manoj Kumar",
         img: "assets/images/zuck.jpg"
       },
       {
         id: 4,
-        name: 'Mallesh',
+        name: "Mallesh",
         img: "assets/images/mark.jpg"
       },
       {
         id: 5,
-        name: 'Rohit Kumar',
+        name: "Rohit Kumar",
         img: "assets/images/sergey.jpg"
       },
       {
         id: 6,
-        name: 'Maruthi',
+        name: "Maruthi",
         img: "assets/images/warren.jpg"
       }
     ];
@@ -53,42 +54,41 @@ export class CommonService {
     this.familyMembers = [
       {
         id: 1,
-        name: 'Uday Kumar',
+        name: "Uday Kumar",
         img: "assets/images/bill.jpg",
         relation: "Mother"
       },
       {
         id: 2,
-        name: 'Bharat Raj',
+        name: "Bharat Raj",
         img: "assets/images/larry.jpg",
         relation: "Father"
       },
       {
         id: 3,
-        name: 'Manoj Kumar',
+        name: "Manoj Kumar",
         img: "assets/images/zuck.jpg",
         relation: "Son"
       },
       {
         id: 4,
-        name: 'Mallesh',
+        name: "Mallesh",
         img: "assets/images/mark.jpg",
         relation: "Daughter"
       },
       {
         id: 5,
-        name: 'Rohit Kumar',
+        name: "Rohit Kumar",
         img: "assets/images/sergey.jpg",
         relation: "Grand-son"
       },
       {
         id: 6,
-        name: 'Maruthi',
+        name: "Maruthi",
         img: "assets/images/warren.jpg",
         relation: "Grand-daughter"
       }
     ];
-
   }
 
   logout() {
@@ -105,7 +105,8 @@ export class CommonService {
             text: "Logout",
             handler: () => {
               // alert("User will be logged out");
-              this.router.navigate(["/login"]);
+              this.auth.signOut();
+              // this.router.navigate(["/login"]);
               // this.storageService.clear();
             }
           }

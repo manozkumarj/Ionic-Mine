@@ -13,11 +13,22 @@ import { ModalPage } from "./pages/modal/modal.page";
 import { Camera } from "@ionic-native/camera/ngx";
 import { File } from "@ionic-native/file/ngx";
 import { WheelSelector } from "@ionic-native/wheel-selector/ngx";
+import { environment } from "../environments/environment";
+import { AngularFireModule } from "@angular/fire";
+import { AngularFirestoreModule } from "@angular/fire/firestore";
+import { AngularFireAuthModule } from "@angular/fire/auth";
 
 @NgModule({
   declarations: [AppComponent, ModalPage],
   entryComponents: [ModalPage],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
+    AngularFireAuthModule
+  ],
   providers: [
     StatusBar,
     SplashScreen,
