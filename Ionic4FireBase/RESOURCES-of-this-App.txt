@@ -1,4 +1,6 @@
 * https://www.youtube.com/watch?v=FwS9XlUc75A
+* https://www.youtube.com/watch?v=qP5zw7fjQgo - Firebase Google SignIn + Firestore w/ Angular
+
 * App name in firebase account is --> Ionic4FireBase
 * 
 
