@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "506779763867",
+    "firebase_url": "https://ionic4firebase-579cd.firebaseio.com",
+    "project_id": "ionic4firebase-579cd",
+    "storage_bucket": "ionic4firebase-579cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506779763867:android:102d8e1f8aec662765723e",
+        "android_client_info": {
+          "package_name": "com.zoltglobal.ionicgmailauth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "506779763867-675kr9vvvfoku0r9bta2nlmr5elrt95p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zoltglobal.ionicgmailauth",
+            "certificate_hash": "c83739ab6ed1909a002e743e2c4738650da0cee0"
+          }
+        },
+        {
+          "client_id": "506779763867-21u8k1sngajb3feheu4pvhrst7le9ntc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2EbP1tMjlynHVpGuLsY4-Y4yiOviGJUk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "506779763867-21u8k1sngajb3feheu4pvhrst7le9ntc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

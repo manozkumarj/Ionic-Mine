@@ -1,7 +1,7 @@
 <ion-app>
-  <p>
+  <!-- <p>
     <a routerLink="/secret">Secret</a>
-  </p>
+  </p> -->
 
   <div *ngIf="auth.user$ | async as user; else login">
     <pre>
@@ -10,13 +10,17 @@
     >
 
     <hr />
-    <button class="button" (click)="auth.signOut()">Sign Out</button>
+    <button class="button" (click)="auth.logout()">Sign Out</button>
   </div>
 
   <ng-template #login>
-    <button class="button" (click)="auth.googleSignin()">
+    <ion-button
+      class="button"
+      (click)="auth.googleLogin()"
+      style="margin-top: 50%;"
+    >
       Login with Google
-    </button>
+    </ion-button>
   </ng-template>
 
   <!-- <ion-router-outlet></ion-router-outlet> -->

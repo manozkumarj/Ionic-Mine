@@ -12,6 +12,9 @@ import { Observable, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { User } from "./user.model";
 
+import { GooglePlus } from "@ionic-native/google-plus/ngx";
+import { Platform } from "@ionic/angular";
+
 @Injectable({ providedIn: "root" })
 export class AuthService {
   user$: Observable<any>;
@@ -19,7 +22,9 @@ export class AuthService {
   constructor(
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    private router: Router
+    private router: Router,
+    private gplus: GooglePlus,
+    public platform: Platform
   ) {
     this.user$ = this.afAuth.authState.pipe(
       switchMap(user => {
@@ -37,6 +42,43 @@ export class AuthService {
     const credential = await this.afAuth.auth.signInWithPopup(provider);
     return this.updateUserData(credential.user);
   }
+
+  googleLogin() {
+    this.nativeGoogleLogin();
+
+    // if (this.platform.is("cordova")) {
+    //   this.nativeGoogleLogin();
+    // } else {
+    //   this.webGooglelogin();
+    // }
+  }
+
+  nativeGoogleLogin() {
+    // alert("nativeGoogleLogin func triggered");
+    this.gplus
+      .login({
+        webClientId:
+          "506779763867-21u8k1sngajb3feheu4pvhrst7le9ntc.apps.googleusercontent.com",
+        offline: true
+      })
+      .then(
+        res => {
+          console.log(res);
+          alert(JSON.stringify(res));
+        },
+        err => {
+          console.log(err);
+        }
+      );
+  }
+
+  logout() {
+    this.gplus.logout().then(() => {
+      console.log("logged out");
+    });
+  }
+
+  webGooglelogin() {}
 
   async signOut() {
     await this.afAuth.auth.signOut();
