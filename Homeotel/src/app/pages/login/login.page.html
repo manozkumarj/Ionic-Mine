@@ -9,10 +9,10 @@
       <div class="form-box" [ngStyle]="{'height': formsDivHeight }">
         <div class="button-box">
           <div id="btn" [ngStyle]="{'left': btnLeftValue }"></div>
-          <button type="button" class="toggle-btn" (click)="login()">
+          <button type="button" class="toggle-btn" (click)="loginTab()">
             Login
           </button>
-          <button type="button" class="toggle-btn" (click)="register()">
+          <button type="button" class="toggle-btn" (click)="registerTab()">
             SignUp
           </button>
         </div>
@@ -21,19 +21,46 @@
           action="#"
           class="input-group"
           [ngStyle]="{'left': loginLeftValue }"
+          [formGroup]="loginForm"
         >
-          <input type="text" class="input-field" placeholder="Username" />
-          <input type="text" class="input-field" placeholder="Password" />
+          <input
+            type="text"
+            formControlName="username"
+            class="input-field"
+            placeholder="Username"
+          />
+          <input
+            type="text"
+            formControlName="password"
+            class="input-field"
+            placeholder="Password"
+          />
         </form>
         <form
           id="register"
           action="#"
           class="input-group"
           [ngStyle]="{'left': registerLeftValue }"
+          [formGroup]="registerForm"
         >
-          <input type="text" class="input-field" placeholder="Username" />
-          <input type="email" class="input-field" placeholder="Email" />
-          <input type="password" class="input-field" placeholder="Password" />
+          <input
+            type="text"
+            formControlName="username"
+            class="input-field"
+            placeholder="Username"
+          />
+          <input
+            type="email"
+            formControlName="email"
+            class="input-field"
+            placeholder="Email"
+          />
+          <input
+            type="password"
+            formControlName="password"
+            class="input-field"
+            placeholder="Password"
+          />
           <div class="tcs">
             By pressing 'submit' you agree to our <br />
             <a href="#">Terms & Conditions</a>

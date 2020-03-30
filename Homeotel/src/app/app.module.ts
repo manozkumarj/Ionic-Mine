@@ -18,6 +18,8 @@ import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
+import { HttpClientModule } from "@angular/common/http";
+import { ApiService } from "./services/api.service";
 
 @NgModule({
   declarations: [AppComponent, ModalPage],
@@ -28,7 +30,8 @@ import { GooglePlus } from "@ionic-native/google-plus/ngx";
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    HttpClientModule
   ],
   providers: [
     GooglePlus,
@@ -37,6 +40,7 @@ import { GooglePlus } from "@ionic-native/google-plus/ngx";
     Camera,
     File,
     WheelSelector,
+    ApiService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
