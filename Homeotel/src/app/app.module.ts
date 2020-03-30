@@ -17,6 +17,7 @@ import { environment } from "../environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
+import { GooglePlus } from "@ionic-native/google-plus/ngx";
 
 @NgModule({
   declarations: [AppComponent, ModalPage],
@@ -30,6 +31,7 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
     AngularFireAuthModule
   ],
   providers: [
+    GooglePlus,
     StatusBar,
     SplashScreen,
     Camera,

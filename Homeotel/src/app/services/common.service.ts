@@ -105,7 +105,8 @@ export class CommonService {
             text: "Logout",
             handler: () => {
               // alert("User will be logged out");
-              this.auth.signOut();
+              this.auth.logout();
+              // this.auth.signOut();
               // this.router.navigate(["/login"]);
               // this.storageService.clear();
             }
