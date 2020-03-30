@@ -42,30 +42,16 @@ router.get("/medicalhostory/master", (req, res) => {
 
 //registering a user
 router.post("/register", (req, res) => {
-  var name = req.body.name;
-  var phone = req.body.phone ? req.body.phone : null;
+  console.log("From -> /register");
+  console.log(req.body);
+  var username = req.body.username;
   var email = req.body.email;
   var password = req.body.email;
-  var genderId = req.body.genderId;
-  var maritalStatusId = req.body.maritalStatusId;
-  var height = req.body.height;
-  var weight = req.body.weight;
-  var createdBy = req.body.createdBy;
 
-  var params = [
-    name,
-    phone,
-    email,
-    password,
-    genderId,
-    maritalStatusId,
-    height,
-    weight,
-    createdBy
-  ];
+  var params = [username, email, password];
 
   db.executeQuery(
-    "call sp_user_register(?,?,?,?,?,?,?,?,?)",
+    "call sp_user_register(?,?,?)",
     params,
     res,
     db.sendResponseNormal

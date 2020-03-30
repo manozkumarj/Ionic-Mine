@@ -3,18 +3,18 @@ import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class ApiService {
-  apiUrl;
+  apiUrl = "http://localhost:8088";
   constructor(private http: HttpClient) {}
 
   // get node id from APi
   getNodeDetails() {
-    var path = "node_details";
+    var path = "/node_details";
     return this.http.get(this.apiUrl + path);
   }
 
   // Login user
   loginUser(username, password) {
-    var path = "user/login";
+    var path = "/user/login";
     var body = {
       username: username,
       password: password
@@ -24,7 +24,8 @@ export class ApiService {
 
   // Register user
   registerUser(username, email, password) {
-    var path = "user/register";
+    console.log("username -> " + username);
+    var path = "/user/register";
     var body = {
       username,
       email,

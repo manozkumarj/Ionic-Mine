@@ -99,7 +99,10 @@ export class LoginPage implements OnInit {
     let passord = this.registerForm.get("password").value.trim();
 
     if (username && email && passord) {
-      this.apiService.registerUser(username, email, passord);
+      this.apiService.registerUser(username, email, passord).subscribe(data => {
+        console.log("Returned from Backend");
+        console.log(JSON.stringify(data));
+      });
     }
   }
 
@@ -110,7 +113,10 @@ export class LoginPage implements OnInit {
     let passord = this.loginForm.get("password").value.trim();
 
     if (username && passord) {
-      this.apiService.loginUser(username, passord);
+      this.apiService.loginUser(username, passord).subscribe(data => {
+        console.log("Returned from Backend");
+        console.log(JSON.stringify(data));
+      });
     }
   }
 }
