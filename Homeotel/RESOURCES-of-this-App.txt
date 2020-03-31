@@ -1,4 +1,5 @@
 * https://www.youtube.com/watch?v=L5WWrGMsnpw
+* https://www.freakyjolly.com/ionic-4-show-native-like-toast-messages-in-ionic-application-in-2-steps-without-any-plugin/
 
 
 

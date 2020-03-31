@@ -3,6 +3,8 @@ import { Router } from "@angular/router";
 
 @Injectable()
 export class UtilitiesService {
+  userId = 1;
+  isLoggedId = false;
   constructor(private router: Router) {}
 
   formatDate(date) {

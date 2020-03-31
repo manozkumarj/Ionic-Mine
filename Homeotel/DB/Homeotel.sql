@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.6-MariaDB
+-- Server version 5.5.5-10.4.6-MariaDB
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -58,22 +58,32 @@ CREATE TABLE `d_appointment` (
 
 DROP TABLE IF EXISTS `d_doctor`;
 CREATE TABLE `d_doctor` (
-  `doctor_id` int(10) unsigned NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `specialisation_id` int(10) unsigned NOT NULL,
-  `experience` varchar(100) DEFAULT NULL,
-  `created_by` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` int(10) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `pwd` varchar(255) NOT NULL DEFAULT '',
+  `phone` int(10) unsigned DEFAULT NULL,
+  `gender_id` int(10) unsigned DEFAULT NULL,
+  `dob` date NOT NULL,
   `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`doctor_id`,`specialisation_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`,`uuid`,`username`) USING BTREE,
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `uuid` (`uuid`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_doctor`
 --
 
 /*!40000 ALTER TABLE `d_doctor` DISABLE KEYS */;
+INSERT INTO `d_doctor` (`id`,`uuid`,`name`,`username`,`email`,`pwd`,`phone`,`gender_id`,`dob`,`created_at`) VALUES 
+ (1,100000,'Doctor Bharat','bharat','bharat@gmail.com','bharat',NULL,1,'0000-00-00','2020-03-31 13:00:58'),
+ (2,100001,'Doctor Manoj','manoj','manoj@gmail.com','manoj',NULL,1,'0000-00-00','2020-03-31 13:01:58'),
+ (3,100002,'Doctor Mallesh','mallesh','mallesh@gmail.com','mallesh',NULL,1,'0000-00-00','2020-03-31 13:02:58'),
+ (4,100003,'Doctor Rohit','rohit','rohit@gmail.com','rohit',NULL,1,'0000-00-00','2020-03-31 13:03:58');
 /*!40000 ALTER TABLE `d_doctor` ENABLE KEYS */;
 
 
@@ -140,8 +150,10 @@ CREATE TABLE `d_user` (
   `email` varchar(100) NOT NULL,
   `password` varchar(50) NOT NULL,
   `created_at` varchar(45) NOT NULL,
-  PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`user_id`) USING BTREE,
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_user`
@@ -149,7 +161,10 @@ CREATE TABLE `d_user` (
 
 /*!40000 ALTER TABLE `d_user` DISABLE KEYS */;
 INSERT INTO `d_user` (`user_id`,`username`,`email`,`password`,`created_at`) VALUES 
- (1,'aaa','aaa@gmail.com','aaa@gmail.com','2020-03-30 20:16:52');
+ (1,'aaa','aaa@aaa.com','aaa','2020-03-31 10:36:19'),
+ (2,'bbb','bbb@bbb.com','bbb','2020-03-31 10:55:35'),
+ (3,'ccc','ccc@ccc.com','ccc','2020-03-31 11:00:12'),
+ (4,'rrr','rrr@rrr.com','rrr','2020-03-31 11:03:58');
 /*!40000 ALTER TABLE `d_user` ENABLE KEYS */;
 
 
@@ -370,22 +385,25 @@ CREATE TABLE `dko_log` (
 
 DROP TABLE IF EXISTS `du_doctor`;
 CREATE TABLE `du_doctor` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `doctor_id` int(10) unsigned NOT NULL,
   `added_on` varchar(45) DEFAULT NULL,
   `is_active` int(10) DEFAULT 0,
-  `created_by` int(10) unsigned NOT NULL,
-  `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
+  `created_at` varchar(45) DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`doctor_id`,`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `du_doctor`
 --
 
 /*!40000 ALTER TABLE `du_doctor` DISABLE KEYS */;
+INSERT INTO `du_doctor` (`id`,`user_id`,`doctor_id`,`added_on`,`is_active`,`created_at`,`updated_at`) VALUES 
+ (1,1,1,'2020-03-31 13:55:19',1,'2020-03-31 10:36:19','2020-03-31 10:36:19'),
+ (2,1,2,'2020-03-31 14:00:19',1,'2020-03-31 14:00:19','2020-03-31 14:00:19'),
+ (3,1,3,'2020-03-31 14:02:19',1,'2020-03-31 14:00:19','2020-03-31 14:00:19');
 /*!40000 ALTER TABLE `du_doctor` ENABLE KEYS */;
 
 
@@ -1349,15 +1367,15 @@ END $$
 DELIMITER ;
 
 --
--- Definition of procedure `sp_user_login`
+-- Definition of procedure `sp_user_doctors`
 --
 
-DROP PROCEDURE IF EXISTS `sp_user_login`;
+DROP PROCEDURE IF EXISTS `sp_user_doctors`;
 
 DELIMITER $$
 
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_login`(IN IN_email VARCHAR(255),IN IN_password VARCHAR(255))
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_doctors`(IN IN_userId INT)
 BEGIN
 
 DECLARE Var_email INT;
@@ -1383,8 +1401,49 @@ DECLARE exit handler for sqlwarning
 
 END;
 
- SELECT * FROM d_user d where email=IN_email and password=IN_password;
+ SELECT * FROM du_doctor d where user_id=IN_userId;
 
+ END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_login`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_login`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_login`(IN IN_username VARCHAR(255),IN IN_password VARCHAR(255))
+BEGIN
+
+DECLARE Var_email INT;
+
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+ SELECT * FROM d_user d where (email=IN_username and password=IN_password) OR (username=IN_username and password=IN_password);
 
  END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
@@ -1433,7 +1492,7 @@ START TRANSACTION;
  Set Var_email = (SELECT count(*) FROM d_user d where email=IN_email);
 
 
-     INSERT INTO d_user (username,email,password, created_at)
+     INSERT INTO d_user (username,email, password, created_at)
      VALUES (IN_username,IN_email,IN_password,now());
 
 

@@ -72,4 +72,18 @@ router.post("/login", (req, res) => {
   );
 });
 
+// User Doctors
+router.get("/my-doctors/:id", (req, res) => {
+  var id = req.params.id;
+  console.log("Received userId -> " + id);
+  var params = [id];
+
+  db.executeQuery(
+    "call sp_user_doctors(?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;

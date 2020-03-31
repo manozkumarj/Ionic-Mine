@@ -1,24 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { AlertController } from "@ionic/angular";
-import { ModalController } from '@ionic/angular';
-import { ModalPage } from '../modal/modal.page';
-import { CommonService } from "../../services/common.service";
+import { ModalController } from "@ionic/angular";
+import { ModalPage } from "../modal/modal.page";
+import { ApiService } from "./../../services/api.service";
+import { CommonService } from "./../../services/common.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 @Component({
-  selector: 'app-my-doctors',
-  templateUrl: './my-doctors.page.html',
-  styleUrls: ['./my-doctors.page.scss'],
+  selector: "app-my-doctors",
+  templateUrl: "./my-doctors.page.html",
+  styleUrls: ["./my-doctors.page.scss"]
 })
 export class MyDoctorsPage implements OnInit {
-
+  myDoctors: any[] = [];
   constructor(
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
-    private commonService: CommonService
-  ) { }
+    public commonService: CommonService,
+    private apiService: ApiService,
+    private utilities: UtilitiesService
+  ) {
+    this.getCurrentUserDoctors();
+  }
 
-  ngOnInit() {
-    // this.presentFindDoctorModal();
+  ngOnInit() {}
+
+  getCurrentUserDoctors() {
+    this.apiService.getCurrentUserDoctors().subscribe(data => {
+      console.log("Returned from Backend");
+      console.log(JSON.stringify(data[0]));
+      if (this.utilities.isInvalidApiResponseData(data)) {
+        console.log("Returned Error");
+      } else {
+        if (
+          typeof data != "undefined" &&
+          typeof data[0] != "undefined" &&
+          typeof data[0][0] != "undefined"
+        ) {
+          console.log("Has my doctors");
+          this.myDoctors = data[0];
+        } else {
+          console.log("No my doctors");
+        }
+      }
+    });
   }
 
   inputKeyUp(e) {
@@ -27,7 +52,7 @@ export class MyDoctorsPage implements OnInit {
     var myLength = target.value.length;
     if (myLength >= maxLength) {
       var next = target;
-      while (next = next.nextElementSibling) {
+      while ((next = next.nextElementSibling)) {
         if (next == null) {
           this.showloginmodal();
         }
@@ -54,7 +79,7 @@ export class MyDoctorsPage implements OnInit {
       showBackdrop: true,
       cssClass: "findDoctorModal",
       componentProps: {
-        'action': 'findDoctor'
+        action: "findDoctor"
       }
     });
     return await modal.present();
@@ -66,7 +91,7 @@ export class MyDoctorsPage implements OnInit {
       showBackdrop: true,
       cssClass: "findDoctorModal",
       componentProps: {
-        'action': 'contactDoctor'
+        action: "contactDoctor"
       }
     });
     return await modal.present();
@@ -113,5 +138,4 @@ export class MyDoctorsPage implements OnInit {
   //       ]
   //     }).then(alert1 => alert1.present());
   // }
-
 }

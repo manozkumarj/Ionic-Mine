@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { UtilitiesService } from "./utilities.service";
 
 @Injectable()
 export class ApiService {
   apiUrl = "http://localhost:8088";
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private utilities: UtilitiesService) {}
 
   // get node id from APi
   getNodeDetails() {
@@ -32,5 +33,11 @@ export class ApiService {
       password: password
     };
     return this.http.post(this.apiUrl + path, body);
+  }
+
+  // Fetching current user related doctors
+  getCurrentUserDoctors() {
+    var path = "/user/my-doctors/" + this.utilities.userId;
+    return this.http.get(this.apiUrl + path);
   }
 }

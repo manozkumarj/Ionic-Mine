@@ -48,18 +48,20 @@ export class LoginPage implements OnInit {
 
   async presentToastSuccess() {
     const toast = await this.toastController.create({
-      color: "success",
       message: this.toastSuccessMsg,
-      duration: 2000
+      duration: 2000,
+      cssClass: "toast-success",
+      animated: true
     });
     toast.present();
   }
 
   async presentToastWarning() {
     const toast = await this.toastController.create({
-      color: "danger",
       message: this.toastErrorMsg,
-      duration: 2000
+      duration: 2000,
+      cssClass: "toast-error",
+      animated: true
     });
     toast.present();
   }
@@ -86,16 +88,16 @@ export class LoginPage implements OnInit {
 
   resetRegisterFormValues() {
     this.registerForm.patchValue({
-      username: null,
-      email: null,
-      password: null
+      username: "",
+      email: "",
+      password: ""
     });
   }
 
   resetLoginFormValues() {
-    this.registerForm.patchValue({
-      username: null,
-      password: null
+    this.loginForm.patchValue({
+      username: "",
+      password: ""
     });
   }
 
@@ -142,6 +144,7 @@ export class LoginPage implements OnInit {
           this.toastSuccessMsg = "Success, you can login now.";
           this.presentToastSuccess();
           this.loginTab();
+          this.resetRegisterFormValues();
         }
       });
     } else {
@@ -172,7 +175,10 @@ export class LoginPage implements OnInit {
             console.log("Returned Success");
             this.toastSuccessMsg = "Login Success.";
             this.presentToastSuccess();
+            this.utilities.isLoggedId = true;
+            this.utilities.userId = data[0][0]["user_id"];
             this.router.navigate(["/home"]);
+            this.resetLoginFormValues();
           }
         } else {
           console.log("Returned from Backend");
