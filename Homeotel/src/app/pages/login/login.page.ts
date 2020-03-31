@@ -2,7 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
+import { ToastController } from "@ionic/angular";
 import { ApiService } from "./../../services/api.service";
+import { UtilitiesService } from "./../../services/utilities.service";
 
 @Component({
   selector: "app-login",
@@ -20,11 +22,15 @@ export class LoginPage implements OnInit {
   btnLeftValue;
 
   focusedForm = "login";
+  toastErrorMsg;
+  toastSuccessMsg;
 
   constructor(
     private router: Router,
     public auth: AuthService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    public utilities: UtilitiesService,
+    private toastController: ToastController
   ) {
     this.registerForm = new FormGroup({
       username: new FormControl("", Validators.required),
@@ -39,6 +45,24 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {}
+
+  async presentToastSuccess() {
+    const toast = await this.toastController.create({
+      color: "success",
+      message: this.toastSuccessMsg,
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  async presentToastWarning() {
+    const toast = await this.toastController.create({
+      color: "danger",
+      message: this.toastErrorMsg,
+      duration: 2000
+    });
+    toast.present();
+  }
 
   registerTab() {
     this.formsDivHeight = "315px";
@@ -102,6 +126,23 @@ export class LoginPage implements OnInit {
       this.apiService.registerUser(username, email, passord).subscribe(data => {
         console.log("Returned from Backend");
         console.log(JSON.stringify(data));
+        if (this.utilities.isInvalidApiResponseData(data)) {
+          console.log("Returned Error");
+          console.log(data[0][0]);
+          if (data[0][0]["error"].includes(username)) {
+            this.toastErrorMsg = "Username already exist";
+          } else if (data[0][0]["error"].includes(email)) {
+            this.toastErrorMsg = "Email already exist";
+          } else {
+            this.toastErrorMsg = "Something went wrong";
+          }
+          this.presentToastWarning();
+        } else {
+          console.log("Returned Success");
+          this.toastSuccessMsg = "Success, you can login now.";
+          this.presentToastSuccess();
+          this.loginTab();
+        }
       });
     }
   }
@@ -116,6 +157,25 @@ export class LoginPage implements OnInit {
       this.apiService.loginUser(username, passord).subscribe(data => {
         console.log("Returned from Backend");
         console.log(JSON.stringify(data));
+        if (
+          typeof data != "undefined" &&
+          typeof data[0] != "undefined" &&
+          typeof data[0][0] != "undefined"
+        ) {
+          if (this.utilities.isInvalidApiResponseData(data)) {
+            console.log("Returned Error");
+            this.presentToastWarning();
+          } else {
+            console.log("Returned Success");
+            this.toastSuccessMsg = "Login Success.";
+            this.presentToastSuccess();
+          }
+        } else {
+          console.log("Returned from Backend");
+          this.toastErrorMsg =
+            "Invalid username or password entered. Please check and try again.";
+          this.presentToastWarning();
+        }
       });
     }
   }

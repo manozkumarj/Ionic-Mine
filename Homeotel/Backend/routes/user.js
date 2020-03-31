@@ -46,7 +46,7 @@ router.post("/register", (req, res) => {
   console.log(req.body);
   var username = req.body.username;
   var email = req.body.email;
-  var password = req.body.email;
+  var password = req.body.password;
 
   var params = [username, email, password];
 
@@ -60,9 +60,9 @@ router.post("/register", (req, res) => {
 
 //User Login
 router.post("/login", (req, res) => {
-  var email = req.body.email;
+  var username = req.body.username;
   var password = req.body.password;
-  var params = [email, password];
+  var params = [username, password];
 
   db.executeQuery(
     "call sp_user_login(?,?)",

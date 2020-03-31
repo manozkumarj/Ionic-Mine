@@ -20,6 +20,7 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { HttpClientModule } from "@angular/common/http";
 import { ApiService } from "./services/api.service";
+import { UtilitiesService } from "./services/utilities.service";
 
 @NgModule({
   declarations: [AppComponent, ModalPage],
@@ -41,6 +42,7 @@ import { ApiService } from "./services/api.service";
     File,
     WheelSelector,
     ApiService,
+    UtilitiesService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

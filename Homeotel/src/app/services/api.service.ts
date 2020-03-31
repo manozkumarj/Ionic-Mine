@@ -12,16 +12,6 @@ export class ApiService {
     return this.http.get(this.apiUrl + path);
   }
 
-  // Login user
-  loginUser(username, password) {
-    var path = "/user/login";
-    var body = {
-      username: username,
-      password: password
-    };
-    return this.http.post(this.apiUrl + path, body);
-  }
-
   // Register user
   registerUser(username, email, password) {
     console.log("username -> " + username);
@@ -30,6 +20,16 @@ export class ApiService {
       username,
       email,
       password
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
+
+  // Login user
+  loginUser(username, password) {
+    var path = "/user/login";
+    var body = {
+      username: username,
+      password: password
     };
     return this.http.post(this.apiUrl + path, body);
   }
