@@ -144,6 +144,9 @@ export class LoginPage implements OnInit {
           this.loginTab();
         }
       });
+    } else {
+      this.toastErrorMsg = "Please enter username, email, and password.";
+      this.presentToastWarning();
     }
   }
 
@@ -169,6 +172,7 @@ export class LoginPage implements OnInit {
             console.log("Returned Success");
             this.toastSuccessMsg = "Login Success.";
             this.presentToastSuccess();
+            this.router.navigate(["/home"]);
           }
         } else {
           console.log("Returned from Backend");
@@ -177,6 +181,9 @@ export class LoginPage implements OnInit {
           this.presentToastWarning();
         }
       });
+    } else {
+      this.toastErrorMsg = "Please enter username and password.";
+      this.presentToastWarning();
     }
   }
 }
