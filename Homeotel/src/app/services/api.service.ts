@@ -52,4 +52,26 @@ export class ApiService {
     var path = "/user/doctor-homeokits/" + doctorId;
     return this.http.get(this.apiUrl + path);
   }
+
+  // adding doctor to user
+  addDoctor(doctorId) {
+    var path = "/user/add-doctor";
+    var body = {
+      userId: this.utilities.userId,
+      doctorId
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
+
+  // Purchasing homeokit
+  purchaseHomeokit(doctorId, kitId, price) {
+    var path = "/user/purchase-homeokit";
+    var body = {
+      userId: this.utilities.userId,
+      doctorId,
+      kitId,
+      price
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
 }

@@ -52,9 +52,16 @@ export class HomeoKitsPage implements OnInit {
     });
   }
 
-  buyKit = cost => {
-    console.log("Selected kit cost is -> " + cost);
-    this.commonService.selectedHomeKitCost = cost;
+  buyKit = (doctorId, kitId, price) => {
+    this.utilities.purchasableHomeokitDoctorId = doctorId;
+    this.utilities.purchasableHomeokitId = kitId;
+    this.utilities.purchasableHomeokitPrice = price;
+    this.utilities.isHomeokitPurchaseAction = true;
+    this.utilities.isSlotBookingAction = false;
+    console.log(
+      "Selected kit details -> " + doctorId + " - " + kitId + " - " + price
+    );
+    this.commonService.selectedHomeKitCost = price;
     this.router.navigate(["/payment-gateways"]);
   };
 }

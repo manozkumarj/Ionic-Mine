@@ -5,6 +5,13 @@ import { Router } from "@angular/router";
 export class UtilitiesService {
   userId = 1;
   isLoggedId = false;
+
+  isHomeokitPurchaseAction = false;
+  isSlotBookingAction = false;
+  purchasableHomeokitDoctorId;
+  purchasableHomeokitId;
+  purchasableHomeokitPrice;
+
   constructor(private router: Router) {}
 
   formatDate(date) {

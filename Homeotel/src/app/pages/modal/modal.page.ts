@@ -30,6 +30,30 @@ export class ModalPage implements OnInit {
     if (this.action == "findDoctor") {
       this.uuid = navParams.get("searchableDoctorUuid");
       this.findDoctor(this.uuid);
+    } else if (this.action == "makePayment") {
+      if (navParams.get("paymentFor") == "homeokit") {
+        console.log("Homeokit payment");
+        let doctorId = this.utilities.purchasableHomeokitDoctorId;
+        let kitId = this.utilities.purchasableHomeokitId;
+        let price = this.utilities.purchasableHomeokitPrice;
+        this.apiService
+          .purchaseHomeokit(doctorId, kitId, price)
+          .subscribe(data => {
+            console.log("Returned from Backend");
+            console.log(JSON.stringify(data));
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (data["error"]) {
+                console.log("Homeokit purchase payment failed");
+              } else {
+                console.log("Homeokit purchase payment success");
+              }
+            }
+          });
+      } else if (navParams.get("paymentFor") == "slotBooking") {
+        console.log("slotBooking payment");
+      }
     }
   }
 
@@ -61,6 +85,20 @@ export class ModalPage implements OnInit {
     console.log("doctorId -> " + doctorId);
     this.commonService.foundDoctor = true;
     this.onCancel();
+
+    this.apiService.addDoctor(doctorId).subscribe(data => {
+      console.log("Returned from Backend");
+      console.log(JSON.stringify(data));
+      if (this.utilities.isInvalidApiResponseData(data)) {
+        console.log("Returned Error");
+      } else {
+        if (data["error"]) {
+          console.log("Doctor addition failed");
+        } else {
+          console.log("Doctor added");
+        }
+      }
+    });
   };
 
   onCancel = (isRedirect = false) => {

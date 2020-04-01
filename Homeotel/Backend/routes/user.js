@@ -114,4 +114,34 @@ router.get("/doctor-homeokits/:doctorId", (req, res) => {
   );
 });
 
+// adding doctor to user
+router.post("/add-doctor", (req, res) => {
+  var userId = req.body.userId;
+  var doctorId = req.body.doctorId;
+  var params = [userId, doctorId];
+
+  db.executeQuery(
+    "call sp_user_add_doctor(?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
+// Purchasing homeokit
+router.post("/purchase-homeokit", (req, res) => {
+  var userId = req.body.userId;
+  var doctorId = req.body.doctorId;
+  var kitId = req.body.kitId;
+  var price = req.body.price;
+  var params = [userId, doctorId, kitId, price];
+
+  db.executeQuery(
+    "call sp_user_purchase_homeokit(?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;

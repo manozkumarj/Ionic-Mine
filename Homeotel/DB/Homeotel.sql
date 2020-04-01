@@ -246,7 +246,7 @@ CREATE TABLE `dd_kit` (
 /*!40000 ALTER TABLE `dd_kit` DISABLE KEYS */;
 INSERT INTO `dd_kit` (`kit_id`,`doctor_id`,`name`,`price`,`description`,`is_active`,`created_at`) VALUES 
  (1,1,'First aid kit','$250','First aid kit is useful in emergency',1,'2020-04-01 14:36:19'),
- (2,1,'Sanitizer','$100','Sanitizer',1,'2020-04-01 14:38:19');
+ (2,1,'Sanitizer','$100','Sanitizer kit is useful in emergency',1,'2020-04-01 14:38:19');
 /*!40000 ALTER TABLE `dd_kit` ENABLE KEYS */;
 
 
@@ -332,23 +332,23 @@ CREATE TABLE `ddc_timing` (
 
 DROP TABLE IF EXISTS `dk_order`;
 CREATE TABLE `dk_order` (
-  `doctor_id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
+  `doctor_id` int(10) unsigned NOT NULL,
   `kit_id` int(10) unsigned NOT NULL,
   `amount_paid` varchar(45) DEFAULT NULL,
   `order_status` varchar(45) DEFAULT NULL,
-  `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`doctor_id`,`user_id`,`kit_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`,`doctor_id`,`user_id`,`kit_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dk_order`
 --
 
 /*!40000 ALTER TABLE `dk_order` DISABLE KEYS */;
+INSERT INTO `dk_order` (`id`,`user_id`,`doctor_id`,`kit_id`,`amount_paid`,`order_status`,`created_at`) VALUES 
+ (1,1,1,2,'$100','completed','2020-04-01 23:23:22');
 /*!40000 ALTER TABLE `dk_order` ENABLE KEYS */;
 
 
@@ -392,7 +392,7 @@ CREATE TABLE `du_doctor` (
   `created_at` varchar(45) DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `du_doctor`
@@ -400,9 +400,7 @@ CREATE TABLE `du_doctor` (
 
 /*!40000 ALTER TABLE `du_doctor` DISABLE KEYS */;
 INSERT INTO `du_doctor` (`id`,`user_id`,`doctor_id`,`added_on`,`is_active`,`created_at`,`updated_at`) VALUES 
- (1,1,1,'2020-03-31 13:55:19',1,'2020-03-31 10:36:19','2020-03-31 10:36:19'),
- (2,2,2,'2020-03-31 14:00:19',1,'2020-03-31 14:00:19','2020-03-31 14:00:19'),
- (3,3,3,'2020-03-31 14:02:19',1,'2020-03-31 14:00:19','2020-03-31 14:00:19');
+ (9,1,1,'2020-04-01 22:03:03',1,'2020-04-01 22:03:03','2020-04-01 22:03:03');
 /*!40000 ALTER TABLE `du_doctor` ENABLE KEYS */;
 
 
@@ -1072,6 +1070,31 @@ INSERT INTO `m_medication` (`medication_id`,`name`,`is_active`) VALUES
 
 
 --
+-- Definition of table `m_mode`
+--
+
+DROP TABLE IF EXISTS `m_mode`;
+CREATE TABLE `m_mode` (
+  `mode_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `is_active` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`mode_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_mode`
+--
+
+/*!40000 ALTER TABLE `m_mode` DISABLE KEYS */;
+INSERT INTO `m_mode` (`mode_id`,`name`,`is_active`) VALUES 
+ (1,'Video consultation',1),
+ (2,'Audio consultation',1),
+ (3,'Chat consultation',1),
+ (4,'Personal visit',1);
+/*!40000 ALTER TABLE `m_mode` ENABLE KEYS */;
+
+
+--
 -- Definition of table `m_parameter`
 --
 
@@ -1530,6 +1553,54 @@ END $$
 DELIMITER ;
 
 --
+-- Definition of procedure `sp_user_add_doctor`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_add_doctor`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_add_doctor`(IN IN_userId INT,IN IN_doctorId INT)
+BEGIN
+
+DECLARE Var_email INT;
+
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+START TRANSACTION;
+
+
+     INSERT INTO du_doctor (user_id,doctor_id,added_on,is_active,created_at,updated_at)
+     VALUES (IN_userId,IN_doctorId,now(),1,now(),now());
+
+
+COMMIT;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
 -- Definition of procedure `sp_user_doctors`
 --
 
@@ -1651,6 +1722,55 @@ END;
  SELECT * FROM d_user d where (email=IN_username and password=IN_password) OR (username=IN_username and password=IN_password);
 
  END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_purchase_homeokit`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_purchase_homeokit`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_purchase_homeokit`(IN IN_userId INT,IN IN_doctorId INT, IN IN_kitId INT,
+                                                                 IN IN_price VARCHAR(225))
+BEGIN
+
+DECLARE Var_email INT;
+
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+START TRANSACTION;
+
+
+     INSERT INTO dk_order (user_id,doctor_id,kit_id,amount_paid,order_status,created_at)
+     VALUES (IN_userId,IN_doctorId,IN_kitId,IN_price,'completed',now());
+
+
+COMMIT;
+END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
 DELIMITER ;

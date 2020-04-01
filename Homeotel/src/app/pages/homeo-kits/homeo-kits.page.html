@@ -8,65 +8,44 @@
 </ion-header>
 
 <ion-content>
+  <div *ngIf="homeokits.length > 0; else noHomeokits">
+    <ion-grid *ngFor="let homeokit of homeokits" class="grid doctorGrid">
+      <ion-row style="color: #000; background: #fff;">
+        <ion-col size="2">
+          <p
+            style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;"
+          >
+            <img
+              src="https://picsum.photos/200"
+              height="50px"
+              style="border-radius: 100%;"
+            />
+          </p>
+        </ion-col>
+        <ion-col>
+          <p class="docName">{{homeokit.name}}</p>
+          <p>{{homeokit.description}}</p>
+        </ion-col>
+        <ion-col size="3">
+          <p>{{homeokit.price}}</p>
+          <button
+            class="btn appoinmentButton"
+            (click)="buyKit(homeokit.doctor_id, homeokit.kit_id, homeokit.price)"
+          >
+            Buy Now
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
-  <ion-grid class="grid doctorGrid">
-    <ion-row style="color: #000; background: #fff;">
-      <ion-col size='2'>
-        <p style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;">
-          <img src="assets/images/milinda.jpg" height="50px" style="border-radius: 100%;" /></p>
-      </ion-col>
-      <ion-col>
-        <p class="docName">Dr. Swapna Kunduru</p>
-        <p>Basic Kit</p>
-        <p>For general health</p>
-      </ion-col>
-      <ion-col size="3">
-        <p>$250.00</p>
-        <button class="btn appoinmentButton" (click)="buyKit(250)">
-          Buy Now
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-grid class="grid doctorGrid">
-    <ion-row style="color: #000; background: #fff;">
-      <ion-col size='2'>
-        <p style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;">
-          <img src="assets/images/zuck.jpg" height="50px" style="border-radius: 100%;" /></p>
-      </ion-col>
-      <ion-col>
-        <p class="docName">Dr. Abraham Gosh</p>
-        <p>Anti-viral Kit</p>
-        <p>Fight viruses</p>
-      </ion-col>
-      <ion-col size="3">
-        <p>$500.00</p>
-        <button class="btn appoinmentButton" (click)="buyKit(500)">
-          Buy Now
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
-  <ion-grid class="grid doctorGrid">
-    <ion-row style="color: #000; background: #fff;">
-      <ion-col size='2'>
-        <p style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;">
-          <img src="assets/images/sergey.jpg" height="50px" style="border-radius: 100%;" /></p>
-      </ion-col>
-      <ion-col>
-        <p class="docName">Dr. Abraham Gosh</p>
-        <p>Diabetic Kit</p>
-        <p>Keep diabets under viruses</p>
-      </ion-col>
-      <ion-col size="3">
-        <p>$300.00</p>
-        <button class="btn appoinmentButton" (click)="buyKit(300)">
-          Buy Now
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
+  <ng-template #noHomeokits>
+    <ion-grid class="noResultsGrid">
+      <ion-row>
+        <ion-col>
+          No Homeokits found
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
 </ion-content>

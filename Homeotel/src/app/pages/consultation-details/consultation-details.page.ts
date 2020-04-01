@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 @Component({
   selector: "app-consultation-details",
@@ -8,12 +10,18 @@ import { Component, OnInit } from "@angular/core";
 export class ConsultationDetailsPage implements OnInit {
   selectedPerson;
 
-  constructor() {}
+  constructor(private router: Router, private utilities: UtilitiesService) {}
 
   ngOnInit() {}
 
   person(id) {
     console.log("Selected person ID -> " + id);
     this.selectedPerson = id;
+  }
+
+  goToPaymentgateways() {
+    this.utilities.isSlotBookingAction = true;
+    this.utilities.isHomeokitPurchaseAction = false;
+    this.router.navigate(["/payment-gateways"]);
   }
 }
