@@ -5,6 +5,7 @@ import { ModalPage } from "../modal/modal.page";
 import { ApiService } from "./../../services/api.service";
 import { CommonService } from "./../../services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-my-doctors",
@@ -13,10 +14,13 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 })
 export class MyDoctorsPage implements OnInit {
   myDoctors: any[] = [];
+  uuidArray = [];
+  uuid;
   constructor(
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public commonService: CommonService,
+    private router: Router,
     private apiService: ApiService,
     private utilities: UtilitiesService
   ) {
@@ -47,24 +51,74 @@ export class MyDoctorsPage implements OnInit {
   }
 
   inputKeyUp(e) {
-    var target = e.srcElement;
-    var maxLength = parseInt(target.attributes["maxlength"].value);
-    var myLength = target.value.length;
-    if (myLength >= maxLength) {
-      var next = target;
-      while ((next = next.nextElementSibling)) {
-        if (next == null) {
-          this.showloginmodal();
+    let val = e.target.value;
+    let id = e.target.id;
+    val = val.trim();
+    if (val) {
+      this.uuidArray[id] = val;
+      var target = e.srcElement;
+      var maxLength = parseInt(target.attributes["maxlength"].value);
+      var myLength = target.value.length;
+      if (myLength >= maxLength) {
+        var next = target;
+        while ((next = next.nextElementSibling)) {
+          if (next == null) {
+            this.showloginmodal();
+          }
+          if (next.tagName.toLowerCase() == "input") {
+            next.focus();
+            break;
+          }
         }
-        if (next.tagName.toLowerCase() == "input") {
-          next.focus();
-          break;
+      }
+
+      let checkNull = true;
+      if (this.uuidArray.length == 6) {
+        for (let i = 0; i < 6; i++) {
+          if (this.uuidArray[i] == null) {
+            checkNull = false;
+          }
+        }
+        // let checkNull = this.uuidArray.every(id => id !== null && id !== undefined);
+        console.log("checkNull -> " + checkNull);
+        if (checkNull) {
+          this.triggerModal();
         }
       }
     }
   }
 
   lastInputKeyUp(e) {
+    let val = e.target.value;
+    let id = e.target.id;
+    val = val.trim();
+    if (val) {
+      this.uuidArray[id] = val;
+      console.log(this.uuidArray);
+      let checkNull = true;
+      if (this.uuidArray.length == 6) {
+        for (let i = 0; i < 6; i++) {
+          if (this.uuidArray[i] == null) {
+            checkNull = false;
+          }
+        }
+        // let checkNull = this.uuidArray.every(id => id !== null && id !== undefined);
+        console.log("checkNull -> " + checkNull);
+        if (checkNull) {
+          this.triggerModal();
+        }
+      }
+    }
+  }
+
+  buyHomeokit(doctorId) {
+    console.log("doctorId -> " + doctorId);
+    this.router.navigate(["/homeo-kits"]);
+  }
+
+  triggerModal() {
+    this.uuid = this.uuidArray.join("");
+    console.log(this.uuid);
     this.showloginmodal();
   }
 
@@ -79,19 +133,22 @@ export class MyDoctorsPage implements OnInit {
       showBackdrop: true,
       cssClass: "findDoctorModal",
       componentProps: {
-        action: "findDoctor"
+        action: "findDoctor",
+        searchableDoctorUuid: this.uuid
       }
     });
     return await modal.present();
   }
 
-  async presentDoctorContactModal() {
+  async presentDoctorContactModal(doctorId) {
+    console.log("doctorId -> " + doctorId);
     const modal = await this.modalCtrl.create({
       component: ModalPage,
       showBackdrop: true,
       cssClass: "findDoctorModal",
       componentProps: {
-        action: "contactDoctor"
+        action: "contactDoctor",
+        doctorId: doctorId
       }
     });
     return await modal.present();

@@ -40,4 +40,10 @@ export class ApiService {
     var path = "/user/my-doctors/" + this.utilities.userId;
     return this.http.get(this.apiUrl + path);
   }
+
+  // Searching doctor with UUID
+  findDoctor(uuid) {
+    var path = "/user/find-doctor/" + uuid;
+    return this.http.get(this.apiUrl + path);
+  }
 }

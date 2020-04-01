@@ -402,8 +402,8 @@ CREATE TABLE `du_doctor` (
 /*!40000 ALTER TABLE `du_doctor` DISABLE KEYS */;
 INSERT INTO `du_doctor` (`id`,`user_id`,`doctor_id`,`added_on`,`is_active`,`created_at`,`updated_at`) VALUES 
  (1,1,1,'2020-03-31 13:55:19',1,'2020-03-31 10:36:19','2020-03-31 10:36:19'),
- (2,1,2,'2020-03-31 14:00:19',1,'2020-03-31 14:00:19','2020-03-31 14:00:19'),
- (3,1,3,'2020-03-31 14:02:19',1,'2020-03-31 14:00:19','2020-03-31 14:00:19');
+ (2,2,2,'2020-03-31 14:00:19',1,'2020-03-31 14:00:19','2020-03-31 14:00:19'),
+ (3,3,3,'2020-03-31 14:02:19',1,'2020-03-31 14:00:19','2020-03-31 14:00:19');
 /*!40000 ALTER TABLE `du_doctor` ENABLE KEYS */;
 
 
@@ -1401,7 +1401,49 @@ DECLARE exit handler for sqlwarning
 
 END;
 
- SELECT * FROM du_doctor d where user_id=IN_userId;
+ SELECT * FROM du_doctor du LEFT JOIN d_doctor d ON du.doctor_id = d.id where du.user_id=IN_userId;
+
+ END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_find_doctor`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_find_doctor`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_find_doctor`(IN IN_uuid INT)
+BEGIN
+
+DECLARE Var_email INT;
+
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+ SELECT * FROM d_doctor d where uuid=IN_uuid;
 
  END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

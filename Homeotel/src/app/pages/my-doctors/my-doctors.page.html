@@ -8,44 +8,43 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid
-    *ngIf="(myDoctors.length > 0); else noDoctors"
-    class="grid doctorGrid"
-  >
-    <ion-row style="color: #000; background: #fff;">
-      <ion-col size="4">
-        <p
-          style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;"
-        >
-          <img
-            src="assets/images/milinda.jpg"
-            height="80px"
-            style="border-radius: 100%;"
-          />
-        </p>
-      </ion-col>
-      <ion-col>
-        <p class="docName">Dr. Swapna Kunduru</p>
-        <p>Homeopathy Ayush</p>
-        <p>15 years experience</p>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <button [routerLink]="['/homeo-kits']" class="btn buyButton">
-          Buy Homeo Kits
-        </button>
-      </ion-col>
-      <ion-col>
-        <button
-          class="btn appoinmentButton"
-          (click)="presentDoctorContactModal()"
-        >
-          Book Appoinment
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div *ngIf="(myDoctors.length > 0); else noDoctors">
+    <ion-grid *ngFor="let doctor of myDoctors" class="grid doctorGrid">
+      <ion-row style="color: #000; background: #fff;">
+        <ion-col size="4">
+          <p
+            style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;"
+          >
+            <img
+              src="https://picsum.photos/200"
+              height="80px"
+              style="border-radius: 100%;"
+            />
+          </p>
+        </ion-col>
+        <ion-col>
+          <p class="docName">{{doctor.name}}</p>
+          <p>Homeopathy Ayush</p>
+          <p>{{doctor.id}} years experience</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button class="btn buyButton" (click)="buyHomeokit(doctor.id)">
+            Buy Homeo Kits
+          </button>
+        </ion-col>
+        <ion-col>
+          <button
+            class="btn appoinmentButton"
+            (click)="presentDoctorContactModal(doctor.id)"
+          >
+            Book Appoinment
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
   <ng-template #noDoctors>
     <ion-grid class="grid appointmentsGrid">
@@ -64,7 +63,7 @@
     </ion-grid>
   </ng-template>
 
-  <ion-grid class="center">
+  <ion-grid class="center" style="margin-bottom: 150px;">
     <ion-row>
       <ion-col class="normalHeading">
         <div>Doctor UID</div>
@@ -81,6 +80,7 @@
                 pattern="[0-9]{1}"
                 min="1"
                 max="1"
+                id="0"
                 maxlength="1"
                 (keyup)="inputKeyUp($event)"
               />
@@ -90,6 +90,7 @@
                 pattern="[0-9]{1}"
                 min="1"
                 max="1"
+                id="1"
                 maxlength="1"
                 (keyup)="inputKeyUp($event)"
               />
@@ -99,6 +100,7 @@
                 pattern="[0-9]{1}"
                 min="1"
                 max="1"
+                id="2"
                 maxlength="1"
                 (keyup)="inputKeyUp($event)"
               />
@@ -108,6 +110,7 @@
                 pattern="[0-9]{1}"
                 min="1"
                 max="1"
+                id="3"
                 maxlength="1"
                 (keyup)="inputKeyUp($event)"
               />
@@ -117,6 +120,7 @@
                 pattern="[0-9]{1}"
                 min="1"
                 max="1"
+                id="4"
                 maxlength="1"
                 (keyup)="inputKeyUp($event)"
               />
@@ -126,6 +130,7 @@
                 pattern="[0-9]{1}"
                 min="1"
                 max="1"
+                id="5"
                 maxlength="1"
                 (keyup)="lastInputKeyUp($event)"
               />

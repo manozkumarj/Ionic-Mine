@@ -86,4 +86,18 @@ router.get("/my-doctors/:id", (req, res) => {
   );
 });
 
+// Searching doctor with UUID
+router.get("/find-doctor/:uuid", (req, res) => {
+  var uuid = req.params.uuid;
+  console.log("Received uuid -> " + uuid);
+  var params = [uuid];
+
+  db.executeQuery(
+    "call sp_user_find_doctor(?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;
