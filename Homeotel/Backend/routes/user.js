@@ -100,4 +100,18 @@ router.get("/find-doctor/:uuid", (req, res) => {
   );
 });
 
+// getting doctor's homeokits
+router.get("/doctor-homeokits/:doctorId", (req, res) => {
+  var doctorId = req.params.doctorId;
+  console.log("Received doctorId -> " + doctorId);
+  var params = [doctorId];
+
+  db.executeQuery(
+    "call sp_doctor_kits_get(?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;

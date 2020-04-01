@@ -62,7 +62,7 @@ const routes: Routes = [
       )
   },
   {
-    path: "homeo-kits",
+    path: "homeo-kits/:doctor-id",
     loadChildren: () =>
       import("./pages/homeo-kits/homeo-kits.module").then(
         m => m.HomeoKitsPageModule
@@ -225,23 +225,35 @@ const routes: Routes = [
       import(
         "./pages/previous-consultations/previous-consultations.module"
       ).then(m => m.PreviousConsultationsPageModule)
-  },  {
-    path: 'completed-consultation-details',
-    loadChildren: () => import('./pages/completed-consultation-details/completed-consultation-details.module').then( m => m.CompletedConsultationDetailsPageModule)
   },
   {
-    path: 'edit-file',
-    loadChildren: () => import('./pages/edit-file/edit-file.module').then( m => m.EditFilePageModule)
+    path: "completed-consultation-details",
+    loadChildren: () =>
+      import(
+        "./pages/completed-consultation-details/completed-consultation-details.module"
+      ).then(m => m.CompletedConsultationDetailsPageModule)
   },
   {
-    path: 'allergies',
-    loadChildren: () => import('./pages/allergies/allergies.module').then( m => m.AllergiesPageModule)
+    path: "edit-file",
+    loadChildren: () =>
+      import("./pages/edit-file/edit-file.module").then(
+        m => m.EditFilePageModule
+      )
   },
   {
-    path: 'single-selection',
-    loadChildren: () => import('./pages/single-selection/single-selection.module').then( m => m.SingleSelectionPageModule)
+    path: "allergies",
+    loadChildren: () =>
+      import("./pages/allergies/allergies.module").then(
+        m => m.AllergiesPageModule
+      )
+  },
+  {
+    path: "single-selection",
+    loadChildren: () =>
+      import("./pages/single-selection/single-selection.module").then(
+        m => m.SingleSelectionPageModule
+      )
   }
-
 ];
 
 @NgModule({

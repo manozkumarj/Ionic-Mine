@@ -46,4 +46,10 @@ export class ApiService {
     var path = "/user/find-doctor/" + uuid;
     return this.http.get(this.apiUrl + path);
   }
+
+  // getting doctor's homeokits
+  getCurrentDoctorsHomeokits(doctorId) {
+    var path = "/user/doctor-homeokits/" + doctorId;
+    return this.http.get(this.apiUrl + path);
+  }
 }

@@ -229,25 +229,24 @@ CREATE TABLE `dd_clinic` (
 
 DROP TABLE IF EXISTS `dd_kit`;
 CREATE TABLE `dd_kit` (
+  `kit_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `doctor_id` int(10) unsigned NOT NULL,
-  `kit_id` int(10) unsigned NOT NULL,
-  `kit_name` varchar(45) DEFAULT NULL,
-  `kit_price` varchar(45) DEFAULT NULL,
-  `added_on` varchar(45) DEFAULT NULL,
-  `deleted_on` varchar(45) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `price` varchar(45) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
   `is_active` int(10) DEFAULT 0,
-  `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`doctor_id`,`kit_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`kit_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dd_kit`
 --
 
 /*!40000 ALTER TABLE `dd_kit` DISABLE KEYS */;
+INSERT INTO `dd_kit` (`kit_id`,`doctor_id`,`name`,`price`,`description`,`is_active`,`created_at`) VALUES 
+ (1,1,'First aid kit','$250','First aid kit is useful in emergency',1,'2020-04-01 14:36:19'),
+ (2,1,'Sanitizer','$100','Sanitizer',1,'2020-04-01 14:38:19');
 /*!40000 ALTER TABLE `dd_kit` ENABLE KEYS */;
 
 
@@ -836,6 +835,32 @@ INSERT INTO `m_allergy` (`allergy_id`,`name`,`is_active`) VALUES
 
 
 --
+-- Definition of table `m_award`
+--
+
+DROP TABLE IF EXISTS `m_award`;
+CREATE TABLE `m_award` (
+  `award_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`award_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_award`
+--
+
+/*!40000 ALTER TABLE `m_award` DISABLE KEYS */;
+INSERT INTO `m_award` (`award_id`,`name`,`is_active`) VALUES 
+ (1,'B. C. Roy award ','1'),
+ (2,'Ashoka chakra','1'),
+ (3,'Uttam jeevan raksha padak','1'),
+ (4,' Sarvottam yudh seva medal ','1'),
+ (5,' Om prakash bhasin award','1');
+/*!40000 ALTER TABLE `m_award` ENABLE KEYS */;
+
+
+--
 -- Definition of table `m_blood_group`
 --
 
@@ -1090,6 +1115,32 @@ INSERT INTO `m_profession` (`profession_id`,`name`,`is_active`) VALUES
 
 
 --
+-- Definition of table `m_qualification`
+--
+
+DROP TABLE IF EXISTS `m_qualification`;
+CREATE TABLE `m_qualification` (
+  `qualification_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`qualification_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_qualification`
+--
+
+/*!40000 ALTER TABLE `m_qualification` DISABLE KEYS */;
+INSERT INTO `m_qualification` (`qualification_id`,`name`,`is_active`) VALUES 
+ (1,' (MD) doctor of medicine by research.\n','1'),
+ (2,'Doctor of philosophy (PhD)','1'),
+ (3,'Master of clinical medicine (MCM) ','1'),
+ (4,'Master of medical science (MMSc,  MMedSc) \n','1'),
+ (5,'Master of Philosophy (Mphil)','1');
+/*!40000 ALTER TABLE `m_qualification` ENABLE KEYS */;
+
+
+--
 -- Definition of table `m_relation`
 --
 
@@ -1153,6 +1204,34 @@ INSERT INTO `m_smoking` (`smoking_id`,`name`,`is_active`) VALUES
 
 
 --
+-- Definition of table `m_specialization`
+--
+
+DROP TABLE IF EXISTS `m_specialization`;
+CREATE TABLE `m_specialization` (
+  `specialization_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`specialization_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_specialization`
+--
+
+/*!40000 ALTER TABLE `m_specialization` DISABLE KEYS */;
+INSERT INTO `m_specialization` (`specialization_id`,`name`,`is_active`) VALUES 
+ (1,'Anesthesiologists','1'),
+ (2,'Cardiologists','1'),
+ (3,'Dermatologists','1'),
+ (4,'Endocrinologists','1'),
+ (5,'Family Physicians','1'),
+ (6,'Gastroenterologists','1'),
+ (7,'Colon and Rectal Surgeons','1');
+/*!40000 ALTER TABLE `m_specialization` ENABLE KEYS */;
+
+
+--
 -- Definition of table `m_surgery`
 --
 
@@ -1194,6 +1273,90 @@ CREATE TABLE `m_transaction_type` (
 /*!40000 ALTER TABLE `m_transaction_type` DISABLE KEYS */;
 /*!40000 ALTER TABLE `m_transaction_type` ENABLE KEYS */;
 
+
+--
+-- Definition of procedure `sp_doctor_kits_get`
+--
+
+DROP PROCEDURE IF EXISTS `sp_doctor_kits_get`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_doctor_kits_get`(IN IN_doctor_id INT)
+BEGIN
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+
+  SELECT * FROM dd_kit d where doctor_id = IN_doctor_id;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_master_doctor_personaldetail_get`
+--
+
+DROP PROCEDURE IF EXISTS `sp_master_doctor_personaldetail_get`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_master_doctor_personaldetail_get`()
+BEGIN
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+ SELECT award_id as id, name, 'awards' as master_type from m_award WHERE is_active = 1
+
+Union
+
+ SELECT specialization_id as id, name, 'specialization' as master_type from m_specialization WHERE is_active = 1
+
+Union
+
+ SELECT qualification_id as id, name, 'qualification' as master_type from m_qualification WHERE is_active = 1
+
+
+ ;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
 
 --
 -- Definition of procedure `sp_master_lifestyle_get`

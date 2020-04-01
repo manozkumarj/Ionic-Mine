@@ -113,7 +113,7 @@ export class MyDoctorsPage implements OnInit {
 
   buyHomeokit(doctorId) {
     console.log("doctorId -> " + doctorId);
-    this.router.navigate(["/homeo-kits"]);
+    this.router.navigate(["/homeo-kits", doctorId]);
   }
 
   triggerModal() {
