@@ -15,6 +15,7 @@ export class ModalPage implements OnInit {
   action;
   uuid;
   doctorDetails: any[] = [];
+  doctorConsultationModesAndDetails: any[] = [];
 
   constructor(
     public modalCtrl: ModalController,
@@ -30,6 +31,10 @@ export class ModalPage implements OnInit {
     if (this.action == "findDoctor") {
       this.uuid = navParams.get("searchableDoctorUuid");
       this.findDoctor(this.uuid);
+    } else if (this.action == "contactDoctor") {
+      let doctorId = navParams.get("doctorId");
+      console.log("doctorId -> " + doctorId);
+      this.getDoctorConsultantDetails(doctorId);
     } else if (this.action == "makePayment") {
       if (navParams.get("paymentFor") == "homeokit") {
         console.log("Homeokit payment");
@@ -58,6 +63,50 @@ export class ModalPage implements OnInit {
   }
 
   ngOnInit() {}
+
+  getDoctorConsultantDetails(doctorId) {
+    this.apiService
+      .getDoctorConsultantDetailsMasters(doctorId)
+      .subscribe(data => {
+        console.log("Returned from Backend");
+        console.log(data);
+        if (this.utilities.isInvalidApiResponseData(data)) {
+          console.log("Returned Error");
+        } else {
+          if (
+            typeof data != "undefined" &&
+            typeof data[0] != "undefined" &&
+            typeof data[0][0] != "undefined"
+          ) {
+            console.log("Received master data");
+            let masterData = data[0];
+            masterData.forEach(masterRow => {
+              if (masterRow.master_type == "doctorDetails") {
+                this.doctorDetails.push({
+                  name: masterRow.colOne,
+                  username: masterRow.colTwo
+                });
+                this.utilities.bookAppointmentDoctorDetails["name"] =
+                  masterRow.colOne;
+                this.utilities.bookAppointmentDoctorDetails["username"] =
+                  masterRow.colTwo;
+              } else if (masterRow.master_type == "modes") {
+                this.doctorConsultationModesAndDetails.push({
+                  id: masterRow.colOne,
+                  consultationMode: masterRow.colTwo,
+                  time: masterRow.colThree,
+                  price: masterRow.colFour
+                });
+              }
+            });
+            console.log(this.doctorDetails);
+            console.log(this.utilities.bookAppointmentDoctorDetails);
+          } else {
+            console.log("Master data fetching failed");
+          }
+        }
+      });
+  }
 
   findDoctor(uuid) {
     this.apiService.findDoctor(uuid).subscribe(data => {
@@ -108,8 +157,9 @@ export class ModalPage implements OnInit {
     }
   };
 
-  selectConsultation = consultationType => {
-    console.log("consultationType -> " + consultationType);
+  selectConsultation = modeId => {
+    console.log("modeId -> " + modeId);
+    this.utilities.bookableModeId = modeId;
     this.onCancel();
     this.router.navigate(["/slot-selection"]);
   };

@@ -74,4 +74,10 @@ export class ApiService {
     };
     return this.http.post(this.apiUrl + path, body);
   }
+
+  // Fetch doctor consultant details masters
+  getDoctorConsultantDetailsMasters(doctorId) {
+    var path = "/user/doctor-consultant-details-masters/" + doctorId;
+    return this.http.get(this.apiUrl + path);
+  }
 }

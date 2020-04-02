@@ -84,8 +84,10 @@
               </p>
             </ion-col>
             <ion-col style="padding-top: 25px;">
-              <p class="docName">Dr. Swapna Kunduru</p>
-              <p>Homeopathy Ayush</p>
+              <p class="docName">
+                {{doctorDetails[0] && doctorDetails[0].name}}
+              </p>
+              <p>{{doctorDetails[0] && doctorDetails[0].username}}</p>
             </ion-col>
           </ion-row>
           <ion-row
@@ -109,10 +111,19 @@
             </ion-col>
             <ion-col
               style="padding-top: 20px;"
-              (click)="selectConsultation('video')"
+              (click)="selectConsultation(doctorConsultationModesAndDetails[0] &&
+              doctorConsultationModesAndDetails[0].id)"
             >
-              <p class="docName">Video consultation</p>
-              <p>Min. session 10 mins $30/min</p>
+              <p class="docName">
+                {{doctorConsultationModesAndDetails[0] &&
+                doctorConsultationModesAndDetails[0].consultationMode}}
+              </p>
+              <p>
+                Min. session {{doctorConsultationModesAndDetails[0] &&
+                doctorConsultationModesAndDetails[0].time}}
+                ${{doctorConsultationModesAndDetails[0] &&
+                doctorConsultationModesAndDetails[0].price}}/min
+              </p>
             </ion-col>
           </ion-row>
           <ion-row
@@ -129,10 +140,19 @@
             </ion-col>
             <ion-col
               style="padding-top: 20px;"
-              (click)="selectConsultation('audio')"
+              (click)="selectConsultation(doctorConsultationModesAndDetails[1] &&
+              doctorConsultationModesAndDetails[1].id)"
             >
-              <p class="docName">Audio consultation</p>
-              <p>Min. session 10 mins $20/min</p>
+              <p class="docName">
+                {{doctorConsultationModesAndDetails[1] &&
+                doctorConsultationModesAndDetails[1].consultationMode}}
+              </p>
+              <p>
+                Min. session {{doctorConsultationModesAndDetails[1] &&
+                doctorConsultationModesAndDetails[1].time}}
+                ${{doctorConsultationModesAndDetails[1] &&
+                doctorConsultationModesAndDetails[1].price}}/min
+              </p>
             </ion-col>
           </ion-row>
           <ion-row
@@ -149,10 +169,19 @@
             </ion-col>
             <ion-col
               style="padding-top: 20px;"
-              (click)="selectConsultation('chat')"
+              (click)="selectConsultation(doctorConsultationModesAndDetails[2] &&
+              doctorConsultationModesAndDetails[2].id)"
             >
-              <p class="docName">Chat consultation</p>
-              <p>Valid for 24 Hours $50</p>
+              <p class="docName">
+                {{doctorConsultationModesAndDetails[2] &&
+                doctorConsultationModesAndDetails[2].consultationMode}}
+              </p>
+              <p>
+                Valid for {{doctorConsultationModesAndDetails[2] &&
+                doctorConsultationModesAndDetails[2].time}}
+                ${{doctorConsultationModesAndDetails[2] &&
+                doctorConsultationModesAndDetails[2].price}}
+              </p>
             </ion-col>
           </ion-row>
           <ion-row
@@ -169,10 +198,17 @@
             </ion-col>
             <ion-col
               style="padding-top: 20px;"
-              (click)="selectConsultation('physical')"
+              (click)="selectConsultation(doctorConsultationModesAndDetails[3] &&
+              doctorConsultationModesAndDetails[3].id)"
             >
-              <p class="docName">Physical visit</p>
-              <p>Regular consultation $500</p>
+              <p class="docName">
+                {{doctorConsultationModesAndDetails[3] &&
+                doctorConsultationModesAndDetails[3].consultationMode}}
+              </p>
+              <p>
+                Regular consultation ${{doctorConsultationModesAndDetails[3] &&
+                doctorConsultationModesAndDetails[3].price}}
+              </p>
             </ion-col>
           </ion-row>
         </ion-grid>

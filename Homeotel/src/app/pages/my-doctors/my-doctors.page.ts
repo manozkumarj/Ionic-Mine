@@ -142,6 +142,7 @@ export class MyDoctorsPage implements OnInit {
 
   async presentDoctorContactModal(doctorId) {
     console.log("doctorId -> " + doctorId);
+    this.utilities.bookAppointmentDoctorDetails["id"] = doctorId;
     const modal = await this.modalCtrl.create({
       component: ModalPage,
       showBackdrop: true,

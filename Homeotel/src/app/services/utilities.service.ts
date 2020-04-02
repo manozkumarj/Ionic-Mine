@@ -12,6 +12,9 @@ export class UtilitiesService {
   purchasableHomeokitId;
   purchasableHomeokitPrice;
 
+  bookAppointmentDoctorDetails = {};
+  bookableModeId;
+
   constructor(private router: Router) {}
 
   formatDate(date) {

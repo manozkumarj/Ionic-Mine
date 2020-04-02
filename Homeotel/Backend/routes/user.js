@@ -42,8 +42,8 @@ router.get("/medicalhostory/master", (req, res) => {
 
 //registering a user
 router.post("/register", (req, res) => {
-  console.log("From -> /register");
-  console.log(req.body);
+  // console.log("From -> /register");
+  // console.log(req.body);
   var username = req.body.username;
   var email = req.body.email;
   var password = req.body.password;
@@ -75,7 +75,7 @@ router.post("/login", (req, res) => {
 // User Doctors
 router.get("/my-doctors/:id", (req, res) => {
   var id = req.params.id;
-  console.log("Received userId -> " + id);
+  // console.log("Received userId -> " + id);
   var params = [id];
 
   db.executeQuery(
@@ -89,7 +89,7 @@ router.get("/my-doctors/:id", (req, res) => {
 // Searching doctor with UUID
 router.get("/find-doctor/:uuid", (req, res) => {
   var uuid = req.params.uuid;
-  console.log("Received uuid -> " + uuid);
+  // console.log("Received uuid -> " + uuid);
   var params = [uuid];
 
   db.executeQuery(
@@ -103,7 +103,7 @@ router.get("/find-doctor/:uuid", (req, res) => {
 // getting doctor's homeokits
 router.get("/doctor-homeokits/:doctorId", (req, res) => {
   var doctorId = req.params.doctorId;
-  console.log("Received doctorId -> " + doctorId);
+  // console.log("Received doctorId -> " + doctorId);
   var params = [doctorId];
 
   db.executeQuery(
@@ -138,6 +138,20 @@ router.post("/purchase-homeokit", (req, res) => {
 
   db.executeQuery(
     "call sp_user_purchase_homeokit(?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
+// Fetch doctor consultant details masters
+router.get("/doctor-consultant-details-masters/:doctorId", (req, res) => {
+  var doctorId = req.params.doctorId;
+  console.log("Received doctorId -> " + doctorId);
+  var params = [doctorId];
+
+  db.executeQuery(
+    "call sp_doctor_consultant_masters_get(?)",
     params,
     res,
     db.sendResponseNormal
