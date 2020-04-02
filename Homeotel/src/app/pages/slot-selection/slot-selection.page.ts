@@ -14,7 +14,13 @@ export class SlotSelectionPage implements OnInit {
   modeId;
   slotName;
 
+  startTimeOne;
+  startTimeTwo;
+  endTimeOne;
+  endTimeTwo;
+
   allAvailableWeekdays: any[] = [];
+  allAvailableSlots: any[] = [];
 
   constructor(private router: Router, private utilities: UtilitiesService) {
     this.doctorId = this.utilities.bookAppointmentDoctorDetails["id"];
@@ -57,6 +63,7 @@ export class SlotSelectionPage implements OnInit {
           currentSlot["fromTime"] = tempFromTime;
           currentSlot["toTime"] = tempToTime;
           currentSlot["weekDay"] = weekDay;
+
           console.log(
             weekDay +
               " weekDay fromTime ->" +
@@ -83,9 +90,74 @@ export class SlotSelectionPage implements OnInit {
       else return -1;
     });
     console.log(this.allAvailableWeekdays);
+    this.splitSlotTimings(
+      allSlots[0]["fromTime"],
+      allSlots[allSlots.length - 1]["toTime"]
+    );
+
+    console.log(allSlots[0]["fromTime"]);
+    console.log(allSlots[allSlots.length - 1]["toTime"]);
+
+    this.allAvailableSlots.push(allSlots[0]["fromTime"]);
+
+    this.generateSlots(this.startTimeOne + ":" + this.startTimeTwo);
+
+    console.log("allAvailableSlots is below -> ");
+    console.log(this.allAvailableSlots);
   }
 
   ngOnInit() {}
+
+  splitSlotTimings(startTime, endTime) {
+    let splitStartTime = startTime.split(":");
+    this.startTimeOne = splitStartTime[0];
+    this.startTimeTwo = splitStartTime[1];
+
+    let splitEndTime = endTime.split(":");
+    this.endTimeOne = splitEndTime[0];
+    this.endTimeTwo = splitEndTime[1];
+  }
+
+  generateSlots(currentSlot) {
+    let splitCurrentSlot = currentSlot.split(":");
+    let currentSlotOne = +splitCurrentSlot[0];
+    let currentSlotTwo = splitCurrentSlot[1];
+
+    let endTimeOne = +this.endTimeOne;
+    let endTimeTwo = this.endTimeTwo;
+
+    let generateOne = currentSlotOne;
+    let generateTwo = "";
+
+    let sendRes;
+
+    if (currentSlotOne == endTimeOne) {
+      if (currentSlotTwo == endTimeTwo) {
+        return false;
+      } else {
+        if (currentSlotTwo == "00") {
+          generateTwo = "30";
+        } else {
+          generateOne = generateOne + 1;
+          generateTwo = "00";
+        }
+      }
+    } else {
+      if (currentSlotTwo == "00") {
+        generateTwo = "30";
+      } else {
+        generateOne = ++generateOne;
+        generateTwo = "00";
+      }
+    }
+
+    sendRes = generateOne.toString() + ":" + generateTwo.toString();
+    this.allAvailableSlots.push(sendRes);
+
+    if (sendRes) {
+      this.generateSlots(sendRes);
+    }
+  }
 
   selectSlot = (period, time) => {
     console.log("Slot selected for ->" + period + " - " + time);
