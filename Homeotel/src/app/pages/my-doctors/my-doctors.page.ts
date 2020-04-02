@@ -32,7 +32,7 @@ export class MyDoctorsPage implements OnInit {
   getCurrentUserDoctors() {
     this.apiService.getCurrentUserDoctors().subscribe(data => {
       console.log("Returned from Backend");
-      console.log(JSON.stringify(data[0]));
+      // console.log(JSON.stringify(data[0]));
       if (this.utilities.isInvalidApiResponseData(data)) {
         console.log("Returned Error");
       } else {

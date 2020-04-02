@@ -105,11 +105,14 @@ export class ModalPage implements OnInit {
                   fromTime: masterRow.colThree,
                   toTime: masterRow.colFour
                 });
+                this.utilities.bookAppointmentDoctorDetails[
+                  "doctorSlotDetails"
+                ] = this.doctorSlotDetails;
               }
             });
-            console.log(this.doctorDetails);
+            // console.log(this.doctorDetails);
+            // console.log(this.doctorSlotDetails);
             console.log(this.utilities.bookAppointmentDoctorDetails);
-            console.log(this.doctorSlotDetails);
           } else {
             console.log("Master data fetching failed");
           }
