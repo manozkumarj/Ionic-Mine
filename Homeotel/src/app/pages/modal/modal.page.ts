@@ -16,6 +16,7 @@ export class ModalPage implements OnInit {
   uuid;
   doctorDetails: any[] = [];
   doctorConsultationModesAndDetails: any[] = [];
+  doctorSlotDetails: any[] = [];
 
   constructor(
     public modalCtrl: ModalController,
@@ -97,10 +98,18 @@ export class ModalPage implements OnInit {
                   time: masterRow.colThree,
                   price: masterRow.colFour
                 });
+              } else if (masterRow.master_type == "doctorSlotDetails") {
+                this.doctorSlotDetails.push({
+                  clinicId: masterRow.colOne,
+                  weekDays: masterRow.colTwo,
+                  fromTime: masterRow.colThree,
+                  toTime: masterRow.colFour
+                });
               }
             });
             console.log(this.doctorDetails);
             console.log(this.utilities.bookAppointmentDoctorDetails);
+            console.log(this.doctorSlotDetails);
           } else {
             console.log("Master data fetching failed");
           }

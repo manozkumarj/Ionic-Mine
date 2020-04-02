@@ -203,23 +203,23 @@ CREATE TABLE `da_log` (
 
 DROP TABLE IF EXISTS `dd_clinic`;
 CREATE TABLE `dd_clinic` (
+  `clinic_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `doctor_id` int(10) unsigned NOT NULL,
-  `clinic_id` int(10) unsigned NOT NULL,
   `clinic_name` varchar(100) DEFAULT NULL,
   `clinic_address` varchar(500) DEFAULT NULL,
   `walkin_fee` int(10) unsigned NOT NULL,
-  `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`doctor_id`,`clinic_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`clinic_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dd_clinic`
 --
 
 /*!40000 ALTER TABLE `dd_clinic` DISABLE KEYS */;
+INSERT INTO `dd_clinic` (`clinic_id`,`doctor_id`,`clinic_name`,`clinic_address`,`walkin_fee`,`created_at`) VALUES 
+ (1,1,'Appollo pharmacy','Hyderabad',500,'2020-04-02 15:00:19'),
+ (2,1,'Kamineni Hospital','Hyderabad',450,'2020-04-02 15:00:19');
 /*!40000 ALTER TABLE `dd_clinic` ENABLE KEYS */;
 
 
@@ -256,22 +256,26 @@ INSERT INTO `dd_kit` (`kit_id`,`doctor_id`,`name`,`price`,`description`,`is_acti
 
 DROP TABLE IF EXISTS `dd_mode`;
 CREATE TABLE `dd_mode` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `doctor_id` int(10) unsigned NOT NULL,
   `mode_id` int(10) unsigned NOT NULL,
-  `minimum_min` int(10) unsigned DEFAULT NULL,
+  `minimum_min` varchar(45) NOT NULL,
   `price_per_min` int(10) unsigned DEFAULT NULL,
-  `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`doctor_id`,`mode_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`,`doctor_id`,`mode_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dd_mode`
 --
 
 /*!40000 ALTER TABLE `dd_mode` DISABLE KEYS */;
+INSERT INTO `dd_mode` (`id`,`doctor_id`,`mode_id`,`minimum_min`,`price_per_min`,`created_at`,`updated_at`) VALUES 
+ (1,1,1,'10 mins',30,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
+ (2,1,2,'10 mins',20,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
+ (3,1,3,'24 Hours',50,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
+ (4,1,4,'Regular consultation',500,'2020-04-01 09:18:00','2020-04-01 09:18:00');
 /*!40000 ALTER TABLE `dd_mode` ENABLE KEYS */;
 
 
@@ -304,25 +308,25 @@ CREATE TABLE `dd_photo` (
 
 DROP TABLE IF EXISTS `ddc_timing`;
 CREATE TABLE `ddc_timing` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `doctor_id` int(10) unsigned NOT NULL,
   `clinic_id` int(10) unsigned NOT NULL,
-  `from_date` varchar(45) DEFAULT NULL,
-  `to_date` varchar(45) DEFAULT NULL,
+  `week_days` varchar(45) DEFAULT NULL,
   `from_time` varchar(45) DEFAULT NULL,
   `to_time` varchar(45) DEFAULT NULL,
   `remarks` varchar(100) DEFAULT NULL,
-  `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`doctor_id`,`clinic_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`,`doctor_id`,`clinic_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ddc_timing`
 --
 
 /*!40000 ALTER TABLE `ddc_timing` DISABLE KEYS */;
+INSERT INTO `ddc_timing` (`id`,`doctor_id`,`clinic_id`,`week_days`,`from_time`,`to_time`,`remarks`,`created_at`) VALUES 
+ (1,1,1,'0,2,4,6','10','20','none','2020-04-02 15:15:58'),
+ (2,1,2,'1,3,5','11','14','none','2020-04-02 15:15:58');
 /*!40000 ALTER TABLE `ddc_timing` ENABLE KEYS */;
 
 
@@ -392,7 +396,7 @@ CREATE TABLE `du_doctor` (
   `created_at` varchar(45) DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `du_doctor`
@@ -400,7 +404,8 @@ CREATE TABLE `du_doctor` (
 
 /*!40000 ALTER TABLE `du_doctor` DISABLE KEYS */;
 INSERT INTO `du_doctor` (`id`,`user_id`,`doctor_id`,`added_on`,`is_active`,`created_at`,`updated_at`) VALUES 
- (9,1,1,'2020-04-01 22:03:03',1,'2020-04-01 22:03:03','2020-04-01 22:03:03');
+ (9,1,1,'2020-04-01 22:03:03',1,'2020-04-01 22:03:03','2020-04-01 22:03:03'),
+ (10,1,2,'2020-04-02 09:03:27',1,'2020-04-02 09:03:27','2020-04-02 09:03:27');
 /*!40000 ALTER TABLE `du_doctor` ENABLE KEYS */;
 
 
@@ -1296,6 +1301,54 @@ CREATE TABLE `m_transaction_type` (
 /*!40000 ALTER TABLE `m_transaction_type` DISABLE KEYS */;
 /*!40000 ALTER TABLE `m_transaction_type` ENABLE KEYS */;
 
+
+--
+-- Definition of procedure `sp_doctor_consultant_masters_get`
+--
+
+DROP PROCEDURE IF EXISTS `sp_doctor_consultant_masters_get`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_doctor_consultant_masters_get`(IN IN_doctorId INT)
+BEGIN
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+ SELECT name AS colOne, username AS colTwo, '' AS colThree, '' AS colFour,'doctorDetails' AS  master_type FROM d_doctor where id=IN_doctorId
+
+ UNION
+
+ SELECT m.mode_id AS colOne, m.name AS colTwo, dm.minimum_min AS colThree, dm.price_per_min AS colFour,
+ 'modes' AS  master_type FROM m_mode m LEFT JOIN dd_mode dm ON m.mode_id = dm.mode_id where dm.doctor_id=IN_doctorId
+
+ UNION
+
+ SELECT clinic_id AS colOne, week_days AS colTwo, from_time AS colThree, to_time AS colFour,
+ 'doctorSlotDetails' AS  master_type FROM ddc_timing where doctor_id=IN_doctorId;
+
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
 
 --
 -- Definition of procedure `sp_doctor_kits_get`
