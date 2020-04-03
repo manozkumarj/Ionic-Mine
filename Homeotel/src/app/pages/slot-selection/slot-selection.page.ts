@@ -19,6 +19,8 @@ export class SlotSelectionPage implements OnInit {
   endTimeOne;
   endTimeTwo;
 
+  tempTimings: any[] = [];
+
   allAvailableWeekdays: any[] = [];
   allAvailableSlots: any[] = [];
 
@@ -72,6 +74,19 @@ export class SlotSelectionPage implements OnInit {
               slot["toTime"]
           );
           allSlots.push(currentSlot);
+
+          this.splitSlotTimings(currentSlot["fromTime"], currentSlot["toTime"]);
+
+          currentSlot["timings"] = [];
+          currentSlot["timings"].push(currentSlot["fromTime"]);
+
+          this.tempTimings = [];
+          this.generateSlots(currentSlot["fromTime"]);
+
+          currentSlot["timings"] = [
+            ...currentSlot["timings"],
+            ...this.tempTimings
+          ];
         });
         this.allAvailableWeekdays = [
           ...this.allAvailableWeekdays,
@@ -101,6 +116,7 @@ export class SlotSelectionPage implements OnInit {
     this.allAvailableSlots.push(allSlots[0]["fromTime"]);
 
     this.generateSlots(this.startTimeOne + ":" + this.startTimeTwo);
+    this.allAvailableSlots = [...this.allAvailableSlots, ...this.tempTimings];
 
     console.log("allAvailableSlots is below -> ");
     console.log(this.allAvailableSlots);
@@ -152,7 +168,7 @@ export class SlotSelectionPage implements OnInit {
     }
 
     sendRes = generateOne.toString() + ":" + generateTwo.toString();
-    this.allAvailableSlots.push(sendRes);
+    this.tempTimings.push(sendRes);
 
     if (sendRes) {
       this.generateSlots(sendRes);
