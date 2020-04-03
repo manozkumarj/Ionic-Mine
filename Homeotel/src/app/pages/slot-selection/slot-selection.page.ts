@@ -97,7 +97,7 @@ export class SlotSelectionPage implements OnInit {
           // currentSlot["morningTimings"].push(currentSlot["fromTime"]);
 
           this.tempTimings = [];
-          this.generateMorningNAfternoonSlots(
+          this.generateMorningSlots(
             currentSlot["fromTime"],
             currentSlot["toTime"],
             12,
@@ -113,10 +113,14 @@ export class SlotSelectionPage implements OnInit {
           currentSlot["afternoonTimings"] = [];
 
           this.tempTimings = [];
-          this.generateMorningNAfternoonSlots(
+
+          // console.log("currentSlot[fromTime] -> " + currentSlot["fromTime"]);
+          // console.log("currentSlot[toTime] -> " + currentSlot["toTime"]);
+
+          this.generateAfternoonSlots(
             currentSlot["fromTime"],
             currentSlot["toTime"],
-            23,
+            currentSlot["toTime"].split(":")[0],
             1
           );
 
@@ -236,7 +240,7 @@ export class SlotSelectionPage implements OnInit {
     }
   }
 
-  generateMorningNAfternoonSlots(startTime, endTime, maxTime, iteration) {
+  generateMorningSlots(startTime, endTime, maxTime, iteration) {
     let splitStartTime = startTime.split(":");
     let startOne = +splitStartTime[0];
     let startTwo = splitStartTime[1];
@@ -278,14 +282,64 @@ export class SlotSelectionPage implements OnInit {
         this.tempTimings.push(sendRes);
 
         if (sendRes) {
-          this.generateMorningNAfternoonSlots(
-            sendRes,
-            endTime,
-            maxTime,
-            ++iteration
-          );
+          this.generateMorningSlots(sendRes, endTime, maxTime, ++iteration);
         }
       }
+    }
+  }
+
+  generateAfternoonSlots(startTime, endTime, maxTime, iteration) {
+    // console.log("startTime -> " + startTime);
+    let splitStartTime = startTime.split(":");
+    let startOne = +splitStartTime[0];
+    let startTwo = splitStartTime[1];
+
+    let splitEndTime = endTime.split(":");
+    let endOne = +splitEndTime[0];
+    let endTwo = splitEndTime[1];
+
+    let generateOne = startOne;
+    let generateTwo = startTwo;
+
+    let sendRes;
+
+    if (startOne >= 12) {
+      if (startOne <= maxTime) {
+        if (iteration > 1) {
+          if (startOne == endOne) {
+            if (startTwo == endTwo) {
+              return false;
+            } else {
+              if (startTwo == "00") {
+                generateTwo = "30";
+              } else {
+                generateOne = generateOne + 1;
+                generateTwo = "00";
+              }
+            }
+          } else {
+            if (startTwo == "00") {
+              generateTwo = "30";
+            } else {
+              generateOne = ++generateOne;
+              generateTwo = "00";
+            }
+          }
+        }
+
+        if (generateOne <= maxTime) {
+          sendRes = generateOne.toString() + ":" + generateTwo.toString();
+          this.tempTimings.push(sendRes);
+
+          if (sendRes) {
+            this.generateAfternoonSlots(sendRes, endTime, maxTime, ++iteration);
+          }
+        }
+      }
+    } else {
+      generateOne = ++generateOne;
+      sendRes = generateOne.toString() + ":" + generateTwo.toString();
+      this.generateAfternoonSlots(sendRes, endTime, maxTime, iteration);
     }
   }
 

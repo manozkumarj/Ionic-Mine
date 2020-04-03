@@ -317,7 +317,7 @@ CREATE TABLE `ddc_timing` (
   `remarks` varchar(100) DEFAULT NULL,
   `created_at` varchar(45) NOT NULL,
   PRIMARY KEY (`id`,`doctor_id`,`clinic_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ddc_timing`
@@ -325,8 +325,10 @@ CREATE TABLE `ddc_timing` (
 
 /*!40000 ALTER TABLE `ddc_timing` DISABLE KEYS */;
 INSERT INTO `ddc_timing` (`id`,`doctor_id`,`clinic_id`,`week_days`,`from_time`,`to_time`,`remarks`,`created_at`) VALUES 
- (1,1,1,'0,2,4,6','10','20','none','2020-04-02 15:15:58'),
- (2,1,2,'1,3,5','11','14','none','2020-04-02 15:15:58');
+ (1,1,1,'2,4,6','10:00','20:00','none','2020-04-02 15:15:58'),
+ (2,1,2,'1,3','11:00','14:00','none','2020-04-02 15:15:58'),
+ (3,1,3,'0','10:00','11:30','none','2020-04-02 15:15:58'),
+ (4,1,4,'5','13:00','19:00','none','2020-04-02 15:15:58');
 /*!40000 ALTER TABLE `ddc_timing` ENABLE KEYS */;
 
 
