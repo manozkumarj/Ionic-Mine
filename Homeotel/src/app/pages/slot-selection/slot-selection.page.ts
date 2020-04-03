@@ -40,9 +40,9 @@ export class SlotSelectionPage implements OnInit {
         ? "Chat consultation"
         : "Personal visit";
 
-    console.log("this.doctorUsername -> " + this.doctorUsername);
-    console.log("this.utilities.bookAppointmentDoctorDetails is below");
-    console.log(this.utilities.bookAppointmentDoctorDetails);
+    // console.log("this.doctorUsername -> " + this.doctorUsername);
+    // console.log("this.utilities.bookAppointmentDoctorDetails is below");
+    // console.log(this.utilities.bookAppointmentDoctorDetails);
 
     let allSlots: any[] = [];
 
@@ -66,17 +66,21 @@ export class SlotSelectionPage implements OnInit {
           currentSlot["toTime"] = tempToTime;
           currentSlot["weekDay"] = weekDay;
 
-          console.log(
-            weekDay +
-              " weekDay fromTime ->" +
-              slot["fromTime"] +
-              " -- toTime ->" +
-              slot["toTime"]
-          );
+          // console.log(
+          //   weekDay +
+          //     " - weekDay fromTime ->" +
+          //     slot["fromTime"] +
+          //     " -- toTime ->" +
+          //     slot["toTime"]
+          // );
           allSlots.push(currentSlot);
 
-          this.splitSlotTimings(currentSlot["fromTime"], currentSlot["toTime"]);
+          let tempMorNAfnAvailability = this.splitSlotTimings(
+            currentSlot["fromTime"],
+            currentSlot["toTime"]
+          );
 
+          // All slots generation
           currentSlot["timings"] = [];
           currentSlot["timings"].push(currentSlot["fromTime"]);
 
@@ -88,12 +92,54 @@ export class SlotSelectionPage implements OnInit {
             ...this.tempTimings
           ];
 
-          let getIndex = currentSlot["timings"].indexOf("12:00");
-          if (getIndex > -1) {
-            console.log("Has 12:00 slot");
-          } else {
-            console.log("Has no 12:00 slot");
-          }
+          // Morning slots generation
+          currentSlot["morningTimings"] = [];
+          // currentSlot["morningTimings"].push(currentSlot["fromTime"]);
+
+          this.tempTimings = [];
+          this.generateMorningNAfternoonSlots(
+            currentSlot["fromTime"],
+            currentSlot["toTime"],
+            12,
+            1
+          );
+
+          currentSlot["morningTimings"] = [
+            ...currentSlot["morningTimings"],
+            ...this.tempTimings
+          ];
+
+          // Afternoon slots generation
+          currentSlot["afternoonTimings"] = [];
+
+          this.tempTimings = [];
+          this.generateMorningNAfternoonSlots(
+            currentSlot["fromTime"],
+            currentSlot["toTime"],
+            23,
+            1
+          );
+
+          currentSlot["afternoonTimings"] = [
+            ...currentSlot["afternoonTimings"],
+            ...this.tempTimings
+          ];
+
+          console.log("All timings showing below ------------");
+          console.log(currentSlot["timings"]);
+
+          console.log("Morning timings showing below ------------");
+          console.log(currentSlot["morningTimings"]);
+
+          console.log("Afternoon timings showing below ------------");
+          console.log(currentSlot["afternoonTimings"]);
+
+          // let getIndex = currentSlot["timings"].indexOf("12:00");
+          // if (getIndex > -1) {
+          //   console.log("Has 12:00 slot");
+          // } else {
+          //   console.log("Has no 12:00 slot");
+          // }
           console.log("******************************");
         });
         this.allAvailableWeekdays = [
@@ -106,20 +152,20 @@ export class SlotSelectionPage implements OnInit {
       if (a.weekDay > b.weekDay) return 1;
       else return -1;
     });
-    console.log("allSlots is below");
-    console.log(allSlots);
+    // console.log("allSlots is below");
+    // console.log(allSlots);
     this.allAvailableWeekdays = this.allAvailableWeekdays.sort((a, b) => {
       if (a > b) return 1;
       else return -1;
     });
-    console.log(this.allAvailableWeekdays);
+    // console.log(this.allAvailableWeekdays);
     this.splitSlotTimings(
       allSlots[0]["fromTime"],
       allSlots[allSlots.length - 1]["toTime"]
     );
 
-    console.log(allSlots[0]["fromTime"]);
-    console.log(allSlots[allSlots.length - 1]["toTime"]);
+    // console.log(allSlots[0]["fromTime"]);
+    // console.log(allSlots[allSlots.length - 1]["toTime"]);
 
     this.allAvailableSlots.push(allSlots[0]["fromTime"]);
 
@@ -187,6 +233,59 @@ export class SlotSelectionPage implements OnInit {
 
     if (sendRes) {
       this.generateSlots(sendRes);
+    }
+  }
+
+  generateMorningNAfternoonSlots(startTime, endTime, maxTime, iteration) {
+    let splitStartTime = startTime.split(":");
+    let startOne = +splitStartTime[0];
+    let startTwo = splitStartTime[1];
+
+    let splitEndTime = endTime.split(":");
+    let endOne = +splitEndTime[0];
+    let endTwo = splitEndTime[1];
+
+    let generateOne = startOne;
+    let generateTwo = startTwo;
+
+    let sendRes;
+
+    if (startOne < maxTime) {
+      if (iteration > 1) {
+        if (startOne == endOne) {
+          if (startTwo == endTwo) {
+            return false;
+          } else {
+            if (startTwo == "00") {
+              generateTwo = "30";
+            } else {
+              generateOne = generateOne + 1;
+              generateTwo = "00";
+            }
+          }
+        } else {
+          if (startTwo == "00") {
+            generateTwo = "30";
+          } else {
+            generateOne = ++generateOne;
+            generateTwo = "00";
+          }
+        }
+      }
+
+      if (generateOne < maxTime) {
+        sendRes = generateOne.toString() + ":" + generateTwo.toString();
+        this.tempTimings.push(sendRes);
+
+        if (sendRes) {
+          this.generateMorningNAfternoonSlots(
+            sendRes,
+            endTime,
+            maxTime,
+            ++iteration
+          );
+        }
+      }
     }
   }
 
