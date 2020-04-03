@@ -325,7 +325,7 @@ CREATE TABLE `ddc_timing` (
 
 /*!40000 ALTER TABLE `ddc_timing` DISABLE KEYS */;
 INSERT INTO `ddc_timing` (`id`,`doctor_id`,`clinic_id`,`week_days`,`from_time`,`to_time`,`remarks`,`created_at`) VALUES 
- (1,1,1,'2,4,6','10:00','20:00','none','2020-04-02 15:15:58'),
+ (1,1,1,'2,6','10:00','20:00','none','2020-04-02 15:15:58'),
  (2,1,2,'1,3','11:00','14:00','none','2020-04-02 15:15:58'),
  (3,1,3,'0','10:00','11:30','none','2020-04-02 15:15:58'),
  (4,1,4,'5','13:00','19:00','none','2020-04-02 15:15:58');
