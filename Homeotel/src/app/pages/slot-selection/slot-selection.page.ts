@@ -25,6 +25,8 @@ export class SlotSelectionPage implements OnInit {
   allAvailableSlots: any[] = [];
   allAvailableSlotsNTimings: any[] = [];
 
+  selectedSlotDate: any[] = [];
+
   monthNames = [
     "January",
     "February",
@@ -53,6 +55,7 @@ export class SlotSelectionPage implements OnInit {
   d = new Date();
   todayId = this.d.getDay();
   todayDate = this.d.getDate();
+  tomorrowDate = this.d.getDate() + 1;
   tomorrowId = this.todayId < 6 ? this.todayId + 1 : 0;
   threeDigitMonth = this.monthNames[this.d.getMonth()].slice(0, 3);
   threeDigitDayName = this.days[this.d.getDay()].slice(0, 3);
@@ -102,6 +105,16 @@ export class SlotSelectionPage implements OnInit {
           currentSlot["fromTime"] = tempFromTime;
           currentSlot["toTime"] = tempToTime;
           currentSlot["weekDay"] = weekDay;
+          currentSlot["date"] = currentSlot["title"] =
+            currentSlot["weekDay"] == this.todayId
+              ? "Today"
+              : currentSlot["weekDay"] == this.tomorrowId
+              ? "Tomorrow"
+              : this.days[currentSlot["weekDay"]].slice(0, 3) +
+                ", " +
+                this.threeDigitMonth +
+                " " +
+                ++this.tomorrowDate;
 
           // console.log(
           //   weekDay +
@@ -236,7 +249,9 @@ export class SlotSelectionPage implements OnInit {
     // console.log(this.allAvailableSlots);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.selectedSlotDate = this.allAvailableSlotsNTimings[2];
+  }
 
   splitSlotTimings(startTime, endTime) {
     let splitStartTime = startTime.split(":");
@@ -403,4 +418,8 @@ export class SlotSelectionPage implements OnInit {
     console.log("Slot selected for ->" + period + " - " + time);
     this.router.navigate(["/consultation-details"]);
   };
+
+  selectSlotDate(id) {
+    this.selectedSlotDate = this.allAvailableSlotsNTimings[id];
+  }
 }
