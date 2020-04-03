@@ -87,6 +87,14 @@ export class SlotSelectionPage implements OnInit {
             ...currentSlot["timings"],
             ...this.tempTimings
           ];
+
+          let getIndex = currentSlot["timings"].indexOf("12:00");
+          if (getIndex > -1) {
+            console.log("Has 12:00 slot");
+          } else {
+            console.log("Has no 12:00 slot");
+          }
+          console.log("******************************");
         });
         this.allAvailableWeekdays = [
           ...this.allAvailableWeekdays,
@@ -132,6 +140,13 @@ export class SlotSelectionPage implements OnInit {
     let splitEndTime = endTime.split(":");
     this.endTimeOne = splitEndTime[0];
     this.endTimeTwo = splitEndTime[1];
+
+    if (+this.startTimeOne < 12) {
+      console.log("Contains morning slots");
+    }
+    if (+this.endTimeOne >= 12) {
+      console.log("Contains afternoon slots");
+    }
   }
 
   generateSlots(currentSlot) {
