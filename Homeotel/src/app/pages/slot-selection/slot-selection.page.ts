@@ -53,6 +53,8 @@ export class SlotSelectionPage implements OnInit {
   ];
 
   d = new Date();
+  currentMonth = this.d.getMonth() + 1;
+  currentYear = this.d.getFullYear();
   todayId = this.d.getDay();
   todayDate = this.d.getDate();
   tomorrowDate = this.d.getDate() + 1;
@@ -77,8 +79,8 @@ export class SlotSelectionPage implements OnInit {
         : "Personal visit";
 
     // console.log("this.doctorUsername -> " + this.doctorUsername);
-    // console.log("this.utilities.bookAppointmentDoctorDetails is below");
-    // console.log(this.utilities.bookAppointmentDoctorDetails);
+    console.log("this.utilities.bookAppointmentDoctorDetails is below");
+    console.log(this.utilities.bookAppointmentDoctorDetails);
     console.log("todayDate -> " + this.todayDate);
     console.log("todayId -> " + this.todayId);
     console.log("tomorrowId -> " + this.tomorrowId);
@@ -98,6 +100,7 @@ export class SlotSelectionPage implements OnInit {
         );
         let tempFromTime = slot["fromTime"];
         let tempToTime = slot["toTime"];
+        let clinicId = slot["clinicId"];
 
         let weekDaysArray = slot["weekDays"].split(",");
         weekDaysArray.forEach(weekDay => {
@@ -105,6 +108,8 @@ export class SlotSelectionPage implements OnInit {
           currentSlot["fromTime"] = tempFromTime;
           currentSlot["toTime"] = tempToTime;
           currentSlot["weekDay"] = weekDay;
+          currentSlot["clinicId"] = clinicId;
+          let nextDate = ++this.tomorrowDate;
           currentSlot["date"] = currentSlot["title"] =
             currentSlot["weekDay"] == this.todayId
               ? "Today"
@@ -114,7 +119,9 @@ export class SlotSelectionPage implements OnInit {
                 ", " +
                 this.threeDigitMonth +
                 " " +
-                ++this.tomorrowDate;
+                nextDate;
+          currentSlot["dateNtime"] =
+            this.currentYear + "-" + this.currentMonth + "-" + nextDate;
 
           // console.log(
           //   weekDay +
@@ -414,11 +421,30 @@ export class SlotSelectionPage implements OnInit {
     }
   }
 
+  getDateTime(myDate) {
+    return (
+      myDate.getFullYear() +
+      "-" +
+      this.padDatePart(myDate.getMonth() + 1) +
+      "-" +
+      this.padDatePart(myDate.getDate())
+    );
+  }
+
+  padDatePart(part) {
+    return ("0" + part).slice(-2);
+  }
+
   selectSlot = (time, timeNSession) => {
     this.utilities.bookAppointmentDetails["time"] = time;
     this.utilities.bookAppointmentDetails["timeNSession"] = timeNSession;
+    this.utilities.bookAppointmentDetails["dateNtime"] =
+      this.selectedSlotDate["dateNtime"] + " " + time + ":00";
     this.utilities.bookAppointmentDetails["timestamp"] = this.selectedSlotDate[
       "title"
+    ];
+    this.utilities.bookAppointmentDetails["clinicId"] = this.selectedSlotDate[
+      "clinicId"
     ];
     console.log("Slot selected for ->" + time);
     console.log("timeNSession selected for ->" + timeNSession);

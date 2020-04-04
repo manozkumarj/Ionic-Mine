@@ -45,8 +45,17 @@ export class ConsultationDetailsPage implements OnInit {
   }
 
   goToPaymentgateways() {
+    this.utilities.bookAppointmentDetails["relativeId"] = this.selectedPerson;
     this.utilities.isSlotBookingAction = true;
     this.utilities.isHomeokitPurchaseAction = false;
+    console.log("bookAppointmentDetails obj is below");
+    console.log(this.utilities.bookAppointmentDetails);
+
+    console.log("bookAppointmentDoctorDetails obj is below");
+    console.log(this.utilities.bookAppointmentDoctorDetails);
+
+    console.log("Current User ID -> " + this.utilities.userId);
+
     this.router.navigate(["/payment-gateways"]);
   }
 }

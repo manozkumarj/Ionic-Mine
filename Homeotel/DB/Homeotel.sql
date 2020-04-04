@@ -29,15 +29,22 @@ DROP TABLE IF EXISTS `d_appointment`;
 CREATE TABLE `d_appointment` (
   `appointment_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
-  `relative_id` int(10) unsigned NOT NULL,
+  `relative_id` int(10) unsigned DEFAULT NULL,
   `doctor_id` int(10) unsigned NOT NULL,
   `mode_id` int(10) unsigned NOT NULL,
+  `main_complaint` varchar(50) DEFAULT NULL,
   `appointment_at` varchar(45) DEFAULT NULL,
   `booked_at` varchar(45) DEFAULT NULL,
   `amount_paid` varchar(45) DEFAULT NULL,
-  `payment_status` int(10) DEFAULT 0,
-  `appointment_status` int(10) DEFAULT 0,
-  `created_at` varchar(45) NOT NULL,
+  `payment_status` int(11) DEFAULT 0,
+  `appointment_status` int(11) DEFAULT 0,
+  `advice` varchar(500) DEFAULT NULL,
+  `notes` varchar(500) DEFAULT NULL,
+  `review_date` varchar(50) DEFAULT NULL,
+  `created_by` int(10) unsigned DEFAULT NULL,
+  `created_at` varchar(45) DEFAULT NULL,
+  `updated_by` int(10) unsigned DEFAULT NULL,
+  `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`appointment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -137,6 +144,40 @@ CREATE TABLE `d_setting` (
 
 
 --
+-- Definition of table `d_transaction`
+--
+
+DROP TABLE IF EXISTS `d_transaction`;
+CREATE TABLE `d_transaction` (
+  `transaction_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `doctor_id` int(10) unsigned DEFAULT NULL,
+  `appointment_id` int(10) DEFAULT NULL,
+  `kit_id` int(10) DEFAULT NULL,
+  `transaction_type_id` int(10) unsigned NOT NULL,
+  `trasaction_amount` int(10) NOT NULL,
+  `taxes` int(10) DEFAULT NULL,
+  `charges` int(10) DEFAULT NULL,
+  `net_amount` int(10) DEFAULT NULL,
+  `transaction_at` int(10) DEFAULT NULL,
+  `created_by` int(10) unsigned NOT NULL,
+  `created_at` varchar(45) NOT NULL,
+  `updated_by` int(10) unsigned DEFAULT NULL,
+  `updated_at` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`user_id`) USING BTREE,
+  UNIQUE KEY `user_id` (`user_id`),
+  UNIQUE KEY `transaction_id` (`transaction_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `d_transaction`
+--
+
+/*!40000 ALTER TABLE `d_transaction` DISABLE KEYS */;
+/*!40000 ALTER TABLE `d_transaction` ENABLE KEYS */;
+
+
+--
 -- Definition of table `d_user`
 --
 
@@ -166,6 +207,61 @@ INSERT INTO `d_user` (`user_id`,`username`,`email`,`password`,`created_at`) VALU
 
 
 --
+-- Definition of table `da_complaint_detail`
+--
+
+DROP TABLE IF EXISTS `da_complaint_detail`;
+CREATE TABLE `da_complaint_detail` (
+  `user_id` int(10) unsigned NOT NULL,
+  `relative_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `doctor_id` int(10) unsigned NOT NULL,
+  `appointment_id` int(10) unsigned NOT NULL,
+  `is_recurring` int(10) unsigned NOT NULL DEFAULT 0,
+  `recurring_freq` varchar(45) NOT NULL,
+  `severity_id` int(10) unsigned NOT NULL,
+  `complaint_description` varchar(500) DEFAULT NULL,
+  `created_by` int(10) unsigned NOT NULL,
+  `created_at` varchar(45) NOT NULL,
+  `updated_by` int(10) unsigned DEFAULT NULL,
+  `updated_at` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`relative_id`,`doctor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `da_complaint_detail`
+--
+
+/*!40000 ALTER TABLE `da_complaint_detail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `da_complaint_detail` ENABLE KEYS */;
+
+
+--
+-- Definition of table `da_diagnosis`
+--
+
+DROP TABLE IF EXISTS `da_diagnosis`;
+CREATE TABLE `da_diagnosis` (
+  `user_id` int(10) unsigned NOT NULL,
+  `relative_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `doctor_id` int(10) unsigned NOT NULL,
+  `diagnosis_id` int(10) unsigned NOT NULL,
+  `other_diagnosis` varchar(45) NOT NULL,
+  `created_by` int(10) unsigned NOT NULL,
+  `created_at` varchar(45) NOT NULL,
+  `updated_by` int(10) unsigned DEFAULT NULL,
+  `updated_at` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`relative_id`,`doctor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `da_diagnosis`
+--
+
+/*!40000 ALTER TABLE `da_diagnosis` DISABLE KEYS */;
+/*!40000 ALTER TABLE `da_diagnosis` ENABLE KEYS */;
+
+
+--
 -- Definition of table `da_log`
 --
 
@@ -192,6 +288,37 @@ CREATE TABLE `da_log` (
 
 /*!40000 ALTER TABLE `da_log` DISABLE KEYS */;
 /*!40000 ALTER TABLE `da_log` ENABLE KEYS */;
+
+
+--
+-- Definition of table `da_prescription`
+--
+
+DROP TABLE IF EXISTS `da_prescription`;
+CREATE TABLE `da_prescription` (
+  `user_id` int(10) unsigned NOT NULL,
+  `relative_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `doctor_id` int(10) unsigned NOT NULL,
+  `drug_id` int(10) unsigned NOT NULL,
+  `scale_id` int(10) unsigned NOT NULL,
+  `potency_id` int(10) unsigned NOT NULL,
+  `dosage_id` int(10) unsigned NOT NULL,
+  `freq_id` int(10) unsigned NOT NULL,
+  `instruction_id` int(10) unsigned NOT NULL,
+  `no_of_days` int(10) unsigned NOT NULL,
+  `created_by` int(10) unsigned NOT NULL,
+  `created_at` varchar(45) NOT NULL,
+  `updated_by` int(10) unsigned DEFAULT NULL,
+  `updated_at` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`relative_id`,`doctor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `da_prescription`
+--
+
+/*!40000 ALTER TABLE `da_prescription` DISABLE KEYS */;
+/*!40000 ALTER TABLE `da_prescription` ENABLE KEYS */;
 
 
 --
@@ -506,34 +633,6 @@ CREATE TABLE `ehr_chronic` (
 
 /*!40000 ALTER TABLE `ehr_chronic` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ehr_chronic` ENABLE KEYS */;
-
-
---
--- Definition of table `ehr_consultation`
---
-
-DROP TABLE IF EXISTS `ehr_consultation`;
-CREATE TABLE `ehr_consultation` (
-  `user_id` int(10) unsigned NOT NULL,
-  `relative_id` int(10) unsigned NOT NULL,
-  `doctor_id` int(10) unsigned NOT NULL,
-  `appointment_id` int(10) unsigned NOT NULL,
-  `parameter_id` int(10) unsigned NOT NULL,
-  `value` varchar(45) DEFAULT NULL,
-  `added_by` int(10) unsigned NOT NULL,
-  `created_by` int(10) unsigned NOT NULL,
-  `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`doctor_id`,`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `ehr_consultation`
---
-
-/*!40000 ALTER TABLE `ehr_consultation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ehr_consultation` ENABLE KEYS */;
 
 
 --
@@ -911,6 +1010,46 @@ INSERT INTO `m_disease` (`disease_id`,`name`,`is_active`) VALUES
 
 
 --
+-- Definition of table `m_dosage`
+--
+
+DROP TABLE IF EXISTS `m_dosage`;
+CREATE TABLE `m_dosage` (
+  `dosage_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`dosage_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_dosage`
+--
+
+/*!40000 ALTER TABLE `m_dosage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `m_dosage` ENABLE KEYS */;
+
+
+--
+-- Definition of table `m_drugs`
+--
+
+DROP TABLE IF EXISTS `m_drugs`;
+CREATE TABLE `m_drugs` (
+  `drug_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`drug_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_drugs`
+--
+
+/*!40000 ALTER TABLE `m_drugs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `m_drugs` ENABLE KEYS */;
+
+
+--
 -- Definition of table `m_exercise`
 --
 
@@ -979,6 +1118,26 @@ INSERT INTO `m_food` (`food_id`,`name`,`is_active`) VALUES
 
 
 --
+-- Definition of table `m_freq`
+--
+
+DROP TABLE IF EXISTS `m_freq`;
+CREATE TABLE `m_freq` (
+  `freq_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`freq_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_freq`
+--
+
+/*!40000 ALTER TABLE `m_freq` DISABLE KEYS */;
+/*!40000 ALTER TABLE `m_freq` ENABLE KEYS */;
+
+
+--
 -- Definition of table `m_gender`
 --
 
@@ -1023,6 +1182,26 @@ INSERT INTO `m_injury` (`injury_id`,`name`,`is_active`) VALUES
  (1,'option1','1'),
  (2,'option2','1');
 /*!40000 ALTER TABLE `m_injury` ENABLE KEYS */;
+
+
+--
+-- Definition of table `m_instruction`
+--
+
+DROP TABLE IF EXISTS `m_instruction`;
+CREATE TABLE `m_instruction` (
+  `instruction_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`instruction_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_instruction`
+--
+
+/*!40000 ALTER TABLE `m_instruction` DISABLE KEYS */;
+/*!40000 ALTER TABLE `m_instruction` ENABLE KEYS */;
 
 
 --
@@ -1119,6 +1298,26 @@ CREATE TABLE `m_parameter` (
 
 
 --
+-- Definition of table `m_potency`
+--
+
+DROP TABLE IF EXISTS `m_potency`;
+CREATE TABLE `m_potency` (
+  `potency_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`potency_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_potency`
+--
+
+/*!40000 ALTER TABLE `m_potency` DISABLE KEYS */;
+/*!40000 ALTER TABLE `m_potency` ENABLE KEYS */;
+
+
+--
 -- Definition of table `m_profession`
 --
 
@@ -1188,6 +1387,26 @@ CREATE TABLE `m_relation` (
 
 
 --
+-- Definition of table `m_scale`
+--
+
+DROP TABLE IF EXISTS `m_scale`;
+CREATE TABLE `m_scale` (
+  `scale_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`scale_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_scale`
+--
+
+/*!40000 ALTER TABLE `m_scale` DISABLE KEYS */;
+/*!40000 ALTER TABLE `m_scale` ENABLE KEYS */;
+
+
+--
 -- Definition of table `m_setting`
 --
 
@@ -1205,6 +1424,26 @@ CREATE TABLE `m_setting` (
 
 /*!40000 ALTER TABLE `m_setting` DISABLE KEYS */;
 /*!40000 ALTER TABLE `m_setting` ENABLE KEYS */;
+
+
+--
+-- Definition of table `m_severity`
+--
+
+DROP TABLE IF EXISTS `m_severity`;
+CREATE TABLE `m_severity` (
+  `severity_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`severity_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_severity`
+--
+
+/*!40000 ALTER TABLE `m_severity` DISABLE KEYS */;
+/*!40000 ALTER TABLE `m_severity` ENABLE KEYS */;
 
 
 --
@@ -1287,17 +1526,22 @@ INSERT INTO `m_surgery` (`surgery_id`,`name`,`is_active`) VALUES
 
 DROP TABLE IF EXISTS `m_transaction_type`;
 CREATE TABLE `m_transaction_type` (
-  `transaction_type_id` int(10) unsigned NOT NULL,
+  `transaction_type_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `is_active` varchar(45) NOT NULL,
   PRIMARY KEY (`transaction_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `m_transaction_type`
 --
 
 /*!40000 ALTER TABLE `m_transaction_type` DISABLE KEYS */;
+INSERT INTO `m_transaction_type` (`transaction_type_id`,`name`,`is_active`) VALUES 
+ (1,'Booked appointment','1'),
+ (2,'Cancelled appointment','1'),
+ (3,'Booked kit','1'),
+ (4,'Cancelled kit','1');
 /*!40000 ALTER TABLE `m_transaction_type` ENABLE KEYS */;
 
 
@@ -1644,6 +1888,70 @@ START TRANSACTION;
 
      INSERT INTO du_doctor (user_id,doctor_id,added_on,is_active,created_at,updated_at)
      VALUES (IN_userId,IN_doctorId,now(),1,now(),now());
+
+
+COMMIT;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_book_appointment`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_book_appointment`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_book_appointment`(IN IN_doctor_id INT, IN user_id INT, IN relative_id INT,
+                                                                       IN IN_mode_id INT, IN IN_appointment_at VARCHAR(255),
+                                                                       IN IN_amount_paid VARCHAR(255), IN IN_main_complaint VARCHAR(255))
+BEGIN
+
+DECLARE appointmentId INT;
+
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+START TRANSACTION;
+
+
+     INSERT INTO d_appointment (user_id, relative_id, doctor_id, mode_id, appointment_at, amount_paid, main_complaint, created_by,
+                                updated_by, created_at, updated_at)
+     VALUES (IN_user_id,IN_relative_id,IN_doctor_id,IN_mode_id,IN_appointment_at,IN_amount_paid, IN_main_complaint,IN_user_id,
+             IN_user_id,now(),now());
+     SET appointmentId = LAST_INSERT_ID();
+
+
+     INSERT INTO da_log (appointment_id, user_id, relative_id, doctor_id, mode_id, appointment_at, created_by,
+                                updated_by, created_at, updated_at)
+     VALUES (appointmentId, IN_user_id,IN_relative_id,IN_doctor_id,IN_mode_id,IN_appointment_at,IN_user_id,IN_user_id,now(),now());
+
+
+     INSERT INTO d_transaction (appointment_id, user_id, doctor_id, transaction_type_id, trasaction_amount,
+     net_amount, taxes, charges, created_by, updated_by, created_at, updated_at)
+     VALUES (appointmentId, IN_user_id,IN_doctor_id,1,IN_amount_paid,IN_amount_paid,0,0,IN_user_id,IN_user_id,now(),now());
+
 
 
 COMMIT;
