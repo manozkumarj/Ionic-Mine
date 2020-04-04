@@ -13,6 +13,7 @@ export class UtilitiesService {
   purchasableHomeokitPrice;
 
   bookAppointmentDoctorDetails = {};
+  bookAppointmentDetails = {};
   bookableModeId;
 
   constructor(private router: Router) {}

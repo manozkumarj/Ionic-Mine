@@ -8,9 +8,34 @@ import { UtilitiesService } from "src/app/services/utilities.service";
   styleUrls: ["./consultation-details.page.scss"]
 })
 export class ConsultationDetailsPage implements OnInit {
-  selectedPerson;
+  selectedPerson = 0;
+  doctorId;
+  doctorName;
+  doctorUsername;
+  modeId;
+  slotName;
+  slotBookedTimestamp;
 
-  constructor(private router: Router, private utilities: UtilitiesService) {}
+  constructor(private router: Router, private utilities: UtilitiesService) {
+    this.doctorId = this.utilities.bookAppointmentDoctorDetails["id"];
+    this.doctorName = this.utilities.bookAppointmentDoctorDetails["name"];
+    this.doctorUsername = this.utilities.bookAppointmentDoctorDetails[
+      "username"
+    ];
+    this.modeId = this.utilities.bookAppointmentDetails["bookableModeId"];
+    this.slotName =
+      this.modeId == 1
+        ? "Video consultation"
+        : this.modeId == 2
+        ? "Audio consultation"
+        : this.modeId == 3
+        ? "Chat consultation"
+        : "Personal visit";
+    this.slotBookedTimestamp =
+      this.utilities.bookAppointmentDetails["timestamp"] +
+      " : " +
+      this.utilities.bookAppointmentDetails["timeNSession"];
+  }
 
   ngOnInit() {}
 

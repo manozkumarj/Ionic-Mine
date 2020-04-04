@@ -66,7 +66,7 @@ export class SlotSelectionPage implements OnInit {
     this.doctorUsername = this.utilities.bookAppointmentDoctorDetails[
       "username"
     ];
-    this.modeId = this.utilities.bookableModeId;
+    this.modeId = this.utilities.bookAppointmentDetails["bookableModeId"];
     this.slotName =
       this.modeId == 1
         ? "Video consultation"
@@ -414,8 +414,15 @@ export class SlotSelectionPage implements OnInit {
     }
   }
 
-  selectSlot = (period, time) => {
-    console.log("Slot selected for ->" + period + " - " + time);
+  selectSlot = (time, timeNSession) => {
+    this.utilities.bookAppointmentDetails["time"] = time;
+    this.utilities.bookAppointmentDetails["timeNSession"] = timeNSession;
+    this.utilities.bookAppointmentDetails["timestamp"] = this.selectedSlotDate[
+      "title"
+    ];
+    console.log("Slot selected for ->" + time);
+    console.log("timeNSession selected for ->" + timeNSession);
+    console.log("timestamp selected for ->" + this.selectedSlotDate["title"]);
     this.router.navigate(["/consultation-details"]);
   };
 

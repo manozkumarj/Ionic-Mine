@@ -27,21 +27,18 @@ USE homeotel;
 
 DROP TABLE IF EXISTS `d_appointment`;
 CREATE TABLE `d_appointment` (
+  `appointment_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `doctor_id` int(10) unsigned NOT NULL,
-  `appointment_id` int(10) unsigned NOT NULL,
   `mode_id` int(10) unsigned NOT NULL,
   `appointment_at` varchar(45) DEFAULT NULL,
   `booked_at` varchar(45) DEFAULT NULL,
   `amount_paid` varchar(45) DEFAULT NULL,
   `payment_status` int(10) DEFAULT 0,
   `appointment_status` int(10) DEFAULT 0,
-  `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`doctor_id`,`user_id`)
+  PRIMARY KEY (`appointment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

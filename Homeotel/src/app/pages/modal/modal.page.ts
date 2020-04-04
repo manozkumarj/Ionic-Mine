@@ -169,9 +169,11 @@ export class ModalPage implements OnInit {
     }
   };
 
-  selectConsultation = modeId => {
+  selectConsultation = (modeId, price) => {
     console.log("modeId -> " + modeId);
-    this.utilities.bookableModeId = modeId;
+    console.log("price -> " + price);
+    this.utilities.bookAppointmentDetails["bookableModeId"] = modeId;
+    this.utilities.bookAppointmentDetails["price"] = price;
     this.onCancel();
     this.router.navigate(["/slot-selection"]);
   };

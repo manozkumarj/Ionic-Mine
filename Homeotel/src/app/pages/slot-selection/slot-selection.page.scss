@@ -1,45 +1,71 @@
-.grid{
-    height: 140px;
-    margin-bottom: 20px;
-    text-align: center;
-    padding: 0;
-    border-radius: 0 10px 10px;
+.grid {
+  height: 140px;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 0;
+  border-radius: 0 10px 10px;
 }
 
-.docName{
-    font-size: 22px;
-    font-weight: bold;
+.docName {
+  font-size: 22px;
+  font-weight: bold;
 }
 
-.designation{
-    font-size: 20px;
+.designation {
+  font-size: 20px;
 }
 
-p{
-    padding: 0;
-    margin: 0;
+p {
+  padding: 0;
+  margin: 0;
 }
 
-.heading{
-    font-size: 22px;
-    font-weight: bold;
-    padding: 5px;
-    padding: 13px 0 8px 12px;
+.heading {
+  font-size: 22px;
+  font-weight: bold;
+  padding: 5px;
+  padding: 13px 0 8px 12px;
 }
 
-.slotsStatus{
-    padding: 5px;
+.slotsStatus {
+  padding: 5px;
 }
 
-.slotsAvailable{
-    color: #0a9f28;
+.slotsAvailable {
+  color: #0a9f28;
 }
 
-.noSlots{
-    color: #000;
+.noSlots {
+  color: #000;
 }
 
-.boldBlack{
-    font-weight: bold;
-    color: #000;
+.boldBlack {
+  font-weight: bold;
+  color: #000;
+}
+
+.forecast_container {
+  overflow-x: scroll !important;
+  overflow-y: hidden;
+  word-wrap: break-word;
+}
+
+.data > ion-col {
+  min-width: 250px !important;
+  padding: 10px 15px;
+  text-align: center;
+  border-bottom: 2px solid #ccc;
+}
+
+.container {
+  width: 100%;
+  //   background-color: green;
+  overflow: hidden;
+  white-space: nowrap;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  .scroll {
+    overflow: auto;
+  }
 }

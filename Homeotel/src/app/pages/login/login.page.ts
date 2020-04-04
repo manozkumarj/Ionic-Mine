@@ -157,10 +157,13 @@ export class LoginPage implements OnInit {
     console.log("About Login");
     console.log(this.loginForm.value);
     let username = this.loginForm.get("username").value.trim();
-    let passord = this.loginForm.get("password").value.trim();
+    let password = this.loginForm.get("password").value.trim();
 
-    if (username && passord) {
-      this.apiService.loginUser(username, passord).subscribe(data => {
+    username = "aaa";
+    password = "aaa";
+
+    if (username && password) {
+      this.apiService.loginUser(username, password).subscribe(data => {
         console.log("Returned from Backend");
         console.log(JSON.stringify(data));
         if (
