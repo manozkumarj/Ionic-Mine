@@ -14,10 +14,15 @@
 
 <ion-content>
   <ion-grid
-    style="height: 30%; background-color: #eab841; color: #fff; font-size: 18px;"
+    style="
+      height: 30%;
+      background-color: #eab841;
+      color: #fff;
+      font-size: 18px;
+    "
   >
     <ion-row
-      style="height: 100%"
+      style="height: 100%;"
       class="ion-justify-content-center ion-align-items-center"
     >
       {{question}}
@@ -27,12 +32,18 @@
   <!-- paramOne -->
   <ion-grid *ngIf="currentQuestion == 'one'" class="btnsGrid">
     <ion-row>
-      <ion-col class="btn-success" (click)="answered(1)">
+      <ion-col
+        [ngClass]="{'btn-success' : isRecurring == 1 }"
+        (click)="answered(1)"
+      >
         Yes
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col (click)="answered(2)">
+      <ion-col
+        [ngClass]="{'btn-success' : isRecurring == 2 }"
+        (click)="answered(2)"
+      >
         No
       </ion-col>
     </ion-row>
@@ -41,17 +52,27 @@
   <!-- paramTwo -->
   <ion-grid *ngIf="currentQuestion == 'two'" class="btnsGrid">
     <ion-row>
-      <ion-col class="btn-success" (click)="answered(1)">
+      <ion-col
+        [ngClass]="{'btn-success' : recurringFreq == 1 }"
+        class="btn-success"
+        (click)="answered(1)"
+      >
         Week
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col (click)="answered(2)">
+      <ion-col
+        [ngClass]="{'btn-success' : recurringFreq == 2 }"
+        (click)="answered(2)"
+      >
         Month
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col (click)="answered(3)">
+      <ion-col
+        [ngClass]="{'btn-success' : recurringFreq == 3 }"
+        (click)="answered(3)"
+      >
         Year
       </ion-col>
     </ion-row>
@@ -60,17 +81,27 @@
   <!-- paramThree -->
   <ion-grid *ngIf="currentQuestion == 'three'" class="btnsGrid">
     <ion-row>
-      <ion-col class="btn-success" (click)="answered(1)">
+      <ion-col
+        [ngClass]="{'btn-success' : severity == 1 }"
+        class="btn-success"
+        (click)="answered(1)"
+      >
         Food
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col (click)="answered(2)">
+      <ion-col
+        [ngClass]="{'btn-success' : severity == 2 }"
+        (click)="answered(2)"
+      >
         Heat
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col (click)="answered(3)">
+      <ion-col
+        [ngClass]="{'btn-success' : severity == 3 }"
+        (click)="answered(3)"
+      >
         Movement
       </ion-col>
     </ion-row>
@@ -82,7 +113,7 @@
       <ion-col>
         <ion-textarea
           class="complaintDescription"
-          [(ngModel)]="enteredDescription"
+          [(ngModel)]="description"
           value=""
           placeholder="Write description..."
         >

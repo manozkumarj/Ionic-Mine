@@ -109,4 +109,28 @@ export class ApiService {
     };
     return this.http.post(this.apiUrl + path, body);
   }
+
+  // Upserting complaint details
+  upsertComplaintDetails(
+    appointmentId,
+    doctorId,
+    relativeId,
+    isRecurring,
+    recurringFreq,
+    severityId,
+    complaintDescription
+  ) {
+    var path = "/user/upsert-complaint-details";
+    var body = {
+      appointmentId,
+      userId: this.utilities.userId,
+      doctorId,
+      relativeId,
+      isRecurring,
+      recurringFreq,
+      severityId,
+      complaintDescription,
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
 }

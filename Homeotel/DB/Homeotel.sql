@@ -225,22 +225,26 @@ CREATE TABLE `da_complaint_detail` (
   `relative_id` int(10) unsigned NOT NULL DEFAULT 0,
   `doctor_id` int(10) unsigned NOT NULL,
   `appointment_id` int(10) unsigned NOT NULL,
-  `is_recurring` int(10) unsigned NOT NULL DEFAULT 0,
+  `is_recurring` varchar(45) NOT NULL,
   `recurring_freq` varchar(45) NOT NULL,
-  `severity_id` int(10) unsigned NOT NULL,
+  `severity_id` varchar(45) NOT NULL,
   `complaint_description` varchar(500) DEFAULT NULL,
   `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`complaint_detail_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_complaint_detail`
 --
 
 /*!40000 ALTER TABLE `da_complaint_detail` DISABLE KEYS */;
+INSERT INTO `da_complaint_detail` (`complaint_detail_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_id`,`is_recurring`,`recurring_freq`,`severity_id`,`complaint_description`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,1,0,1,8,'1','2','3','Testtt des',1,'2020-04-05 11:03:58',1,'2020-04-05 11:03:58'),
+ (2,1,1,1,8,'1','2','3','Testtt des',1,'2020-04-06 00:20:18',1,'2020-04-06 00:20:18'),
+ (3,1,1,1,8,'1','1','3','Testtt des',1,'2020-04-06 00:22:28',1,'2020-04-06 00:22:28');
 /*!40000 ALTER TABLE `da_complaint_detail` ENABLE KEYS */;
 
 
@@ -1954,9 +1958,12 @@ DECLARE exit handler for sqlwarning
 
 END;
 
-    SELECT a.appointment_id,a.user_id,a.relative_id,a.doctor_id, a.mode_id, a.appointment_at,a.amount_paid,a.appointment_status,u.username,d.name AS doctorName
-    FROM d_appointment a LEFT JOIN d_user u ON a.user_id = u.user_id
-     LEFT JOIN d_doctor d ON a.doctor_id = d.id
+    SELECT a.appointment_id,a.user_id,a.relative_id,a.doctor_id, a.mode_id, a.appointment_at,a.amount_paid,a.appointment_status,
+    u.username,d.name AS doctorName, c.is_recurring, c.recurring_freq, c.severity_id, c.complaint_description
+    FROM d_appointment a
+    LEFT JOIN d_user u ON a.user_id = u.user_id
+    LEFT JOIN d_doctor d ON a.doctor_id = d.id
+    LEFT JOIN da_complaint_detail c ON a.appointment_id = c.appointment_id
      where a.user_id = IN_userId;
 
 

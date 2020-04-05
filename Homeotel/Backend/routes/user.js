@@ -204,4 +204,36 @@ router.post("/book-appointment", (req, res) => {
   );
 });
 
+// Upserting complaint details
+router.post("/upsert-complaint-details", (req, res) => {
+  var appointmentId = req.body.appointmentId;
+  var userId = req.body.userId;
+  var doctorId = req.body.doctorId;
+  var relativeId = req.body.relativeId;
+  var isRecurring = req.body.isRecurring;
+  var recurringFreq = req.body.recurringFreq;
+  var severityId = req.body.severityId;
+  var complaintDescription = req.body.complaintDescription;
+  var params = [
+    appointmentId,
+    userId,
+    doctorId,
+    relativeId,
+    isRecurring,
+    recurringFreq,
+    severityId,
+    complaintDescription,
+  ];
+
+  console.log("Received params");
+  console.log(params);
+
+  db.executeQuery(
+    "call sp_user_complaint_detail(?,?,?,?,?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;

@@ -84,8 +84,18 @@ export class AppointmentsPage implements OnInit {
     this.utilities.selectedAppointmentComplaintDetails["doctor_id"] =
       selectedAppointment["doctor_id"];
 
+    this.utilities.selectedAppointmentComplaintDetails["is_recurring"] =
+      selectedAppointment["is_recurring"];
+    this.utilities.selectedAppointmentComplaintDetails["recurring_freq"] =
+      selectedAppointment["recurring_freq"];
+    this.utilities.selectedAppointmentComplaintDetails["severity_id"] =
+      selectedAppointment["severity_id"];
+    this.utilities.selectedAppointmentComplaintDetails[
+      "complaint_description"
+    ] = selectedAppointment["complaint_description"];
+
     console.log(this.utilities.selectedAppointmentComplaintDetails);
-    // this.router.navigate(['/appointment-questions', 1]);
+    this.router.navigate(["/appointment-questions", 1]);
   }
 
   getAppointmentMode(modeId) {
