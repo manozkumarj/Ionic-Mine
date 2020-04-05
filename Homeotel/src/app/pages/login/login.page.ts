@@ -9,7 +9,7 @@ import { UtilitiesService } from "./../../services/utilities.service";
 @Component({
   selector: "app-login",
   templateUrl: "./login.page.html",
-  styleUrls: ["./login.page.scss"]
+  styleUrls: ["./login.page.scss"],
 })
 export class LoginPage implements OnInit {
   registerForm: FormGroup;
@@ -35,12 +35,12 @@ export class LoginPage implements OnInit {
     this.registerForm = new FormGroup({
       username: new FormControl("", Validators.required),
       email: new FormControl("", Validators.required),
-      password: new FormControl("", Validators.required)
+      password: new FormControl("", Validators.required),
     });
 
     this.loginForm = new FormGroup({
       username: new FormControl("", Validators.required),
-      password: new FormControl("", Validators.required)
+      password: new FormControl("", Validators.required),
     });
   }
 
@@ -51,7 +51,7 @@ export class LoginPage implements OnInit {
       message: this.toastSuccessMsg,
       duration: 2000,
       cssClass: "toast-success",
-      animated: true
+      animated: true,
     });
     toast.present();
   }
@@ -61,7 +61,7 @@ export class LoginPage implements OnInit {
       message: this.toastErrorMsg,
       duration: 2000,
       cssClass: "toast-error",
-      animated: true
+      animated: true,
     });
     toast.present();
   }
@@ -90,14 +90,14 @@ export class LoginPage implements OnInit {
     this.registerForm.patchValue({
       username: "",
       email: "",
-      password: ""
+      password: "",
     });
   }
 
   resetLoginFormValues() {
     this.loginForm.patchValue({
       username: "",
-      password: ""
+      password: "",
     });
   }
 
@@ -122,31 +122,33 @@ export class LoginPage implements OnInit {
     console.log(this.registerForm.value);
     let username = this.registerForm.get("username").value.trim();
     let email = this.registerForm.get("email").value.trim();
-    let passord = this.registerForm.get("password").value.trim();
+    let password = this.registerForm.get("password").value.trim();
 
-    if (username && email && passord) {
-      this.apiService.registerUser(username, email, passord).subscribe(data => {
-        console.log("Returned from Backend");
-        console.log(JSON.stringify(data));
-        if (this.utilities.isInvalidApiResponseData(data)) {
-          console.log("Returned Error");
-          console.log(data[0][0]);
-          if (data[0][0]["error"].includes(username)) {
-            this.toastErrorMsg = "Username already exist";
-          } else if (data[0][0]["error"].includes(email)) {
-            this.toastErrorMsg = "Email already exist";
+    if (username && email && password) {
+      this.apiService
+        .registerUser(username, email, password)
+        .subscribe((data) => {
+          console.log("Returned from Backend");
+          console.log(JSON.stringify(data));
+          if (this.utilities.isInvalidApiResponseData(data)) {
+            console.log("Returned Error");
+            console.log(data[0][0]);
+            if (data[0][0]["error"].includes(username)) {
+              this.toastErrorMsg = "Username already exist";
+            } else if (data[0][0]["error"].includes(email)) {
+              this.toastErrorMsg = "Email already exist";
+            } else {
+              this.toastErrorMsg = "Something went wrong";
+            }
+            this.presentToastWarning();
           } else {
-            this.toastErrorMsg = "Something went wrong";
+            console.log("Returned Success");
+            this.toastSuccessMsg = "Success, you can login now.";
+            this.presentToastSuccess();
+            this.loginTab();
+            this.resetRegisterFormValues();
           }
-          this.presentToastWarning();
-        } else {
-          console.log("Returned Success");
-          this.toastSuccessMsg = "Success, you can login now.";
-          this.presentToastSuccess();
-          this.loginTab();
-          this.resetRegisterFormValues();
-        }
-      });
+        });
     } else {
       this.toastErrorMsg = "Please enter username, email, and password.";
       this.presentToastWarning();
@@ -163,7 +165,7 @@ export class LoginPage implements OnInit {
     password = "aaa";
 
     if (username && password) {
-      this.apiService.loginUser(username, password).subscribe(data => {
+      this.apiService.loginUser(username, password).subscribe((data) => {
         console.log("Returned from Backend");
         console.log(JSON.stringify(data));
         if (

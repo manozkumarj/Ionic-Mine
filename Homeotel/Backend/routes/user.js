@@ -158,4 +158,34 @@ router.get("/doctor-consultant-details-masters/:doctorId", (req, res) => {
   );
 });
 
+// Booking an appointment
+router.post("/book-appointment", (req, res) => {
+  var userId = req.body.userId;
+  var doctorId = req.body.doctorId;
+  var relativeId = req.body.relativeId;
+  var price = req.body.price;
+  var dateNtime = req.body.dateNtime;
+  var modeId = req.body.modeId;
+  var mainComplaint = req.body.mainComplaint;
+  var params = [
+    doctorId,
+    userId,
+    relativeId,
+    modeId,
+    dateNtime,
+    price,
+    mainComplaint,
+  ];
+
+  console.log("Received params");
+  console.log(params);
+
+  db.executeQuery(
+    "call sp_user_book_appointment(?,?,?,?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;

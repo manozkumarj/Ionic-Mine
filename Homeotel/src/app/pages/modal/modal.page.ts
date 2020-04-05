@@ -9,7 +9,7 @@ import { ApiService } from "src/app/services/api.service";
 @Component({
   selector: "app-modal",
   templateUrl: "./modal.page.html",
-  styleUrls: ["./modal.page.scss"]
+  styleUrls: ["./modal.page.scss"],
 })
 export class ModalPage implements OnInit {
   action;
@@ -44,7 +44,7 @@ export class ModalPage implements OnInit {
         let price = this.utilities.purchasableHomeokitPrice;
         this.apiService
           .purchaseHomeokit(doctorId, kitId, price)
-          .subscribe(data => {
+          .subscribe((data) => {
             console.log("Returned from Backend");
             console.log(JSON.stringify(data));
             if (this.utilities.isInvalidApiResponseData(data)) {
@@ -59,6 +59,44 @@ export class ModalPage implements OnInit {
           });
       } else if (navParams.get("paymentFor") == "slotBooking") {
         console.log("slotBooking payment");
+        console.log("bookAppointmentDetails obj is below");
+        console.log(this.utilities.bookAppointmentDetails);
+
+        console.log("bookAppointmentDoctorDetails obj is below");
+        console.log(this.utilities.bookAppointmentDoctorDetails);
+
+        let doctorId = this.utilities.bookAppointmentDoctorDetails["id"];
+
+        let relativeId = this.utilities.bookAppointmentDetails["relativeId"];
+        let price = this.utilities.bookAppointmentDetails["price"];
+        let dateNtime = this.utilities.bookAppointmentDetails["dateNtime"];
+        let modeId = this.utilities.bookAppointmentDetails["bookableModeId"];
+        let mainComplaint = this.utilities.bookAppointmentDetails[
+          "description"
+        ];
+
+        this.apiService
+          .bookAppointment(
+            doctorId,
+            relativeId,
+            price,
+            dateNtime,
+            modeId,
+            mainComplaint
+          )
+          .subscribe((data) => {
+            console.log("Returned from Backend");
+            console.log(JSON.stringify(data));
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+              console.log(data[0][0]);
+              if (data[0][0]["error"]) {
+                console.log("Something went wrong");
+              }
+            } else {
+              console.log("Returned Success");
+            }
+          });
       }
     }
   }
@@ -68,7 +106,7 @@ export class ModalPage implements OnInit {
   getDoctorConsultantDetails(doctorId) {
     this.apiService
       .getDoctorConsultantDetailsMasters(doctorId)
-      .subscribe(data => {
+      .subscribe((data) => {
         console.log("Returned from Backend");
         console.log(data);
         if (this.utilities.isInvalidApiResponseData(data)) {
@@ -81,11 +119,11 @@ export class ModalPage implements OnInit {
           ) {
             console.log("Received master data");
             let masterData = data[0];
-            masterData.forEach(masterRow => {
+            masterData.forEach((masterRow) => {
               if (masterRow.master_type == "doctorDetails") {
                 this.doctorDetails.push({
                   name: masterRow.colOne,
-                  username: masterRow.colTwo
+                  username: masterRow.colTwo,
                 });
                 this.utilities.bookAppointmentDoctorDetails["name"] =
                   masterRow.colOne;
@@ -96,14 +134,14 @@ export class ModalPage implements OnInit {
                   id: masterRow.colOne,
                   consultationMode: masterRow.colTwo,
                   time: masterRow.colThree,
-                  price: masterRow.colFour
+                  price: masterRow.colFour,
                 });
               } else if (masterRow.master_type == "doctorSlotDetails") {
                 this.doctorSlotDetails.push({
                   clinicId: masterRow.colOne,
                   weekDays: masterRow.colTwo,
                   fromTime: masterRow.colThree,
-                  toTime: masterRow.colFour
+                  toTime: masterRow.colFour,
                 });
                 this.utilities.bookAppointmentDoctorDetails[
                   "doctorSlotDetails"
@@ -121,7 +159,7 @@ export class ModalPage implements OnInit {
   }
 
   findDoctor(uuid) {
-    this.apiService.findDoctor(uuid).subscribe(data => {
+    this.apiService.findDoctor(uuid).subscribe((data) => {
       console.log("Returned from Backend");
       console.log(JSON.stringify(data[0]));
       if (this.utilities.isInvalidApiResponseData(data)) {
@@ -142,12 +180,12 @@ export class ModalPage implements OnInit {
     });
   }
 
-  addDoctor = doctorId => {
+  addDoctor = (doctorId) => {
     console.log("doctorId -> " + doctorId);
     this.commonService.foundDoctor = true;
     this.onCancel();
 
-    this.apiService.addDoctor(doctorId).subscribe(data => {
+    this.apiService.addDoctor(doctorId).subscribe((data) => {
       console.log("Returned from Backend");
       console.log(JSON.stringify(data));
       if (this.utilities.isInvalidApiResponseData(data)) {

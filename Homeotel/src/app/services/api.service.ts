@@ -20,7 +20,7 @@ export class ApiService {
     var body = {
       username,
       email,
-      password
+      password,
     };
     return this.http.post(this.apiUrl + path, body);
   }
@@ -30,7 +30,7 @@ export class ApiService {
     var path = "/user/login";
     var body = {
       username: username,
-      password: password
+      password: password,
     };
     return this.http.post(this.apiUrl + path, body);
   }
@@ -58,7 +58,7 @@ export class ApiService {
     var path = "/user/add-doctor";
     var body = {
       userId: this.utilities.userId,
-      doctorId
+      doctorId,
     };
     return this.http.post(this.apiUrl + path, body);
   }
@@ -70,7 +70,7 @@ export class ApiService {
       userId: this.utilities.userId,
       doctorId,
       kitId,
-      price
+      price,
     };
     return this.http.post(this.apiUrl + path, body);
   }
@@ -79,5 +79,27 @@ export class ApiService {
   getDoctorConsultantDetailsMasters(doctorId) {
     var path = "/user/doctor-consultant-details-masters/" + doctorId;
     return this.http.get(this.apiUrl + path);
+  }
+
+  // Booking an appointment
+  bookAppointment(
+    doctorId,
+    relativeId,
+    price,
+    dateNtime,
+    modeId,
+    mainComplaint
+  ) {
+    var path = "/user/book-appointment";
+    var body = {
+      userId: this.utilities.userId,
+      doctorId,
+      relativeId,
+      price,
+      dateNtime,
+      modeId,
+      mainComplaint,
+    };
+    return this.http.post(this.apiUrl + path, body);
   }
 }

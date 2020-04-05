@@ -5,7 +5,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 @Component({
   selector: "app-consultation-details",
   templateUrl: "./consultation-details.page.html",
-  styleUrls: ["./consultation-details.page.scss"]
+  styleUrls: ["./consultation-details.page.scss"],
 })
 export class ConsultationDetailsPage implements OnInit {
   selectedPerson = 0;
@@ -15,6 +15,8 @@ export class ConsultationDetailsPage implements OnInit {
   modeId;
   slotName;
   slotBookedTimestamp;
+
+  description;
 
   constructor(private router: Router, private utilities: UtilitiesService) {
     this.doctorId = this.utilities.bookAppointmentDoctorDetails["id"];
@@ -46,13 +48,15 @@ export class ConsultationDetailsPage implements OnInit {
 
   goToPaymentgateways() {
     this.utilities.bookAppointmentDetails["relativeId"] = this.selectedPerson;
+    this.utilities.bookAppointmentDetails["description"] = this.description;
     this.utilities.isSlotBookingAction = true;
     this.utilities.isHomeokitPurchaseAction = false;
-    console.log("bookAppointmentDetails obj is below");
-    console.log(this.utilities.bookAppointmentDetails);
 
-    console.log("bookAppointmentDoctorDetails obj is below");
-    console.log(this.utilities.bookAppointmentDoctorDetails);
+    // console.log("bookAppointmentDetails obj is below");
+    // console.log(this.utilities.bookAppointmentDetails);
+
+    // console.log("bookAppointmentDoctorDetails obj is below");
+    // console.log(this.utilities.bookAppointmentDoctorDetails);
 
     console.log("Current User ID -> " + this.utilities.userId);
 

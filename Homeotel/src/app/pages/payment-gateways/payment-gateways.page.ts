@@ -7,7 +7,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 @Component({
   selector: "app-payment-gateways",
   templateUrl: "./payment-gateways.page.html",
-  styleUrls: ["./payment-gateways.page.scss"]
+  styleUrls: ["./payment-gateways.page.scss"],
 })
 export class PaymentGatewaysPage implements OnInit {
   paymentGateways;
@@ -21,29 +21,33 @@ export class PaymentGatewaysPage implements OnInit {
     this.paymentGateways = [
       {
         id: 1,
-        name: "Debit/Credit card"
+        name: "Debit/Credit card",
       },
       {
         id: 2,
-        name: "Net banking"
+        name: "Net banking",
       },
       {
         id: 3,
-        name: "UPI"
+        name: "UPI",
       },
       {
         id: 4,
-        name: "Google Pay"
+        name: "Google Pay",
       },
       {
         id: 5,
-        name: "Paytm Wallet"
-      }
+        name: "Paytm Wallet",
+      },
     ];
   }
 
   ngOnInit() {
-    this.amount = this.commonService.selectedHomeKitCost;
+    if (this.utilities.isHomeokitPurchaseAction) {
+      this.amount = this.commonService.selectedHomeKitCost;
+    } else if (this.utilities.isSlotBookingAction) {
+      this.amount = this.utilities.bookAppointmentDetails["price"];
+    }
   }
 
   async presentModal() {
@@ -59,13 +63,13 @@ export class PaymentGatewaysPage implements OnInit {
       cssClass: "findDoctorModal",
       componentProps: {
         action: "makePayment",
-        paymentFor
-      }
+        paymentFor,
+      },
     });
     return await modal.present();
   }
 
-  makePayment = id => {
+  makePayment = (id) => {
     console.log("Selected payment gateway ID -> " + id);
     this.presentModal();
   };

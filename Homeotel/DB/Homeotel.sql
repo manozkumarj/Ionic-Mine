@@ -46,13 +46,18 @@ CREATE TABLE `d_appointment` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`appointment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_appointment`
 --
 
 /*!40000 ALTER TABLE `d_appointment` DISABLE KEYS */;
+INSERT INTO `d_appointment` (`appointment_id`,`user_id`,`relative_id`,`doctor_id`,`mode_id`,`main_complaint`,`appointment_at`,`booked_at`,`amount_paid`,`payment_status`,`appointment_status`,`advice`,`notes`,`review_date`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (5,1,0,1,3,'Another dess',NULL,NULL,'50',0,0,NULL,NULL,NULL,1,'2020-04-05 08:51:36',1,'2020-04-05 08:51:36'),
+ (6,1,0,1,3,'Another dess',NULL,NULL,'50',0,0,NULL,NULL,NULL,1,'2020-04-05 08:51:40',1,'2020-04-05 08:51:40'),
+ (7,1,0,1,3,'Another dess',NULL,NULL,'50',0,0,NULL,NULL,NULL,1,'2020-04-05 09:01:35',1,'2020-04-05 09:01:35'),
+ (8,1,1,1,4,'dessss','2020-4-12 16:30:00',NULL,'500',0,0,NULL,NULL,NULL,1,'2020-04-05 09:04:12',1,'2020-04-05 09:04:12');
 /*!40000 ALTER TABLE `d_appointment` ENABLE KEYS */;
 
 
@@ -164,16 +169,19 @@ CREATE TABLE `d_transaction` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`) USING BTREE,
-  UNIQUE KEY `user_id` (`user_id`),
-  UNIQUE KEY `transaction_id` (`transaction_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`transaction_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_transaction`
 --
 
 /*!40000 ALTER TABLE `d_transaction` DISABLE KEYS */;
+INSERT INTO `d_transaction` (`transaction_id`,`user_id`,`doctor_id`,`appointment_id`,`kit_id`,`transaction_type_id`,`trasaction_amount`,`taxes`,`charges`,`net_amount`,`transaction_at`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (8,1,1,5,NULL,1,50,0,0,50,NULL,1,'2020-04-05 08:51:36',1,'2020-04-05 08:51:36'),
+ (9,1,1,6,NULL,1,50,0,0,50,NULL,1,'2020-04-05 08:51:40',1,'2020-04-05 08:51:40'),
+ (10,1,1,7,NULL,1,50,0,0,50,NULL,1,'2020-04-05 09:01:35',1,'2020-04-05 09:01:35'),
+ (11,1,1,8,NULL,1,500,0,0,500,NULL,1,'2020-04-05 09:04:12',1,'2020-04-05 09:04:12');
 /*!40000 ALTER TABLE `d_transaction` ENABLE KEYS */;
 
 
@@ -267,6 +275,7 @@ CREATE TABLE `da_diagnosis` (
 
 DROP TABLE IF EXISTS `da_log`;
 CREATE TABLE `da_log` (
+  `log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `doctor_id` int(10) unsigned NOT NULL,
@@ -279,14 +288,19 @@ CREATE TABLE `da_log` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`doctor_id`,`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`log_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_log`
 --
 
 /*!40000 ALTER TABLE `da_log` DISABLE KEYS */;
+INSERT INTO `da_log` (`log_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_id`,`mode_id`,`appointment_at`,`appointment_status`,`is_latest`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (3,1,0,1,5,3,NULL,0,0,1,'2020-04-05 08:51:36',1,'2020-04-05 08:51:36'),
+ (4,1,0,1,6,3,NULL,0,0,1,'2020-04-05 08:51:40',1,'2020-04-05 08:51:40'),
+ (5,1,0,1,7,3,NULL,0,0,1,'2020-04-05 09:01:35',1,'2020-04-05 09:01:35'),
+ (6,1,1,1,8,4,'2020-4-12 16:30:00',0,0,1,'2020-04-05 09:04:12',1,'2020-04-05 09:04:12');
 /*!40000 ALTER TABLE `da_log` ENABLE KEYS */;
 
 
@@ -470,7 +484,7 @@ CREATE TABLE `dk_order` (
   `order_status` varchar(45) DEFAULT NULL,
   `created_at` varchar(45) NOT NULL,
   PRIMARY KEY (`id`,`doctor_id`,`user_id`,`kit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dk_order`
@@ -1905,7 +1919,7 @@ DROP PROCEDURE IF EXISTS `sp_user_book_appointment`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_book_appointment`(IN IN_doctor_id INT, IN user_id INT, IN relative_id INT,
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_book_appointment`(IN IN_doctor_id INT, IN IN_user_id INT, IN IN_relative_id INT,
                                                                        IN IN_mode_id INT, IN IN_appointment_at VARCHAR(255),
                                                                        IN IN_amount_paid VARCHAR(255), IN IN_main_complaint VARCHAR(255))
 BEGIN
