@@ -14,6 +14,7 @@ export class UtilitiesService {
 
   bookAppointmentDoctorDetails = {};
   bookAppointmentDetails = {};
+  selectedAppointmentComplaintDetails = {};
   bookableModeId;
 
   constructor(private router: Router) {}

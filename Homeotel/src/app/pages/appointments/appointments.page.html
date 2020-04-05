@@ -52,17 +52,21 @@
             </ion-col>
             <ion-col [routerLink]="['/appointment-details']">
               <p class="docName">
-                {{upcomingAppointment.username | uppercase}}
+                {{upcomingAppointment.doctorName | uppercase}}
               </p>
               <p>
                 {{upcomingAppointment.mode_id == 1 ? "Video consultation" :
                 (upcomingAppointment.mode_id == 2 ? "Audio consultation" :
                 (upcomingAppointment.mode_id == 3 ? "Chat consultation" :
-                "Personal visit"))}} for Rama Krishna
+                "Personal visit"))}} for {{upcomingAppointment.username |
+                uppercase}}
               </p>
-              <p>{{upcomingAppointment.appointment_at}}</p>
+              <p style="color: #999;">{{upcomingAppointment.appointment_at}}</p>
             </ion-col>
-            <ion-col size="3" [routerLink]="['/appointment-questions', 1]">
+            <ion-col
+              size="3"
+              (click)="addDetails(upcomingAppointment.appointment_id)"
+            >
               <button class="btn appoinmentButton">
                 Add Details
               </button>
@@ -107,17 +111,21 @@
             </ion-col>
             <ion-col [routerLink]="['/appointment-details']">
               <p class="docName">
-                {{previousAppointment.username | uppercase}}
+                {{previousAppointment.doctorName | uppercase}}
               </p>
               <p>
                 {{previousAppointment.mode_id == 1 ? "Video consultation" :
                 (previousAppointment.mode_id == 2 ? "Audio consultation" :
                 (previousAppointment.mode_id == 3 ? "Chat consultation" :
-                "Personal visit"))}} for Rama Krishna
+                "Personal visit"))}} for {{previousAppointment.username |
+                uppercase}}
               </p>
-              <p>{{previousAppointment.appointment_at}}</p>
+              <p style="color: #999;">{{previousAppointment.appointment_at}}</p>
             </ion-col>
-            <ion-col size="3" [routerLink]="['/appointment-questions', 1]">
+            <ion-col
+              size="3"
+              (click)="addDetails(previousAppointment.appointment_id)"
+            >
               <button class="btn appoinmentButton">
                 Add Details
               </button>

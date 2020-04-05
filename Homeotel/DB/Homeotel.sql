@@ -220,6 +220,7 @@ INSERT INTO `d_user` (`user_id`,`username`,`email`,`password`,`created_at`) VALU
 
 DROP TABLE IF EXISTS `da_complaint_detail`;
 CREATE TABLE `da_complaint_detail` (
+  `complaint_detail_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL DEFAULT 0,
   `doctor_id` int(10) unsigned NOT NULL,
@@ -232,7 +233,7 @@ CREATE TABLE `da_complaint_detail` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`,`doctor_id`)
+  PRIMARY KEY (`complaint_detail_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1953,7 +1954,10 @@ DECLARE exit handler for sqlwarning
 
 END;
 
-    SELECT * FROM d_appointment d LEFT JOIN d_user u ON d.user_id = u.user_id where d.user_id = IN_userId;
+    SELECT a.appointment_id,a.user_id,a.relative_id,a.doctor_id, a.mode_id, a.appointment_at,a.amount_paid,a.appointment_status,u.username,d.name AS doctorName
+    FROM d_appointment a LEFT JOIN d_user u ON a.user_id = u.user_id
+     LEFT JOIN d_doctor d ON a.doctor_id = d.id
+     where a.user_id = IN_userId;
 
 
 END $$
@@ -2013,9 +2017,74 @@ START TRANSACTION;
      VALUES (appointmentId, IN_user_id,IN_relative_id,IN_doctor_id,IN_mode_id,IN_appointment_at,IN_user_id,IN_user_id,now(),now());
 
 
-     INSERT INTO d_transaction (appointment_id, user_id, doctor_id, transaction_type_id, trasaction_amount,
+     INSERT INTO d_transaction (appointment_id, user_id, doctor_id, transaction_type_id, trasaction_amount, trasaction_at,
      net_amount, taxes, charges, created_by, updated_by, created_at, updated_at)
-     VALUES (appointmentId, IN_user_id,IN_doctor_id,1,IN_amount_paid,IN_amount_paid,0,0,IN_user_id,IN_user_id,now(),now());
+     VALUES (appointmentId, IN_user_id,IN_doctor_id,1,IN_amount_paid,now(),IN_amount_paid,0,0,IN_user_id,IN_user_id,now(),now());
+
+
+
+COMMIT;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_complaint_detail`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_complaint_detail`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_complaint_detail`(IN IN_appointment_id INT,IN IN_user_id INT,
+                                                                       IN IN_doctor_id INT, IN IN_relative_id INT,
+                                                                       IN IN_is_recurring INT, IN IN_recurring_freq INT,
+                                                                       IN IN_severity_id INT,
+                                                                       IN IN_complaint_description VARCHAR(255))
+BEGIN
+
+DECLARE Var_id INT;
+
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+START TRANSACTION;
+
+
+ Set Var_id = (SELECT count(*) FROM da_complaint_detail d where appointment_id=IN_appointment_id);
+
+
+  IF (Var_id !=0) Then
+     INSERT INTO da_complaint_detail (user_id, doctor_id, relative_id, appointment_id, is_recurring, recurring_freq,
+     severity_id, complaint_description, created_by, updated_by, created_at, updated_at)
+     VALUES (IN_user_id, IN_doctor_id, IN_relative_id,IN_appointment_id,IN_is_recurring, IN_recurring_freq,
+     IN_severity_id, IN_complaint_description,IN_user_id,IN_user_id,now(),now());
+  ELSE
+     UPDATE da_complaint_detail SET is_recurring = IN_is_recurring, recurring_freq = IN_recurring_freq,
+     severity_id = IN_severity_id, complaint_description = IN_complaint_description, updated_by = IN_user_id,
+     updated_at = now();
+
+ END IF;
 
 
 
@@ -2194,8 +2263,8 @@ START TRANSACTION;
      VALUES (IN_userId,IN_doctorId,IN_kitId,IN_price,'completed',now());
 
      INSERT INTO d_transaction (kit_id, user_id, doctor_id, transaction_type_id, trasaction_amount,
-     net_amount, taxes, charges, created_by, updated_by, created_at, updated_at)
-     VALUES (IN_kitId, IN_userId,IN_doctorId,3,IN_price,IN_price,0,0,IN_userId,IN_userId,now(),now());
+     net_amount, taxes, charges, trasaction_at, created_by, updated_by, created_at, updated_at)
+     VALUES (IN_kitId, IN_userId,IN_doctorId,3,IN_price,IN_price,0,0,now(),IN_userId,IN_userId,now(),now());
 
 
 COMMIT;
