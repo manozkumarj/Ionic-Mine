@@ -27,66 +27,114 @@
   </ion-tabs>
 
   <div style="margin-top: 70px;">
-    <ion-grid class="grid doctorGrid">
-      <ion-row style="color: #000; background: #fff;">
-        <ion-col size="2" [routerLink]="['/appointment-details']">
-          <p
-            style="
-              margin: 0;
-              margin-top: 15px;
-              padding: 6px;
-              text-align: center;
-            "
-          >
-            <img
-              src="assets/images/milinda.jpg"
-              height="50px"
-              style="border-radius: 100%;"
-            />
-          </p>
-        </ion-col>
-        <ion-col [routerLink]="['/appointment-details']">
-          <p class="docName">Dr. Swapna Kunduru</p>
-          <p>Audio consultation for Rama Krishna</p>
-          <p>Active now</p>
-        </ion-col>
-        <ion-col size="3">
-          <button class="btn appoinmentButton">
-            Call Now
-          </button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+    <div *ngIf="selectedTab == 1">
+      <div *ngIf="upcomingAppointments.length > 0; else noUpcomingAppointments">
+        <ion-grid
+          *ngFor="let upcomingAppointment of upcomingAppointments"
+          class="grid doctorGrid"
+        >
+          <ion-row style="color: #000; background: #fff;">
+            <ion-col size="2" [routerLink]="['/appointment-details']">
+              <p
+                style="
+                  margin: 0;
+                  margin-top: 15px;
+                  padding: 6px;
+                  text-align: center;
+                "
+              >
+                <img
+                  src="assets/images/zuck.jpg"
+                  height="50px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col [routerLink]="['/appointment-details']">
+              <p class="docName">
+                {{upcomingAppointment.username | uppercase}}
+              </p>
+              <p>
+                {{upcomingAppointment.mode_id == 1 ? "Video consultation" :
+                (upcomingAppointment.mode_id == 2 ? "Audio consultation" :
+                (upcomingAppointment.mode_id == 3 ? "Chat consultation" :
+                "Personal visit"))}} for Rama Krishna
+              </p>
+              <p>{{upcomingAppointment.appointment_at}}</p>
+            </ion-col>
+            <ion-col size="3" [routerLink]="['/appointment-questions', 1]">
+              <button class="btn appoinmentButton">
+                Add Details
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
 
-    <ion-grid class="grid doctorGrid">
-      <ion-row style="color: #000; background: #fff;">
-        <ion-col size="2" [routerLink]="['/appointment-details']">
-          <p
-            style="
-              margin: 0;
-              margin-top: 15px;
-              padding: 6px;
-              text-align: center;
-            "
-          >
-            <img
-              src="assets/images/zuck.jpg"
-              height="50px"
-              style="border-radius: 100%;"
-            />
-          </p>
-        </ion-col>
-        <ion-col [routerLink]="['/appointment-details']">
-          <p class="docName">Dr. Abraham Gosh</p>
-          <p>Audio consultation for Rama Krishna</p>
-          <p>24 Mar 4:45 PM</p>
-        </ion-col>
-        <ion-col size="3" [routerLink]="['/appointment-questions', 1]">
-          <button class="btn appoinmentButton">
-            Add Details
-          </button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+        <ng-template #noUpcomingAppointments>
+          <ion-grid class="noResultsGrid">
+            <ion-row>
+              <ion-col>
+                There are no Upcoming appointments
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ng-template>
+      </div>
+    </div>
+
+    <div *ngIf="selectedTab == 2">
+      <div *ngIf="previousAppointments.length > 0; else noPreviousAppointments">
+        <ion-grid
+          *ngFor="let previousAppointment of previousAppointments"
+          class="grid doctorGrid"
+        >
+          <ion-row style="color: #000; background: #fff;">
+            <ion-col size="2" [routerLink]="['/appointment-details']">
+              <p
+                style="
+                  margin: 0;
+                  margin-top: 15px;
+                  padding: 6px;
+                  text-align: center;
+                "
+              >
+                <img
+                  src="assets/images/zuck.jpg"
+                  height="50px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col [routerLink]="['/appointment-details']">
+              <p class="docName">
+                {{previousAppointment.username | uppercase}}
+              </p>
+              <p>
+                {{previousAppointment.mode_id == 1 ? "Video consultation" :
+                (previousAppointment.mode_id == 2 ? "Audio consultation" :
+                (previousAppointment.mode_id == 3 ? "Chat consultation" :
+                "Personal visit"))}} for Rama Krishna
+              </p>
+              <p>{{previousAppointment.appointment_at}}</p>
+            </ion-col>
+            <ion-col size="3" [routerLink]="['/appointment-questions', 1]">
+              <button class="btn appoinmentButton">
+                Add Details
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ng-template #noPreviousAppointments>
+          <ion-grid class="noResultsGrid">
+            <ion-row>
+              <ion-col>
+                There are no previous appointments
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ng-template>
+      </div>
+    </div>
   </div>
 </ion-content>

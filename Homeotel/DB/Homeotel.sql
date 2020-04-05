@@ -54,10 +54,10 @@ CREATE TABLE `d_appointment` (
 
 /*!40000 ALTER TABLE `d_appointment` DISABLE KEYS */;
 INSERT INTO `d_appointment` (`appointment_id`,`user_id`,`relative_id`,`doctor_id`,`mode_id`,`main_complaint`,`appointment_at`,`booked_at`,`amount_paid`,`payment_status`,`appointment_status`,`advice`,`notes`,`review_date`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (5,1,0,1,3,'Another dess',NULL,NULL,'50',0,0,NULL,NULL,NULL,1,'2020-04-05 08:51:36',1,'2020-04-05 08:51:36'),
- (6,1,0,1,3,'Another dess',NULL,NULL,'50',0,0,NULL,NULL,NULL,1,'2020-04-05 08:51:40',1,'2020-04-05 08:51:40'),
- (7,1,0,1,3,'Another dess',NULL,NULL,'50',0,0,NULL,NULL,NULL,1,'2020-04-05 09:01:35',1,'2020-04-05 09:01:35'),
- (8,1,1,1,4,'dessss','2020-4-12 16:30:00',NULL,'500',0,0,NULL,NULL,NULL,1,'2020-04-05 09:04:12',1,'2020-04-05 09:04:12');
+ (5,1,0,1,3,'Another dess','2020-4-12 16:30:01',NULL,'50',0,1,NULL,NULL,NULL,1,'2020-04-05 08:51:36',1,'2020-04-05 08:51:36'),
+ (6,1,0,1,3,'Another dess','2020-4-12 16:30:02',NULL,'50',0,0,NULL,NULL,NULL,1,'2020-04-05 08:51:40',1,'2020-04-05 08:51:40'),
+ (7,1,0,1,3,'Another dess','2020-4-12 16:30:03',NULL,'50',0,1,NULL,NULL,NULL,1,'2020-04-05 09:01:35',1,'2020-04-05 09:01:35'),
+ (8,1,1,1,4,'dessss','2020-4-12 16:30:04',NULL,'500',0,0,NULL,NULL,NULL,1,'2020-04-05 09:04:12',1,'2020-04-05 09:04:12');
 /*!40000 ALTER TABLE `d_appointment` ENABLE KEYS */;
 
 
@@ -1924,6 +1924,44 @@ END $$
 DELIMITER ;
 
 --
+-- Definition of procedure `sp_user_appointments_get`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_appointments_get`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_appointments_get`(IN IN_userId INT)
+BEGIN
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+    SELECT * FROM d_appointment d LEFT JOIN d_user u ON d.user_id = u.user_id where d.user_id = IN_userId;
+
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
 -- Definition of procedure `sp_user_book_appointment`
 --
 
@@ -2154,6 +2192,10 @@ START TRANSACTION;
 
      INSERT INTO dk_order (user_id,doctor_id,kit_id,amount_paid,order_status,created_at)
      VALUES (IN_userId,IN_doctorId,IN_kitId,IN_price,'completed',now());
+
+     INSERT INTO d_transaction (kit_id, user_id, doctor_id, transaction_type_id, trasaction_amount,
+     net_amount, taxes, charges, created_by, updated_by, created_at, updated_at)
+     VALUES (IN_kitId, IN_userId,IN_doctorId,3,IN_price,IN_price,0,0,IN_userId,IN_userId,now(),now());
 
 
 COMMIT;

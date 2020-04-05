@@ -54,6 +54,12 @@ export class ApiService {
     return this.http.get(this.apiUrl + path);
   }
 
+  // getting user's appointments
+  getAppointments() {
+    var path = "/user/appointments/" + this.utilities.userId;
+    return this.http.get(this.apiUrl + path);
+  }
+
   // adding doctor to user
   addDoctor(doctorId) {
     var path = "/user/add-doctor";

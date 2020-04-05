@@ -116,6 +116,20 @@ router.get("/doctor-homeokits/:doctorId/:userId", (req, res) => {
   );
 });
 
+// getting user's appointments
+router.get("/appointments/:userId", (req, res) => {
+  var userId = req.params.userId;
+  console.log("Received userId -> " + userId);
+  var params = [userId];
+
+  db.executeQuery(
+    "call sp_user_appointments_get(?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 // adding doctor to user
 router.post("/add-doctor", (req, res) => {
   var userId = req.body.userId;
