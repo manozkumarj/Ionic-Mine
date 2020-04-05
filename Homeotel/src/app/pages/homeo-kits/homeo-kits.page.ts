@@ -12,6 +12,7 @@ import { ApiService } from "src/app/services/api.service";
 export class HomeoKitsPage implements OnInit {
   doctorId;
   homeokits: any[] = [];
+  orderedHomeokits: any[] = [];
   selectedTab = 1;
 
   constructor(
@@ -45,7 +46,7 @@ export class HomeoKitsPage implements OnInit {
   getCurrentDoctorsHomeokits(doctorId) {
     this.apiService.getCurrentDoctorsHomeokits(doctorId).subscribe((data) => {
       console.log("Returned from Backend");
-      console.log(JSON.stringify(data));
+      // console.log(JSON.stringify(data));
       if (this.utilities.isInvalidApiResponseData(data)) {
         console.log("Returned Error");
       } else {
@@ -54,8 +55,25 @@ export class HomeoKitsPage implements OnInit {
           typeof data[0] != "undefined" &&
           typeof data[0][0] != "undefined"
         ) {
-          console.log("Has homeokits");
           this.homeokits = data[0];
+          if (this.homeokits.length > 0) {
+            console.log("Has homeokits - Homeokits showing below");
+            console.log(this.homeokits);
+          } else {
+            console.log("There are no homeokits");
+          }
+
+          console.log("***********************************************");
+
+          this.orderedHomeokits = data[1];
+          if (this.orderedHomeokits.length > 0) {
+            console.log(
+              "Has purchased homeokits - purchased Homeokits showing below"
+            );
+            console.log(this.orderedHomeokits);
+          } else {
+            console.log("There are no purchased homeokits");
+          }
         } else {
           console.log("No homeokits");
         }

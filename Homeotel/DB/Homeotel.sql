@@ -486,7 +486,7 @@ CREATE TABLE `dk_order` (
   `order_status` varchar(45) DEFAULT NULL,
   `created_at` varchar(45) NOT NULL,
   PRIMARY KEY (`id`,`doctor_id`,`user_id`,`kit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dk_order`
@@ -494,8 +494,8 @@ CREATE TABLE `dk_order` (
 
 /*!40000 ALTER TABLE `dk_order` DISABLE KEYS */;
 INSERT INTO `dk_order` (`id`,`user_id`,`doctor_id`,`kit_id`,`amount_paid`,`order_status`,`created_at`) VALUES 
- (1,1,1,2,'$100','completed','2020-04-01 23:23:22'),
- (3,1,1,2,'$100','completed','2020-04-05 09:33:47');
+ (1,1,1,2,'100','completed','2020-04-01 23:23:22'),
+ (4,1,2,3,'300','completed','2020-04-05 11:56:59');
 /*!40000 ALTER TABLE `dk_order` ENABLE KEYS */;
 
 
@@ -1644,9 +1644,12 @@ END;
 
      IF (IN_doctorId = 0) THEN
         SELECT * FROM dd_kit d where doctor_id IN (SELECT concat(doctor_id) FROM du_doctor where user_id=IN_userId);
+        SELECT o.kit_id, o.created_at, k.name, k.description, k.price FROM dk_order o LEFT JOIN dd_kit k ON o.kit_id = k.kit_id WHERE user_id=IN_userId;
      ELSE
         SELECT * FROM dd_kit d where doctor_id = IN_doctorId;
+        SELECT o.kit_id, o.created_at, k.name, k.description, k.price FROM dk_order o LEFT JOIN dd_kit k ON o.kit_id = k.kit_id WHERE o.doctor_id = IN_doctorId AND o.user_id=IN_userId;
      END IF;
+
 
 
 END $$

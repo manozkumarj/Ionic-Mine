@@ -27,50 +27,97 @@
   </ion-tabs>
 
   <div style="margin-top: 70px;">
-    <div *ngIf="homeokits.length > 0; else noHomeokits">
-      <ion-grid *ngFor="let homeokit of homeokits" class="grid doctorGrid">
-        <ion-row style="color: #000; background: #fff;">
-          <ion-col size="2">
-            <p
-              style="
-                margin: 0;
-                margin-top: 15px;
-                padding: 6px;
-                text-align: center;
-              "
-            >
-              <img
-                src="https://picsum.photos/200"
-                height="50px"
-                style="border-radius: 100%;"
-              />
-            </p>
-          </ion-col>
-          <ion-col>
-            <p class="docName">{{homeokit.name}}</p>
-            <p>{{homeokit.description}}</p>
-          </ion-col>
-          <ion-col size="3">
-            <p>${{homeokit.price}}</p>
-            <button
-              class="btn appoinmentButton"
-              (click)="buyKit(homeokit.doctor_id, homeokit.kit_id, homeokit.price)"
-            >
-              Buy Now
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+    <div *ngIf="selectedTab == 1">
+      <div *ngIf="homeokits.length > 0; else noHomeokits">
+        <ion-grid *ngFor="let homeokit of homeokits" class="grid doctorGrid">
+          <ion-row style="color: #000; background: #fff;">
+            <ion-col size="2">
+              <p
+                style="
+                  margin: 0;
+                  margin-top: 15px;
+                  padding: 6px;
+                  text-align: center;
+                "
+              >
+                <img
+                  src="https://picsum.photos/200"
+                  height="50px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col>
+              <p class="docName">{{homeokit.name}}</p>
+              <p>{{homeokit.description}}</p>
+            </ion-col>
+            <ion-col size="3">
+              <p>${{homeokit.price}}</p>
+              <button
+                class="btn appoinmentButton"
+                (click)="buyKit(homeokit.doctor_id, homeokit.kit_id, homeokit.price)"
+              >
+                Buy Now
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <ng-template #noHomeokits>
+        <ion-grid class="noResultsGrid">
+          <ion-row>
+            <ion-col>
+              No Homeokits found
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
     </div>
 
-    <ng-template #noHomeokits>
-      <ion-grid class="noResultsGrid">
-        <ion-row>
-          <ion-col>
-            No Homeokits found
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ng-template>
+    <div *ngIf="selectedTab == 2">
+      <div *ngIf="orderedHomeokits.length > 0; else noOrderedHomeokits">
+        <ion-grid
+          *ngFor="let orderedHomeokit of orderedHomeokits"
+          class="grid doctorGrid"
+        >
+          <ion-row style="color: #000; background: #fff;">
+            <ion-col size="2">
+              <p
+                style="
+                  margin: 0;
+                  margin-top: 15px;
+                  padding: 6px;
+                  text-align: center;
+                "
+              >
+                <img
+                  src="https://picsum.photos/200"
+                  height="50px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col>
+              <p class="docName">{{orderedHomeokit.name}}</p>
+              <p>{{orderedHomeokit.description}}</p>
+            </ion-col>
+            <ion-col size="3">
+              <p>${{orderedHomeokit.price}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <ng-template #noOrderedHomeokits>
+        <ion-grid class="noResultsGrid">
+          <ion-row>
+            <ion-col>
+              There are no ordered Homeokits
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
+    </div>
   </div>
 </ion-content>
