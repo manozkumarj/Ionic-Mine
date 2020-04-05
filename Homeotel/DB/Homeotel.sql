@@ -375,7 +375,7 @@ CREATE TABLE `dd_kit` (
   `is_active` int(10) DEFAULT 0,
   `created_at` varchar(45) NOT NULL,
   PRIMARY KEY (`kit_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dd_kit`
@@ -383,8 +383,10 @@ CREATE TABLE `dd_kit` (
 
 /*!40000 ALTER TABLE `dd_kit` DISABLE KEYS */;
 INSERT INTO `dd_kit` (`kit_id`,`doctor_id`,`name`,`price`,`description`,`is_active`,`created_at`) VALUES 
- (1,1,'First aid kit','$250','First aid kit is useful in emergency',1,'2020-04-01 14:36:19'),
- (2,1,'Sanitizer','$100','Sanitizer kit is useful in emergency',1,'2020-04-01 14:38:19');
+ (1,1,'First aid kit','250','First aid kit is useful in emergency',1,'2020-04-01 14:36:19'),
+ (2,1,'Sanitizer','100','Sanitizer kit is useful in emergency',1,'2020-04-01 14:38:19'),
+ (3,2,'Second doctor kit-1','300','Second doctor homeo kit',1,'2020-04-03 11:00:19'),
+ (4,2,'Second kit-2 doctor','350','Second homeokit 2 set',1,'2020-04-03 14:38:19');
 /*!40000 ALTER TABLE `dd_kit` ENABLE KEYS */;
 
 
@@ -484,7 +486,7 @@ CREATE TABLE `dk_order` (
   `order_status` varchar(45) DEFAULT NULL,
   `created_at` varchar(45) NOT NULL,
   PRIMARY KEY (`id`,`doctor_id`,`user_id`,`kit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dk_order`
@@ -492,7 +494,8 @@ CREATE TABLE `dk_order` (
 
 /*!40000 ALTER TABLE `dk_order` DISABLE KEYS */;
 INSERT INTO `dk_order` (`id`,`user_id`,`doctor_id`,`kit_id`,`amount_paid`,`order_status`,`created_at`) VALUES 
- (1,1,1,2,'$100','completed','2020-04-01 23:23:22');
+ (1,1,1,2,'$100','completed','2020-04-01 23:23:22'),
+ (3,1,1,2,'$100','completed','2020-04-05 09:33:47');
 /*!40000 ALTER TABLE `dk_order` ENABLE KEYS */;
 
 
@@ -1616,8 +1619,10 @@ DROP PROCEDURE IF EXISTS `sp_doctor_kits_get`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_doctor_kits_get`(IN IN_doctor_id INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_doctor_kits_get`(IN IN_doctorId INT, IN IN_userId INT)
 BEGIN
+
+DECLARE doctorId INT;
 
 DECLARE exit handler for sqlexception
   BEGIN
@@ -1637,8 +1642,13 @@ DECLARE exit handler for sqlwarning
 
 END;
 
+     IF (IN_doctorId = 0) THEN
+        SELECT * FROM dd_kit d where doctor_id IN (SELECT concat(doctor_id) FROM du_doctor where user_id=IN_userId);
+     ELSE
+        SELECT * FROM dd_kit d where doctor_id = IN_doctorId;
+     END IF;
 
-  SELECT * FROM dd_kit d where doctor_id = IN_doctor_id;
+
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 

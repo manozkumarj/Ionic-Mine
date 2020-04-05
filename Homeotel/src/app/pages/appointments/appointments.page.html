@@ -8,43 +8,85 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="grid doctorGrid">
-    <ion-row style="color: #000; background: #fff;">
-      <ion-col size="2" [routerLink]="['/appointment-details']">
-        <p style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;">
-          <img src="assets/images/milinda.jpg" height="50px" style="border-radius: 100%;" />
-        </p>
-      </ion-col>
-      <ion-col [routerLink]="['/appointment-details']">
-        <p class="docName">Dr. Swapna Kunduru</p>
-        <p>Audio consultation for Rama Krishna</p>
-        <p>Active now</p>
-      </ion-col>
-      <ion-col size="3">
-        <button class="btn appoinmentButton">
-          Call Now
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-tabs>
+    <ion-tab-bar slot="top">
+      <ion-tab-button
+        (click)="togglingTabs(1)"
+        [style.border-bottom]="selectedTab ==1 ? '4px solid white' : '4px solid #0a9f28'"
+      >
+        <ion-label><span class="tabItem">Upcoming</span></ion-label>
+      </ion-tab-button>
 
-  <ion-grid class="grid doctorGrid">
-    <ion-row style="color: #000; background: #fff;">
-      <ion-col size="2" [routerLink]="['/appointment-details']">
-        <p style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;">
-          <img src="assets/images/zuck.jpg" height="50px" style="border-radius: 100%;" />
-        </p>
-      </ion-col>
-      <ion-col [routerLink]="['/appointment-details']">
-        <p class="docName">Dr. Abraham Gosh</p>
-        <p>Audio consultation for Rama Krishna</p>
-        <p>24 Mar 4:45 PM</p>
-      </ion-col>
-      <ion-col size="3" [routerLink]="['/appointment-questions', 1]">
-        <button class="btn appoinmentButton">
-          Add Details
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+      <ion-tab-button
+        (click)="togglingTabs(2)"
+        [style.border-bottom]="selectedTab ==2 ? '4px solid white' : '4px solid #0a9f28'"
+      >
+        <ion-label><span class="tabItem">Previous</span></ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+
+  <div style="margin-top: 70px;">
+    <ion-grid class="grid doctorGrid">
+      <ion-row style="color: #000; background: #fff;">
+        <ion-col size="2" [routerLink]="['/appointment-details']">
+          <p
+            style="
+              margin: 0;
+              margin-top: 15px;
+              padding: 6px;
+              text-align: center;
+            "
+          >
+            <img
+              src="assets/images/milinda.jpg"
+              height="50px"
+              style="border-radius: 100%;"
+            />
+          </p>
+        </ion-col>
+        <ion-col [routerLink]="['/appointment-details']">
+          <p class="docName">Dr. Swapna Kunduru</p>
+          <p>Audio consultation for Rama Krishna</p>
+          <p>Active now</p>
+        </ion-col>
+        <ion-col size="3">
+          <button class="btn appoinmentButton">
+            Call Now
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid class="grid doctorGrid">
+      <ion-row style="color: #000; background: #fff;">
+        <ion-col size="2" [routerLink]="['/appointment-details']">
+          <p
+            style="
+              margin: 0;
+              margin-top: 15px;
+              padding: 6px;
+              text-align: center;
+            "
+          >
+            <img
+              src="assets/images/zuck.jpg"
+              height="50px"
+              style="border-radius: 100%;"
+            />
+          </p>
+        </ion-col>
+        <ion-col [routerLink]="['/appointment-details']">
+          <p class="docName">Dr. Abraham Gosh</p>
+          <p>Audio consultation for Rama Krishna</p>
+          <p>24 Mar 4:45 PM</p>
+        </ion-col>
+        <ion-col size="3" [routerLink]="['/appointment-questions', 1]">
+          <button class="btn appoinmentButton">
+            Add Details
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>

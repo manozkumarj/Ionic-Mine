@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-appointments',
-  templateUrl: './appointments.page.html',
-  styleUrls: ['./appointments.page.scss'],
+  selector: "app-appointments",
+  templateUrl: "./appointments.page.html",
+  styleUrls: ["./appointments.page.scss"],
 })
 export class AppointmentsPage implements OnInit {
+  selectedTab = 1;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  togglingTabs(tab) {
+    this.selectedTab = tab;
   }
-
 }

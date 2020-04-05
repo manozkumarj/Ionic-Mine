@@ -9,10 +9,10 @@ var pool = mysql.createPool({
   password: config.password,
   database: config.database,
   debug: false,
-  dateStrings: "date"
+  dateStrings: "date",
 });
 
-pool.getConnection(function(err, connection) {
+pool.getConnection(function (err, connection) {
   if (err) {
     console.log("Error, Connection was failed");
     console.log("sqlMessage => " + err.sqlMessage);
@@ -26,17 +26,17 @@ pool.getConnection(function(err, connection) {
 });
 
 function executeQuery(strQuery, params, res, responseSenderCallback) {
-  pool.getConnection(function(err, connection) {
+  pool.getConnection(function (err, connection) {
     if (err) {
       //console.log("error -> " + err);
       res.json({
         code: 100,
         status: "Error in connection database",
-        error: err
+        error: err,
       });
       return;
     }
-    connection.query(strQuery, params, function(err, rows) {
+    connection.query(strQuery, params, function (err, rows) {
       connection.release();
       if (!err) {
         //console.log("response -> " + JSON.stringify(rows));
@@ -45,7 +45,7 @@ function executeQuery(strQuery, params, res, responseSenderCallback) {
         //console.log("query -> " + strQuery + "; error -> " + err);
         res.json({
           error:
-            "Something went wrong while running your request. Please contact admin."
+            "Something went wrong while running your request. Please contact admin.",
         });
       }
     });

@@ -49,7 +49,8 @@ export class ApiService {
 
   // getting doctor's homeokits
   getCurrentDoctorsHomeokits(doctorId) {
-    var path = "/user/doctor-homeokits/" + doctorId;
+    var path =
+      "/user/doctor-homeokits/" + doctorId + "/" + this.utilities.userId;
     return this.http.get(this.apiUrl + path);
   }
 

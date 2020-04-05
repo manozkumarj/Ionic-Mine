@@ -7,11 +7,12 @@ import { ApiService } from "src/app/services/api.service";
 @Component({
   selector: "app-homeo-kits",
   templateUrl: "./homeo-kits.page.html",
-  styleUrls: ["./homeo-kits.page.scss"]
+  styleUrls: ["./homeo-kits.page.scss"],
 })
 export class HomeoKitsPage implements OnInit {
   doctorId;
   homeokits: any[] = [];
+  selectedTab = 1;
 
   constructor(
     private router: Router,
@@ -20,21 +21,31 @@ export class HomeoKitsPage implements OnInit {
     private apiService: ApiService,
     private utilities: UtilitiesService
   ) {
-    this.doctorId = parseInt(
-      this.activatedRoute.snapshot.paramMap.get("doctor-id")
-    );
-    console.log("this.doctorId -> " + this.doctorId);
-    if (this.doctorId) {
-      this.getCurrentDoctorsHomeokits(this.doctorId);
+    if (this.activatedRoute.snapshot.paramMap.get("doctor-id")) {
+      this.doctorId = parseInt(
+        this.activatedRoute.snapshot.paramMap.get("doctor-id")
+      );
+      console.log("Need to show specific doctor's Homeokits");
+      console.log("this.doctorId -> " + this.doctorId);
+      if (this.doctorId) {
+        this.getCurrentDoctorsHomeokits(this.doctorId);
+      }
+    } else {
+      console.log("Need to show all Homeokits");
+      this.getCurrentDoctorsHomeokits(0);
     }
   }
 
   ngOnInit() {}
 
+  togglingTabs(tab) {
+    this.selectedTab = tab;
+  }
+
   getCurrentDoctorsHomeokits(doctorId) {
-    this.apiService.getCurrentDoctorsHomeokits(doctorId).subscribe(data => {
+    this.apiService.getCurrentDoctorsHomeokits(doctorId).subscribe((data) => {
       console.log("Returned from Backend");
-      console.log(JSON.stringify(data[0]));
+      console.log(JSON.stringify(data));
       if (this.utilities.isInvalidApiResponseData(data)) {
         console.log("Returned Error");
       } else {

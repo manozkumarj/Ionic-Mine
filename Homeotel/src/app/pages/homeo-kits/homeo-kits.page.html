@@ -8,44 +8,69 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="homeokits.length > 0; else noHomeokits">
-    <ion-grid *ngFor="let homeokit of homeokits" class="grid doctorGrid">
-      <ion-row style="color: #000; background: #fff;">
-        <ion-col size="2">
-          <p
-            style="margin: 0; margin-top: 15px; padding: 6px; text-align: center;"
-          >
-            <img
-              src="https://picsum.photos/200"
-              height="50px"
-              style="border-radius: 100%;"
-            />
-          </p>
-        </ion-col>
-        <ion-col>
-          <p class="docName">{{homeokit.name}}</p>
-          <p>{{homeokit.description}}</p>
-        </ion-col>
-        <ion-col size="3">
-          <p>{{homeokit.price}}</p>
-          <button
-            class="btn appoinmentButton"
-            (click)="buyKit(homeokit.doctor_id, homeokit.kit_id, homeokit.price)"
-          >
-            Buy Now
-          </button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+  <ion-tabs>
+    <ion-tab-bar slot="top">
+      <ion-tab-button
+        (click)="togglingTabs(1)"
+        [style.border-bottom]="selectedTab ==1 ? '4px solid white' : '4px solid #0a9f28'"
+      >
+        <ion-label><span class="tabItem">Buy</span></ion-label>
+      </ion-tab-button>
 
-  <ng-template #noHomeokits>
-    <ion-grid class="noResultsGrid">
-      <ion-row>
-        <ion-col>
-          No Homeokits found
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ng-template>
+      <ion-tab-button
+        (click)="togglingTabs(2)"
+        [style.border-bottom]="selectedTab ==2 ? '4px solid white' : '4px solid #0a9f28'"
+      >
+        <ion-label><span class="tabItem">Orders</span></ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+
+  <div style="margin-top: 70px;">
+    <div *ngIf="homeokits.length > 0; else noHomeokits">
+      <ion-grid *ngFor="let homeokit of homeokits" class="grid doctorGrid">
+        <ion-row style="color: #000; background: #fff;">
+          <ion-col size="2">
+            <p
+              style="
+                margin: 0;
+                margin-top: 15px;
+                padding: 6px;
+                text-align: center;
+              "
+            >
+              <img
+                src="https://picsum.photos/200"
+                height="50px"
+                style="border-radius: 100%;"
+              />
+            </p>
+          </ion-col>
+          <ion-col>
+            <p class="docName">{{homeokit.name}}</p>
+            <p>{{homeokit.description}}</p>
+          </ion-col>
+          <ion-col size="3">
+            <p>${{homeokit.price}}</p>
+            <button
+              class="btn appoinmentButton"
+              (click)="buyKit(homeokit.doctor_id, homeokit.kit_id, homeokit.price)"
+            >
+              Buy Now
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <ng-template #noHomeokits>
+      <ion-grid class="noResultsGrid">
+        <ion-row>
+          <ion-col>
+            No Homeokits found
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ng-template>
+  </div>
 </ion-content>
