@@ -69,8 +69,9 @@ export class AppointmentsPage implements OnInit {
     });
   }
 
-  addDetails(appointmentId) {
+  addDetails(appointmentId, isViewEHR = false) {
     console.log("appointmentId -> " + appointmentId);
+    console.log("isViewEHR -> " + isViewEHR);
     this.utilities.selectedAppointmentComplaintDetails = {};
     let selectedAppointment = this.allAppointments.filter(
       (item) => item["appointment_id"] == appointmentId
@@ -85,6 +86,10 @@ export class AppointmentsPage implements OnInit {
       selectedAppointment["appointment_id"];
     this.utilities.selectedAppointmentComplaintDetails["doctor_id"] =
       selectedAppointment["doctor_id"];
+    this.utilities.selectedAppointmentComplaintDetails["doctorName"] =
+      selectedAppointment["doctorName"];
+    this.utilities.selectedAppointmentComplaintDetails["doctorUserame"] =
+      selectedAppointment["doctorUserame"];
 
     this.utilities.selectedAppointmentComplaintDetails["is_recurring"] =
       selectedAppointment["is_recurring"];
@@ -97,7 +102,11 @@ export class AppointmentsPage implements OnInit {
     ] = selectedAppointment["complaint_description"];
 
     console.log(this.utilities.selectedAppointmentComplaintDetails);
-    this.router.navigate(["/appointment-questions", 1]);
+    if (!isViewEHR) {
+      this.router.navigate(["/appointment-questions", 1]);
+    } else {
+      this.router.navigate(["/appointment-details"]);
+    }
   }
 
   getAppointmentMode(modeId) {

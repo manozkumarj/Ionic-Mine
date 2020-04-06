@@ -65,7 +65,7 @@
             </ion-col>
             <ion-col
               size="3"
-              (click)="addDetails(upcomingAppointment.appointment_id)"
+              (click)="addDetails(upcomingAppointment.appointment_id, true)"
             >
               <button class="btn appoinmentButton">
                 Add Details
@@ -124,10 +124,10 @@
             </ion-col>
             <ion-col
               size="3"
-              (click)="addDetails(previousAppointment.appointment_id)"
+              (click)="addDetails(previousAppointment.appointment_id, true)"
             >
               <button class="btn appoinmentButton">
-                Add Details
+                View EHR
               </button>
             </ion-col>
           </ion-row>
