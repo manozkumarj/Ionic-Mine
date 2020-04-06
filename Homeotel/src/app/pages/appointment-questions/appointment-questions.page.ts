@@ -87,6 +87,7 @@ export class AppointmentQuestionsPage implements OnInit {
   }
 
   answered = (ansId) => {
+    console.log("ansId -> " + ansId);
     if (this.currentQuestion == "one") {
       this.isRecurring = this.utilities.selectedAppointmentComplaintDetails[
         "is_recurring"
@@ -95,7 +96,7 @@ export class AppointmentQuestionsPage implements OnInit {
       this.recurringFreq = this.utilities.selectedAppointmentComplaintDetails[
         "recurring_freq"
       ] = ansId;
-    } else if (this.severity == "three") {
+    } else if (this.currentQuestion == "three") {
       this.recurringFreq = this.utilities.selectedAppointmentComplaintDetails[
         "severity_id"
       ] = ansId;
@@ -112,7 +113,7 @@ export class AppointmentQuestionsPage implements OnInit {
         this.utilities.selectedAppointmentComplaintDetails["appointment_id"],
         this.utilities.selectedAppointmentComplaintDetails["doctor_id"],
         this.utilities.selectedAppointmentComplaintDetails["relative_id"],
-        this.utilities.selectedAppointmentComplaintDetails["relative_id"],
+        this.utilities.selectedAppointmentComplaintDetails["is_recurring"],
         this.utilities.selectedAppointmentComplaintDetails["recurring_freq"],
         this.utilities.selectedAppointmentComplaintDetails["severity_id"],
         this.utilities.selectedAppointmentComplaintDetails[

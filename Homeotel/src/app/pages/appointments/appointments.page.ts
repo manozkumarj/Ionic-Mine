@@ -20,11 +20,13 @@ export class AppointmentsPage implements OnInit {
     private commonService: CommonService,
     private utilities: UtilitiesService,
     private router: Router
-  ) {
-    this.getAppointments();
-  }
+  ) {}
 
   ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.getAppointments();
+  }
 
   togglingTabs(tab) {
     this.selectedTab = tab;

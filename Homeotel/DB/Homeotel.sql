@@ -225,16 +225,16 @@ CREATE TABLE `da_complaint_detail` (
   `relative_id` int(10) unsigned NOT NULL DEFAULT 0,
   `doctor_id` int(10) unsigned NOT NULL,
   `appointment_id` int(10) unsigned NOT NULL,
-  `is_recurring` varchar(45) NOT NULL,
-  `recurring_freq` varchar(45) NOT NULL,
-  `severity_id` varchar(45) NOT NULL,
+  `is_recurring` varchar(45) DEFAULT NULL,
+  `recurring_freq` varchar(45) DEFAULT NULL,
+  `severity_id` varchar(45) DEFAULT NULL,
   `complaint_description` varchar(500) DEFAULT NULL,
   `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`complaint_detail_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_complaint_detail`
@@ -242,9 +242,7 @@ CREATE TABLE `da_complaint_detail` (
 
 /*!40000 ALTER TABLE `da_complaint_detail` DISABLE KEYS */;
 INSERT INTO `da_complaint_detail` (`complaint_detail_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_id`,`is_recurring`,`recurring_freq`,`severity_id`,`complaint_description`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,0,1,8,'1','2','3','Testtt des',1,'2020-04-05 11:03:58',1,'2020-04-05 11:03:58'),
- (2,1,1,1,8,'1','2','3','Testtt des',1,'2020-04-06 00:20:18',1,'2020-04-06 00:20:18'),
- (3,1,1,1,8,'1','1','3','Testtt des',1,'2020-04-06 00:22:28',1,'2020-04-06 00:22:28');
+ (9,1,0,1,6,'2','3','1',NULL,1,'2020-04-06 09:01:31',1,'2020-04-06 09:01:44');
 /*!40000 ALTER TABLE `da_complaint_detail` ENABLE KEYS */;
 
 
@@ -2081,16 +2079,15 @@ START TRANSACTION;
  Set Var_id = (SELECT count(*) FROM da_complaint_detail d where appointment_id=IN_appointment_id);
 
 
-  IF (Var_id !=0) Then
+  IF (Var_id > 0) Then
+     UPDATE da_complaint_detail SET is_recurring = IN_is_recurring, recurring_freq = IN_recurring_freq,
+     severity_id = IN_severity_id, complaint_description = IN_complaint_description, updated_by = IN_user_id,
+     updated_at = now();
+  ELSE
      INSERT INTO da_complaint_detail (user_id, doctor_id, relative_id, appointment_id, is_recurring, recurring_freq,
      severity_id, complaint_description, created_by, updated_by, created_at, updated_at)
      VALUES (IN_user_id, IN_doctor_id, IN_relative_id,IN_appointment_id,IN_is_recurring, IN_recurring_freq,
      IN_severity_id, IN_complaint_description,IN_user_id,IN_user_id,now(),now());
-  ELSE
-     UPDATE da_complaint_detail SET is_recurring = IN_is_recurring, recurring_freq = IN_recurring_freq,
-     severity_id = IN_severity_id, complaint_description = IN_complaint_description, updated_by = IN_user_id,
-     updated_at = now();
-
  END IF;
 
 
