@@ -30,19 +30,12 @@
     <div *ngIf="selectedTab == 1">
       <div *ngIf="homeokits.length > 0; else noHomeokits">
         <ion-grid *ngFor="let homeokit of homeokits" class="grid doctorGrid">
-          <ion-row style="color: #000; background: #fff;">
+          <ion-row style="color: #000; background: #fff; padding: 8px 0px;">
             <ion-col size="2">
-              <p
-                style="
-                  margin: 0;
-                  margin-top: 15px;
-                  padding: 6px;
-                  text-align: center;
-                "
-              >
+              <p class="picHolder">
                 <img
-                  src="https://picsum.photos/200"
-                  height="50px"
+                  src="assets/images/homeokit-1.jpg"
+                  height="45px"
                   style="border-radius: 100%;"
                 />
               </p>
@@ -66,7 +59,7 @@
 
       <ng-template #noHomeokits>
         <ion-grid class="noResultsGrid">
-          <ion-row>
+          <ion-row style="border: none;">
             <ion-col>
               No Homeokits found
             </ion-col>
@@ -81,19 +74,12 @@
           *ngFor="let orderedHomeokit of orderedHomeokits"
           class="grid doctorGrid"
         >
-          <ion-row style="color: #000; background: #fff;">
+          <ion-row style="color: #000; background: #fff; padding: 8px 0px;">
             <ion-col size="2">
-              <p
-                style="
-                  margin: 0;
-                  margin-top: 15px;
-                  padding: 6px;
-                  text-align: center;
-                "
-              >
+              <p class="picHolder">
                 <img
-                  src="https://picsum.photos/200"
-                  height="50px"
+                  src="assets/images/homeokit-1.jpg"
+                  height="45px"
                   style="border-radius: 100%;"
                 />
               </p>
@@ -111,7 +97,7 @@
 
       <ng-template #noOrderedHomeokits>
         <ion-grid class="noResultsGrid">
-          <ion-row>
+          <ion-row style="border: none;">
             <ion-col>
               There are no ordered Homeokits
             </ion-col>

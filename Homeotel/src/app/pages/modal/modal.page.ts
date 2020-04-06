@@ -98,6 +98,8 @@ export class ModalPage implements OnInit {
             }
           });
       }
+      this.utilities.isSlotBookingAction = false;
+      this.utilities.isHomeokitPurchaseAction = false;
     }
   }
 

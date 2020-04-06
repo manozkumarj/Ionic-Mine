@@ -106,7 +106,10 @@
         </button>
       </ion-col>
       <ion-col>
-        <button [routerLink]="['/slot-selection']" class="btn appoinmentButton">
+        <button
+          (click)="presentDoctorContactModal(doctorId)"
+          class="btn appoinmentButton"
+        >
           Change Slot
         </button>
       </ion-col>

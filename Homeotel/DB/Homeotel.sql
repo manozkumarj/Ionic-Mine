@@ -46,18 +46,13 @@ CREATE TABLE `d_appointment` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`appointment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_appointment`
 --
 
 /*!40000 ALTER TABLE `d_appointment` DISABLE KEYS */;
-INSERT INTO `d_appointment` (`appointment_id`,`user_id`,`relative_id`,`doctor_id`,`mode_id`,`main_complaint`,`appointment_at`,`booked_at`,`amount_paid`,`payment_status`,`appointment_status`,`advice`,`notes`,`review_date`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (5,1,0,1,3,'Another dess','2020-4-12 16:30:01',NULL,'50',0,1,NULL,NULL,NULL,1,'2020-04-05 08:51:36',1,'2020-04-05 08:51:36'),
- (6,1,0,1,3,'Another dess','2020-4-12 16:30:02',NULL,'50',0,0,NULL,NULL,NULL,1,'2020-04-05 08:51:40',1,'2020-04-05 08:51:40'),
- (7,1,0,1,3,'Another dess','2020-4-12 16:30:03',NULL,'50',0,1,NULL,NULL,NULL,1,'2020-04-05 09:01:35',1,'2020-04-05 09:01:35'),
- (8,1,1,1,4,'dessss','2020-4-12 16:30:04',NULL,'500',0,0,NULL,NULL,NULL,1,'2020-04-05 09:04:12',1,'2020-04-05 09:04:12');
 /*!40000 ALTER TABLE `d_appointment` ENABLE KEYS */;
 
 
@@ -160,28 +155,23 @@ CREATE TABLE `d_transaction` (
   `appointment_id` int(10) DEFAULT NULL,
   `kit_id` int(10) DEFAULT NULL,
   `transaction_type_id` int(10) unsigned NOT NULL,
-  `trasaction_amount` int(10) NOT NULL,
+  `transaction_amount` int(10) NOT NULL,
   `taxes` int(10) DEFAULT NULL,
   `charges` int(10) DEFAULT NULL,
   `net_amount` int(10) DEFAULT NULL,
-  `transaction_at` int(10) DEFAULT NULL,
+  `transaction_at` varchar(45) NOT NULL,
   `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`transaction_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_transaction`
 --
 
 /*!40000 ALTER TABLE `d_transaction` DISABLE KEYS */;
-INSERT INTO `d_transaction` (`transaction_id`,`user_id`,`doctor_id`,`appointment_id`,`kit_id`,`transaction_type_id`,`trasaction_amount`,`taxes`,`charges`,`net_amount`,`transaction_at`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (8,1,1,5,NULL,1,50,0,0,50,NULL,1,'2020-04-05 08:51:36',1,'2020-04-05 08:51:36'),
- (9,1,1,6,NULL,1,50,0,0,50,NULL,1,'2020-04-05 08:51:40',1,'2020-04-05 08:51:40'),
- (10,1,1,7,NULL,1,50,0,0,50,NULL,1,'2020-04-05 09:01:35',1,'2020-04-05 09:01:35'),
- (11,1,1,8,NULL,1,500,0,0,500,NULL,1,'2020-04-05 09:04:12',1,'2020-04-05 09:04:12');
 /*!40000 ALTER TABLE `d_transaction` ENABLE KEYS */;
 
 
@@ -234,15 +224,13 @@ CREATE TABLE `da_complaint_detail` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`complaint_detail_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_complaint_detail`
 --
 
 /*!40000 ALTER TABLE `da_complaint_detail` DISABLE KEYS */;
-INSERT INTO `da_complaint_detail` (`complaint_detail_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_id`,`is_recurring`,`recurring_freq`,`severity_id`,`complaint_description`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (9,1,0,1,6,'2','3','1',NULL,1,'2020-04-06 09:01:31',1,'2020-04-06 09:01:44');
 /*!40000 ALTER TABLE `da_complaint_detail` ENABLE KEYS */;
 
 
@@ -292,18 +280,13 @@ CREATE TABLE `da_log` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_log`
 --
 
 /*!40000 ALTER TABLE `da_log` DISABLE KEYS */;
-INSERT INTO `da_log` (`log_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_id`,`mode_id`,`appointment_at`,`appointment_status`,`is_latest`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (3,1,0,1,5,3,NULL,0,0,1,'2020-04-05 08:51:36',1,'2020-04-05 08:51:36'),
- (4,1,0,1,6,3,NULL,0,0,1,'2020-04-05 08:51:40',1,'2020-04-05 08:51:40'),
- (5,1,0,1,7,3,NULL,0,0,1,'2020-04-05 09:01:35',1,'2020-04-05 09:01:35'),
- (6,1,1,1,8,4,'2020-4-12 16:30:00',0,0,1,'2020-04-05 09:04:12',1,'2020-04-05 09:04:12');
 /*!40000 ALTER TABLE `da_log` ENABLE KEYS */;
 
 
@@ -388,8 +371,8 @@ CREATE TABLE `dd_kit` (
 INSERT INTO `dd_kit` (`kit_id`,`doctor_id`,`name`,`price`,`description`,`is_active`,`created_at`) VALUES 
  (1,1,'First aid kit','250','First aid kit is useful in emergency',1,'2020-04-01 14:36:19'),
  (2,1,'Sanitizer','100','Sanitizer kit is useful in emergency',1,'2020-04-01 14:38:19'),
- (3,2,'Second doctor kit-1','300','Second doctor homeo kit',1,'2020-04-03 11:00:19'),
- (4,2,'Second kit-2 doctor','350','Second homeokit 2 set',1,'2020-04-03 14:38:19');
+ (3,2,'Second doctor kit-1','300','Face mask is useful in emergency',1,'2020-04-03 11:00:19'),
+ (4,2,'Second kit-2 doctor','350','Soap is so much useful in everyday life',1,'2020-04-03 14:38:19');
 /*!40000 ALTER TABLE `dd_kit` ENABLE KEYS */;
 
 
@@ -496,9 +479,6 @@ CREATE TABLE `dk_order` (
 --
 
 /*!40000 ALTER TABLE `dk_order` DISABLE KEYS */;
-INSERT INTO `dk_order` (`id`,`user_id`,`doctor_id`,`kit_id`,`amount_paid`,`order_status`,`created_at`) VALUES 
- (1,1,1,2,'100','completed','2020-04-01 23:23:22'),
- (4,1,2,3,'300','completed','2020-04-05 11:56:59');
 /*!40000 ALTER TABLE `dk_order` ENABLE KEYS */;
 
 
@@ -1957,7 +1937,7 @@ DECLARE exit handler for sqlwarning
 END;
 
     SELECT a.appointment_id,a.user_id,a.relative_id,a.doctor_id, a.mode_id, a.appointment_at,a.amount_paid,a.appointment_status,
-    u.username,d.name AS doctorName, c.is_recurring, c.recurring_freq, c.severity_id, c.complaint_description
+    u.username,d.name AS doctorName,d.username AS doctorUserame, c.is_recurring, c.recurring_freq, c.severity_id, c.complaint_description
     FROM d_appointment a
     LEFT JOIN d_user u ON a.user_id = u.user_id
     LEFT JOIN d_doctor d ON a.doctor_id = d.id
@@ -2022,7 +2002,7 @@ START TRANSACTION;
      VALUES (appointmentId, IN_user_id,IN_relative_id,IN_doctor_id,IN_mode_id,IN_appointment_at,IN_user_id,IN_user_id,now(),now());
 
 
-     INSERT INTO d_transaction (appointment_id, user_id, doctor_id, transaction_type_id, trasaction_amount, trasaction_at,
+     INSERT INTO d_transaction (appointment_id, user_id, doctor_id, transaction_type_id, transaction_amount, transaction_at,
      net_amount, taxes, charges, created_by, updated_by, created_at, updated_at)
      VALUES (appointmentId, IN_user_id,IN_doctor_id,1,IN_amount_paid,now(),IN_amount_paid,0,0,IN_user_id,IN_user_id,now(),now());
 

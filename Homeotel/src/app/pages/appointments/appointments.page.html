@@ -73,17 +73,17 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-
-        <ng-template #noUpcomingAppointments>
-          <ion-grid class="noResultsGrid">
-            <ion-row>
-              <ion-col>
-                There are no Upcoming appointments
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ng-template>
       </div>
+
+      <ng-template #noUpcomingAppointments>
+        <ion-grid class="noResultsGrid">
+          <ion-row style="border: none;">
+            <ion-col>
+              There are no Upcoming appointments
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
     </div>
 
     <div *ngIf="selectedTab == 2">
@@ -132,17 +132,17 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-
-        <ng-template #noPreviousAppointments>
-          <ion-grid class="noResultsGrid">
-            <ion-row>
-              <ion-col>
-                There are no previous appointments
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ng-template>
       </div>
+
+      <ng-template #noPreviousAppointments>
+        <ion-grid class="noResultsGrid">
+          <ion-row style="border: none;">
+            <ion-col>
+              There are no previous appointments
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
     </div>
   </div>
 </ion-content>

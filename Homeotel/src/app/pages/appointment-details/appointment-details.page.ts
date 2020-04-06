@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { ModalController } from "@ionic/angular";
+import { ModalPage } from "../modal/modal.page";
 
 @Component({
   selector: "app-appointment-details",
@@ -16,8 +18,13 @@ export class AppointmentDetailsPage implements OnInit {
   recurringSince;
   aggravatedBy;
   description;
+  doctorId;
 
-  constructor(private router: Router, private utilities: UtilitiesService) {
+  constructor(
+    private router: Router,
+    private utilities: UtilitiesService,
+    public modalCtrl: ModalController
+  ) {
     this.doctorName = this.utilities.selectedAppointmentComplaintDetails[
       "doctorName"
     ];
@@ -45,7 +52,25 @@ export class AppointmentDetailsPage implements OnInit {
     this.description = this.utilities.selectedAppointmentComplaintDetails[
       "complaint_description"
     ];
+    this.doctorId = this.utilities.selectedAppointmentComplaintDetails[
+      "doctor_id"
+    ];
   }
 
   ngOnInit() {}
+
+  async presentDoctorContactModal(doctorId) {
+    console.log("doctorId -> " + doctorId);
+    this.utilities.bookAppointmentDoctorDetails["id"] = doctorId;
+    const modal = await this.modalCtrl.create({
+      component: ModalPage,
+      showBackdrop: true,
+      cssClass: "findDoctorModal",
+      componentProps: {
+        action: "contactDoctor",
+        doctorId: doctorId,
+      },
+    });
+    return await modal.present();
+  }
 }
