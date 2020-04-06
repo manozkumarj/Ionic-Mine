@@ -62,6 +62,11 @@ export class AppointmentDetailsPage implements OnInit {
   async presentDoctorContactModal(doctorId) {
     console.log("doctorId -> " + doctorId);
     this.utilities.bookAppointmentDoctorDetails["id"] = doctorId;
+    this.utilities.bookAppointmentDetails[
+      "appointmentId"
+    ] = this.utilities.selectedAppointmentComplaintDetails["appointment_id"];
+    this.utilities.isSlotBookingAction = true;
+    this.utilities.isHomeokitPurchaseAction = false;
     const modal = await this.modalCtrl.create({
       component: ModalPage,
       showBackdrop: true,

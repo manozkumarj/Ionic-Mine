@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
 @Component({
   selector: "app-my-doctors",
   templateUrl: "./my-doctors.page.html",
-  styleUrls: ["./my-doctors.page.scss"]
+  styleUrls: ["./my-doctors.page.scss"],
 })
 export class MyDoctorsPage implements OnInit {
   myDoctors: any[] = [];
@@ -30,7 +30,7 @@ export class MyDoctorsPage implements OnInit {
   ngOnInit() {}
 
   getCurrentUserDoctors() {
-    this.apiService.getCurrentUserDoctors().subscribe(data => {
+    this.apiService.getCurrentUserDoctors().subscribe((data) => {
       console.log("Returned from Backend");
       // console.log(JSON.stringify(data[0]));
       if (this.utilities.isInvalidApiResponseData(data)) {
@@ -134,8 +134,8 @@ export class MyDoctorsPage implements OnInit {
       cssClass: "findDoctorModal",
       componentProps: {
         action: "findDoctor",
-        searchableDoctorUuid: this.uuid
-      }
+        searchableDoctorUuid: this.uuid,
+      },
     });
     return await modal.present();
   }
@@ -143,14 +143,15 @@ export class MyDoctorsPage implements OnInit {
   async presentDoctorContactModal(doctorId) {
     console.log("doctorId -> " + doctorId);
     this.utilities.bookAppointmentDoctorDetails["id"] = doctorId;
+    this.utilities.bookAppointmentDetails["appointmentId"] = null;
     const modal = await this.modalCtrl.create({
       component: ModalPage,
       showBackdrop: true,
       cssClass: "findDoctorModal",
       componentProps: {
         action: "contactDoctor",
-        doctorId: doctorId
-      }
+        doctorId: doctorId,
+      },
     });
     return await modal.present();
   }

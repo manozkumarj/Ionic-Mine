@@ -90,6 +90,7 @@ export class ApiService {
 
   // Booking an appointment
   bookAppointment(
+    appointmentId,
     doctorId,
     relativeId,
     price,
@@ -99,6 +100,7 @@ export class ApiService {
   ) {
     var path = "/user/book-appointment";
     var body = {
+      appointmentId,
       userId: this.utilities.userId,
       doctorId,
       relativeId,

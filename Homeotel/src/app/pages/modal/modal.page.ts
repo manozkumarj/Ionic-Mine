@@ -65,6 +65,9 @@ export class ModalPage implements OnInit {
         console.log("bookAppointmentDoctorDetails obj is below");
         console.log(this.utilities.bookAppointmentDoctorDetails);
 
+        let appointmentId = this.utilities.bookAppointmentDetails[
+          "appointmentId"
+        ];
         let doctorId = this.utilities.bookAppointmentDoctorDetails["id"];
 
         let relativeId = this.utilities.bookAppointmentDetails["relativeId"];
@@ -77,6 +80,7 @@ export class ModalPage implements OnInit {
 
         this.apiService
           .bookAppointment(
+            appointmentId,
             doctorId,
             relativeId,
             price,

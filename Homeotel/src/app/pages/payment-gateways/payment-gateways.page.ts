@@ -47,6 +47,10 @@ export class PaymentGatewaysPage implements OnInit {
       this.amount = this.commonService.selectedHomeKitCost;
     } else if (this.utilities.isSlotBookingAction) {
       this.amount = this.utilities.bookAppointmentDetails["price"];
+      console.log("this.utilities.selectedAppointmentComplaintDetails below");
+      console.log(this.utilities.selectedAppointmentComplaintDetails);
+      console.log("bookAppointmentDetails below");
+      console.log(this.utilities.bookAppointmentDetails);
     }
   }
 

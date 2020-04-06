@@ -176,6 +176,7 @@ router.get("/doctor-consultant-details-masters/:doctorId", (req, res) => {
 
 // Booking an appointment
 router.post("/book-appointment", (req, res) => {
+  var appointmentId = req.body.appointmentId;
   var userId = req.body.userId;
   var doctorId = req.body.doctorId;
   var relativeId = req.body.relativeId;
@@ -184,6 +185,7 @@ router.post("/book-appointment", (req, res) => {
   var modeId = req.body.modeId;
   var mainComplaint = req.body.mainComplaint;
   var params = [
+    appointmentId,
     doctorId,
     userId,
     relativeId,
@@ -197,7 +199,7 @@ router.post("/book-appointment", (req, res) => {
   console.log(params);
 
   db.executeQuery(
-    "call sp_user_book_appointment(?,?,?,?,?,?,?)",
+    "call sp_user_book_appointment(?,?,?,?,?,?,?,?)",
     params,
     res,
     db.sendResponseNormal

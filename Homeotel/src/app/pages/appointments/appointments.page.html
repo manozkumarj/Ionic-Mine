@@ -63,12 +63,24 @@
               </p>
               <p style="color: #999;">{{upcomingAppointment.appointment_at}}</p>
             </ion-col>
+
             <ion-col
+              *ngIf="!upcomingAppointment.is_recurring || !upcomingAppointment.recurring_freq || !upcomingAppointment.severity_id || !upcomingAppointment.complaint_description"
+              size="3"
+              (click)="addDetails(upcomingAppointment.appointment_id, false)"
+            >
+              <button class="btn appoinmentButton">
+                Add Details
+              </button>
+            </ion-col>
+
+            <ion-col
+              *ngIf="upcomingAppointment.is_recurring && upcomingAppointment.recurring_freq && upcomingAppointment.severity_id && upcomingAppointment.complaint_description"
               size="3"
               (click)="addDetails(upcomingAppointment.appointment_id, true)"
             >
               <button class="btn appoinmentButton">
-                Add Details
+                View EHR
               </button>
             </ion-col>
           </ion-row>
@@ -122,7 +134,19 @@
               </p>
               <p style="color: #999;">{{previousAppointment.appointment_at}}</p>
             </ion-col>
+
             <ion-col
+              *ngIf="!previousAppointment.is_recurring || !previousAppointment.recurring_freq || !previousAppointment.severity_id || !previousAppointment.complaint_description"
+              size="3"
+              (click)="addDetails(previousAppointment.appointment_id, false)"
+            >
+              <button class="btn appoinmentButton">
+                Add Details
+              </button>
+            </ion-col>
+
+            <ion-col
+              *ngIf="previousAppointment.is_recurring && previousAppointment.recurring_freq && previousAppointment.severity_id && previousAppointment.complaint_description"
               size="3"
               (click)="addDetails(previousAppointment.appointment_id, true)"
             >

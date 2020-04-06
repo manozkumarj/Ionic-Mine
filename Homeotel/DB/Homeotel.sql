@@ -46,13 +46,15 @@ CREATE TABLE `d_appointment` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`appointment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_appointment`
 --
 
 /*!40000 ALTER TABLE `d_appointment` DISABLE KEYS */;
+INSERT INTO `d_appointment` (`appointment_id`,`user_id`,`relative_id`,`doctor_id`,`mode_id`,`main_complaint`,`appointment_at`,`booked_at`,`amount_paid`,`payment_status`,`appointment_status`,`advice`,`notes`,`review_date`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (17,1,1,1,2,NULL,'2020-4-8 10:30:00',NULL,'20',0,0,NULL,NULL,NULL,1,'2020-04-06 14:18:57',1,'2020-04-06 14:19:53');
 /*!40000 ALTER TABLE `d_appointment` ENABLE KEYS */;
 
 
@@ -165,13 +167,15 @@ CREATE TABLE `d_transaction` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`transaction_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_transaction`
 --
 
 /*!40000 ALTER TABLE `d_transaction` DISABLE KEYS */;
+INSERT INTO `d_transaction` (`transaction_id`,`user_id`,`doctor_id`,`appointment_id`,`kit_id`,`transaction_type_id`,`transaction_amount`,`taxes`,`charges`,`net_amount`,`transaction_at`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (18,1,1,17,NULL,1,20,0,0,20,'2020-04-06 14:19:53',1,'2020-04-06 14:18:57',1,'2020-04-06 14:19:53');
 /*!40000 ALTER TABLE `d_transaction` ENABLE KEYS */;
 
 
@@ -224,13 +228,17 @@ CREATE TABLE `da_complaint_detail` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`complaint_detail_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_complaint_detail`
 --
 
 /*!40000 ALTER TABLE `da_complaint_detail` DISABLE KEYS */;
+INSERT INTO `da_complaint_detail` (`complaint_detail_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_id`,`is_recurring`,`recurring_freq`,`severity_id`,`complaint_description`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (11,1,1,2,13,'1','1','1','firstt...',1,'2020-04-06 13:07:07',1,'2020-04-06 14:19:29'),
+ (12,1,0,1,15,'1','1','1','firstt...',1,'2020-04-06 14:11:02',1,'2020-04-06 14:19:29'),
+ (13,1,0,1,17,'1','1','1','firstt...',1,'2020-04-06 14:19:20',1,'2020-04-06 14:19:29');
 /*!40000 ALTER TABLE `da_complaint_detail` ENABLE KEYS */;
 
 
@@ -280,13 +288,15 @@ CREATE TABLE `da_log` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_log`
 --
 
 /*!40000 ALTER TABLE `da_log` DISABLE KEYS */;
+INSERT INTO `da_log` (`log_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_id`,`mode_id`,`appointment_at`,`appointment_status`,`is_latest`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (15,1,1,1,17,2,'2020-4-8 10:30:00',0,0,1,'2020-04-06 14:18:57',1,'2020-04-06 14:19:53');
 /*!40000 ALTER TABLE `da_log` ENABLE KEYS */;
 
 
@@ -334,7 +344,7 @@ CREATE TABLE `dd_clinic` (
   `walkin_fee` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
   PRIMARY KEY (`clinic_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dd_clinic`
@@ -343,7 +353,9 @@ CREATE TABLE `dd_clinic` (
 /*!40000 ALTER TABLE `dd_clinic` DISABLE KEYS */;
 INSERT INTO `dd_clinic` (`clinic_id`,`doctor_id`,`clinic_name`,`clinic_address`,`walkin_fee`,`created_at`) VALUES 
  (1,1,'Appollo pharmacy','Hyderabad',500,'2020-04-02 15:00:19'),
- (2,1,'Kamineni Hospital','Hyderabad',450,'2020-04-02 15:00:19');
+ (2,1,'Kamineni Hospital','Hyderabad',450,'2020-04-02 15:00:19'),
+ (3,2,'Appollo pharmacy-2','Hyderabad',520,'2020-04-02 15:00:19'),
+ (4,2,'Kamineni Hospital-2','Hyderabad',470,'2020-04-02 15:00:19');
 /*!40000 ALTER TABLE `dd_clinic` ENABLE KEYS */;
 
 
@@ -390,7 +402,7 @@ CREATE TABLE `dd_mode` (
   `created_at` varchar(45) NOT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`doctor_id`,`mode_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dd_mode`
@@ -399,9 +411,13 @@ CREATE TABLE `dd_mode` (
 /*!40000 ALTER TABLE `dd_mode` DISABLE KEYS */;
 INSERT INTO `dd_mode` (`id`,`doctor_id`,`mode_id`,`minimum_min`,`price_per_min`,`created_at`,`updated_at`) VALUES 
  (1,1,1,'10 mins',30,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
- (2,1,2,'10 mins',20,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
- (3,1,3,'24 Hours',50,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
- (4,1,4,'Regular consultation',500,'2020-04-01 09:18:00','2020-04-01 09:18:00');
+ (2,2,1,'10 mins',32,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
+ (3,1,2,'10 mins',20,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
+ (4,2,2,'10 mins',22,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
+ (5,1,3,'24 Hours',50,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
+ (6,2,3,'24 Hours',52,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
+ (7,1,4,'Regular consultation',500,'2020-04-01 09:18:00','2020-04-01 09:18:00'),
+ (8,2,4,'Regular consultation',520,'2020-04-01 09:18:00','2020-04-01 09:18:00');
 /*!40000 ALTER TABLE `dd_mode` ENABLE KEYS */;
 
 
@@ -443,7 +459,7 @@ CREATE TABLE `ddc_timing` (
   `remarks` varchar(100) DEFAULT NULL,
   `created_at` varchar(45) NOT NULL,
   PRIMARY KEY (`id`,`doctor_id`,`clinic_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ddc_timing`
@@ -454,7 +470,11 @@ INSERT INTO `ddc_timing` (`id`,`doctor_id`,`clinic_id`,`week_days`,`from_time`,`
  (1,1,1,'2,6','10:00','20:00','none','2020-04-02 15:15:58'),
  (2,1,2,'1,3','11:00','14:00','none','2020-04-02 15:15:58'),
  (3,1,3,'0','10:00','11:30','none','2020-04-02 15:15:58'),
- (4,1,4,'5','13:00','19:00','none','2020-04-02 15:15:58');
+ (4,1,4,'5','13:00','19:00','none','2020-04-02 15:15:58'),
+ (5,2,1,'1,5','10:00','18:00','none','2020-04-02 15:15:58'),
+ (6,2,2,'2,3','11:00','13:00','none','2020-04-02 15:15:58'),
+ (7,2,3,'0','10:30','11:30','none','2020-04-02 15:15:58'),
+ (8,2,4,'6','14:00','19:00','none','2020-04-02 15:15:58');
 /*!40000 ALTER TABLE `ddc_timing` ENABLE KEYS */;
 
 
@@ -1959,7 +1979,7 @@ DROP PROCEDURE IF EXISTS `sp_user_book_appointment`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_book_appointment`(IN IN_doctor_id INT, IN IN_user_id INT, IN IN_relative_id INT,
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_book_appointment`(IN IN_appointment_id INT, IN IN_doctor_id INT, IN IN_user_id INT, IN IN_relative_id INT,
                                                                        IN IN_mode_id INT, IN IN_appointment_at VARCHAR(255),
                                                                        IN IN_amount_paid VARCHAR(255), IN IN_main_complaint VARCHAR(255))
 BEGIN
@@ -1990,6 +2010,19 @@ END;
 START TRANSACTION;
 
 
+  IF (IN_appointment_id > 0) THEN
+
+    UPDATE d_appointment SET relative_id = IN_relative_id,mode_id=IN_mode_id,appointment_at=IN_appointment_at,
+            amount_paid=IN_amount_paid,main_complaint=IN_main_complaint,updated_at=now() WHERE appointment_id = IN_appointment_id;
+
+    UPDATE da_log SET relative_id = IN_relative_id,mode_id=IN_mode_id,appointment_at=IN_appointment_at,
+            updated_at=now() WHERE appointment_id = IN_appointment_id;
+
+    UPDATE d_transaction SET transaction_amount=IN_amount_paid,net_amount=IN_amount_paid, transaction_at=now(),
+            updated_at=now() WHERE appointment_id = IN_appointment_id;
+
+  ELSE
+
      INSERT INTO d_appointment (user_id, relative_id, doctor_id, mode_id, appointment_at, amount_paid, main_complaint, created_by,
                                 updated_by, created_at, updated_at)
      VALUES (IN_user_id,IN_relative_id,IN_doctor_id,IN_mode_id,IN_appointment_at,IN_amount_paid, IN_main_complaint,IN_user_id,
@@ -2006,6 +2039,7 @@ START TRANSACTION;
      net_amount, taxes, charges, created_by, updated_by, created_at, updated_at)
      VALUES (appointmentId, IN_user_id,IN_doctor_id,1,IN_amount_paid,now(),IN_amount_paid,0,0,IN_user_id,IN_user_id,now(),now());
 
+  END IF;
 
 
 COMMIT;
