@@ -15,15 +15,15 @@
 <ion-content>
   <ion-grid class="mainGrid">
     <ion-row style="border-bottom: 1px solid #999;">
-      <ion-col size="4">
+      <ion-col (click)="navigateToEditProfile('name')">
         <p class="label">Name</p>
-        <p>Karthik</p>
+        <p>{{name}}</p>
       </ion-col>
 
-      <ion-col size="4" offset="4">
+      <ion-col size="auto" (click)="openMenu()">
         <p style="margin: 0; padding: 6px; text-align: center;">
           <img
-            src="assets/images/milinda.jpg"
+            [src]="profilePhoto"
             height="80px"
             style="border-radius: 100%;"
           />
@@ -35,8 +35,8 @@
       <ion-col>
         <p class="label">Phone</p>
       </ion-col>
-      <ion-col auto offset="4">
-        <p>7780132977</p>
+      <ion-col size="auto">
+        <p>{{phone}}</p>
       </ion-col>
     </ion-row>
 
@@ -44,8 +44,8 @@
       <ion-col>
         <p class="label">Email</p>
       </ion-col>
-      <ion-col auto offset="2">
-        <p>nagamallesh619@gmail.com</p>
+      <ion-col size="auto">
+        <p>{{email}}</p>
       </ion-col>
     </ion-row>
 
@@ -53,8 +53,8 @@
       <ion-col>
         <p class="label">Gender</p>
       </ion-col>
-      <ion-col size="auto" offset="2">
-        <p>Select</p>
+      <ion-col size="auto">
+        <p>{{gender}}</p>
       </ion-col>
     </ion-row>
 
@@ -62,8 +62,8 @@
       <ion-col>
         <p class="label">Date of birth</p>
       </ion-col>
-      <ion-col size="auto" offset="2">
-        <p>Select</p>
+      <ion-col size="auto">
+        <p>{{dob}}</p>
       </ion-col>
     </ion-row>
 
@@ -71,8 +71,8 @@
       <ion-col>
         <p class="label">Blood group</p>
       </ion-col>
-      <ion-col size="auto" offset="2">
-        <p>Select</p>
+      <ion-col size="auto">
+        <p>{{bloodGroup}}</p>
       </ion-col>
     </ion-row>
 
@@ -80,8 +80,8 @@
       <ion-col>
         <p class="label">Marital status</p>
       </ion-col>
-      <ion-col size="auto" offset="2">
-        <p>Select</p>
+      <ion-col size="auto">
+        <p>{{maritalStatus}}</p>
       </ion-col>
     </ion-row>
 
@@ -89,8 +89,8 @@
       <ion-col>
         <p class="label">Height</p>
       </ion-col>
-      <ion-col size="auto" offset="2">
-        <p>Select</p>
+      <ion-col size="auto">
+        <p>{{height}}</p>
       </ion-col>
     </ion-row>
 
@@ -98,8 +98,8 @@
       <ion-col>
         <p class="label">Weight</p>
       </ion-col>
-      <ion-col size="auto" offset="2">
-        <p>Select</p>
+      <ion-col size="auto">
+        <p>{{weight}}</p>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -141,4 +141,15 @@ export class ApiService {
     };
     return this.http.post(this.apiUrl + path, body);
   }
+
+  // Update user profile details
+  updateUserProfileDetails(columnName, value) {
+    var path = "/user/update-profile";
+    var body = {
+      userId: this.utilities.userId,
+      columnName,
+      value,
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
 }

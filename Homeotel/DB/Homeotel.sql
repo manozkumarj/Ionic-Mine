@@ -210,7 +210,7 @@ CREATE TABLE `d_user` (
 
 /*!40000 ALTER TABLE `d_user` DISABLE KEYS */;
 INSERT INTO `d_user` (`user_id`,`name`,`username`,`password`,`phone`,`email`,`gender_id`,`dob`,`blood_group_id`,`marital_status_id`,`height`,`weight`,`created_at`) VALUES 
- (1,NULL,'aaa','aaa',NULL,'aaa@aaa.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:36:19'),
+ (1,'Aaa User','aaa','aaa','9876543210','aaa@aaa.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:36:19'),
  (2,NULL,'bbb','bbb',NULL,'bbb@bbb.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:55:35'),
  (3,NULL,'ccc','ccc',NULL,'ccc@ccc.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:00:12'),
  (4,NULL,'rrr','rrr',NULL,'rrr@rrr.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:03:58');
@@ -2387,6 +2387,51 @@ START TRANSACTION;
      VALUES (IN_username,IN_email,IN_password,now());
 
 
+
+
+COMMIT;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_update_profile`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_update_profile`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_update_profile`(IN IN_user_id INT, IN IN_column_name VARCHAR(255),
+                                                                       IN IN_value VARCHAR(255))
+BEGIN
+
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+START TRANSACTION;
+
+     UPDATE d_user SET IN_column_name = IN_value WHERE user_id = IN_user_id;
 
 
 COMMIT;

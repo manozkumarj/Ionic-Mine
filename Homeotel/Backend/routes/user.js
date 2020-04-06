@@ -252,4 +252,19 @@ router.post("/upsert-complaint-details", (req, res) => {
   );
 });
 
+// Update profile details
+router.post("/update-profile", (req, res) => {
+  var userId = req.body.userId;
+  var columnName = req.body.columnName;
+  var value = req.body.value;
+  var params = [userId, columnName, value];
+
+  db.executeQuery(
+    "call sp_user_update_profile(?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;

@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 
 @Injectable()
 export class UtilitiesService {
-  userId;
+  userId = 1;
   isLoggedId = false;
 
   isHomeokitPurchaseAction = false;

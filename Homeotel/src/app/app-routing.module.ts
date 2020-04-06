@@ -266,7 +266,11 @@ const routes: Routes = [
       import("./pages/single-selection/single-selection.module").then(
         (m) => m.SingleSelectionPageModule
       ),
+  },  {
+    path: 'edit-profile',
+    loadChildren: () => import('./pages/edit-profile/edit-profile.module').then( m => m.EditProfilePageModule)
   },
+
 ];
 
 @NgModule({
