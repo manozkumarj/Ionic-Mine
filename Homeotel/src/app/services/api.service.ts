@@ -36,6 +36,12 @@ export class ApiService {
   }
 
   // Fetching current user related doctors
+  getProfileDetails() {
+    var path = "/user/user-details/" + this.utilities.userId;
+    return this.http.get(this.apiUrl + path);
+  }
+
+  // Fetching current user related doctors
   getCurrentUserDoctors() {
     var path = "/user/my-doctors/" + this.utilities.userId;
     return this.http.get(this.apiUrl + path);

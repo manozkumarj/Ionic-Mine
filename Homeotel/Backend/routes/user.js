@@ -86,6 +86,20 @@ router.get("/my-doctors/:id", (req, res) => {
   );
 });
 
+// User Details
+router.get("/user-details/:userId", (req, res) => {
+  var userId = req.params.userId;
+  // console.log("Received useruserId -> " + userId);
+  var params = [userId];
+
+  db.executeQuery(
+    "call sp_user_profile_details(?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 // Searching doctor with UUID
 router.get("/find-doctor/:uuid", (req, res) => {
   var uuid = req.params.uuid;

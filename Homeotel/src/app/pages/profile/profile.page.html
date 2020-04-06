@@ -13,53 +13,93 @@
 </ion-header>
 
 <ion-content>
-
   <ion-grid class="mainGrid">
-    <ion-row>
-      <ion-col class="card-heading">
-        <div>Personal Info</div>
+    <ion-row style="border-bottom: 1px solid #999;">
+      <ion-col size="4">
+        <p class="label">Name</p>
+        <p>Karthik</p>
+      </ion-col>
+
+      <ion-col size="4" offset="4">
+        <p style="margin: 0; padding: 6px; text-align: center;">
+          <img
+            src="assets/images/milinda.jpg"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
       </ion-col>
     </ion-row>
-    <ion-row class="fieldsRow">
-      <ion-col class="card-col">
-        <ion-input class="field-input" value="" placeholder="First Name"></ion-input>
+
+    <ion-row style="border-bottom: 1px solid #999;">
+      <ion-col>
+        <p class="label">Phone</p>
+      </ion-col>
+      <ion-col auto offset="4">
+        <p>7780132977</p>
       </ion-col>
     </ion-row>
-    <ion-row class="fieldsRow">
-      <ion-col class="card-col">
-        <ion-input class="field-input" value="" placeholder="Last Name"></ion-input>
+
+    <ion-row style="border-bottom: 1px solid #999;">
+      <ion-col>
+        <p class="label">Email</p>
+      </ion-col>
+      <ion-col auto offset="2">
+        <p>nagamallesh619@gmail.com</p>
       </ion-col>
     </ion-row>
-    <ion-row class="fieldsRow">
-      <ion-col class="card-col">
-        <ion-datetime class="paddTnB10 field-input" placeholder="Date of Birth" displayFormat="YYYY-MM-DD" value="">
-        </ion-datetime>
+
+    <ion-row style="border-bottom: 1px solid #999;">
+      <ion-col>
+        <p class="label">Gender</p>
+      </ion-col>
+      <ion-col size="auto" offset="2">
+        <p>Select</p>
       </ion-col>
     </ion-row>
-    <ion-row class="genderRow fieldsRow">
-      <ion-col class="card-col" (click)="toggleGender(1)">
-        <div class="paddTnB10 field-input" [ngClass]="{'genderBackground' : selectedGender == 1}">Male</div>
+
+    <ion-row style="border-bottom: 1px solid #999;">
+      <ion-col>
+        <p class="label">Date of birth</p>
       </ion-col>
-      <ion-col class="card-col" (click)="toggleGender(2)">
-        <div class="paddTnB10 field-input" [ngClass]="{'genderBackground' : selectedGender == 2}">Female</div>
-      </ion-col>
-    </ion-row>
-    <ion-row class="fieldsRow">
-      <ion-col class="card-col">
-        <ion-select class="paddTnB10 field-input" style="color: #000; font-weight: bold;" placeholder="Marital status">
-          <ion-select-option value="1">Married</ion-select-option>
-          <ion-select-option value="2">Single</ion-select-option>
-          <ion-select-option value="3">Divorced</ion-select-option>
-        </ion-select>
+      <ion-col size="auto" offset="2">
+        <p>Select</p>
       </ion-col>
     </ion-row>
-    <ion-row class="fieldsRow">
-      <ion-col class="card-col">
-        <ion-select class="paddTnB10 field-input" style="color: #000; font-weight: bold;" placeholder="Occupation">
-          <ion-select-option value="1">Designer</ion-select-option>
-          <ion-select-option value="2">Developer</ion-select-option>
-          <ion-select-option value="3">Manager</ion-select-option>
-        </ion-select>
+
+    <ion-row style="border-bottom: 1px solid #999;">
+      <ion-col>
+        <p class="label">Blood group</p>
+      </ion-col>
+      <ion-col size="auto" offset="2">
+        <p>Select</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="border-bottom: 1px solid #999;">
+      <ion-col>
+        <p class="label">Marital status</p>
+      </ion-col>
+      <ion-col size="auto" offset="2">
+        <p>Select</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="border-bottom: 1px solid #999;">
+      <ion-col>
+        <p class="label">Height</p>
+      </ion-col>
+      <ion-col size="auto" offset="2">
+        <p>Select</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="border-bottom: 1px solid #999;">
+      <ion-col>
+        <p class="label">Weight</p>
+      </ion-col>
+      <ion-col size="auto" offset="2">
+        <p>Select</p>
       </ion-col>
     </ion-row>
   </ion-grid>

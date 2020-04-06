@@ -129,10 +129,10 @@ export class LoginPage implements OnInit {
         .registerUser(username, email, password)
         .subscribe((data) => {
           console.log("Returned from Backend");
-          console.log(JSON.stringify(data));
+          // console.log(JSON.stringify(data));
           if (this.utilities.isInvalidApiResponseData(data)) {
             console.log("Returned Error");
-            console.log(data[0][0]);
+            // console.log(data[0][0]);
             if (data[0][0]["error"].includes(username)) {
               this.toastErrorMsg = "Username already exist";
             } else if (data[0][0]["error"].includes(email)) {
@@ -167,7 +167,7 @@ export class LoginPage implements OnInit {
     if (username && password) {
       this.apiService.loginUser(username, password).subscribe((data) => {
         console.log("Returned from Backend");
-        console.log(JSON.stringify(data));
+        // console.log(JSON.stringify(data));
         if (
           typeof data != "undefined" &&
           typeof data[0] != "undefined" &&

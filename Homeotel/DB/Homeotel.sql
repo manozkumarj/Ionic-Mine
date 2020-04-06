@@ -167,7 +167,7 @@ CREATE TABLE `d_transaction` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`transaction_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_transaction`
@@ -175,7 +175,8 @@ CREATE TABLE `d_transaction` (
 
 /*!40000 ALTER TABLE `d_transaction` DISABLE KEYS */;
 INSERT INTO `d_transaction` (`transaction_id`,`user_id`,`doctor_id`,`appointment_id`,`kit_id`,`transaction_type_id`,`transaction_amount`,`taxes`,`charges`,`net_amount`,`transaction_at`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (18,1,1,17,NULL,1,20,0,0,20,'2020-04-06 14:19:53',1,'2020-04-06 14:18:57',1,'2020-04-06 14:19:53');
+ (18,1,1,17,NULL,1,20,0,0,20,'2020-04-06 14:19:53',1,'2020-04-06 14:18:57',1,'2020-04-06 14:19:53'),
+ (19,1,1,NULL,1,3,250,0,0,250,'2020-04-06 14:27:35',1,'2020-04-06 14:27:35',1,'2020-04-06 14:27:35');
 /*!40000 ALTER TABLE `d_transaction` ENABLE KEYS */;
 
 
@@ -186,10 +187,18 @@ INSERT INTO `d_transaction` (`transaction_id`,`user_id`,`doctor_id`,`appointment
 DROP TABLE IF EXISTS `d_user`;
 CREATE TABLE `d_user` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `created_at` varchar(45) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `username` varchar(100) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `gender_id` int(10) unsigned DEFAULT NULL,
+  `dob` varchar(50) DEFAULT NULL,
+  `blood_group_id` int(10) unsigned DEFAULT NULL,
+  `marital_status_id` int(10) unsigned DEFAULT NULL,
+  `height` varchar(50) DEFAULT NULL,
+  `weight` varchar(50) DEFAULT NULL,
+  `created_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE,
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
@@ -200,11 +209,11 @@ CREATE TABLE `d_user` (
 --
 
 /*!40000 ALTER TABLE `d_user` DISABLE KEYS */;
-INSERT INTO `d_user` (`user_id`,`username`,`email`,`password`,`created_at`) VALUES 
- (1,'aaa','aaa@aaa.com','aaa','2020-03-31 10:36:19'),
- (2,'bbb','bbb@bbb.com','bbb','2020-03-31 10:55:35'),
- (3,'ccc','ccc@ccc.com','ccc','2020-03-31 11:00:12'),
- (4,'rrr','rrr@rrr.com','rrr','2020-03-31 11:03:58');
+INSERT INTO `d_user` (`user_id`,`name`,`username`,`password`,`phone`,`email`,`gender_id`,`dob`,`blood_group_id`,`marital_status_id`,`height`,`weight`,`created_at`) VALUES 
+ (1,NULL,'aaa','aaa',NULL,'aaa@aaa.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:36:19'),
+ (2,NULL,'bbb','bbb',NULL,'bbb@bbb.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:55:35'),
+ (3,NULL,'ccc','ccc',NULL,'ccc@ccc.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:00:12'),
+ (4,NULL,'rrr','rrr',NULL,'rrr@rrr.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:03:58');
 /*!40000 ALTER TABLE `d_user` ENABLE KEYS */;
 
 
@@ -402,7 +411,7 @@ CREATE TABLE `dd_mode` (
   `created_at` varchar(45) NOT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`doctor_id`,`mode_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dd_mode`
@@ -492,13 +501,15 @@ CREATE TABLE `dk_order` (
   `order_status` varchar(45) DEFAULT NULL,
   `created_at` varchar(45) NOT NULL,
   PRIMARY KEY (`id`,`doctor_id`,`user_id`,`kit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dk_order`
 --
 
 /*!40000 ALTER TABLE `dk_order` DISABLE KEYS */;
+INSERT INTO `dk_order` (`id`,`user_id`,`doctor_id`,`kit_id`,`amount_paid`,`order_status`,`created_at`) VALUES 
+ (7,1,1,1,'250','completed','2020-04-06 14:27:35');
 /*!40000 ALTER TABLE `dk_order` ENABLE KEYS */;
 
 
@@ -2239,6 +2250,45 @@ END;
 DELIMITER ;
 
 --
+-- Definition of procedure `sp_user_profile_details`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_profile_details`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_profile_details`(IN IN_userId INT)
+BEGIN
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+ SELECT * FROM d_user where user_id=IN_userId;
+
+ END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
 -- Definition of procedure `sp_user_purchase_homeokit`
 --
 
@@ -2280,8 +2330,8 @@ START TRANSACTION;
      INSERT INTO dk_order (user_id,doctor_id,kit_id,amount_paid,order_status,created_at)
      VALUES (IN_userId,IN_doctorId,IN_kitId,IN_price,'completed',now());
 
-     INSERT INTO d_transaction (kit_id, user_id, doctor_id, transaction_type_id, trasaction_amount,
-     net_amount, taxes, charges, trasaction_at, created_by, updated_by, created_at, updated_at)
+     INSERT INTO d_transaction (kit_id, user_id, doctor_id, transaction_type_id, transaction_amount,
+     net_amount, taxes, charges, transaction_at, created_by, updated_by, created_at, updated_at)
      VALUES (IN_kitId, IN_userId,IN_doctorId,3,IN_price,IN_price,0,0,now(),IN_userId,IN_userId,now(),now());
 
 

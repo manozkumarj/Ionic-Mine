@@ -17,6 +17,8 @@ export class UtilitiesService {
   selectedAppointmentComplaintDetails = {};
   bookableModeId;
 
+  profilePageDetails: any[] = [];
+
   constructor(private router: Router) {}
 
   formatDate(date) {
