@@ -192,10 +192,10 @@ CREATE TABLE `d_user` (
   `password` varchar(50) DEFAULT NULL,
   `phone` varchar(50) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `gender_id` int(10) unsigned DEFAULT NULL,
+  `gender_id` varchar(50) DEFAULT NULL,
   `dob` varchar(50) DEFAULT NULL,
-  `blood_group_id` int(10) unsigned DEFAULT NULL,
-  `marital_status_id` int(10) unsigned DEFAULT NULL,
+  `blood_group_id` varchar(50) DEFAULT NULL,
+  `marital_status_id` varchar(50) DEFAULT NULL,
   `height` varchar(50) DEFAULT NULL,
   `weight` varchar(50) DEFAULT NULL,
   `created_at` varchar(45) DEFAULT NULL,
@@ -210,7 +210,7 @@ CREATE TABLE `d_user` (
 
 /*!40000 ALTER TABLE `d_user` DISABLE KEYS */;
 INSERT INTO `d_user` (`user_id`,`name`,`username`,`password`,`phone`,`email`,`gender_id`,`dob`,`blood_group_id`,`marital_status_id`,`height`,`weight`,`created_at`) VALUES 
- (1,'Aaa User','aaa','aaa','9876543210','aaa@aaa.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:36:19'),
+ (1,'User AAA','aaa','aaa','9876543210','aaa@aaa.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:36:19'),
  (2,NULL,'bbb','bbb',NULL,'bbb@bbb.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:55:35'),
  (3,NULL,'ccc','ccc',NULL,'ccc@ccc.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:00:12'),
  (4,NULL,'rrr','rrr',NULL,'rrr@rrr.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:03:58');
@@ -2431,7 +2431,12 @@ END;
 
 START TRANSACTION;
 
-     UPDATE d_user SET IN_column_name = IN_value WHERE user_id = IN_user_id;
+     # UPDATE d_user SET + IN_column_name = IN_value WHERE user_id = IN_user_id;
+
+     SET @sql = CONCAT("UPDATE d_user SET ", IN_column_name, " = '", IN_value ,"' WHERE user_id = ",IN_user_id);
+     PREPARE stmt FROM @sql;
+     EXECUTE stmt;
+     DEALLOCATE PREPARE stmt;
 
 
 COMMIT;

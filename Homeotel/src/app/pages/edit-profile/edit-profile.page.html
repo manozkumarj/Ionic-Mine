@@ -29,7 +29,130 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid class="btnsGrid">
+  <ion-grid
+    *ngIf="currentQuestion == 'one' || currentQuestion == 'two' || currentQuestion == 'three'"
+  >
+    <ion-row>
+      <ion-col>
+        <ion-input
+          class="inputField"
+          [(ngModel)]="inputField"
+          value=""
+          placeholder="Please enter..."
+        >
+        </ion-input>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramFour -->
+  <ion-grid *ngIf="currentQuestion == 'four'" class="btnsGrid">
+    <ion-row>
+      <ion-col (click)="answered(1)">
+        Male
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col (click)="answered(2)">
+        Female
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramSeven -->
+  <ion-grid *ngIf="currentQuestion == 'seven'" class="btnsGrid">
+    <ion-row>
+      <ion-col (click)="answered(1)">
+        Married
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col (click)="answered(2)">
+        Single
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramSix -->
+  <ion-grid *ngIf="currentQuestion == 'six'" class="btnsGrid">
+    <ion-row>
+      <ion-col (click)="answered(1)" style="margin: 20px;">
+        A +ve
+      </ion-col>
+      <ion-col (click)="answered(2)" style="margin: 20px;">
+        A -ve
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col (click)="answered(1)" style="margin: 20px;">
+        B +ve
+      </ion-col>
+      <ion-col (click)="answered(2)" style="margin: 20px;">
+        B -ve
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col (click)="answered(1)" style="margin: 20px;">
+        AB +ve
+      </ion-col>
+      <ion-col (click)="answered(2)" style="margin: 20px;">
+        AB -ve
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col (click)="answered(1)" style="margin: 20px;">
+        O +ve
+      </ion-col>
+      <ion-col (click)="answered(2)" style="margin: 20px;">
+        O -ve
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramEight -->
+  <ion-grid *ngIf="currentQuestion == 'eight'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col style="margin: 20px;">
+              Feet
+            </ion-col>
+            <ion-col style="margin: 20px;">
+              Inches
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col size="6" class="showValue">{{selectedSystolic}} </ion-col>
+            <ion-col size="6" class="showValue">{{selectedDiastolic}} </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col size="6">
+              <button class="btns" (click)="selectSystolic()">
+                Select Systolic
+              </button>
+            </ion-col>
+            <ion-col size="6">
+              <button class="btns" (click)="selectDiastolic()">
+                Select Diastolic
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid
+    class="btnsGrid"
+    *ngIf="currentQuestion == 'one' || currentQuestion == 'two' || currentQuestion == 'three' || currentQuestion == 'eight' || currentQuestion == 'nine'"
+  >
     <ion-row>
       <ion-col (click)="answered()" class="btn-success">
         Save & Continue
