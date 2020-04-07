@@ -65,7 +65,7 @@ export class ProfilePage implements OnInit {
   getProfileDetails() {
     this.apiService.getProfileDetails().subscribe((data) => {
       console.log("Returned from Backend");
-      console.log(JSON.stringify(data));
+      console.log(data);
       if (this.utilities.isInvalidApiResponseData(data)) {
         console.log("Returned Error");
       } else {
@@ -75,8 +75,8 @@ export class ProfilePage implements OnInit {
           typeof data[0][0] != "undefined"
         ) {
           this.utilities.profilePageDetails = data[0][0];
-          console.log("Has profile details - below");
-          console.log(this.utilities.profilePageDetails);
+          // console.log("Has profile details - below");
+          // console.log(this.utilities.profilePageDetails);
 
           this.name = this.utilities.profilePageDetails["name"];
           this.name = this.name ? this.name : "Enter";

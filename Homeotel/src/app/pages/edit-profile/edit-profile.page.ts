@@ -18,18 +18,18 @@ export class EditProfilePage implements OnInit {
   question;
   currentQuestion;
 
-  selectedSystolic = "-NA-";
-  selectedDiastolic = "-NA-";
+  selectedFeet = "-NA-";
+  selectedInches = "-NA-";
 
-  systolicValue: number = 0;
-  diastolicValue: number = 0;
+  feetValue: number = 0;
+  inchesValue: number = 0;
 
   // Master data
   m_bloodGroup: any[] = [];
   m_maritaStatus: any[] = [];
   m_gender: any[] = [];
 
-  systolicOptions = [
+  feetOptions = [
     { description: "1" },
     { description: "2" },
     { description: "3" },
@@ -42,7 +42,7 @@ export class EditProfilePage implements OnInit {
     { description: "10" },
   ];
 
-  diastolicOptions = [
+  inchesOptions = [
     { description: "1" },
     { description: "2" },
     { description: "3" },
@@ -170,13 +170,15 @@ export class EditProfilePage implements OnInit {
     this.m_gender = this.utilities.bookAppointmentDoctorDetails["m_gender"];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.selectFeet();
+  }
 
-  selectSystolic() {
+  selectFeet() {
     this.selector
       .show({
-        title: "Select systolic",
-        items: [this.systolicOptions],
+        title: "Select Feet & Inches",
+        items: [this.feetOptions, this.inchesOptions],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
         theme: "dark",
@@ -185,28 +187,35 @@ export class EditProfilePage implements OnInit {
           //the number '2'
           {
             index: 0,
-            value: this.systolicOptions[this.systolicValue].description,
+            value: this.feetOptions[this.feetValue].description,
+          },
+          {
+            index: 1,
+            value: this.inchesOptions[this.inchesValue].description,
           },
         ],
       })
       .then(
         (result) => {
-          console.log(
-            "Selected Systolic value is --> " + result[0].description
-          );
+          console.log("Selected Feet value is --> " + result[0].description);
+          console.log("Selected Inches value is --> " + result[1].description);
           console.log(result[0].description + " at index: " + result[0].index);
-          this.systolicValue = result[0].index;
-          this.selectedSystolic = result[0].description;
+          console.log(result[1].description + " at index: " + result[1].index);
+          this.feetValue = result[0].index;
+          this.selectedFeet = result[0].description;
+
+          this.inchesValue = result[1].index;
+          this.selectedInches = result[1].description;
         },
         (err) => console.log("Error: ", err)
       );
   }
 
-  selectDiastolic() {
+  selectInches() {
     this.selector
       .show({
         title: "Select diastolic",
-        items: [this.diastolicOptions],
+        items: [this.inchesOptions],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
         theme: "dark",
@@ -215,7 +224,7 @@ export class EditProfilePage implements OnInit {
           //the number '2'
           {
             index: 0,
-            value: this.diastolicOptions[this.diastolicValue].description,
+            value: this.inchesOptions[this.inchesValue].description,
           },
         ],
       })
@@ -225,8 +234,8 @@ export class EditProfilePage implements OnInit {
             "Selected Diastolic value is --> " + result[0].description
           );
           console.log(result[0].description + " at index: " + result[0].index);
-          this.diastolicValue = result[0].index;
-          this.selectedDiastolic = result[0].description;
+          this.inchesValue = result[0].index;
+          this.selectedInches = result[0].description;
         },
         (err) => console.log("Error: ", err)
       );
