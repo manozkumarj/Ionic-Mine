@@ -18,42 +18,33 @@ export class EditProfilePage implements OnInit {
   question;
   currentQuestion;
 
+  date = new Date();
+  currentYear = this.date.getFullYear();
+
   selectedFeet = "-NA-";
   selectedInches = "-NA-";
+  selectedWeight = "-NA-";
+  selectedDob = "-NA-";
 
   feetValue: number = 0;
   inchesValue: number = 0;
+  weightValue: number = 0;
+
+  dobYearValue: number = 0;
+  dobMonthValue: number = 0;
+  dobDateValue: number = 0;
 
   // Master data
   m_bloodGroup: any[] = [];
   m_maritaStatus: any[] = [];
   m_gender: any[] = [];
 
-  feetOptions = [
-    { description: "1" },
-    { description: "2" },
-    { description: "3" },
-    { description: "4" },
-    { description: "5" },
-    { description: "6" },
-    { description: "7" },
-    { description: "8" },
-    { description: "9" },
-    { description: "10" },
-  ];
-
-  inchesOptions = [
-    { description: "1" },
-    { description: "2" },
-    { description: "3" },
-    { description: "4" },
-    { description: "5" },
-    { description: "6" },
-    { description: "7" },
-    { description: "8" },
-    { description: "9" },
-    { description: "10" },
-  ];
+  feetOptions: any[] = [];
+  inchesOptions: any[] = [];
+  weightOptions: any[] = [];
+  dobDateOptions: any[] = [];
+  dobMonthOptions: any[] = [];
+  dobYearOptions: any[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -88,6 +79,11 @@ export class EditProfilePage implements OnInit {
       this.currentQuestion = "nine";
       this.columnName = "weight";
       this.inputField = this.utilities.profilePageDetails["weight"];
+      // Generating Weight options
+      for (let i = 40; i <= 150; i++) {
+        this.weightOptions.push({ description: i.toString() });
+      }
+      this.selectHeight();
     } else if (paramEight) {
       console.log("paramEight");
       this.title = `${paramEight} of 9`;
@@ -97,6 +93,16 @@ export class EditProfilePage implements OnInit {
       this.currentQuestion = "eight";
       this.columnName = "height";
       this.inputField = this.utilities.profilePageDetails["height"];
+
+      // Generating Feet options
+      for (let i = 4; i <= 10; i++) {
+        this.feetOptions.push({ description: i.toString() });
+      }
+      // Generating Inches options
+      for (let i = 0; i <= 11; i++) {
+        this.inchesOptions.push({ description: i.toString() });
+      }
+      this.selectWeight();
     } else if (paramSeven) {
       console.log("paramSeven");
       this.title = `${paramSeven} of 9`;
@@ -124,6 +130,20 @@ export class EditProfilePage implements OnInit {
       this.currentQuestion = "five";
       this.columnName = "dob";
       this.inputField = this.utilities.profilePageDetails["dob"];
+
+      // Generating DOB date options
+      for (let i = 1; i <= 31; i++) {
+        this.dobDateOptions.push({ description: i.toString() });
+      }
+      // Generating DOB month options
+      for (let i = 1; i <= 12; i++) {
+        this.dobMonthOptions.push({ description: i.toString() });
+      }
+      // Generating DOB year options
+      for (let i = this.currentYear; i >= this.currentYear - 100; i--) {
+        this.dobYearOptions.push({ description: i.toString() });
+      }
+      this.selectDob();
     } else if (paramFour) {
       console.log("paramFour");
       this.title = `${paramFour} of 9`;
@@ -171,10 +191,71 @@ export class EditProfilePage implements OnInit {
   }
 
   ngOnInit() {
-    this.selectFeet();
+    console.log("dobDateOptions are below");
+    console.log(this.dobDateOptions);
+    console.log("dobMonthOptions are below");
+    console.log(this.dobMonthOptions);
+    console.log("dobYearOptions are below");
+    console.log(this.dobYearOptions);
+    console.log("feetOptions are below");
+    console.log(this.feetOptions);
+    console.log("inchesOptions are below");
+    console.log(this.inchesOptions);
+    console.log("WeightOptions are below");
+    console.log(this.weightOptions);
   }
 
-  selectFeet() {
+  selectDob() {
+    this.selector
+      .show({
+        title: "Select Date of birth (YYYY-MM-DD)",
+        items: [this.dobYearOptions, this.dobMonthOptions, this.dobDateOptions],
+        positiveButtonText: "Done",
+        negativeButtonText: "Cancel",
+        theme: "dark",
+        wrapWheelText: true,
+        defaultItems: [
+          //the number '2'
+          {
+            index: 0,
+            value: this.dobYearOptions[this.dobYearValue].description,
+          },
+          {
+            index: 1,
+            value: this.dobMonthOptions[this.dobMonthValue].description,
+          },
+          {
+            index: 2,
+            value: this.dobDateOptions[this.dobDateValue].description,
+          },
+        ],
+      })
+      .then(
+        (result) => {
+          console.log("Selected Feet value is --> " + result[0].description);
+          console.log("Selected Inches value is --> " + result[1].description);
+          console.log("Selected Inches value is --> " + result[2].description);
+
+          console.log(result[0].description + " at index: " + result[0].index);
+          console.log(result[1].description + " at index: " + result[1].index);
+          console.log(result[2].description + " at index: " + result[2].index);
+
+          this.dobYearValue = result[0].index;
+          let y = result[0].description;
+
+          this.dobMonthValue = result[1].index;
+          let m = result[1].description;
+
+          this.dobDateValue = result[2].index;
+          let d = result[2].description;
+
+          this.selectedDob = y + m + d;
+        },
+        (err) => console.log("Error: ", err)
+      );
+  }
+
+  selectHeight() {
     this.selector
       .show({
         title: "Select Feet & Inches",
@@ -211,11 +292,11 @@ export class EditProfilePage implements OnInit {
       );
   }
 
-  selectInches() {
+  selectWeight() {
     this.selector
       .show({
-        title: "Select diastolic",
-        items: [this.inchesOptions],
+        title: "Select Weight",
+        items: [this.weightOptions],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
         theme: "dark",
@@ -224,18 +305,16 @@ export class EditProfilePage implements OnInit {
           //the number '2'
           {
             index: 0,
-            value: this.inchesOptions[this.inchesValue].description,
+            value: this.weightOptions[this.weightValue].description,
           },
         ],
       })
       .then(
         (result) => {
-          console.log(
-            "Selected Diastolic value is --> " + result[0].description
-          );
+          console.log("Selected Weight value is --> " + result[0].description);
           console.log(result[0].description + " at index: " + result[0].index);
-          this.inchesValue = result[0].index;
-          this.selectedInches = result[0].description;
+          this.weightValue = result[0].index;
+          this.selectedWeight = result[0].description;
         },
         (err) => console.log("Error: ", err)
       );

@@ -57,6 +57,35 @@
     </ion-row>
   </ion-grid>
 
+  <!-- paramFive - five -->
+  <ion-grid *ngIf="currentQuestion == 'five'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              Date of birth (YYYY-MM-DD)
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col class="showValue">{{selectedDob}} </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col (click)="selectDob()" class="btn-success">
+              Select Date of birth
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <!-- paramSix - bloodGroups -->
   <ion-grid *ngIf="currentQuestion == 'six'" class="btnsGrid">
     <ion-row>
@@ -85,7 +114,7 @@
   </ion-grid>
 
   <!-- paramEight - height -->
-  <ion-grid>
+  <ion-grid *ngIf="currentQuestion == 'eight'">
     <ion-row>
       <ion-col>
         <ion-grid class="btnsGrid">
@@ -108,8 +137,37 @@
 
         <ion-grid class="btnsGrid">
           <ion-row>
-            <ion-col (click)="selectFeet()" class="btn-success">
+            <ion-col (click)="selectHeight()" class="btn-success">
               Select Feet & Inches
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramEight - nine -->
+  <ion-grid *ngIf="currentQuestion == 'nine'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              Weight
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col class="showValue">{{selectedWeight}} </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col (click)="selectWeight()" class="btn-success">
+              Select weight
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -119,7 +177,7 @@
 
   <ion-grid
     class="btnsGrid"
-    *ngIf="currentQuestion == 'one' || currentQuestion == 'two' || currentQuestion == 'three' || currentQuestion == 'eight' || currentQuestion == 'nine'"
+    *ngIf="currentQuestion == 'one' || currentQuestion == 'two' || currentQuestion == 'three'"
   >
     <ion-row>
       <ion-col (click)="answered()" class="btn-success">
