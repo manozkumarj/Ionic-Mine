@@ -266,11 +266,70 @@ const routes: Routes = [
       import("./pages/single-selection/single-selection.module").then(
         (m) => m.SingleSelectionPageModule
       ),
-  },  {
-    path: 'edit-profile',
-    loadChildren: () => import('./pages/edit-profile/edit-profile.module').then( m => m.EditProfilePageModule)
   },
-
+  {
+    path: "edit-profile/:one/:two/:three/:four/:five/:six/:seven/:eight/:nine",
+    loadChildren: () =>
+      import("./pages/edit-profile/edit-profile.module").then(
+        (m) => m.EditProfilePageModule
+      ),
+  },
+  {
+    path: "edit-profile/:one/:two/:three/:four/:five/:six/:seven/:eight",
+    loadChildren: () =>
+      import("./pages/edit-profile/edit-profile.module").then(
+        (m) => m.EditProfilePageModule
+      ),
+  },
+  {
+    path: "edit-profile/:one/:two/:three/:four/:five/:six/:seven",
+    loadChildren: () =>
+      import("./pages/edit-profile/edit-profile.module").then(
+        (m) => m.EditProfilePageModule
+      ),
+  },
+  {
+    path: "edit-profile/:one/:two/:three/:four/:five/:six",
+    loadChildren: () =>
+      import("./pages/edit-profile/edit-profile.module").then(
+        (m) => m.EditProfilePageModule
+      ),
+  },
+  {
+    path: "edit-profile/:one/:two/:three/:four/:five",
+    loadChildren: () =>
+      import("./pages/edit-profile/edit-profile.module").then(
+        (m) => m.EditProfilePageModule
+      ),
+  },
+  {
+    path: "edit-profile/:one/:two/:three/:four",
+    loadChildren: () =>
+      import("./pages/edit-profile/edit-profile.module").then(
+        (m) => m.EditProfilePageModule
+      ),
+  },
+  {
+    path: "edit-profile/:one/:two/:three",
+    loadChildren: () =>
+      import("./pages/edit-profile/edit-profile.module").then(
+        (m) => m.EditProfilePageModule
+      ),
+  },
+  {
+    path: "edit-profile/:one/:two",
+    loadChildren: () =>
+      import("./pages/edit-profile/edit-profile.module").then(
+        (m) => m.EditProfilePageModule
+      ),
+  },
+  {
+    path: "edit-profile/:one",
+    loadChildren: () =>
+      import("./pages/edit-profile/edit-profile.module").then(
+        (m) => m.EditProfilePageModule
+      ),
+  },
 ];
 
 @NgModule({

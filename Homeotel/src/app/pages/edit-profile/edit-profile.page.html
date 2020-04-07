@@ -1,15 +1,39 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/profile"></ion-back-button>
+      <ion-back-button [defaultHref]="backButtonLink"></ion-back-button>
     </ion-buttons>
-    <ion-title>Edit Profile</ion-title>
-    <!-- <ion-buttons slot="primary">
-      <ion-button (click)="moreOptions()">
-        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="primary" [routerLink]="['/profile']">
+      <ion-button>
+        Exit
       </ion-button>
-    </ion-buttons> -->
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content> </ion-content>
+<ion-content>
+  <ion-grid
+    style="
+      height: 30%;
+      background-color: #eab841;
+      color: #fff;
+      font-size: 18px;
+    "
+  >
+    <ion-row
+      style="height: 100%;"
+      class="ion-justify-content-center ion-align-items-center"
+    >
+      {{question}}
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="btnsGrid">
+    <ion-row>
+      <ion-col (click)="answered()" class="btn-success">
+        Save & Continue
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

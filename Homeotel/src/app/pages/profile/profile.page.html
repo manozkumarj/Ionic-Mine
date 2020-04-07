@@ -14,8 +14,8 @@
 
 <ion-content>
   <ion-grid class="mainGrid">
-    <ion-row style="border-bottom: 1px solid #999;">
-      <ion-col (click)="navigateToEditProfile('name')">
+    <ion-row class="borderBottom">
+      <ion-col [routerLink]="['/edit-profile', 1]">
         <p class="label">Name</p>
         <p>{{name}}</p>
       </ion-col>
@@ -31,7 +31,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row style="border-bottom: 1px solid #999;">
+    <ion-row [routerLink]="['/edit-profile', 1,2]" class="borderBottom">
       <ion-col>
         <p class="label">Phone</p>
       </ion-col>
@@ -40,7 +40,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row style="border-bottom: 1px solid #999;">
+    <ion-row class="borderBottom" [routerLink]="['/edit-profile', 1,2,3]">
       <ion-col>
         <p class="label">Email</p>
       </ion-col>
@@ -49,7 +49,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row style="border-bottom: 1px solid #999;">
+    <ion-row class="borderBottom" [routerLink]="['/edit-profile', 1,2,3,4]">
       <ion-col>
         <p class="label">Gender</p>
       </ion-col>
@@ -58,7 +58,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row style="border-bottom: 1px solid #999;">
+    <ion-row class="borderBottom" [routerLink]="['/edit-profile', 1,2,3,4,5]">
       <ion-col>
         <p class="label">Date of birth</p>
       </ion-col>
@@ -67,7 +67,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row style="border-bottom: 1px solid #999;">
+    <ion-row class="borderBottom" [routerLink]="['/edit-profile', 1,2,3,4,5,6]">
       <ion-col>
         <p class="label">Blood group</p>
       </ion-col>
@@ -76,7 +76,10 @@
       </ion-col>
     </ion-row>
 
-    <ion-row style="border-bottom: 1px solid #999;">
+    <ion-row
+      class="borderBottom"
+      [routerLink]="['/edit-profile', 1,2,3,4,5,6,7]"
+    >
       <ion-col>
         <p class="label">Marital status</p>
       </ion-col>
@@ -85,7 +88,10 @@
       </ion-col>
     </ion-row>
 
-    <ion-row style="border-bottom: 1px solid #999;">
+    <ion-row
+      class="borderBottom"
+      [routerLink]="['/edit-profile', 1,2,3,4,5,6,7,8]"
+    >
       <ion-col>
         <p class="label">Height</p>
       </ion-col>
@@ -94,7 +100,10 @@
       </ion-col>
     </ion-row>
 
-    <ion-row style="border-bottom: 1px solid #999;">
+    <ion-row
+      class="borderBottom"
+      [routerLink]="['/edit-profile', 1,2,3,4,5,6,7,8,9]"
+    >
       <ion-col>
         <p class="label">Weight</p>
       </ion-col>
