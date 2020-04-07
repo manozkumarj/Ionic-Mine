@@ -85,8 +85,9 @@ export class ProfilePage implements OnInit {
 
           this.email = this.utilities.profilePageDetails["email"];
           this.email = this.email ? this.email : "Enter";
+
           this.gender = this.utilities.profilePageDetails["gender_id"];
-          this.gender = this.gender ? this.gender : "Select";
+
           this.dob = this.utilities.profilePageDetails["dob"];
           this.dob = this.dob ? this.dob : "Enter";
           this.bloodGroup = this.utilities.profilePageDetails["blood_group_id"];
@@ -98,9 +99,10 @@ export class ProfilePage implements OnInit {
             ? this.maritalStatus
             : "Select";
           this.height = this.utilities.profilePageDetails["height"];
-          this.height = this.height ? this.height : "Select";
+          this.height = this.height ? this.height + " Feet" : "Select";
+
           this.weight = this.utilities.profilePageDetails["weight"];
-          this.weight = this.weight ? this.weight : "Select";
+          this.weight = this.weight ? this.weight + " Kgs" : "Select";
 
           // Master data
           let masterData = data[1];
@@ -135,6 +137,12 @@ export class ProfilePage implements OnInit {
             }
           });
 
+          // if (this.gender) {
+          //   this.gender = this.m_gender[this.gender - 1]["name"];
+          // } else {
+          //   this.gender = "Select";
+          // }
+
           // console.log("***************************");
           // console.log("blood_group related master details showing below");
           // console.log(
@@ -145,9 +153,29 @@ export class ProfilePage implements OnInit {
           // console.log(
           //   this.utilities.bookAppointmentDoctorDetails["m_maritaStatus"]
           // );
-          // console.log("***************************");
-          // console.log("m_gender related master details showing below");
-          // console.log(this.utilities.bookAppointmentDoctorDetails["m_gender"]);
+          console.log("***************************");
+          console.log("m_gender related master details showing below");
+          console.log(this.utilities.bookAppointmentDoctorDetails["m_gender"]);
+
+          if (this.gender) {
+            this.gender = this.m_gender[this.gender - 1]["name"];
+          } else {
+            this.gender = "Select";
+          }
+
+          if (this.bloodGroup) {
+            this.bloodGroup = this.m_bloodGroup[this.bloodGroup - 1]["name"];
+          } else {
+            this.bloodGroup = "Select";
+          }
+
+          if (this.maritalStatus) {
+            this.maritalStatus = this.m_maritaStatus[this.maritalStatus - 1][
+              "name"
+            ];
+          } else {
+            this.maritalStatus = "Select";
+          }
         } else {
           console.log("No user found with provided user ID");
         }
@@ -209,6 +237,24 @@ export class ProfilePage implements OnInit {
         alert("Something went wrong...");
       }
     );
+  }
+
+  updateProfilePhot(image) {
+    this.apiService
+      .updateUserProfileDetails("photo", image)
+      .subscribe((data) => {
+        console.log("Returned from Backend");
+        console.log(JSON.stringify(data));
+        if (this.utilities.isInvalidApiResponseData(data)) {
+          console.log("Returned Error");
+          console.log(data[0][0]);
+          if (data[0][0]["error"]) {
+            console.log("Something went wrong");
+          }
+        } else {
+          console.log("Returned Success");
+        }
+      });
   }
 
   navigateToEditProfile(type) {
