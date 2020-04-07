@@ -29,6 +29,10 @@ export class ProfilePage implements OnInit {
   height;
   weight;
 
+  m_bloodGroup: any[] = [];
+  m_maritaStatus: any[] = [];
+  m_gender: any[] = [];
+
   imagePickerOptions = {
     maximumImagesCount: 1,
     quality: 50,
@@ -70,8 +74,9 @@ export class ProfilePage implements OnInit {
           typeof data[0] != "undefined" &&
           typeof data[0][0] != "undefined"
         ) {
-          console.log("Has profile details");
           this.utilities.profilePageDetails = data[0][0];
+          console.log("Has profile details - below");
+          console.log(this.utilities.profilePageDetails);
 
           this.name = this.utilities.profilePageDetails["name"];
           this.name = this.name ? this.name : "Enter";
@@ -80,14 +85,14 @@ export class ProfilePage implements OnInit {
 
           this.email = this.utilities.profilePageDetails["email"];
           this.email = this.email ? this.email : "Enter";
-          this.gender = this.utilities.profilePageDetails["gender"];
+          this.gender = this.utilities.profilePageDetails["gender_id"];
           this.gender = this.gender ? this.gender : "Select";
           this.dob = this.utilities.profilePageDetails["dob"];
           this.dob = this.dob ? this.dob : "Enter";
-          this.bloodGroup = this.utilities.profilePageDetails["blood_group"];
+          this.bloodGroup = this.utilities.profilePageDetails["blood_group_id"];
           this.bloodGroup = this.bloodGroup ? this.bloodGroup : "Select";
           this.maritalStatus = this.utilities.profilePageDetails[
-            "marital_status"
+            "marital_status_id"
           ];
           this.maritalStatus = this.maritalStatus
             ? this.maritalStatus
@@ -96,6 +101,52 @@ export class ProfilePage implements OnInit {
           this.height = this.height ? this.height : "Select";
           this.weight = this.utilities.profilePageDetails["weight"];
           this.weight = this.weight ? this.weight : "Select";
+
+          // Master data
+          let masterData = data[1];
+          // console.log("***************************");
+          // console.log("Profile related master details showing below");
+          // console.log(masterData);
+          masterData.forEach((masterRow) => {
+            if (masterRow.master_type == "blood_group") {
+              this.m_bloodGroup.push({
+                id: masterRow.id,
+                name: masterRow.name,
+              });
+              this.utilities.bookAppointmentDoctorDetails[
+                "m_bloodGroup"
+              ] = this.m_bloodGroup;
+            } else if (masterRow.master_type == "marital_status") {
+              this.m_maritaStatus.push({
+                id: masterRow.id,
+                name: masterRow.name,
+              });
+              this.utilities.bookAppointmentDoctorDetails[
+                "m_maritaStatus"
+              ] = this.m_maritaStatus;
+            } else if (masterRow.master_type == "gender") {
+              this.m_gender.push({
+                id: masterRow.id,
+                name: masterRow.name,
+              });
+              this.utilities.bookAppointmentDoctorDetails[
+                "m_gender"
+              ] = this.m_gender;
+            }
+          });
+          console.log("***************************");
+          console.log("blood_group related master details showing below");
+          console.log(
+            this.utilities.bookAppointmentDoctorDetails["m_bloodGroup"]
+          );
+          console.log("***************************");
+          console.log("maritaStatus related master details showing below");
+          console.log(
+            this.utilities.bookAppointmentDoctorDetails["m_maritaStatus"]
+          );
+          console.log("***************************");
+          console.log("m_gender related master details showing below");
+          console.log(this.utilities.bookAppointmentDoctorDetails["m_gender"]);
         } else {
           console.log("No user found with provided user ID");
         }

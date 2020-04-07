@@ -210,7 +210,7 @@ CREATE TABLE `d_user` (
 
 /*!40000 ALTER TABLE `d_user` DISABLE KEYS */;
 INSERT INTO `d_user` (`user_id`,`name`,`username`,`password`,`phone`,`email`,`gender_id`,`dob`,`blood_group_id`,`marital_status_id`,`height`,`weight`,`created_at`) VALUES 
- (1,'User AAA','aaa','aaa','9876543210','aaa@aaa.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:36:19'),
+ (1,'User AAA','aaa','aaa','9876543210','aaa@aaa.com','1',NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:36:19'),
  (2,NULL,'bbb','bbb',NULL,'bbb@bbb.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:55:35'),
  (3,NULL,'ccc','ccc',NULL,'ccc@ccc.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:00:12'),
  (4,NULL,'rrr','rrr',NULL,'rrr@rrr.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:03:58');
@@ -1010,10 +1010,14 @@ CREATE TABLE `m_blood_group` (
 
 /*!40000 ALTER TABLE `m_blood_group` DISABLE KEYS */;
 INSERT INTO `m_blood_group` (`blood_group_id`,`name`,`is_active`) VALUES 
- (1,'O','1'),
- (2,'A','1'),
- (3,'AB','1'),
- (4,'B','1');
+ (1,'A-','1'),
+ (2,'A+','1'),
+ (3,'B-','1'),
+ (4,'B+','1'),
+ (5,'AB-','1'),
+ (6,'AB+','1'),
+ (7,'O-','1'),
+ (8,'O+','1');
 /*!40000 ALTER TABLE `m_blood_group` ENABLE KEYS */;
 
 
@@ -2282,6 +2286,16 @@ DECLARE exit handler for sqlwarning
 END;
 
  SELECT * FROM d_user where user_id=IN_userId;
+
+ SELECT blood_group_id AS id, name AS name, 'blood_group' as master_type from m_blood_group WHERE is_active = 1
+
+ Union
+
+ SELECT marital_status_id AS id, name AS name, 'marital_status' as master_type from m_marital_status WHERE is_active = 1
+
+ Union
+
+ SELECT gender_id AS id, name AS name, 'gender' as master_type from m_gender WHERE is_active = 1;
 
  END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

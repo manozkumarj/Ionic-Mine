@@ -82,6 +82,7 @@ export class EditProfilePage implements OnInit {
       this.question = "Please select your weight";
       this.currentQuestion = "nine";
       this.columnName = "weight";
+      this.inputField = this.utilities.profilePageDetails["weight"];
     } else if (paramEight) {
       console.log("paramEight");
       this.title = `${paramEight} of 9`;
@@ -90,6 +91,7 @@ export class EditProfilePage implements OnInit {
       this.question = "Please select your height";
       this.currentQuestion = "eight";
       this.columnName = "height";
+      this.inputField = this.utilities.profilePageDetails["height"];
     } else if (paramSeven) {
       console.log("paramSeven");
       this.title = `${paramSeven} of 9`;
@@ -98,6 +100,7 @@ export class EditProfilePage implements OnInit {
       this.question = "Please select your marital status";
       this.currentQuestion = "seven";
       this.columnName = "marital_status_id";
+      this.inputField = this.utilities.profilePageDetails["marital_status_id"];
     } else if (paramSix) {
       console.log("paramSix");
       this.title = `${paramSix} of 9`;
@@ -106,6 +109,7 @@ export class EditProfilePage implements OnInit {
       this.question = "Please select your blood group";
       this.currentQuestion = "six";
       this.columnName = "blood_group_id";
+      this.inputField = this.utilities.profilePageDetails["blood_group_id"];
     } else if (paramFive) {
       console.log("paramFive");
       this.title = `${paramFive} of 9`;
@@ -114,6 +118,7 @@ export class EditProfilePage implements OnInit {
       this.question = "Please select your Date of birth";
       this.currentQuestion = "five";
       this.columnName = "dob";
+      this.inputField = this.utilities.profilePageDetails["dob"];
     } else if (paramFour) {
       console.log("paramFour");
       this.title = `${paramFour} of 9`;
@@ -122,6 +127,7 @@ export class EditProfilePage implements OnInit {
       this.question = "Please select your gender";
       this.currentQuestion = "four";
       this.columnName = "gender_id";
+      this.inputField = this.utilities.profilePageDetails["gender_id"];
     } else if (paramThree) {
       console.log("paramThree");
       this.title = `${paramThree} of 9`;
@@ -130,6 +136,7 @@ export class EditProfilePage implements OnInit {
       this.question = "Please enter your email ID";
       this.currentQuestion = "three";
       this.columnName = "email";
+      this.inputField = this.utilities.profilePageDetails["email"];
     } else if (paramTwo) {
       console.log("paramTwo");
       this.title = `${paramTwo} of 9`;
@@ -138,6 +145,7 @@ export class EditProfilePage implements OnInit {
       this.currentQuestion = "two";
       this.question = "Please enter your phone number";
       this.columnName = "phone";
+      this.inputField = this.utilities.profilePageDetails["phone"];
     } else if (paramOne) {
       console.log("paramOne");
       this.title = `${paramOne} of 9`;
@@ -146,6 +154,7 @@ export class EditProfilePage implements OnInit {
       this.question = "Please enter your name";
       this.currentQuestion = "one";
       this.columnName = "name";
+      this.inputField = this.utilities.profilePageDetails["name"];
     }
   }
 
@@ -236,10 +245,9 @@ export class EditProfilePage implements OnInit {
             }
           } else {
             console.log("Returned Success");
+            this.router.navigate([this.forwardLink]);
           }
         });
-
-      // this.router.navigate([this.forwardLink]);
     } else {
       alert("Please provide value");
     }
