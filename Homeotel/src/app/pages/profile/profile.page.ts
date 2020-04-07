@@ -134,19 +134,20 @@ export class ProfilePage implements OnInit {
               ] = this.m_gender;
             }
           });
-          console.log("***************************");
-          console.log("blood_group related master details showing below");
-          console.log(
-            this.utilities.bookAppointmentDoctorDetails["m_bloodGroup"]
-          );
-          console.log("***************************");
-          console.log("maritaStatus related master details showing below");
-          console.log(
-            this.utilities.bookAppointmentDoctorDetails["m_maritaStatus"]
-          );
-          console.log("***************************");
-          console.log("m_gender related master details showing below");
-          console.log(this.utilities.bookAppointmentDoctorDetails["m_gender"]);
+
+          // console.log("***************************");
+          // console.log("blood_group related master details showing below");
+          // console.log(
+          //   this.utilities.bookAppointmentDoctorDetails["m_bloodGroup"]
+          // );
+          // console.log("***************************");
+          // console.log("maritaStatus related master details showing below");
+          // console.log(
+          //   this.utilities.bookAppointmentDoctorDetails["m_maritaStatus"]
+          // );
+          // console.log("***************************");
+          // console.log("m_gender related master details showing below");
+          // console.log(this.utilities.bookAppointmentDoctorDetails["m_gender"]);
         } else {
           console.log("No user found with provided user ID");
         }

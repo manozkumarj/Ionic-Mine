@@ -24,6 +24,11 @@ export class EditProfilePage implements OnInit {
   systolicValue: number = 0;
   diastolicValue: number = 0;
 
+  // Master data
+  m_bloodGroup: any[] = [];
+  m_maritaStatus: any[] = [];
+  m_gender: any[] = [];
+
   systolicOptions = [
     { description: "1" },
     { description: "2" },
@@ -156,6 +161,13 @@ export class EditProfilePage implements OnInit {
       this.columnName = "name";
       this.inputField = this.utilities.profilePageDetails["name"];
     }
+    this.m_bloodGroup = this.utilities.bookAppointmentDoctorDetails[
+      "m_bloodGroup"
+    ];
+    this.m_maritaStatus = this.utilities.bookAppointmentDoctorDetails[
+      "m_maritaStatus"
+    ];
+    this.m_gender = this.utilities.bookAppointmentDoctorDetails["m_gender"];
   }
 
   ngOnInit() {}
