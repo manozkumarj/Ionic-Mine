@@ -152,4 +152,15 @@ export class ApiService {
     };
     return this.http.post(this.apiUrl + path, body);
   }
+
+  // Update user photo
+  upsertUserPhoto(relativeId, photo) {
+    var path = "/user/photo-save";
+    var body = {
+      userId: this.utilities.userId,
+      relativeId,
+      photo,
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
 }

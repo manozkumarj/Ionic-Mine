@@ -210,7 +210,7 @@ CREATE TABLE `d_user` (
 
 /*!40000 ALTER TABLE `d_user` DISABLE KEYS */;
 INSERT INTO `d_user` (`user_id`,`name`,`username`,`password`,`phone`,`email`,`gender_id`,`dob`,`blood_group_id`,`marital_status_id`,`height`,`weight`,`created_at`) VALUES 
- (1,'User AAA','aaa','aaa','9876543210','aaa@aaa.com','2','1990-02-15','3','3','6.2','74','2020-03-31 10:36:19'),
+ (1,'User AAA','aaa','aaa','9876543210','aaa@aaa.com','2','1990-2-15','3','3','6.2','74','2020-03-31 10:36:19'),
  (2,NULL,'bbb','bbb',NULL,'bbb@bbb.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:55:35'),
  (3,NULL,'ccc','ccc',NULL,'ccc@ccc.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:00:12'),
  (4,NULL,'rrr','rrr',NULL,'rrr@rrr.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:03:58');
@@ -572,6 +572,7 @@ INSERT INTO `du_doctor` (`id`,`user_id`,`doctor_id`,`added_on`,`is_active`,`crea
 
 DROP TABLE IF EXISTS `du_photo`;
 CREATE TABLE `du_photo` (
+  `photo_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL DEFAULT 0,
   `photo` blob NOT NULL,
@@ -579,8 +580,8 @@ CREATE TABLE `du_photo` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`photo_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `du_photo`
@@ -2337,6 +2338,8 @@ END;
  Union
 
  SELECT gender_id AS id, name AS name, 'gender' as master_type from m_gender WHERE is_active = 1;
+
+ SELECT * FROM du_photo WHERE user_id = IN_userId AND relative_id = 0;
 
  END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

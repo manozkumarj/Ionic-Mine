@@ -176,11 +176,29 @@ export class ProfilePage implements OnInit {
           } else {
             this.maritalStatus = "Select";
           }
+
+          // Master data
+          let photoData = data[2];
+          if (photoData.length > 0) {
+            console.log("photoData -> ");
+            console.log(photoData[0]["photo"]);
+            this.profilePhoto = this.getPhotoDataUrl(photoData[0]["photo"]);
+          } else {
+            this.profilePhoto = "assets/images/milinda.jpg";
+          }
         } else {
           console.log("No user found with provided user ID");
         }
       }
     });
+  }
+
+  getPhotoDataUrl(photoImgData) {
+    if (photoImgData) {
+      return "data:image/jpeg;base64," + photoImgData;
+    } else {
+      return "assets/images/zuck.jpg";
+    }
   }
 
   openMenu() {
@@ -230,6 +248,7 @@ export class ProfilePage implements OnInit {
         // If it's base64 (DATA_URL):
         let base64Image = "data:image/jpeg;base64," + imageData;
         this.profilePhoto = base64Image;
+        this.updateProfilePhoto(this.profilePhoto);
       },
       (err) => {
         // Handle error
@@ -239,22 +258,20 @@ export class ProfilePage implements OnInit {
     );
   }
 
-  updateProfilePhot(image) {
-    this.apiService
-      .updateUserProfileDetails("photo", image)
-      .subscribe((data) => {
-        console.log("Returned from Backend");
-        console.log(JSON.stringify(data));
-        if (this.utilities.isInvalidApiResponseData(data)) {
-          console.log("Returned Error");
-          console.log(data[0][0]);
-          if (data[0][0]["error"]) {
-            console.log("Something went wrong");
-          }
-        } else {
-          console.log("Returned Success");
+  updateProfilePhoto(photo) {
+    this.apiService.upsertUserPhoto(0, photo).subscribe((data) => {
+      console.log("Returned from Backend");
+      console.log(JSON.stringify(data));
+      if (this.utilities.isInvalidApiResponseData(data)) {
+        console.log("Returned Error");
+        console.log(data[0][0]);
+        if (data[0][0]["error"]) {
+          console.log("Something went wrong");
         }
-      });
+      } else {
+        console.log("Returned Success");
+      }
+    });
   }
 
   navigateToEditProfile(type) {
