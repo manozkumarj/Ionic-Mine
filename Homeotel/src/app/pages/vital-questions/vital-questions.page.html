@@ -38,8 +38,95 @@
     </ion-row>
   </ion-grid>
 
+  <!-- paramOne - one -->
+  <ion-grid *ngIf="currentQuestion == 'one'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              Temperature
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col class="showValue">{{selectedTemperature}} &#8457;</ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col (click)="selectTemperature()" class="btn-success">
+              Select Temperature
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramTwo - Two -->
+  <ion-grid *ngIf="currentQuestion == 'two'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              Pulse rate
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col class="showValue">{{selectedPulserate}}</ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col (click)="selectPulserate()" class="btn-success">
+              Select Pulse rate
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramThree - Three -->
+  <ion-grid *ngIf="currentQuestion == 'three'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              Respiratory rate
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col class="showValue">{{selectedRespiratoryrate}}</ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col (click)="selectRespiratoryrate()" class="btn-success">
+              Select Respiratory rate
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <!-- paramOne -->
-  <ion-grid *ngIf="currentQuestion == 'one' || currentQuestion == 'four'">
+  <ion-grid *ngIf="currentQuestion == 'four'">
     <ion-row>
       <ion-col>
         <ion-grid class="btnsGrid">
@@ -52,19 +139,6 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        <!-- paramOne -->
-        <!-- <ion-grid class="optionsGrid">
-          <ion-row
-            *ngFor="let systolicDiastolicOption of systolicDiastolicOptions"
-          >
-            <ion-col>
-              {{systolicDiastolicOption.systolic}}
-            </ion-col>
-            <ion-col>
-              {{systolicDiastolicOption.distolic}}
-            </ion-col>
-          </ion-row>
-        </ion-grid> -->
 
         <ion-grid class="optionsGrid">
           <ion-row>
@@ -77,17 +151,10 @@
           </ion-row>
         </ion-grid>
 
-        <ion-grid class="optionsGrid">
+        <ion-grid class="btnsGrid">
           <ion-row>
-            <ion-col size="6">
-              <button class="btns" (click)="selectSystolic()">
-                Select Systolic
-              </button>
-            </ion-col>
-            <ion-col size="6">
-              <button class="btns" (click)="selectDiastolic()">
-                Select Diastolic
-              </button>
+            <ion-col (click)="selectBP()" class="btn-success">
+              Select BP
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -127,9 +194,20 @@
     </ion-row>
   </ion-grid>
 
-  <ion-row class="skip" [routerLink]="[forwardLink]">
-    <ion-col>
-      Skip
-    </ion-col>
-  </ion-row>
+  <ion-grid class="btnsGrid">
+    <ion-row>
+      <ion-col
+        size="auto"
+        class="skip"
+        style="padding: 12px 20px;"
+        [routerLink]="[forwardLink]"
+        *ngIf="currentQuestion != 'four'"
+      >
+        Skip
+      </ion-col>
+      <ion-col class="skip" [routerLink]="[forwardLink]">
+        Save & Continue
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

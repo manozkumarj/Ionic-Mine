@@ -5,7 +5,7 @@ import { WheelSelector } from "@ionic-native/wheel-selector/ngx";
 @Component({
   selector: "app-vital-questions",
   templateUrl: "./vital-questions.page.html",
-  styleUrls: ["./vital-questions.page.scss"]
+  styleUrls: ["./vital-questions.page.scss"],
 })
 export class VitalQuestionsPage implements OnInit {
   currentQuestion;
@@ -19,37 +19,24 @@ export class VitalQuestionsPage implements OnInit {
   pulseRates;
   respiratoryRates;
 
+  selectedTemperature = "0.0";
   selectedSystolic = "-NA-";
   selectedDiastolic = "-NA-";
+  selectedPulserate = "-NA-";
+  selectedBp = "-NA-";
+  selectedRespiratoryrate = "-NA-";
 
+  temperatureValue: number = 0;
   systolicValue: number = 0;
   diastolicValue: number = 0;
+  pulserateValue: number = 0;
+  respiratoryrateValue: number = 0;
 
-  systolicOptions = [
-    { description: "1" },
-    { description: "2" },
-    { description: "3" },
-    { description: "4" },
-    { description: "5" },
-    { description: "6" },
-    { description: "7" },
-    { description: "8" },
-    { description: "9" },
-    { description: "10" }
-  ];
-
-  diastolicOptions = [
-    { description: "1" },
-    { description: "2" },
-    { description: "3" },
-    { description: "4" },
-    { description: "5" },
-    { description: "6" },
-    { description: "7" },
-    { description: "8" },
-    { description: "9" },
-    { description: "10" }
-  ];
+  systolicOptions: any[] = [];
+  diastolicOptions: any[] = [];
+  temperatureOptions: any[] = [];
+  pulserateOptions: any[] = [];
+  respiratoryrateOptions: any[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -58,6 +45,7 @@ export class VitalQuestionsPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.clear();
     this.currentQuestion = null;
     let paramOne = parseInt(this.activatedRoute.snapshot.paramMap.get("one"));
     let paramTwo = parseInt(this.activatedRoute.snapshot.paramMap.get("two"));
@@ -73,6 +61,19 @@ export class VitalQuestionsPage implements OnInit {
       this.forwardLink = `/vitals`;
       this.question = "Please enter your blood pressure?";
       this.currentQuestion = "four";
+      // Generating Systolic options
+      for (let i = 0; i <= 200; i++) {
+        this.systolicOptions.push({ description: i.toString() });
+      }
+      // Generating Diastolic options
+      for (let i = 0; i <= 200; i++) {
+        this.diastolicOptions.push({ description: i.toString() });
+      }
+
+      console.log("systolicOptions are below");
+      console.log(this.systolicOptions);
+      console.log("diastolicOptions are below");
+      console.log(this.diastolicOptions);
     } else if (paramThree) {
       console.log("paramThree");
       this.title = `${paramThree} of 4`;
@@ -80,6 +81,12 @@ export class VitalQuestionsPage implements OnInit {
       this.forwardLink = `/vital-questions/1/2/3/4`;
       this.question = "Please enter your respiratory rate?";
       this.currentQuestion = "three";
+      // Generating respiratoryrate options
+      for (let i = 0; i <= 200; i++) {
+        this.respiratoryrateOptions.push({ description: i.toString() });
+      }
+      console.log("respiratoryrateOptions are below");
+      console.log(this.respiratoryrateOptions);
     } else if (paramTwo) {
       console.log("paramTwo");
       this.title = `${paramTwo} of 4`;
@@ -87,6 +94,12 @@ export class VitalQuestionsPage implements OnInit {
       this.forwardLink = `/vital-questions/1/2/3`;
       this.question = "Please enter your pulse rate?";
       this.currentQuestion = "two";
+      // Generating pulserate options
+      for (let i = 0; i <= 200; i++) {
+        this.pulserateOptions.push({ description: i.toString() });
+      }
+      console.log("pulserateOptions are below");
+      console.log(this.pulserateOptions);
     } else if (paramOne) {
       console.log("paramOne");
       this.title = `${paramOne} of 4`;
@@ -94,110 +107,20 @@ export class VitalQuestionsPage implements OnInit {
       this.forwardLink = `/vital-questions/1/2`;
       this.question = "Please enter your temperature?";
       this.currentQuestion = "one";
+      // Generating Temperature options
+      for (let i = 0; i <= 200; i++) {
+        this.temperatureOptions.push({ description: i.toString() });
+      }
+      console.log("temperatureOptions are below");
+      console.log(this.temperatureOptions);
     }
-
-    this.systolicDiastolicOptions = [
-      {
-        id: 1,
-        systolic: 115,
-        distolic: 78
-      },
-      {
-        id: 2,
-        systolic: 116,
-        distolic: 79
-      },
-      {
-        id: 3,
-        systolic: 117,
-        distolic: 80
-      },
-      {
-        id: 4,
-        systolic: 118,
-        distolic: 81
-      },
-      {
-        id: 5,
-        systolic: 119,
-        distolic: 82
-      },
-      {
-        id: 6,
-        systolic: 120,
-        distolic: 83
-      },
-      {
-        id: 7,
-        systolic: 121,
-        distolic: 84
-      }
-    ];
-
-    this.pulseRates = [
-      {
-        id: 1,
-        pulseRate: 79
-      },
-      {
-        id: 2,
-        pulseRate: 81
-      },
-      {
-        id: 3,
-        pulseRate: 82
-      },
-      {
-        id: 4,
-        pulseRate: 83
-      },
-      {
-        id: 5,
-        pulseRate: 84
-      },
-      {
-        id: 6,
-        pulseRate: 85
-      }
-    ];
-
-    this.respiratoryRates = [
-      {
-        id: 1,
-        respiratoryRate: 15
-      },
-      {
-        id: 2,
-        respiratoryRate: 16
-      },
-      {
-        id: 3,
-        respiratoryRate: 17
-      },
-      {
-        id: 4,
-        respiratoryRate: 18
-      },
-      {
-        id: 5,
-        respiratoryRate: 19
-      },
-      {
-        id: 6,
-        respiratoryRate: 20
-      },
-      {
-        id: 6,
-        respiratoryRate: 21
-      }
-    ];
   }
 
-  selectSystolic() {
+  selectBP() {
     this.selector
       .show({
-        title: "Select systolic",
-        items: [this.systolicOptions],
+        title: "Select Systolic & Diastolic",
+        items: [this.systolicOptions, this.diastolicOptions],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
         theme: "dark",
@@ -206,28 +129,39 @@ export class VitalQuestionsPage implements OnInit {
           //the number '2'
           {
             index: 0,
-            value: this.systolicOptions[this.systolicValue].description
-          }
-        ]
+            value: this.systolicOptions[this.systolicValue].description,
+          },
+          {
+            index: 1,
+            value: this.diastolicOptions[this.diastolicValue].description,
+          },
+        ],
       })
       .then(
-        result => {
+        (result) => {
           console.log(
             "Selected Systolic value is --> " + result[0].description
           );
           console.log(result[0].description + " at index: " + result[0].index);
           this.systolicValue = result[0].index;
           this.selectedSystolic = result[0].description;
+
+          console.log(
+            "Selected Diastolic value is --> " + result[1].description
+          );
+          console.log(result[1].description + " at index: " + result[1].index);
+          this.diastolicValue = result[1].index;
+          this.selectedDiastolic = result[1].description;
         },
-        err => console.log("Error: ", err)
+        (err) => console.log("Error: ", err)
       );
   }
 
-  selectDiastolic() {
+  selectPulserate() {
     this.selector
       .show({
-        title: "Select diastolic",
-        items: [this.diastolicOptions],
+        title: "Select Pulserate",
+        items: [this.pulserateOptions],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
         theme: "dark",
@@ -236,12 +170,12 @@ export class VitalQuestionsPage implements OnInit {
           //the number '2'
           {
             index: 0,
-            value: this.diastolicOptions[this.diastolicValue].description
-          }
-        ]
+            value: this.pulserateOptions[this.diastolicValue].description,
+          },
+        ],
       })
       .then(
-        result => {
+        (result) => {
           console.log(
             "Selected Diastolic value is --> " + result[0].description
           );
@@ -249,7 +183,68 @@ export class VitalQuestionsPage implements OnInit {
           this.diastolicValue = result[0].index;
           this.selectedDiastolic = result[0].description;
         },
-        err => console.log("Error: ", err)
+        (err) => console.log("Error: ", err)
+      );
+  }
+
+  selectTemperature() {
+    this.selector
+      .show({
+        title: "Select Temperature",
+        items: [this.temperatureOptions],
+        positiveButtonText: "Done",
+        negativeButtonText: "Cancel",
+        theme: "dark",
+        wrapWheelText: true,
+        defaultItems: [
+          //the number '2'
+          {
+            index: 0,
+            value: this.temperatureOptions[this.temperatureValue].description,
+          },
+        ],
+      })
+      .then(
+        (result) => {
+          console.log(
+            "Selected Temperature value is --> " + result[0].description
+          );
+          console.log(result[0].description + " at index: " + result[0].index);
+          this.temperatureValue = result[0].index;
+          this.selectedTemperature = result[0].description;
+        },
+        (err) => console.log("Error: ", err)
+      );
+  }
+
+  selectRespiratoryrate() {
+    this.selector
+      .show({
+        title: "Select Respiratoryrate",
+        items: [this.respiratoryrateOptions],
+        positiveButtonText: "Done",
+        negativeButtonText: "Cancel",
+        theme: "dark",
+        wrapWheelText: true,
+        defaultItems: [
+          //the number '2'
+          {
+            index: 0,
+            value: this.respiratoryrateOptions[this.respiratoryrateValue]
+              .description,
+          },
+        ],
+      })
+      .then(
+        (result) => {
+          console.log(
+            "Selected Respiratoryrate value is --> " + result[0].description
+          );
+          console.log(result[0].description + " at index: " + result[0].index);
+          this.respiratoryrateValue = result[0].index;
+          this.selectedRespiratoryrate = result[0].description;
+        },
+        (err) => console.log("Error: ", err)
       );
   }
 }
