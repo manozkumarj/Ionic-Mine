@@ -105,7 +105,7 @@ export class EditProfilePage implements OnInit {
       this.inchesValue = +splitHeightValue[1];
 
       // Generating Feet options
-      for (let i = 4; i <= 10; i++) {
+      for (let i = 0; i <= 10; i++) {
         this.feetOptions.push({ description: i.toString() });
       }
       // Generating Inches options
@@ -148,10 +148,12 @@ export class EditProfilePage implements OnInit {
       this.columnName = "dob";
       this.inputField = this.utilities.profilePageDetails["dob"];
 
+      console.log(this.inputField);
+
       let splitDobValue = this.inputField.split("-");
-      this.dobYearValue = +splitDobValue[0];
-      this.dobMonthValue = +splitDobValue[1];
-      this.dobDateValue = +splitDobValue[2];
+      let yearValue = +splitDobValue[0];
+      let monthValue = +splitDobValue[1];
+      let dateValue = +splitDobValue[2];
 
       // Generating DOB date options
       for (let i = 1; i <= 31; i++) {
@@ -162,16 +164,34 @@ export class EditProfilePage implements OnInit {
         this.dobMonthOptions.push({ description: i.toString() });
       }
       // Generating DOB year options
+      let j = 0;
       for (let i = this.currentYear; i >= this.currentYear - 100; i--) {
-        this.dobYearOptions.push({ description: i.toString() });
+        this.dobYearOptions.push({ description: i.toString(), id: j });
+        j++;
       }
-      this.selectDob();
+
+      this.dobYearValue = this.dobYearOptions.findIndex(
+        (year) => year["description"] == yearValue
+      );
+      console.log("yearIndex -> " + this.dobYearValue);
+
+      this.dobMonthValue = this.dobMonthOptions.findIndex(
+        (year) => year["description"] == monthValue
+      );
+      console.log("monthIndex -> " + this.dobMonthValue);
+
+      this.dobDateValue = this.dobDateOptions.findIndex(
+        (year) => year["description"] == dateValue
+      );
+      console.log("dateIndex -> " + this.dobDateValue);
+
       console.log("dobDateOptions are below");
       console.log(this.dobDateOptions);
       console.log("dobMonthOptions are below");
       console.log(this.dobMonthOptions);
       console.log("dobYearOptions are below");
       console.log(this.dobYearOptions);
+      this.selectDob();
 
       console.log(
         this.dobYearValue +
