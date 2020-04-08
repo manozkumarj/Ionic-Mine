@@ -210,7 +210,7 @@ CREATE TABLE `d_user` (
 
 /*!40000 ALTER TABLE `d_user` DISABLE KEYS */;
 INSERT INTO `d_user` (`user_id`,`name`,`username`,`password`,`phone`,`email`,`gender_id`,`dob`,`blood_group_id`,`marital_status_id`,`height`,`weight`,`created_at`) VALUES 
- (1,'User AAA','aaa','aaa','9876543210','aaa@aaa.com','1',NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:36:19'),
+ (1,'User AAA','aaa','aaa','9876543210','aaa@aaa.com','2','1990-02-15','3','3','6.2','74','2020-03-31 10:36:19'),
  (2,NULL,'bbb','bbb',NULL,'bbb@bbb.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:55:35'),
  (3,NULL,'ccc','ccc',NULL,'ccc@ccc.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:00:12'),
  (4,NULL,'rrr','rrr',NULL,'rrr@rrr.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:03:58');
@@ -1010,14 +1010,14 @@ CREATE TABLE `m_blood_group` (
 
 /*!40000 ALTER TABLE `m_blood_group` DISABLE KEYS */;
 INSERT INTO `m_blood_group` (`blood_group_id`,`name`,`is_active`) VALUES 
- (1,'A-','1'),
- (2,'A+','1'),
- (3,'B-','1'),
- (4,'B+','1'),
- (5,'AB-','1'),
- (6,'AB+','1'),
- (7,'O-','1'),
- (8,'O+','1');
+ (1,'A -ve','1'),
+ (2,'A +ve','1'),
+ (3,'B -ve','1'),
+ (4,'B +ve','1'),
+ (5,'AB -ve','1'),
+ (6,'AB +ve','1'),
+ (7,'O -ve','1'),
+ (8,'O +ve','1');
 /*!40000 ALTER TABLE `m_blood_group` ENABLE KEYS */;
 
 
@@ -2249,6 +2249,47 @@ END;
  SELECT * FROM d_user d where (email=IN_username and password=IN_password) OR (username=IN_username and password=IN_password);
 
  END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_photo_get`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_photo_get`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_photo_get`(IN IN_user_id INT, IN IN_relative_id INT)
+BEGIN
+
+  SELECT * FROM du_photo WHERE user_id = IN_user_id AND relative_id = IN_relative_id;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_photo_save`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_photo_save`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_photo_save`(IN IN_user_id INT, IN IN_relative_id INT,IN IN_photo BLOB)
+BEGIN
+
+
+  DELETE FROM du_photo WHERE user_id = IN_user_id AND relative_id = IN_relative_id;
+
+  INSERT INTO du_photo (user_id, relative_id, photo, created_at) VALUES (IN_user_id, IN_relative_id, IN_photo, now());
+
+END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
 DELIMITER ;

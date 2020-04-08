@@ -267,4 +267,30 @@ router.post("/update-profile", (req, res) => {
   );
 });
 
+router.post("/photo-save", (req, res) => {
+  var userID = req.body.user_id;
+  var relativeId = req.body.relative_id;
+  var photo = req.body.photo ? Buffer.from(req.body.photo, "base64") : null;
+  var params = [userID, relativeId, photo];
+
+  db.executeQuery(
+    "call sp_user_photo_save(?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
+router.get("/photo-get/:user-id/:relative-id", (req, res) => {
+  var userID = req.params.user - id;
+  var relativeId = req.params.relative - id;
+  var params = [userID, relativeId];
+  db.executeQuery(
+    "call sp_user_photo_get(?,?)",
+    params,
+    res,
+    db.sendResponsePhoto
+  );
+});
+
 module.exports = router;

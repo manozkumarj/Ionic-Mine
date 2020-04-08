@@ -83,7 +83,13 @@ export class EditProfilePage implements OnInit {
       for (let i = 40; i <= 150; i++) {
         this.weightOptions.push({ description: i.toString() });
       }
-      this.selectHeight();
+      this.selectWeight();
+      console.log("WeightOptions are below");
+      console.log(this.weightOptions);
+
+      this.weightValue = this.utilities.profilePageDetails["weight"];
+
+      console.log(this.weightValue);
     } else if (paramEight) {
       console.log("paramEight");
       this.title = `${paramEight} of 9`;
@@ -94,6 +100,10 @@ export class EditProfilePage implements OnInit {
       this.columnName = "height";
       this.inputField = this.utilities.profilePageDetails["height"];
 
+      let splitHeightValue = this.inputField.split(".");
+      this.feetValue = +splitHeightValue[0];
+      this.inchesValue = +splitHeightValue[1];
+
       // Generating Feet options
       for (let i = 4; i <= 10; i++) {
         this.feetOptions.push({ description: i.toString() });
@@ -102,7 +112,14 @@ export class EditProfilePage implements OnInit {
       for (let i = 0; i <= 11; i++) {
         this.inchesOptions.push({ description: i.toString() });
       }
-      this.selectWeight();
+      this.selectHeight();
+
+      console.log("feetOptions are below");
+      console.log(this.feetOptions);
+      console.log("inchesOptions are below");
+      console.log(this.inchesOptions);
+
+      console.log(this.feetValue + " - " + this.inchesValue);
     } else if (paramSeven) {
       console.log("paramSeven");
       this.title = `${paramSeven} of 9`;
@@ -131,6 +148,11 @@ export class EditProfilePage implements OnInit {
       this.columnName = "dob";
       this.inputField = this.utilities.profilePageDetails["dob"];
 
+      let splitDobValue = this.inputField.split("-");
+      this.dobYearValue = +splitDobValue[0];
+      this.dobMonthValue = +splitDobValue[1];
+      this.dobDateValue = +splitDobValue[2];
+
       // Generating DOB date options
       for (let i = 1; i <= 31; i++) {
         this.dobDateOptions.push({ description: i.toString() });
@@ -144,6 +166,20 @@ export class EditProfilePage implements OnInit {
         this.dobYearOptions.push({ description: i.toString() });
       }
       this.selectDob();
+      console.log("dobDateOptions are below");
+      console.log(this.dobDateOptions);
+      console.log("dobMonthOptions are below");
+      console.log(this.dobMonthOptions);
+      console.log("dobYearOptions are below");
+      console.log(this.dobYearOptions);
+
+      console.log(
+        this.dobYearValue +
+          " - " +
+          this.dobMonthValue +
+          " - " +
+          this.dobDateValue
+      );
     } else if (paramFour) {
       console.log("paramFour");
       this.title = `${paramFour} of 9`;
@@ -191,18 +227,7 @@ export class EditProfilePage implements OnInit {
   }
 
   ngOnInit() {
-    console.log("dobDateOptions are below");
-    console.log(this.dobDateOptions);
-    console.log("dobMonthOptions are below");
-    console.log(this.dobMonthOptions);
-    console.log("dobYearOptions are below");
-    console.log(this.dobYearOptions);
-    console.log("feetOptions are below");
-    console.log(this.feetOptions);
-    console.log("inchesOptions are below");
-    console.log(this.inchesOptions);
-    console.log("WeightOptions are below");
-    console.log(this.weightOptions);
+    console.log("this.inputField is -> " + this.inputField);
   }
 
   selectDob() {
