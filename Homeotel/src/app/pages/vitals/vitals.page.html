@@ -70,7 +70,11 @@
   </ion-grid>
 
   <ion-row>
-    <ion-col class="continue" [routerLink]="['/vital-questions', 1]">
+    <ion-col
+      class="continue"
+      (click)="redirect('add')"
+      [routerLink]="['/vital-questions', 1]"
+    >
       <button>Add Vitals</button>
     </ion-col>
   </ion-row>

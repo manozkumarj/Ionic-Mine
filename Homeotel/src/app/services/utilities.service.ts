@@ -18,6 +18,7 @@ export class UtilitiesService {
   bookableModeId;
 
   profilePageDetails: any[] = [];
+  vitalPageState: any[] = [];
 
   constructor(private router: Router) {}
 

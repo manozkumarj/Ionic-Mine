@@ -156,11 +156,11 @@ export class EditProfilePage implements OnInit {
       let dateValue = +splitDobValue[2];
 
       // Generating DOB date options
-      for (let i = 1; i <= 31; i++) {
+      for (let i = 1; i <= 30; i++) {
         this.dobDateOptions.push({ description: i.toString() });
       }
       // Generating DOB month options
-      for (let i = 1; i <= 12; i++) {
+      for (let i = 1; i <= 11; i++) {
         this.dobMonthOptions.push({ description: i.toString() });
       }
       // Generating DOB year options

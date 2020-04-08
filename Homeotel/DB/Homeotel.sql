@@ -210,7 +210,7 @@ CREATE TABLE `d_user` (
 
 /*!40000 ALTER TABLE `d_user` DISABLE KEYS */;
 INSERT INTO `d_user` (`user_id`,`name`,`username`,`password`,`phone`,`email`,`gender_id`,`dob`,`blood_group_id`,`marital_status_id`,`height`,`weight`,`created_at`) VALUES 
- (1,'User AAA','aaa','aaa','9876543210','aaa@aaa.com','2','1990-2-15','3','3','6.2','74','2020-03-31 10:36:19'),
+ (1,'User AAA','aaa','aaa','9876543219','aaa@aaa.com','2','1990-2-15','3','3','6.2','74','2020-03-31 10:36:19'),
  (2,NULL,'bbb','bbb',NULL,'bbb@bbb.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 10:55:35'),
  (3,NULL,'ccc','ccc',NULL,'ccc@ccc.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:00:12'),
  (4,NULL,'rrr','rrr',NULL,'rrr@rrr.com',NULL,NULL,NULL,NULL,NULL,NULL,'2020-03-31 11:03:58');
@@ -873,9 +873,9 @@ CREATE TABLE `ehr_surgery` (
 
 DROP TABLE IF EXISTS `ehr_vital`;
 CREATE TABLE `ehr_vital` (
+  `vital_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
-  `date` varchar(45) NOT NULL,
   `temperature` decimal(4,1) DEFAULT NULL,
   `pulse` int(10) unsigned DEFAULT NULL,
   `resp_rate` int(10) unsigned DEFAULT NULL,
@@ -885,7 +885,7 @@ CREATE TABLE `ehr_vital` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`)
+  PRIMARY KEY (`vital_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -2498,6 +2498,38 @@ START TRANSACTION;
 
 
 COMMIT;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_vital_upsert`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_vital_upsert`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_vital_upsert`(IN IN_user_id INT, IN IN_relative_id INT, IN IN_vital_id INT,
+                                                    IN IN_temperature VARCHAR(30), IN IN_pulserate VARCHAR(30),
+                                                    IN IN_respiratoryrate VARCHAR(30), IN IN_bp_systolic VARCHAR(30),
+                                                    IN IN_bp_diastolic VARCHAR(30))
+BEGIN
+
+  IF (IN_vital_id > 0) THEN
+
+    INSERT INTO ehr_vital (user_id, relative_id, temperature, pulse, resp_rate, bp_systolic, bp_diastolic, created_by,
+                           updated_by, created_at, updated_at) VALUES (IN_user_id, IN_relative_id, IN_temperature,
+                           IN_pulserate, IN_respiratoryrate, IN_bp_systolic, IN_bp_diastolic, user_id, user_id, now(), now());
+  ELSE
+
+    UPDATE ehr_vital SET temperature = IN_temperature, pulse =IN_pulserate, resp_rate =IN_respiratoryrate,
+           bp_systolic=IN_bp_systolic,bp_diastolic=IN_bp_diastolic,updated_at=now();
+
+  END IF;
+
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { WheelSelector } from "@ionic-native/wheel-selector/ngx";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 @Component({
   selector: "app-vital-questions",
@@ -26,7 +27,8 @@ export class VitalQuestionsPage implements OnInit {
   selectedBp = "-NA-";
   selectedRespiratoryrate = "-NA-";
 
-  temperatureValue: number = 0;
+  temperatureLeftValue: number = 0;
+  temperatureRightValue: number = 0;
   systolicValue: number = 0;
   diastolicValue: number = 0;
   pulserateValue: number = 0;
@@ -41,11 +43,14 @@ export class VitalQuestionsPage implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private selector: WheelSelector
+    private selector: WheelSelector,
+    private utilities: UtilitiesService
   ) {}
 
   ngOnInit() {
     console.clear();
+    console.log("this.utilities.vitalPageState is below");
+    console.log(this.utilities.vitalPageState);
     this.currentQuestion = null;
     let paramOne = parseInt(this.activatedRoute.snapshot.paramMap.get("one"));
     let paramTwo = parseInt(this.activatedRoute.snapshot.paramMap.get("two"));
@@ -61,6 +66,15 @@ export class VitalQuestionsPage implements OnInit {
       this.forwardLink = `/vitals`;
       this.question = "Please enter your blood pressure?";
       this.currentQuestion = "four";
+      this.selectedSystolic = this.systolicValue = this.utilities.vitalPageState[
+        "bp_systolic"
+      ];
+      this.selectedDiastolic = this.diastolicValue = this.utilities.vitalPageState[
+        "bp_diastolic"
+      ];
+      console.log(
+        "bp values -> " + this.selectedSystolic + "-" + this.selectedDiastolic
+      );
       // Generating Systolic options
       for (let i = 0; i <= 200; i++) {
         this.systolicOptions.push({ description: i.toString() });
@@ -81,6 +95,16 @@ export class VitalQuestionsPage implements OnInit {
       this.forwardLink = `/vital-questions/1/2/3/4`;
       this.question = "Please enter your respiratory rate?";
       this.currentQuestion = "three";
+      this.selectedRespiratoryrate = this.utilities.vitalPageState[
+        "respiratoryrate"
+      ];
+      this.selectedRespiratoryrate = this.selectedRespiratoryrate
+        ? this.selectedRespiratoryrate
+        : "-N/A-";
+      this.respiratoryrateValue = this.selectedRespiratoryrate
+        ? +this.selectedRespiratoryrate
+        : 0;
+      console.log("respiratoryrate value -> " + this.respiratoryrateValue);
       // Generating respiratoryrate options
       for (let i = 0; i <= 200; i++) {
         this.respiratoryrateOptions.push({ description: i.toString() });
@@ -94,6 +118,14 @@ export class VitalQuestionsPage implements OnInit {
       this.forwardLink = `/vital-questions/1/2/3`;
       this.question = "Please enter your pulse rate?";
       this.currentQuestion = "two";
+      this.selectedPulserate = this.utilities.vitalPageState["pulserate"];
+      this.selectedPulserate = this.selectedPulserate
+        ? this.selectedPulserate
+        : "-N/A-";
+      console.log("pulserate value -> " + this.selectedPulserate);
+      this.pulserateValue = this.selectedPulserate
+        ? +this.selectedPulserate
+        : 0;
       // Generating pulserate options
       for (let i = 0; i <= 200; i++) {
         this.pulserateOptions.push({ description: i.toString() });
@@ -107,6 +139,13 @@ export class VitalQuestionsPage implements OnInit {
       this.forwardLink = `/vital-questions/1/2`;
       this.question = "Please enter your temperature?";
       this.currentQuestion = "one";
+      let value = this.utilities.vitalPageState["temperature"];
+      this.selectedTemperature = value;
+      console.log("temperature value -> " + value);
+      let splitTemperature = value.split(".");
+      this.temperatureLeftValue = +splitTemperature[0];
+      this.temperatureRightValue = +splitTemperature[1];
+
       // Generating Temperature options
       for (let i = 0; i <= 200; i++) {
         this.temperatureOptions.push({ description: i.toString() });
@@ -200,7 +239,8 @@ export class VitalQuestionsPage implements OnInit {
           //the number '2'
           {
             index: 0,
-            value: this.temperatureOptions[this.temperatureValue].description,
+            value: this.temperatureOptions[this.temperatureLeftValue]
+              .description,
           },
         ],
       })
@@ -210,7 +250,7 @@ export class VitalQuestionsPage implements OnInit {
             "Selected Temperature value is --> " + result[0].description
           );
           console.log(result[0].description + " at index: " + result[0].index);
-          this.temperatureValue = result[0].index;
+          this.temperatureLeftValue = result[0].index;
           this.selectedTemperature = result[0].description;
         },
         (err) => console.log("Error: ", err)
@@ -246,5 +286,13 @@ export class VitalQuestionsPage implements OnInit {
         },
         (err) => console.log("Error: ", err)
       );
+  }
+
+  save() {
+    console.log("About to upsert Vital's data into DB");
+    console.log("this.utilities.vitalPageState is below");
+    console.log(this.utilities.vitalPageState);
+
+    this.router.navigate(["/vitals"]);
   }
 }

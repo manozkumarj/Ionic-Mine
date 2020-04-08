@@ -5,10 +5,7 @@
     </ion-buttons>
     <ion-title>{{title}}</ion-title>
     <ion-buttons slot="primary">
-      <ion-button
-        *ngIf="currentQuestion == 'four'"
-        [routerLink]="[forwardLink]"
-      >
+      <ion-button *ngIf="currentQuestion == 'four'" (click)="save()">
         Done
       </ion-button>
       <ion-button
@@ -194,14 +191,13 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid class="btnsGrid">
+  <ion-grid class="btnsGrid" *ngIf="currentQuestion != 'four'">
     <ion-row>
       <ion-col
         size="auto"
         class="skip"
         style="padding: 12px 20px;"
         [routerLink]="[forwardLink]"
-        *ngIf="currentQuestion != 'four'"
       >
         Skip
       </ion-col>
