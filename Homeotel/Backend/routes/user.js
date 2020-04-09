@@ -293,4 +293,35 @@ router.get("/photo-get/:user-id/:relative-id", (req, res) => {
   );
 });
 
+router.post("/upsert-vital", (req, res) => {
+  var userID = req.body.userId;
+  var vitalId = req.body.vitalId;
+  var relativeId = req.body.relativeId;
+  var temperature = req.body.temperature;
+  var pulserate = req.body.pulserate;
+  var respiratoryrate = req.body.respiratoryrate;
+  var bpSystolic = req.body.bpSystolic;
+  var bpDiastolic = req.body.bpDiastolic;
+  var params = [
+    userID,
+    vitalId,
+    relativeId,
+    temperature,
+    pulserate,
+    respiratoryrate,
+    bpSystolic,
+    bpDiastolic,
+  ];
+
+  console.log("Received params");
+  console.log(params);
+
+  db.executeQuery(
+    "call sp_user_vital_upsert(?,?,?,?,?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;

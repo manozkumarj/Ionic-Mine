@@ -81,11 +81,11 @@ export class VitalsPage implements OnInit {
       this.utilities.vitalPageState["bp_diastolic"] = "18";
     } else {
       this.utilities.vitalPageState["vitalId"] = 0;
-      this.utilities.vitalPageState["temperature"] = "0.0";
-      this.utilities.vitalPageState["pulserate"] = null;
-      this.utilities.vitalPageState["respiratoryrate"] = null;
-      this.utilities.vitalPageState["bp_systolic"] = "0";
-      this.utilities.vitalPageState["bp_diastolic"] = "0";
+      this.utilities.vitalPageState["temperature"] = "2.4";
+      this.utilities.vitalPageState["pulserate"] = "22";
+      this.utilities.vitalPageState["respiratoryrate"] = "29";
+      this.utilities.vitalPageState["bp_systolic"] = "24";
+      this.utilities.vitalPageState["bp_diastolic"] = "28";
     }
     this.router.navigate(["/vital-questions", 1]);
   }

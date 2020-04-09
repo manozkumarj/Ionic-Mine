@@ -163,4 +163,28 @@ export class ApiService {
     };
     return this.http.post(this.apiUrl + path, body);
   }
+
+  // Upserting vital details
+  upsertVitalDetails(
+    vitalId,
+    relativeId,
+    temperature,
+    pulserate,
+    respiratoryrate,
+    bpSystolic,
+    bpDiastolic
+  ) {
+    var path = "/user/upsert-vital";
+    var body = {
+      userId: this.utilities.userId,
+      vitalId,
+      relativeId,
+      temperature,
+      pulserate,
+      respiratoryrate,
+      bpSystolic,
+      bpDiastolic,
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
 }

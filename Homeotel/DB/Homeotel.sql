@@ -886,13 +886,16 @@ CREATE TABLE `ehr_vital` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`vital_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_vital`
 --
 
 /*!40000 ALTER TABLE `ehr_vital` DISABLE KEYS */;
+INSERT INTO `ehr_vital` (`vital_id`,`user_id`,`relative_id`,`temperature`,`pulse`,`resp_rate`,`bp_systolic`,`bp_diastolic`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,1,0,'5.4',82,89,84,88,1,'2020-04-09 10:08:34',1,'2020-04-09 10:08:34'),
+ (2,1,0,'2.4',22,29,24,28,1,'2020-04-09 10:09:47',1,'2020-04-09 10:09:47');
 /*!40000 ALTER TABLE `ehr_vital` ENABLE KEYS */;
 
 
@@ -2520,13 +2523,14 @@ BEGIN
 
   IF (IN_vital_id > 0) THEN
 
+    UPDATE ehr_vital SET temperature = IN_temperature, pulse =IN_pulserate, resp_rate =IN_respiratoryrate,
+           bp_systolic=IN_bp_systolic,bp_diastolic=IN_bp_diastolic,updated_at=now();
+
+  ELSE
+
     INSERT INTO ehr_vital (user_id, relative_id, temperature, pulse, resp_rate, bp_systolic, bp_diastolic, created_by,
                            updated_by, created_at, updated_at) VALUES (IN_user_id, IN_relative_id, IN_temperature,
                            IN_pulserate, IN_respiratoryrate, IN_bp_systolic, IN_bp_diastolic, user_id, user_id, now(), now());
-  ELSE
-
-    UPDATE ehr_vital SET temperature = IN_temperature, pulse =IN_pulserate, resp_rate =IN_respiratoryrate,
-           bp_systolic=IN_bp_systolic,bp_diastolic=IN_bp_diastolic,updated_at=now();
 
   END IF;
 

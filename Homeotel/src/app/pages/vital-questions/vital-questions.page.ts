@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { WheelSelector } from "@ionic-native/wheel-selector/ngx";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { ApiService } from "src/app/services/api.service";
 
 @Component({
   selector: "app-vital-questions",
@@ -44,6 +45,7 @@ export class VitalQuestionsPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private selector: WheelSelector,
+    private apiService: ApiService,
     private utilities: UtilitiesService
   ) {}
 
@@ -293,6 +295,39 @@ export class VitalQuestionsPage implements OnInit {
     console.log("this.utilities.vitalPageState is below");
     console.log(this.utilities.vitalPageState);
 
-    this.router.navigate(["/vitals"]);
+    let vitalId = this.utilities.vitalPageState["vitalId"];
+    let relativeId = this.utilities.vitalPageState["relativeId"];
+    let temperature = this.utilities.vitalPageState["temperature"];
+    let pulserate = this.utilities.vitalPageState["pulserate"];
+    let respiratoryrate = this.utilities.vitalPageState["respiratoryrate"];
+    let bpSystolic = this.utilities.vitalPageState["bp_systolic"];
+    let bpDiastolic = this.utilities.vitalPageState["bp_diastolic"];
+
+    this.apiService
+      .upsertVitalDetails(
+        vitalId,
+        relativeId,
+        temperature,
+        pulserate,
+        respiratoryrate,
+        bpSystolic,
+        bpDiastolic
+      )
+      .subscribe((data) => {
+        console.log("Returned from Backend");
+        console.log(JSON.stringify(data));
+        if (this.utilities.isInvalidApiResponseData(data)) {
+          console.log("Returned Error");
+          console.log(data[0][0]);
+          if (data[0][0]["error"]) {
+            console.log("Something went wrong");
+          }
+        } else {
+          console.log("Returned Success");
+          this.router.navigate([this.forwardLink]);
+        }
+      });
+
+    // this.router.navigate(["/vitals"]);
   }
 }

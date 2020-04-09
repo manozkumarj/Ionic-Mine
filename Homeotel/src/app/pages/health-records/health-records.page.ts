@@ -1,42 +1,44 @@
 import { Component, OnInit } from "@angular/core";
+import { UtilitiesService } from "src/app/services/utilities.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-health-records",
   templateUrl: "./health-records.page.html",
-  styleUrls: ["./health-records.page.scss"]
+  styleUrls: ["./health-records.page.scss"],
 })
 export class HealthRecordsPage implements OnInit {
   healthRecords;
 
-  selectedPerson;
+  selectedPerson = 1;
 
-  constructor() {
+  constructor(private router: Router, private utilities: UtilitiesService) {
     this.healthRecords = [
       {
-        id: 1,
+        id: 0,
         name: "Vitals",
-        redirectUrl: "/vitals"
+        redirectUrl: "/vitals",
+      },
+      {
+        id: 1,
+        name: "Medical History",
+        redirectUrl: "/medical-history",
+      },
+      {
+        id: 2,
+        name: "Lifestyle",
+        redirectUrl: "/lifestyle",
       },
       {
         id: 3,
-        name: "Medical History",
-        redirectUrl: "/medical-history"
+        name: "Files",
+        redirectUrl: "/files",
       },
       {
         id: 4,
-        name: "Lifestyle",
-        redirectUrl: "/lifestyle"
-      },
-      {
-        id: 5,
-        name: "Files",
-        redirectUrl: "/files"
-      },
-      {
-        id: 6,
         name: "Previous Consultations",
-        redirectUrl: "/previous-consultations"
-      }
+        redirectUrl: "/previous-consultations",
+      },
     ];
   }
 
@@ -45,5 +47,12 @@ export class HealthRecordsPage implements OnInit {
   person(id) {
     console.log("Selected person ID -> " + id);
     this.selectedPerson = id;
+  }
+
+  redirector(id) {
+    this.utilities.vitalPageState["relativeId"] = this.selectedPerson;
+    console.log("Selected person ID -> " + this.selectedPerson);
+    console.log("Selected option -> " + this.healthRecords[id]["name"]);
+    this.router.navigate([this.healthRecords[id]["redirectUrl"]]);
   }
 }
