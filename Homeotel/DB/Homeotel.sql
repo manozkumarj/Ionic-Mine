@@ -886,7 +886,7 @@ CREATE TABLE `ehr_vital` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`vital_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_vital`
@@ -894,8 +894,9 @@ CREATE TABLE `ehr_vital` (
 
 /*!40000 ALTER TABLE `ehr_vital` DISABLE KEYS */;
 INSERT INTO `ehr_vital` (`vital_id`,`user_id`,`relative_id`,`temperature`,`pulse`,`resp_rate`,`bp_systolic`,`bp_diastolic`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,0,'5.4',82,89,84,88,1,'2020-04-09 10:08:34',1,'2020-04-09 10:08:34'),
- (2,1,0,'2.4',22,29,24,28,1,'2020-04-09 10:09:47',1,'2020-04-09 10:09:47');
+ (1,1,0,'1.4',11,19,14,18,1,'2020-04-09 10:08:34',1,'2020-04-09 11:30:04'),
+ (2,1,1,'5.4',53,89,84,88,1,'2020-04-09 10:09:47',1,'2020-04-09 11:27:43'),
+ (3,1,2,'1.4',53,19,14,18,1,'2020-04-09 11:32:16',1,'2020-04-09 11:33:07');
 /*!40000 ALTER TABLE `ehr_vital` ENABLE KEYS */;
 
 
@@ -2507,6 +2508,25 @@ END $$
 DELIMITER ;
 
 --
+-- Definition of procedure `sp_user_vitals_get`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_vitals_get`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_vitals_get`(IN IN_user_id INT)
+BEGIN
+
+  SELECT * FROM ehr_vital WHERE user_id = IN_user_id;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
 -- Definition of procedure `sp_user_vital_upsert`
 --
 
@@ -2515,7 +2535,7 @@ DROP PROCEDURE IF EXISTS `sp_user_vital_upsert`;
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_vital_upsert`(IN IN_user_id INT, IN IN_relative_id INT, IN IN_vital_id INT,
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_vital_upsert`(IN IN_user_id INT, IN IN_vital_id INT, IN IN_relative_id INT,
                                                     IN IN_temperature VARCHAR(30), IN IN_pulserate VARCHAR(30),
                                                     IN IN_respiratoryrate VARCHAR(30), IN IN_bp_systolic VARCHAR(30),
                                                     IN IN_bp_diastolic VARCHAR(30))
@@ -2523,8 +2543,8 @@ BEGIN
 
   IF (IN_vital_id > 0) THEN
 
-    UPDATE ehr_vital SET temperature = IN_temperature, pulse =IN_pulserate, resp_rate =IN_respiratoryrate,
-           bp_systolic=IN_bp_systolic,bp_diastolic=IN_bp_diastolic,updated_at=now();
+    UPDATE ehr_vital SET relative_id = IN_relative_id, temperature = IN_temperature, pulse =IN_pulserate, resp_rate =IN_respiratoryrate,
+           bp_systolic=IN_bp_systolic,bp_diastolic=IN_bp_diastolic,updated_at=now() WHERE vital_id = IN_vital_id;
 
   ELSE
 

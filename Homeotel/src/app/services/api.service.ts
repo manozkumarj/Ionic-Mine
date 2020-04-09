@@ -187,4 +187,10 @@ export class ApiService {
     };
     return this.http.post(this.apiUrl + path, body);
   }
+
+  // Fetching vitals
+  getVitals() {
+    var path = "/user/get-vitals/" + this.utilities.userId;
+    return this.http.get(this.apiUrl + path);
+  }
 }

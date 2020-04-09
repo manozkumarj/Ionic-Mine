@@ -141,7 +141,7 @@ export class VitalQuestionsPage implements OnInit {
       this.forwardLink = `/vital-questions/1/2`;
       this.question = "Please enter your temperature?";
       this.currentQuestion = "one";
-      let value = this.utilities.vitalPageState["temperature"];
+      let value = this.utilities.vitalPageState["temperature"].toString();
       this.selectedTemperature = value;
       console.log("temperature value -> " + value);
       let splitTemperature = value.split(".");

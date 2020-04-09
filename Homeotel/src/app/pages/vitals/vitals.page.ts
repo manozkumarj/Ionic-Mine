@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActionSheetController } from "@ionic/angular";
 import { Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { ApiService } from "src/app/services/api.service";
 
 @Component({
   selector: "app-vitals",
@@ -9,32 +10,56 @@ import { UtilitiesService } from "src/app/services/utilities.service";
   styleUrls: ["./vitals.page.scss"],
 })
 export class VitalsPage implements OnInit {
-  vitals;
+  vitals: any[] = [];
   constructor(
     public actShtCtr: ActionSheetController,
     private router: Router,
+    private apiService: ApiService,
     private utilities: UtilitiesService
-  ) {}
+  ) {
+    this.getVitals();
+  }
 
   ngOnInit() {
-    this.vitals = [
-      {
-        id: 1,
-        date: "23 March 2020",
-        temparature: "97.6 F",
-        pulseRate: "80 per min",
-        respirationRate: "20 per min",
-        bloodPressure: "120/80",
-      },
-      {
-        id: 2,
-        date: "15 March 2020",
-        temparature: "97.6 F",
-        pulseRate: "80 per min",
-        respirationRate: "20 per min",
-        bloodPressure: null,
-      },
-    ];
+    // this.vitals = [
+    //   {
+    //     id: 1,
+    //     date: "23 March 2020",
+    //     temparature: "97.6 F",
+    //     pulseRate: "80 per min",
+    //     respirationRate: "20 per min",
+    //     bloodPressure: "120/80",
+    //   },
+    //   {
+    //     id: 2,
+    //     date: "15 March 2020",
+    //     temparature: "97.6 F",
+    //     pulseRate: "80 per min",
+    //     respirationRate: "20 per min",
+    //     bloodPressure: null,
+    //   },
+    // ];
+  }
+
+  getVitals() {
+    this.apiService.getVitals().subscribe((data) => {
+      console.log("Returned from Backend");
+      console.log(data);
+      if (this.utilities.isInvalidApiResponseData(data)) {
+        console.log("Returned Error");
+      } else {
+        if (
+          typeof data != "undefined" &&
+          typeof data[0] != "undefined" &&
+          typeof data[0][0] != "undefined"
+        ) {
+          console.log("Data returned from backend");
+          this.vitals = data[0];
+        } else {
+          console.log("Something went wrong in backend");
+        }
+      }
+    });
   }
 
   openMenu(id) {
@@ -47,7 +72,7 @@ export class VitalsPage implements OnInit {
             text: "Edit",
             handler: () => {
               console.log("Edit clicked");
-              this.redirect("edit");
+              this.redirect("edit", id);
             },
           },
           {
@@ -69,23 +94,41 @@ export class VitalsPage implements OnInit {
       .then((ac) => ac.present());
   }
 
-  redirect(type) {
+  redirect(type, id = 0) {
     console.log("type -> " + type);
     this.utilities.vitalPageState["type"] = type;
     if (type == "edit") {
-      this.utilities.vitalPageState["vitalId"] = 1;
-      this.utilities.vitalPageState["temperature"] = "98.6";
-      this.utilities.vitalPageState["pulserate"] = "92";
-      this.utilities.vitalPageState["respiratoryrate"] = "69";
-      this.utilities.vitalPageState["bp_systolic"] = "94";
-      this.utilities.vitalPageState["bp_diastolic"] = "18";
+      let vitalIndex = this.vitals.findIndex(
+        (vital) => vital["vital_id"] == id
+      );
+      console.log("vitalIndex -> " + vitalIndex);
+      console.log(this.vitals[vitalIndex]);
+      this.utilities.vitalPageState["vitalId"] = this.vitals[vitalIndex][
+        "vital_id"
+      ];
+      this.utilities.vitalPageState["temperature"] = this.vitals[vitalIndex][
+        "temperature"
+      ];
+      this.utilities.vitalPageState["pulserate"] = this.vitals[vitalIndex][
+        "pulse"
+      ];
+      this.utilities.vitalPageState["pulserate"] = 53;
+      this.utilities.vitalPageState["respiratoryrate"] = this.vitals[
+        vitalIndex
+      ]["resp_rate"];
+      this.utilities.vitalPageState["bp_systolic"] = this.vitals[vitalIndex][
+        "bp_systolic"
+      ];
+      this.utilities.vitalPageState["bp_diastolic"] = this.vitals[vitalIndex][
+        "bp_diastolic"
+      ];
     } else {
       this.utilities.vitalPageState["vitalId"] = 0;
-      this.utilities.vitalPageState["temperature"] = "2.4";
-      this.utilities.vitalPageState["pulserate"] = "22";
-      this.utilities.vitalPageState["respiratoryrate"] = "29";
-      this.utilities.vitalPageState["bp_systolic"] = "24";
-      this.utilities.vitalPageState["bp_diastolic"] = "28";
+      this.utilities.vitalPageState["temperature"] = "1.4";
+      this.utilities.vitalPageState["pulserate"] = "11";
+      this.utilities.vitalPageState["respiratoryrate"] = "19";
+      this.utilities.vitalPageState["bp_systolic"] = "14";
+      this.utilities.vitalPageState["bp_diastolic"] = "18";
     }
     this.router.navigate(["/vital-questions", 1]);
   }

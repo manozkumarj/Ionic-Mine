@@ -324,4 +324,18 @@ router.post("/upsert-vital", (req, res) => {
   );
 });
 
+// Fetching vitals
+router.get("/get-vitals/:userId", (req, res) => {
+  var userId = req.params.userId;
+  console.log("Received userId -> " + userId);
+  var params = [userId];
+
+  db.executeQuery(
+    "call sp_user_vitals_get(?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;
