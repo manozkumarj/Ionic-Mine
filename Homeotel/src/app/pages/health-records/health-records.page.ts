@@ -50,7 +50,7 @@ export class HealthRecordsPage implements OnInit {
   }
 
   redirector(id) {
-    this.utilities.vitalPageState["relativeId"] = this.selectedPerson;
+    this.utilities.selectedRelativeId = this.selectedPerson;
     console.log("Selected person ID -> " + this.selectedPerson);
     console.log("Selected option -> " + this.healthRecords[id]["name"]);
     this.router.navigate([this.healthRecords[id]["redirectUrl"]]);

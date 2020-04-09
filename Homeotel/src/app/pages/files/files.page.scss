@@ -30,16 +30,16 @@ p {
 .fileInfoCol {
   margin-top: 16px;
 }
-
-.continue {
+.fixed {
+  position: fixed;
+  width: 100%;
   text-align: center;
   background-color: #0a9f28;
   color: #fff;
   padding: 10px;
-  position: absolute;
   bottom: 0;
 }
-.continue button {
+.fixed button {
   background-color: #0a9f28;
   color: #fff;
   border: none;

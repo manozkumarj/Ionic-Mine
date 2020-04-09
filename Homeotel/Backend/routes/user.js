@@ -293,6 +293,7 @@ router.get("/photo-get/:user-id/:relative-id", (req, res) => {
   );
 });
 
+// Upserting vitals
 router.post("/upsert-vital", (req, res) => {
   var userID = req.body.userId;
   var vitalId = req.body.vitalId;
@@ -332,6 +333,40 @@ router.get("/get-vitals/:userId", (req, res) => {
 
   db.executeQuery(
     "call sp_user_vitals_get(?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
+// Fetching files
+router.get("/get-files/:userId", (req, res) => {
+  var userId = req.params.userId;
+  console.log("Received userId -> " + userId);
+  var params = [userId];
+
+  db.executeQuery(
+    "call sp_user_files_get(?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
+// Upserting files
+router.post("/upsert-file", (req, res) => {
+  var userID = req.body.userId;
+  var relativeId = req.body.relativeId;
+  var fileId = req.body.fileId;
+  var fileTypeId = req.body.fileTypeId;
+  var photo = req.body.photo;
+  var params = [userID, relativeId, fileId, fileTypeId, photo];
+
+  console.log("Received params");
+  console.log(params);
+
+  db.executeQuery(
+    "call sp_user_file_upsert(?,?,?,?,?)",
     params,
     res,
     db.sendResponseNormal

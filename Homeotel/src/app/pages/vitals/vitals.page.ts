@@ -20,26 +20,7 @@ export class VitalsPage implements OnInit {
     this.getVitals();
   }
 
-  ngOnInit() {
-    // this.vitals = [
-    //   {
-    //     id: 1,
-    //     date: "23 March 2020",
-    //     temparature: "97.6 F",
-    //     pulseRate: "80 per min",
-    //     respirationRate: "20 per min",
-    //     bloodPressure: "120/80",
-    //   },
-    //   {
-    //     id: 2,
-    //     date: "15 March 2020",
-    //     temparature: "97.6 F",
-    //     pulseRate: "80 per min",
-    //     respirationRate: "20 per min",
-    //     bloodPressure: null,
-    //   },
-    // ];
-  }
+  ngOnInit() {}
 
   getVitals() {
     this.apiService.getVitals().subscribe((data) => {

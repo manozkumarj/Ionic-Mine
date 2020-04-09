@@ -8,25 +8,37 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="grid doctorGrid" *ngFor="let file of files">
-    <ion-row
-      style="color: #000; background: #fff;"
-      [routerLink]="['/edit-file']"
-    >
-      <ion-col size="3">
-        <p style="margin: 0; padding: 6px; text-align: center;">
-          <img class="fileImage" [src]="file.imageUrl" height="70px" />
-        </p>
-      </ion-col>
-      <ion-col class="fileInfoCol">
-        <p class="fileName">{{file.fileName}}</p>
-        <p>{{file.date}}</p>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div *ngIf="files.length > 0; else noFiles" style="margin-bottom: 150px;">
+    <ion-grid class="grid doctorGrid" *ngFor="let file of files">
+      <ion-row
+        style="color: #000; background: #fff;"
+        (click)="redirect('edit', file.file_id)"
+      >
+        <ion-col size="3">
+          <p style="margin: 0; padding: 6px; text-align: center;">
+            <img class="fileImage" src="assets/images/zuck.jpg" height="70px" />
+          </p>
+        </ion-col>
+        <ion-col class="fileInfoCol">
+          <p class="fileName">{{file.name}}</p>
+          <p>{{file.file_date}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
-  <ion-row>
-    <ion-col class="continue" (click)="openMenu()">
+  <ng-template #noFiles>
+    <ion-grid class="noResultsGrid">
+      <ion-row style="border: none;">
+        <ion-col>
+          There are no Files
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
+
+  <ion-row class="fixed">
+    <ion-col (click)="openMenu()">
       <button>Add File</button>
     </ion-col>
   </ion-row>

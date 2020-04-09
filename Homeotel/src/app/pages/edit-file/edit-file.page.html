@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Edit File</ion-title>
+    <ion-title>{{action}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,52 +13,28 @@
       style="height: 100%;"
       class="ion-justify-content-center ion-align-items-center"
     >
-      <img
-        class="fileImage"
-        src="assets/images/zuck.jpg"
-        height="100%"
-        width="100%"
-      />
+      <img class="fileImage" [src]="photo" height="100%" width="100%" />
     </ion-row>
   </ion-grid>
 
   <ion-grid>
     <ion-row class="dashedBorderBottom" style="padding: 6px;">
       <ion-col
+        *ngFor="let fileType of fileTypesMasters"
         class="person"
-        (click)="person(0)"
-        [style.border]="selectedPerson == 0 ? '2px solid #0a9f28' : '2px solid #fff' "
+        (click)="selectFile(fileType.file_type_id)"
+        [style.border]="selectedFile == fileType.file_type_id ? '2px solid #0a9f28' : '2px solid #fff' "
       >
         <div class="add">
-          <ion-icon name="newspaper-outline"></ion-icon>
+          <ion-icon [name]="fileType.icon"></ion-icon>
         </div>
-        <p>Prescription</p>
-      </ion-col>
-      <ion-col
-        class="person"
-        (click)="person(1)"
-        [style.border]="selectedPerson == 1 ? '2px solid #0a9f28' : '2px solid #fff' "
-      >
-        <div class="add">
-          <ion-icon class="plusIcon" name="library-outline"></ion-icon>
-        </div>
-        <p>Labtests</p>
-      </ion-col>
-      <ion-col
-        class="person"
-        (click)="person(2)"
-        [style.border]="selectedPerson == 2 ? '2px solid #0a9f28' : '2px solid #fff' "
-      >
-        <div class="add">
-          <ion-icon class="plusIcon" name="receipt-outline"></ion-icon>
-        </div>
-        <p>Bill</p>
+        <p>{{fileType.name}}</p>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <ion-row>
-    <ion-col class="continue" [routerLink]="['/files']">
+    <ion-col class="continue" (click)="save()">
       <button>Save</button>
     </ion-col>
   </ion-row>

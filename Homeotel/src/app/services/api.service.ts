@@ -193,4 +193,23 @@ export class ApiService {
     var path = "/user/get-vitals/" + this.utilities.userId;
     return this.http.get(this.apiUrl + path);
   }
+
+  // Fetching Files
+  getFiles() {
+    var path = "/user/get-files/" + this.utilities.userId;
+    return this.http.get(this.apiUrl + path);
+  }
+
+  // Upserting File details
+  upsertFileDetails(fileId, relativeId, fileTypeId, photo) {
+    var path = "/user/upsert-file";
+    var body = {
+      userId: this.utilities.userId,
+      relativeId,
+      fileId,
+      fileTypeId,
+      photo,
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
 }

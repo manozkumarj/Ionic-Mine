@@ -6,6 +6,8 @@ export class UtilitiesService {
   userId = 1;
   isLoggedId = false;
 
+  selectedRelativeId;
+
   isHomeokitPurchaseAction = false;
   isSlotBookingAction = false;
   purchasableHomeokitDoctorId;
@@ -19,6 +21,7 @@ export class UtilitiesService {
 
   profilePageDetails: any[] = [];
   vitalPageState: any[] = [];
+  filesPageState: any[] = [];
 
   constructor(private router: Router) {}
 

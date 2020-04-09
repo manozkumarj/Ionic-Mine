@@ -722,6 +722,7 @@ CREATE TABLE `ehr_family_history` (
 
 DROP TABLE IF EXISTS `ehr_file`;
 CREATE TABLE `ehr_file` (
+  `file_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `file_type_id` int(10) unsigned NOT NULL,
@@ -732,14 +733,19 @@ CREATE TABLE `ehr_file` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_file`
 --
 
 /*!40000 ALTER TABLE `ehr_file` DISABLE KEYS */;
+INSERT INTO `ehr_file` (`file_id`,`user_id`,`relative_id`,`file_type_id`,`file_date`,`upload_date`,`file_blob`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,1,1,3,'2020-04-09 10:08:34','2020-04-09 10:08:34',0x6173736574732F696D616765732F6D61726B2E6A7067,1,'2020-04-09 10:08:34',1,'2020-04-09 21:29:17'),
+ (2,1,1,2,'2020-04-09 10:08:34','2020-04-09 10:08:34',0x6173736574732F696D616765732F7A75636B2E6A7067,1,'2020-04-09 10:08:34',1,'2020-04-09 10:08:34'),
+ (3,1,1,3,'2020-04-09 10:08:34','2020-04-09 10:08:34',0x6173736574732F696D616765732F6D61726B2E6A7067,1,'2020-04-09 10:08:34',1,'2020-04-09 10:08:34'),
+ (4,1,1,1,'2020-04-09 21:39:11','2020-04-09 21:39:11',0x6173736574732F696D616765732F6D696C696E64612E6A7067,1,'2020-04-09 21:39:11',1,'2020-04-09 21:39:11');
 /*!40000 ALTER TABLE `ehr_file` ENABLE KEYS */;
 
 
@@ -2191,10 +2197,41 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_files_get`(IN IN_user_id INT)
 BEGIN
 
-  SELECT f.relative_id, f.file_type_id, f.file_date, f.file_blob, mf.name FROM ehr_file f
+  SELECT f.file_id, f.relative_id, f.file_type_id, f.file_date, f.file_blob, mf.name FROM ehr_file f
   LEFT JOIN m_file_type mf ON f.file_type_id = mf.file_type_id WHERE f.user_id = IN_user_id;
 
   SELECT * FROM m_file_type WHERE is_active = 1;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_file_upsert`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_file_upsert`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_file_upsert`(IN IN_user_id INT, IN IN_relative_id INT, IN IN_file_id INT,
+                                                    IN IN_file_type_id INT, IN IN_photo BLOB)
+BEGIN
+
+  IF (IN_file_id > 0) THEN
+
+    UPDATE ehr_file SET relative_id = IN_relative_id, file_type_id = IN_file_type_id, file_blob =IN_photo, updated_at=now()
+     WHERE file_id = IN_file_id;
+
+  ELSE
+
+    INSERT INTO ehr_file (user_id, relative_id, file_type_id, file_blob, created_by, updated_by, file_date, upload_date,
+    created_at, updated_at)
+    VALUES (IN_user_id, IN_relative_id, IN_file_type_id,IN_photo,IN_user_id, IN_user_id, now(), now(), now(), now());
+
+  END IF;
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
@@ -2577,7 +2614,7 @@ BEGIN
 
     INSERT INTO ehr_vital (user_id, relative_id, temperature, pulse, resp_rate, bp_systolic, bp_diastolic, created_by,
                            updated_by, created_at, updated_at) VALUES (IN_user_id, IN_relative_id, IN_temperature,
-                           IN_pulserate, IN_respiratoryrate, IN_bp_systolic, IN_bp_diastolic, user_id, user_id, now(), now());
+                           IN_pulserate, IN_respiratoryrate, IN_bp_systolic, IN_bp_diastolic, IN_user_id, IN_user_id, now(), now());
 
   END IF;
 

@@ -296,7 +296,7 @@ export class VitalQuestionsPage implements OnInit {
     console.log(this.utilities.vitalPageState);
 
     let vitalId = this.utilities.vitalPageState["vitalId"];
-    let relativeId = this.utilities.vitalPageState["relativeId"];
+    let relativeId = this.utilities.selectedRelativeId;
     let temperature = this.utilities.vitalPageState["temperature"];
     let pulserate = this.utilities.vitalPageState["pulserate"];
     let respiratoryrate = this.utilities.vitalPageState["respiratoryrate"];
