@@ -610,6 +610,7 @@ CREATE TABLE `du_photo` (
 
 DROP TABLE IF EXISTS `du_relative`;
 CREATE TABLE `du_relative` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `relative_name` varchar(100) NOT NULL,
@@ -617,7 +618,7 @@ CREATE TABLE `du_relative` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`)
+  PRIMARY KEY (`id`,`user_id`,`relative_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -991,7 +992,11 @@ INSERT INTO `m_allergy` (`allergy_id`,`name`,`is_active`) VALUES
  (5,'Allergic Asthama','1'),
  (6,'Allergic rhinitis','1'),
  (7,'Animal allergy','1'),
- (8,' allergy','1');
+ (8,'Anaphylaxis','1'),
+ (9,'Allergy to mold','1'),
+ (10,'Pets allergy','1'),
+ (11,'Eye allergy','1'),
+ (12,'Skin allergy','1');
 /*!40000 ALTER TABLE `m_allergy` ENABLE KEYS */;
 
 
@@ -1068,8 +1073,16 @@ CREATE TABLE `m_disease` (
 
 /*!40000 ALTER TABLE `m_disease` DISABLE KEYS */;
 INSERT INTO `m_disease` (`disease_id`,`name`,`is_active`) VALUES 
- (1,'option1','1'),
- (2,'option2','1');
+ (1,'Allergies','1'),
+ (2,'Arthritis','1'),
+ (3,'Asthma','1'),
+ (4,'Blood Pressure','1'),
+ (5,'Cancer','1'),
+ (6,'Cholesterol','1'),
+ (7,'Chronic Pain','1'),
+ (8,'Cold & Flu','1'),
+ (9,'Depression','1'),
+ (10,'Diabetes','1');
 /*!40000 ALTER TABLE `m_disease` ENABLE KEYS */;
 
 
@@ -1248,8 +1261,16 @@ CREATE TABLE `m_injury` (
 
 /*!40000 ALTER TABLE `m_injury` DISABLE KEYS */;
 INSERT INTO `m_injury` (`injury_id`,`name`,`is_active`) VALUES 
- (1,'option1','1'),
- (2,'option2','1');
+ (1,'Strains','1'),
+ (2,'Knee injuries','1'),
+ (3,'Swollen muscles','1'),
+ (4,'Achilles tendon rupture','1'),
+ (5,'Fractures','1'),
+ (6,'Dislocations','1'),
+ (7,'Rotator cuff injury','1'),
+ (8,'Bone fractures','1'),
+ (9,'Exercise','1'),
+ (10,'Accidents','1');
 /*!40000 ALTER TABLE `m_injury` ENABLE KEYS */;
 
 
@@ -1330,20 +1351,39 @@ INSERT INTO `m_marital_status` (`marital_status_id`,`name`,`is_active`) VALUES
 
 DROP TABLE IF EXISTS `m_medication`;
 CREATE TABLE `m_medication` (
-  `medication_id` int(10) unsigned NOT NULL,
+  `medication_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
+  `medication_type_id` int(10) unsigned NOT NULL,
   `is_active` varchar(45) NOT NULL,
   PRIMARY KEY (`medication_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `m_medication`
 --
 
 /*!40000 ALTER TABLE `m_medication` DISABLE KEYS */;
-INSERT INTO `m_medication` (`medication_id`,`name`,`is_active`) VALUES 
- (1,'Covid 19','1'),
- (2,'Covid 20','1');
+INSERT INTO `m_medication` (`medication_id`,`name`,`medication_type_id`,`is_active`) VALUES 
+ (1,'Acarbose',1,'1'),
+ (2,'Acebutolol hcl',1,'1'),
+ (3,'Acetazolamide',1,'1'),
+ (4,'Advair Diskus',1,'1'),
+ (5,'Afeditab CR\r',1,'1'),
+ (6,'Albuterol',1,'1'),
+ (7,'Albuterol sulfate',1,'1'),
+ (8,'Alendronate sodium',1,'1'),
+ (9,'Amantadine',1,'1'),
+ (10,'Amiloride hcl',1,'1'),
+ (11,'Aminophylline',2,'1'),
+ (12,'Amlodipine atorvastatin',2,'1'),
+ (13,'Amlodipine besylate',2,'1'),
+ (14,'Anagrelide',2,'1'),
+ (15,'Anastrozole',2,'1'),
+ (16,'Budesonide',2,'1'),
+ (17,'Bumetanide',2,'1'),
+ (18,'Buproban SR',2,'1'),
+ (19,'Bupropion SR',2,'1'),
+ (20,'Betaxolol hcl',2,'1');
 /*!40000 ALTER TABLE `m_medication` ENABLE KEYS */;
 
 
@@ -1467,17 +1507,30 @@ INSERT INTO `m_qualification` (`qualification_id`,`name`,`is_active`) VALUES
 
 DROP TABLE IF EXISTS `m_relation`;
 CREATE TABLE `m_relation` (
-  `relation_id` int(10) unsigned NOT NULL,
+  `relation_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `is_active` varchar(45) NOT NULL,
   PRIMARY KEY (`relation_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `m_relation`
 --
 
 /*!40000 ALTER TABLE `m_relation` DISABLE KEYS */;
+INSERT INTO `m_relation` (`relation_id`,`name`,`is_active`) VALUES 
+ (1,'Father','1'),
+ (2,'Mother','1'),
+ (3,'Elder brother','1'),
+ (4,'Younger brother','1'),
+ (5,'Elder sister','1'),
+ (6,'Younger sister','1'),
+ (7,'Uncle','1'),
+ (8,'Aunt','1'),
+ (9,'Husband','1'),
+ (10,'Wife','1'),
+ (11,'Son','1'),
+ (12,'Daughter','1');
 /*!40000 ALTER TABLE `m_relation` ENABLE KEYS */;
 
 
@@ -1610,8 +1663,19 @@ CREATE TABLE `m_surgery` (
 
 /*!40000 ALTER TABLE `m_surgery` DISABLE KEYS */;
 INSERT INTO `m_surgery` (`surgery_id`,`name`,`is_active`) VALUES 
- (1,'option1','1'),
- (2,'option2','1');
+ (1,'Appendectomy','1'),
+ (2,'Breast biopsy','1'),
+ (3,'Carotid endarterectomy','1'),
+ (4,'Cataract surgery','1'),
+ (5,'Cesarean section','1'),
+ (6,'Cholecystectomy','1'),
+ (7,'Coronary artery bypass','1'),
+ (8,'Debridement of wound','1'),
+ (9,'Dilation and curettage','1'),
+ (10,'Free skin graft','1'),
+ (11,'Hemorrhoidectomy','1'),
+ (12,'Hysterectomy','1'),
+ (13,'Hysteroscopy','1');
 /*!40000 ALTER TABLE `m_surgery` ENABLE KEYS */;
 
 
@@ -1980,6 +2044,51 @@ Union
 
 
  ;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_master_medical_history_get`
+--
+
+DROP PROCEDURE IF EXISTS `sp_master_medical_history_get`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_master_medical_history_get`(IN IN_user_id INT, IN IN_relative_id INT)
+BEGIN
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+SELECT * FROM homeotel.m_allergy where is_active =1;
+
+SELECT * FROM homeotel.m_medication where is_active =1;
+
+SELECT * FROM homeotel.m_surgery where is_active =1;
+
+SELECT * FROM homeotel.m_injury where is_active =1;
+
+SELECT * FROM homeotel.m_disease where is_active =1;
+
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 

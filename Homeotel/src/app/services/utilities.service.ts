@@ -22,6 +22,7 @@ export class UtilitiesService {
   profilePageDetails: any[] = [];
   vitalPageState: any[] = [];
   filesPageState: any[] = [];
+  medicalHistoryPageState: any[] = [];
 
   constructor(private router: Router) {}
 

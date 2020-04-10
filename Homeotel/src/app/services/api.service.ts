@@ -215,7 +215,6 @@ export class ApiService {
 
   getIssues() {
     var path = "/user/master/issue";
-
     return this.http.get(this.apiUrl + path);
   }
 
@@ -230,5 +229,15 @@ export class ApiService {
       issueDescrption: issueDescrption,
     };
     return this.http.post(this.apiUrl + path, body);
+  }
+
+  // Getting medical history details & masters
+  getMedicalHistories() {
+    var path =
+      "/user/medical-history/" +
+      this.utilities.userId +
+      "/" +
+      this.utilities.selectedRelativeId;
+    return this.http.get(this.apiUrl + path);
   }
 }

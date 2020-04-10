@@ -393,9 +393,23 @@ router.post("/issue", (req, res) => {
 
 router.get("/master/issue", (req, res) => {
   var params = [];
-
   db.executeQuery(
     "call sp_master_issue_get()",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
+// Getting medical history details & masters
+router.get("/medical-history/:userId/:relativeId", (req, res) => {
+  var userId = req.params.userId;
+  var relativeId = req.params.relativeId;
+  var params = [userId, relativeId];
+  console.log("Received params -> " + params);
+
+  db.executeQuery(
+    "call sp_master_medical_history_get(?,?)",
     params,
     res,
     db.sendResponseNormal
