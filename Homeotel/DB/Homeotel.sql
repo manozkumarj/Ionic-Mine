@@ -101,24 +101,30 @@ INSERT INTO `d_doctor` (`id`,`uuid`,`name`,`username`,`email`,`pwd`,`phone`,`gen
 
 DROP TABLE IF EXISTS `d_issue`;
 CREATE TABLE `d_issue` (
-  `user_id` int(10) unsigned NOT NULL,
-  `doctor_id` int(10) unsigned NOT NULL,
-  `issue_type` varchar(45) DEFAULT NULL,
-  `issue_description` varchar(45) DEFAULT NULL,
+  `issue_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `doctor_id` int(10) unsigned DEFAULT NULL,
+  `issue_type_id` varchar(45) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `issue_description` varchar(5000) DEFAULT NULL,
   `issue_raised_at` varchar(45) DEFAULT NULL,
-  `issue_status` int(10) DEFAULT 0,
-  `created_by` int(10) unsigned NOT NULL,
-  `created_at` varchar(45) NOT NULL,
+  `issue_status` int(11) DEFAULT 0,
+  `created_by` int(10) unsigned DEFAULT NULL,
+  `created_at` varchar(45) DEFAULT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`doctor_id`,`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`issue_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_issue`
 --
 
 /*!40000 ALTER TABLE `d_issue` DISABLE KEYS */;
+INSERT INTO `d_issue` (`issue_id`,`user_id`,`doctor_id`,`issue_type_id`,`email`,`phone`,`issue_description`,`issue_raised_at`,`issue_status`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,1,NULL,'3','ccc@ccc.com','9876543333','9876543333','2020-04-10 12:17:07',0,NULL,'2020-04-10 12:17:07',NULL,NULL),
+ (2,1,NULL,'5','eee@eee.com','9555555555','9555555555','2020-04-10 12:23:01',0,1,'2020-04-10 12:23:01',1,'2020-04-10 12:23:01');
 /*!40000 ALTER TABLE `d_issue` ENABLE KEYS */;
 
 
@@ -978,9 +984,14 @@ CREATE TABLE `m_allergy` (
 
 /*!40000 ALTER TABLE `m_allergy` DISABLE KEYS */;
 INSERT INTO `m_allergy` (`allergy_id`,`name`,`is_active`) VALUES 
- (1,'Skin','1'),
- (2,'Dust','1'),
- (3,'Sun','1');
+ (1,'Drug allergy','1'),
+ (2,'Food allergy','1'),
+ (3,'Contact dermatitis','1'),
+ (4,'Latex allergy','1'),
+ (5,'Allergic Asthama','1'),
+ (6,'Allergic rhinitis','1'),
+ (7,'Animal allergy','1'),
+ (8,' allergy','1');
 /*!40000 ALTER TABLE `m_allergy` ENABLE KEYS */;
 
 
@@ -1260,6 +1271,32 @@ CREATE TABLE `m_instruction` (
 
 /*!40000 ALTER TABLE `m_instruction` DISABLE KEYS */;
 /*!40000 ALTER TABLE `m_instruction` ENABLE KEYS */;
+
+
+--
+-- Definition of table `m_issue`
+--
+
+DROP TABLE IF EXISTS `m_issue`;
+CREATE TABLE `m_issue` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `is_active` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_issue`
+--
+
+/*!40000 ALTER TABLE `m_issue` DISABLE KEYS */;
+INSERT INTO `m_issue` (`id`,`name`,`is_active`) VALUES 
+ (1,'Booking an appointment',1),
+ (2,'Wrong information',1),
+ (3,'Consultation Related',1),
+ (4,'Homeo kits Related',1),
+ (5,'Other issues',1);
+/*!40000 ALTER TABLE `m_issue` ENABLE KEYS */;
 
 
 --
@@ -1699,6 +1736,49 @@ END $$
 DELIMITER ;
 
 --
+-- Definition of procedure `sp_issue_save`
+--
+
+DROP PROCEDURE IF EXISTS `sp_issue_save`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_issue_save`(IN IN_user_id INT , IN IN_doctor_id INT , IN_issue_type_id INT ,IN IN_email varchar(255),
+                                                            IN IN_phone varchar(255) , IN IN_issue_description VARCHAR(5000))
+BEGIN
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+
+  Insert into d_issue (user_id, doctor_id, issue_type_id, email , phone , issue_description, issue_raised_at, created_at,
+   updated_at, updated_by, created_by)
+    values (IN_user_id , IN_doctor_id, IN_issue_type_id, IN_email, IN_phone,  IN_issue_description, Now(), now(), now(),
+            IN_user_id, IN_user_id);
+
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
 -- Definition of procedure `sp_master_doctor_personaldetail_get`
 --
 
@@ -1740,6 +1820,43 @@ Union
 
 
  ;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_master_issue_get`
+--
+
+DROP PROCEDURE IF EXISTS `sp_master_issue_get`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_master_issue_get`()
+BEGIN
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+SELECT * FROM homeotel.m_issue where is_active =1;
+
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 

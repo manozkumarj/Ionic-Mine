@@ -212,4 +212,23 @@ export class ApiService {
     };
     return this.http.post(this.apiUrl + path, body);
   }
+
+  getIssues() {
+    var path = "/user/master/issue";
+
+    return this.http.get(this.apiUrl + path);
+  }
+
+  saveIssue(issueTypeId, email, phone, issueDescrption) {
+    var path = "/user/issue";
+
+    var body = {
+      userId: this.utilities.userId,
+      issueTypeId: issueTypeId,
+      email: email,
+      phone: phone,
+      issueDescrption: issueDescrption,
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
 }

@@ -373,4 +373,33 @@ router.post("/upsert-file", (req, res) => {
   );
 });
 
+router.post("/issue", (req, res) => {
+  var userId = req.body.userId;
+  var doctorId = req.body.doctorId ? req.body.doctorId : null;
+  var issueTypeId = req.body.issueTypeId;
+  var email = req.body.email;
+  var phone = req.body.phone;
+  var issueDescrption = req.body.phone;
+  var params = [userId, doctorId, issueTypeId, email, phone, issueDescrption];
+
+  console.log(params);
+  db.executeQuery(
+    "call sp_issue_save(?,?,?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
+router.get("/master/issue", (req, res) => {
+  var params = [];
+
+  db.executeQuery(
+    "call sp_master_issue_get()",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;

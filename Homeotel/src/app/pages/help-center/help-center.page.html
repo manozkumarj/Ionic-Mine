@@ -8,27 +8,27 @@
 </ion-header>
 
 <ion-content>
-  <ion-list style="margin: 0px; padding: 5px;background: #999;">
+  <ion-list style="margin: 0px; padding: 5px; background: #999;">
     <ion-input
       placeholder="Search the issue"
       style="background: #999; color: #fff; padding: 5px;"
     >
     </ion-input>
   </ion-list>
-  <ion-list *ngIf="helpCenters.length > 0; else noHelpCenters">
+  <ion-list *ngIf="issues.length > 0; else noIssues">
     <ion-item
-      *ngFor="let helpCenter of helpCenters"
-      [routerLink]="['/issue-details/' + helpCenter.id]"
+      *ngFor="let issue of issues"
+      [routerLink]="['/issue-details/' + issue.id]"
       detail
     >
-      <div style="font-size: 18px; font-weight: bold;">{{helpCenter.name}}</div>
+      <div style="font-size: 18px; font-weight: bold;">{{issue.name}}</div>
     </ion-item>
   </ion-list>
 
-  <ng-template #noHelpCenters>
+  <ng-template #noIssues>
     <ion-card>
       <ion-card-header>
-        <ion-card-title> There are no Help Centers </ion-card-title>
+        <ion-card-title> There are no Issues </ion-card-title>
       </ion-card-header>
     </ion-card>
   </ng-template>
