@@ -133,22 +133,64 @@ export class MedicalHistoryPage implements OnInit {
 
           if (this.allergyData.length > 0) {
             this.allergies = "Comma separation";
+            let names = this.allergyData.map((item) => {
+              return item["name"];
+            });
+            // console.log("names -> ");
+            // console.log(names);
+            this.allergies = names.join(", ");
           }
+
           if (this.currentMedicationData.length > 0) {
             this.currentMedications = "Comma separation";
+            let names = this.currentMedicationData.map((item) => {
+              return item["name"];
+            });
+            // console.log("names -> ");
+            // console.log(names);
+            this.currentMedications = names.join(", ");
           }
+
           if (this.postMedicationData.length > 0) {
             this.postMedications = "Comma separation";
+            let medicationNames = this.postMedicationData.map((item) => {
+              return item["name"];
+            });
+            // console.log("medicationNames -> ");
+            // console.log(medicationNames);
+            this.postMedications = medicationNames.join(", ");
           }
+
           if (this.surgeryData.length > 0) {
             this.surgeries = "Comma separation";
+            let names = this.surgeryData.map((item) => {
+              return item["name"];
+            });
+            // console.log("names -> ");
+            // console.log(names);
+            this.surgeries = names.join(", ");
           }
+
           if (this.injuryData.length > 0) {
             this.injuries = "Comma separation";
+            let names = this.injuryData.map((item) => {
+              return item["name"];
+            });
+            // console.log("names -> ");
+            // console.log(names);
+            this.injuries = names.join(", ");
           }
+
           if (this.chronicData.length > 0) {
             this.chronics = "Comma separation";
+            let names = this.chronicData.map((item) => {
+              return item["name"];
+            });
+            // console.log("names -> ");
+            // console.log(names);
+            this.chronics = names.join(", ");
           }
+
           if (this.familyHistoryData.length > 0) {
             this.familyHistories = "Comma separation";
           }

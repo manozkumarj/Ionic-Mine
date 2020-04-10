@@ -646,13 +646,16 @@ CREATE TABLE `ehr_allergy` (
   PRIMARY KEY (`id`,`user_id`,`relative_id`),
   KEY `FK_ehr_allergy_id` (`allergy_id`),
   CONSTRAINT `FK_ehr_allergy_id` FOREIGN KEY (`allergy_id`) REFERENCES `m_allergy` (`allergy_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_allergy`
 --
 
 /*!40000 ALTER TABLE `ehr_allergy` DISABLE KEYS */;
+INSERT INTO `ehr_allergy` (`id`,`user_id`,`relative_id`,`allergy_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,1,1,2,1,'2020',1,'2020'),
+ (2,1,1,3,1,'2020',1,'2020');
 /*!40000 ALTER TABLE `ehr_allergy` ENABLE KEYS */;
 
 
@@ -673,13 +676,16 @@ CREATE TABLE `ehr_chronic` (
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`disease_id`),
   KEY `FK_ehr_disease_id` (`disease_id`),
   CONSTRAINT `FK_ehr_disease_id` FOREIGN KEY (`disease_id`) REFERENCES `m_disease` (`disease_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_chronic`
 --
 
 /*!40000 ALTER TABLE `ehr_chronic` DISABLE KEYS */;
+INSERT INTO `ehr_chronic` (`id`,`user_id`,`relative_id`,`disease_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,1,1,8,1,'2020',1,'2020'),
+ (2,1,1,9,1,'2020',1,'2020');
 /*!40000 ALTER TABLE `ehr_chronic` ENABLE KEYS */;
 
 
@@ -698,13 +704,16 @@ CREATE TABLE `ehr_current_medication` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`medication_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_current_medication`
 --
 
 /*!40000 ALTER TABLE `ehr_current_medication` DISABLE KEYS */;
+INSERT INTO `ehr_current_medication` (`id`,`user_id`,`relative_id`,`medication_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,1,1,4,1,'2020',1,'2020'),
+ (2,1,1,5,1,'2020',1,'2020');
 /*!40000 ALTER TABLE `ehr_current_medication` ENABLE KEYS */;
 
 
@@ -782,13 +791,16 @@ CREATE TABLE `ehr_injury` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`injury_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_injury`
 --
 
 /*!40000 ALTER TABLE `ehr_injury` DISABLE KEYS */;
+INSERT INTO `ehr_injury` (`id`,`user_id`,`relative_id`,`injury_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,1,1,6,1,'2020',1,'2020'),
+ (2,1,1,7,1,'2020',1,'2020');
 /*!40000 ALTER TABLE `ehr_injury` ENABLE KEYS */;
 
 
@@ -887,13 +899,16 @@ CREATE TABLE `ehr_surgery` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`surgery_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_surgery`
 --
 
 /*!40000 ALTER TABLE `ehr_surgery` DISABLE KEYS */;
+INSERT INTO `ehr_surgery` (`id`,`user_id`,`relative_id`,`surgery_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,1,1,5,1,'2020',1,'2020'),
+ (2,1,1,6,1,'2020',1,'2020');
 /*!40000 ALTER TABLE `ehr_surgery` ENABLE KEYS */;
 
 
@@ -2037,17 +2052,29 @@ END;
   SELECT * FROM homeotel.m_relation where is_active =1;
 
   # fetching existing data
-  SELECT * FROM homeotel.ehr_allergy where user_id = IN_user_id AND relative_id = IN_relative_id;
+  SELECT ea.allergy_id, ma.name FROM homeotel.ehr_allergy ea
+    LEFT JOIN m_allergy ma ON ea.allergy_id = ma.allergy_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
 
-  SELECT * FROM homeotel.ehr_current_medication where user_id = IN_user_id AND relative_id = IN_relative_id;
+  SELECT em.medication_id, m.name FROM homeotel.ehr_current_medication em
+    LEFT JOIN m_medication m ON em.medication_id = m.medication_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
 
-  SELECT * FROM homeotel.ehr_post_medication where user_id = IN_user_id AND relative_id = IN_relative_id;
+  SELECT em.medication_id, m.name FROM homeotel.ehr_post_medication em
+    LEFT JOIN m_medication m ON em.medication_id = m.medication_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
 
-  SELECT * FROM homeotel.ehr_surgery where user_id = IN_user_id AND relative_id = IN_relative_id;
+  SELECT es.surgery_id, m.name FROM homeotel.ehr_surgery es
+    LEFT JOIN m_surgery m ON es.surgery_id = m.surgery_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
 
-  SELECT * FROM homeotel.ehr_injury where user_id = IN_user_id AND relative_id = IN_relative_id;
+  SELECT ei.injury_id, m.name FROM homeotel.ehr_injury ei
+    LEFT JOIN m_injury m ON ei.injury_id = m.injury_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
 
-  SELECT * FROM homeotel.ehr_chronic where user_id = IN_user_id AND relative_id = IN_relative_id;
+  SELECT ec.disease_id, m.name FROM homeotel.ehr_chronic ec
+    LEFT JOIN m_disease m ON ec.disease_id = m.disease_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
 
   SELECT * FROM homeotel.ehr_family_history where user_id = IN_user_id AND relative_id = IN_relative_id;
 
