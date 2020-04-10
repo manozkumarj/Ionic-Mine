@@ -8,7 +8,15 @@ import { ApiService } from "src/app/services/api.service";
   styleUrls: ["./medical-history.page.scss"],
 })
 export class MedicalHistoryPage implements OnInit {
-  medicalHistories;
+  medicalHistories: any[] = [];
+
+  allergyData: any[] = [];
+  currentMedicationData: any[] = [];
+  postMedicationData: any[] = [];
+  surgeryData: any[] = [];
+  injuryData: any[] = [];
+  chronicData: any[] = [];
+  familyHistoryData: any[] = [];
 
   m_allergies: any[] = [];
   medications: any[] = [];
@@ -19,6 +27,14 @@ export class MedicalHistoryPage implements OnInit {
   m_chronicDieseases: any[] = [];
   m_familyHistory: any[] = [];
 
+  allergies = "Select";
+  currentMedications = "Select";
+  postMedications = "Select";
+  surgeries = "Select";
+  injuries = "Select";
+  chronics = "Select";
+  familyHistories = "Select";
+
   constructor(
     private utilities: UtilitiesService,
     private apiService: ApiService
@@ -27,50 +43,64 @@ export class MedicalHistoryPage implements OnInit {
   }
 
   ngOnInit() {
+    this.setMedicalHistories();
+  }
+
+  setMedicalHistories() {
     this.medicalHistories = [
       {
         id: 1,
         name: "Allergies",
-        list: "Sea food, Eggs",
+        list: this.allergies,
+        size: this.allergyData.length > 0 ? 6 : "auto",
         redirectTo: "/allergies",
       },
       {
         id: 2,
         name: "Current Medication",
-        list: "Paracetamol",
+        list: this.currentMedications,
+        size: this.currentMedicationData.length > 0 ? 6 : "auto",
         redirectTo: "/allergies",
       },
       {
         id: 3,
         name: "Post Medication",
-        list: "Metmorfin",
+        list: this.postMedications,
+        size: this.postMedicationData.length > 0 ? 6 : "auto",
         redirectTo: "/allergies",
       },
       {
         id: 4,
         name: "Surgeries",
-        list: "No",
+        list: this.surgeries,
+        size: this.surgeryData.length > 0 ? 6 : "auto",
         redirectTo: "/allergies",
       },
       {
         id: 5,
         name: "Injuries",
-        list: "Select",
+        list: this.injuries,
+        size: this.injuryData.length > 0 ? 6 : "auto",
         redirectTo: "/allergies",
       },
       {
         id: 6,
         name: "Chronic Diseases",
-        list: "Select",
+        list: this.chronics,
+        size: this.chronicData.length > 0 ? 6 : "auto",
         redirectTo: "/allergies",
       },
       {
         id: 7,
         name: "Family History",
-        list: "Father - Diabetes, Grand Father - Hypertension",
+        list: this.familyHistories,
+        size: this.familyHistoryData.length > 0 ? 6 : "auto",
         redirectTo: "/allergies",
       },
     ];
+
+    console.log("this.medicalHistories is below");
+    console.log(this.medicalHistories);
   }
 
   getMedicalHistories() {
@@ -92,6 +122,36 @@ export class MedicalHistoryPage implements OnInit {
           this.m_injuries = data[3];
           this.m_chronicDieseases = data[4];
           this.m_familyHistory = data[5];
+
+          this.allergyData = data[6];
+          this.currentMedicationData = data[7];
+          this.postMedicationData = data[8];
+          this.surgeryData = data[9];
+          this.injuryData = data[10];
+          this.chronicData = data[11];
+          this.familyHistoryData = data[12];
+
+          if (this.allergyData.length > 0) {
+            this.allergies = "Comma separation";
+          }
+          if (this.currentMedicationData.length > 0) {
+            this.currentMedications = "Comma separation";
+          }
+          if (this.postMedicationData.length > 0) {
+            this.postMedications = "Comma separation";
+          }
+          if (this.surgeryData.length > 0) {
+            this.surgeries = "Comma separation";
+          }
+          if (this.injuryData.length > 0) {
+            this.injuries = "Comma separation";
+          }
+          if (this.chronicData.length > 0) {
+            this.chronics = "Comma separation";
+          }
+          if (this.familyHistoryData.length > 0) {
+            this.familyHistories = "Comma separation";
+          }
 
           this.utilities.medicalHistoryPageState[
             "m_allergies"
@@ -125,6 +185,8 @@ export class MedicalHistoryPage implements OnInit {
             "this.utilities.medicalHistoryPageState is showing below"
           );
           console.log(this.utilities.medicalHistoryPageState);
+
+          this.setMedicalHistories();
         } else {
           console.log("Something went wrong in backend");
         }

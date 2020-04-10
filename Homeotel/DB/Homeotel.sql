@@ -635,6 +635,7 @@ CREATE TABLE `du_relative` (
 
 DROP TABLE IF EXISTS `ehr_allergy`;
 CREATE TABLE `ehr_allergy` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `allergy_id` int(10) unsigned NOT NULL,
@@ -642,7 +643,7 @@ CREATE TABLE `ehr_allergy` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`),
+  PRIMARY KEY (`id`,`user_id`,`relative_id`),
   KEY `FK_ehr_allergy_id` (`allergy_id`),
   CONSTRAINT `FK_ehr_allergy_id` FOREIGN KEY (`allergy_id`) REFERENCES `m_allergy` (`allergy_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -661,6 +662,7 @@ CREATE TABLE `ehr_allergy` (
 
 DROP TABLE IF EXISTS `ehr_chronic`;
 CREATE TABLE `ehr_chronic` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `disease_id` int(10) unsigned NOT NULL,
@@ -668,7 +670,7 @@ CREATE TABLE `ehr_chronic` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`,`disease_id`),
+  PRIMARY KEY (`id`,`user_id`,`relative_id`,`disease_id`),
   KEY `FK_ehr_disease_id` (`disease_id`),
   CONSTRAINT `FK_ehr_disease_id` FOREIGN KEY (`disease_id`) REFERENCES `m_disease` (`disease_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -687,6 +689,7 @@ CREATE TABLE `ehr_chronic` (
 
 DROP TABLE IF EXISTS `ehr_current_medication`;
 CREATE TABLE `ehr_current_medication` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `medication_id` int(10) unsigned NOT NULL,
@@ -694,7 +697,7 @@ CREATE TABLE `ehr_current_medication` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`,`medication_id`)
+  PRIMARY KEY (`id`,`user_id`,`relative_id`,`medication_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -711,6 +714,7 @@ CREATE TABLE `ehr_current_medication` (
 
 DROP TABLE IF EXISTS `ehr_family_history`;
 CREATE TABLE `ehr_family_history` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `relation_id` int(10) unsigned NOT NULL,
@@ -719,7 +723,7 @@ CREATE TABLE `ehr_family_history` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`,`relation_id`,`disease_id`)
+  PRIMARY KEY (`id`,`user_id`,`relative_id`,`relation_id`,`disease_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -769,6 +773,7 @@ INSERT INTO `ehr_file` (`file_id`,`user_id`,`relative_id`,`file_type_id`,`file_d
 
 DROP TABLE IF EXISTS `ehr_injury`;
 CREATE TABLE `ehr_injury` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `injury_id` int(10) unsigned NOT NULL,
@@ -776,7 +781,7 @@ CREATE TABLE `ehr_injury` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`,`injury_id`)
+  PRIMARY KEY (`id`,`user_id`,`relative_id`,`injury_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -840,11 +845,12 @@ CREATE TABLE `ehr_lifestyle_food` (
 
 
 --
--- Definition of table `ehr_past_medication`
+-- Definition of table `ehr_post_medication`
 --
 
-DROP TABLE IF EXISTS `ehr_past_medication`;
-CREATE TABLE `ehr_past_medication` (
+DROP TABLE IF EXISTS `ehr_post_medication`;
+CREATE TABLE `ehr_post_medication` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `medication_id` int(10) unsigned NOT NULL,
@@ -852,15 +858,18 @@ CREATE TABLE `ehr_past_medication` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`,`medication_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`,`user_id`,`relative_id`,`medication_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `ehr_past_medication`
+-- Dumping data for table `ehr_post_medication`
 --
 
-/*!40000 ALTER TABLE `ehr_past_medication` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ehr_past_medication` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ehr_post_medication` DISABLE KEYS */;
+INSERT INTO `ehr_post_medication` (`id`,`user_id`,`relative_id`,`medication_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,1,1,1,1,'2020',1,'2020'),
+ (2,1,1,2,1,'2020',1,'2020');
+/*!40000 ALTER TABLE `ehr_post_medication` ENABLE KEYS */;
 
 
 --
@@ -869,6 +878,7 @@ CREATE TABLE `ehr_past_medication` (
 
 DROP TABLE IF EXISTS `ehr_surgery`;
 CREATE TABLE `ehr_surgery` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `surgery_id` int(10) unsigned NOT NULL,
@@ -876,7 +886,7 @@ CREATE TABLE `ehr_surgery` (
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`,`surgery_id`)
+  PRIMARY KEY (`id`,`user_id`,`relative_id`,`surgery_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -1985,71 +1995,6 @@ END $$
 DELIMITER ;
 
 --
--- Definition of procedure `sp_master_medical_history`
---
-
-DROP PROCEDURE IF EXISTS `sp_master_medical_history`;
-
-DELIMITER $$
-
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_master_medical_history`()
-BEGIN
-
-DECLARE exit handler for sqlexception
-  BEGIN
-
-    GET DIAGNOSTICS CONDITION 1
-    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
-    SELECT @p1 as error_code  , @p2 as error;
-
-END;
-
-DECLARE exit handler for sqlwarning
- BEGIN
-
-    GET DIAGNOSTICS CONDITION 1
-    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
-    SELECT @p1 as error_code  , @p2 as error;
-
-END;
-
- SELECT allergy_id as id, name, 'allery' as master_type from m_allergy WHERE is_active = 1
-
-Union
-
- SELECT medication_id as id, name, 'medication' as master_type from m_medication WHERE is_active = 1
-
-Union
-
- SELECT surgery_id as id, name, 'surgery' as master_type from m_surgery WHERE is_active = 1
-
-Union
-
- SELECT surgery_id as id, name, 'surgery' as master_type from m_surgery WHERE is_active = 1
-
-
-Union
-
- SELECT injury_id as id, name, 'injury' as master_type from m_injury WHERE is_active = 1
-
-Union
-
- SELECT injury_id as id, name, 'injury' as master_type from m_injury WHERE is_active = 1
-
-Union
-
- SELECT disease_id as id, name, 'disease' as master_type from m_disease WHERE is_active = 1
-
-
-
- ;
-END $$
-/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
-
-DELIMITER ;
-
---
 -- Definition of procedure `sp_master_medical_history_get`
 --
 
@@ -2079,15 +2024,33 @@ DECLARE exit handler for sqlwarning
 
 END;
 
-SELECT * FROM homeotel.m_allergy where is_active =1;
+  SELECT * FROM homeotel.m_allergy where is_active =1;
 
-SELECT * FROM homeotel.m_medication where is_active =1;
+  SELECT * FROM homeotel.m_medication where is_active =1;
 
-SELECT * FROM homeotel.m_surgery where is_active =1;
+  SELECT * FROM homeotel.m_surgery where is_active =1;
 
-SELECT * FROM homeotel.m_injury where is_active =1;
+  SELECT * FROM homeotel.m_injury where is_active =1;
 
-SELECT * FROM homeotel.m_disease where is_active =1;
+  SELECT * FROM homeotel.m_disease where is_active =1;
+
+  SELECT * FROM homeotel.m_relation where is_active =1;
+
+  # fetching existing data
+  SELECT * FROM homeotel.ehr_allergy where user_id = IN_user_id AND relative_id = IN_relative_id;
+
+  SELECT * FROM homeotel.ehr_current_medication where user_id = IN_user_id AND relative_id = IN_relative_id;
+
+  SELECT * FROM homeotel.ehr_post_medication where user_id = IN_user_id AND relative_id = IN_relative_id;
+
+  SELECT * FROM homeotel.ehr_surgery where user_id = IN_user_id AND relative_id = IN_relative_id;
+
+  SELECT * FROM homeotel.ehr_injury where user_id = IN_user_id AND relative_id = IN_relative_id;
+
+  SELECT * FROM homeotel.ehr_chronic where user_id = IN_user_id AND relative_id = IN_relative_id;
+
+  SELECT * FROM homeotel.ehr_family_history where user_id = IN_user_id AND relative_id = IN_relative_id;
+
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
