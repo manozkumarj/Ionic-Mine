@@ -46,7 +46,7 @@ CREATE TABLE `d_appointment` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`appointment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_appointment`
@@ -54,7 +54,9 @@ CREATE TABLE `d_appointment` (
 
 /*!40000 ALTER TABLE `d_appointment` DISABLE KEYS */;
 INSERT INTO `d_appointment` (`appointment_id`,`user_id`,`relative_id`,`doctor_id`,`mode_id`,`main_complaint`,`appointment_at`,`booked_at`,`amount_paid`,`payment_status`,`appointment_status`,`advice`,`notes`,`review_date`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (17,1,1,1,2,NULL,'2020-4-8 10:30:00',NULL,'20',0,0,NULL,NULL,NULL,1,'2020-04-06 14:18:57',1,'2020-04-06 14:19:53');
+ (17,1,1,1,2,NULL,'2020-4-8 10:30:00',NULL,'20',0,0,NULL,NULL,NULL,1,'2020-04-06 14:18:57',1,'2020-04-06 14:19:53'),
+ (18,1,1,2,3,'jus des...','2020-4-15 13:00:00',NULL,'52',0,0,NULL,NULL,NULL,1,'2020-04-10 08:42:16',1,'2020-04-10 08:42:16'),
+ (19,1,0,1,4,'another jus','2020-4-16 11:00:00',NULL,'500',0,1,NULL,NULL,NULL,1,'2020-04-10 08:42:57',1,'2020-04-10 08:42:57');
 /*!40000 ALTER TABLE `d_appointment` ENABLE KEYS */;
 
 
@@ -167,7 +169,7 @@ CREATE TABLE `d_transaction` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`transaction_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_transaction`
@@ -176,7 +178,9 @@ CREATE TABLE `d_transaction` (
 /*!40000 ALTER TABLE `d_transaction` DISABLE KEYS */;
 INSERT INTO `d_transaction` (`transaction_id`,`user_id`,`doctor_id`,`appointment_id`,`kit_id`,`transaction_type_id`,`transaction_amount`,`taxes`,`charges`,`net_amount`,`transaction_at`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
  (18,1,1,17,NULL,1,20,0,0,20,'2020-04-06 14:19:53',1,'2020-04-06 14:18:57',1,'2020-04-06 14:19:53'),
- (19,1,1,NULL,1,3,250,0,0,250,'2020-04-06 14:27:35',1,'2020-04-06 14:27:35',1,'2020-04-06 14:27:35');
+ (19,1,1,NULL,1,3,250,0,0,250,'2020-04-06 14:27:35',1,'2020-04-06 14:27:35',1,'2020-04-06 14:27:35'),
+ (20,1,2,18,NULL,1,52,0,0,52,'2020-04-10 08:42:16',1,'2020-04-10 08:42:16',1,'2020-04-10 08:42:16'),
+ (21,1,1,19,NULL,1,500,0,0,500,'2020-04-10 08:42:57',1,'2020-04-10 08:42:57',1,'2020-04-10 08:42:57');
 /*!40000 ALTER TABLE `d_transaction` ENABLE KEYS */;
 
 
@@ -237,7 +241,7 @@ CREATE TABLE `da_complaint_detail` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`complaint_detail_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_complaint_detail`
@@ -245,9 +249,10 @@ CREATE TABLE `da_complaint_detail` (
 
 /*!40000 ALTER TABLE `da_complaint_detail` DISABLE KEYS */;
 INSERT INTO `da_complaint_detail` (`complaint_detail_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_id`,`is_recurring`,`recurring_freq`,`severity_id`,`complaint_description`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (11,1,1,2,13,'1','1','1','firstt...',1,'2020-04-06 13:07:07',1,'2020-04-06 14:19:29'),
- (12,1,0,1,15,'1','1','1','firstt...',1,'2020-04-06 14:11:02',1,'2020-04-06 14:19:29'),
- (13,1,0,1,17,'1','1','1','firstt...',1,'2020-04-06 14:19:20',1,'2020-04-06 14:19:29');
+ (11,1,1,2,13,'2','2','3','stomach ache, headache',1,'2020-04-06 13:07:07',1,'2020-04-10 08:45:49'),
+ (12,1,0,1,15,'2','2','3','stomach ache, headache',1,'2020-04-06 14:11:02',1,'2020-04-10 08:45:49'),
+ (13,1,0,1,17,'2','2','3','stomach ache, headache',1,'2020-04-06 14:19:20',1,'2020-04-10 08:45:49'),
+ (14,1,0,1,19,'2','2','3','stomach ache, headache',1,'2020-04-10 08:45:23',1,'2020-04-10 08:45:49');
 /*!40000 ALTER TABLE `da_complaint_detail` ENABLE KEYS */;
 
 
@@ -297,7 +302,7 @@ CREATE TABLE `da_log` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_log`
@@ -305,7 +310,9 @@ CREATE TABLE `da_log` (
 
 /*!40000 ALTER TABLE `da_log` DISABLE KEYS */;
 INSERT INTO `da_log` (`log_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_id`,`mode_id`,`appointment_at`,`appointment_status`,`is_latest`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (15,1,1,1,17,2,'2020-4-8 10:30:00',0,0,1,'2020-04-06 14:18:57',1,'2020-04-06 14:19:53');
+ (15,1,1,1,17,2,'2020-4-8 10:30:00',0,0,1,'2020-04-06 14:18:57',1,'2020-04-06 14:19:53'),
+ (16,1,1,2,18,3,'2020-4-15 13:00:00',0,0,1,'2020-04-10 08:42:16',1,'2020-04-10 08:42:16'),
+ (17,1,0,1,19,4,'2020-4-16 11:00:00',0,0,1,'2020-04-10 08:42:57',1,'2020-04-10 08:42:57');
 /*!40000 ALTER TABLE `da_log` ENABLE KEYS */;
 
 

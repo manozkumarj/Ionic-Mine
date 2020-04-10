@@ -34,7 +34,7 @@
           class="grid doctorGrid"
         >
           <ion-row style="color: #000; background: #fff;">
-            <ion-col size="2" [routerLink]="['/appointment-details']">
+            <ion-col size="2">
               <p
                 style="
                   margin: 0;
@@ -50,7 +50,7 @@
                 />
               </p>
             </ion-col>
-            <ion-col [routerLink]="['/appointment-details']">
+            <ion-col>
               <p class="docName">
                 {{upcomingAppointment.doctorName | uppercase}}
               </p>
@@ -105,7 +105,7 @@
           class="grid doctorGrid"
         >
           <ion-row style="color: #000; background: #fff;">
-            <ion-col size="2" [routerLink]="['/appointment-details']">
+            <ion-col size="2">
               <p
                 style="
                   margin: 0;
@@ -121,7 +121,7 @@
                 />
               </p>
             </ion-col>
-            <ion-col [routerLink]="['/appointment-details']">
+            <ion-col>
               <p class="docName">
                 {{previousAppointment.doctorName | uppercase}}
               </p>

@@ -23,9 +23,9 @@
         </p>
       </ion-col>
       <ion-col style="padding-top: 10px;">
-        <p class="docName">Dr. Swapna Kunduru</p>
-        <p class="designation">Audio consultation</p>
-        <p class="designation">20 Jan 2020</p>
+        <p class="docName">{{doctorName | uppercase}}</p>
+        <p class="designation">{{doctorUsername}}</p>
+        <p class="designation">{{appointmentAt}}</p>
       </ion-col>
     </ion-row>
 
@@ -39,7 +39,9 @@
     <ion-row class="solidBorderBottom" style="padding: 6px;">
       <ion-col>
         <p>
-          <span style="padding: 13px 0 8px 12px;">Stomach pain, nausea</span>
+          <span style="padding: 13px 0 8px 12px;"
+            >{{complaintDescription}}</span
+          >
         </p>
       </ion-col>
     </ion-row>
@@ -60,7 +62,7 @@
                 Is it recurring?
               </ion-col>
               <ion-col>
-                Recurring
+                {{recurring}}
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -72,7 +74,7 @@
                 Recurring since?
               </ion-col>
               <ion-col>
-                Since 3 years
+                Recurring Since {{recurringSince}} years
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -84,7 +86,7 @@
                 Aggravated by?
               </ion-col>
               <ion-col>
-                By wheat
+                {{aggravatedBy}}
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -96,7 +98,7 @@
                 Pain description?
               </ion-col>
               <ion-col>
-                Pain in stomach
+                {{description}}
               </ion-col>
             </ion-row>
           </ion-grid>

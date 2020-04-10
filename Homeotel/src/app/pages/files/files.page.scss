@@ -48,3 +48,15 @@ p {
   font-weight: bold;
   padding: 10px;
 }
+.noResultsGrid {
+  width: 95%;
+  margin-top: 25px;
+  padding: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 3px;
+  -webkit-box-shadow: -1px 2px 7px -1px rgba(128, 128, 128, 1);
+  -moz-box-shadow: -1px 2px 7px -1px rgba(128, 128, 128, 1);
+  box-shadow: -1px 2px 7px -1px rgba(128, 128, 128, 1);
+}
