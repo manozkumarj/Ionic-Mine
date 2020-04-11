@@ -1,19 +1,43 @@
 import { Component, OnInit } from "@angular/core";
 import { AlertController } from "@ionic/angular";
+import { Router } from "@angular/router";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 @Component({
-  selector: "app-allergies",
-  templateUrl: "./allergies.page.html",
-  styleUrls: ["./allergies.page.scss"],
+  selector: "app-multi-selection",
+  templateUrl: "./multi-selection.page.html",
+  styleUrls: ["./multi-selection.page.scss"],
 })
-export class AllergiesPage implements OnInit {
+export class MultiSelectionPage implements OnInit {
+  title;
   arrayOfObjects;
   selectedObjects;
   clonedArrayOfObjects;
 
-  constructor(private alertCtrl: AlertController) {}
+  constructor(
+    private utilities: UtilitiesService,
+    private alertCtrl: AlertController,
+    private router: Router
+  ) {}
 
   ngOnInit() {
+    console.log(
+      "this.utilities.medicalHistoryPageState['selectedMedicalHistory'] is below"
+    );
+    console.log(
+      this.utilities.medicalHistoryPageState["selectedMedicalHistory"]
+    );
+
+    let master = this.utilities.medicalHistoryPageState[
+      "selectedMedicalHistory"
+    ]["masterDataTag"];
+    console.log("Current master data is below");
+    console.log(this.utilities.medicalHistoryPageState[master]);
+
+    this.title = this.utilities.medicalHistoryPageState[
+      "selectedMedicalHistory"
+    ]["name"];
+
     this.clonedArrayOfObjects = this.arrayOfObjects = [
       {
         id: 0,
@@ -76,30 +100,15 @@ export class AllergiesPage implements OnInit {
     this.selectedObjects = this.selectedObjects.filter(
       (option) => option != id
     );
+  }
 
-    // this.alertCtrl
-    //   .create({
-    //     header: "Are you sure?",
-    //     message: "Do you want to remove?",
-    //     buttons: [
-    //       {
-    //         text: "Cancel",
-    //         role: "cancel"
-    //       },
-    //       {
-    //         text: "Remove",
-    //         handler: () => {
-    //           console.log("Item will be removed " + id);
-    //           this.arrayOfObjects[id]["isSelected"] = false;
-    //           this.selectedObjects = this.selectedObjects.filter(
-    //             option => option != id
-    //           );
-    //         }
-    //       }
-    //     ]
-    //   })
-    //   .then(alertEl => {
-    //     alertEl.present();
-    //   });
+  save() {
+    if (this.selectedObjects.length == 0) {
+      alert("Please select at least one item");
+      return false;
+    }
+    console.log("this.selectedObjects are below");
+    console.log(this.selectedObjects);
+    this.router.navigate(["/medical-history"]);
   }
 }

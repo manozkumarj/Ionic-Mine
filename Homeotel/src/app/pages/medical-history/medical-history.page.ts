@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-medical-history",
@@ -28,16 +29,30 @@ export class MedicalHistoryPage implements OnInit {
   m_familyHistory: any[] = [];
 
   allergies = "Select";
+  selectedAllergyIds: any[] = [];
+
   currentMedications = "Select";
+  selectedCurrentMedicationIds: any[] = [];
+
   postMedications = "Select";
+  selectedPostMedicationIds: any[] = [];
+
   surgeries = "Select";
+  selectedSurgeryIds: any[] = [];
+
   injuries = "Select";
+  selectedInjuryIds: any[] = [];
+
   chronics = "Select";
+  selectedChronicIds: any[] = [];
+
   familyHistories = "Select";
+  selectedFamilyHistoryIds: any[] = [];
 
   constructor(
     private utilities: UtilitiesService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private router: Router
   ) {
     this.getMedicalHistories();
   }
@@ -49,53 +64,71 @@ export class MedicalHistoryPage implements OnInit {
   setMedicalHistories() {
     this.medicalHistories = [
       {
-        id: 1,
+        id: 0,
         name: "Allergies",
         list: this.allergies,
+        dataTag: "allergyData",
+        masterDataTag: "m_allergies",
+        data: this.allergyData,
         size: this.allergyData.length > 0 ? 6 : "auto",
-        redirectTo: "/allergies",
+        redirectTo: "/multi-selection",
+      },
+      {
+        id: 1,
+        name: "Current Medication",
+        list: this.currentMedications,
+        dataTag: "currentMedicationData",
+        masterDataTag: "m_currentMedication",
+        data: this.currentMedicationData,
+        size: this.currentMedicationData.length > 0 ? 6 : "auto",
+        redirectTo: "/multi-selection",
       },
       {
         id: 2,
-        name: "Current Medication",
-        list: this.currentMedications,
-        size: this.currentMedicationData.length > 0 ? 6 : "auto",
-        redirectTo: "/allergies",
+        name: "Post Medication",
+        list: this.postMedications,
+        dataTag: "postMedicationData",
+        masterDataTag: "m_postMedication",
+        data: this.postMedicationData,
+        size: this.postMedicationData.length > 0 ? 6 : "auto",
+        redirectTo: "/multi-selection",
       },
       {
         id: 3,
-        name: "Post Medication",
-        list: this.postMedications,
-        size: this.postMedicationData.length > 0 ? 6 : "auto",
-        redirectTo: "/allergies",
+        name: "Surgeries",
+        list: this.surgeries,
+        dataTag: "surgeryData",
+        masterDataTag: "m_surgeries",
+        data: this.surgeryData,
+        size: this.surgeryData.length > 0 ? 6 : "auto",
+        redirectTo: "/multi-selection",
       },
       {
         id: 4,
-        name: "Surgeries",
-        list: this.surgeries,
-        size: this.surgeryData.length > 0 ? 6 : "auto",
-        redirectTo: "/allergies",
+        name: "Injuries",
+        list: this.injuries,
+        dataTag: "injuryData",
+        masterDataTag: "m_injuries",
+        data: this.injuryData,
+        size: this.injuryData.length > 0 ? 6 : "auto",
+        redirectTo: "/multi-selection",
       },
       {
         id: 5,
-        name: "Injuries",
-        list: this.injuries,
-        size: this.injuryData.length > 0 ? 6 : "auto",
-        redirectTo: "/allergies",
+        name: "Chronic Diseases",
+        list: this.chronics,
+        dataTag: "chronicData",
+        masterDataTag: "m_chronicDieseases",
+        data: this.chronicData,
+        size: this.chronicData.length > 0 ? 6 : "auto",
+        redirectTo: "/multi-selection",
       },
       {
         id: 6,
-        name: "Chronic Diseases",
-        list: this.chronics,
-        size: this.chronicData.length > 0 ? 6 : "auto",
-        redirectTo: "/allergies",
-      },
-      {
-        id: 7,
         name: "Family History",
         list: this.familyHistories,
         size: this.familyHistoryData.length > 0 ? 6 : "auto",
-        redirectTo: "/allergies",
+        redirectTo: "/multi-selection",
       },
     ];
 
@@ -124,6 +157,9 @@ export class MedicalHistoryPage implements OnInit {
           this.m_familyHistory = data[5];
 
           this.allergyData = data[6];
+          console.log("this.allergyData is below");
+          console.log(this.allergyData);
+
           this.currentMedicationData = data[7];
           this.postMedicationData = data[8];
           this.surgeryData = data[9];
@@ -234,5 +270,14 @@ export class MedicalHistoryPage implements OnInit {
         }
       }
     });
+  }
+
+  redirect(id) {
+    console.log("Selected ID -> " + id);
+    console.log(this.medicalHistories[id]);
+    this.utilities.medicalHistoryPageState[
+      "selectedMedicalHistory"
+    ] = this.medicalHistories[id];
+    this.router.navigate([this.medicalHistories[id]["redirectTo"]]);
   }
 }

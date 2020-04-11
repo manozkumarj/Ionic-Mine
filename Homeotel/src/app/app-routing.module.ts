@@ -329,7 +329,11 @@ const routes: Routes = [
       import("./pages/edit-profile/edit-profile.module").then(
         (m) => m.EditProfilePageModule
       ),
+  },  {
+    path: 'multi-selection',
+    loadChildren: () => import('./pages/multi-selection/multi-selection.module').then( m => m.MultiSelectionPageModule)
   },
+
 ];
 
 @NgModule({

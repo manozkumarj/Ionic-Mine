@@ -3,10 +3,10 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Allergies</ion-title>
-    <ion-buttons slot="primary" [routerLink]="['/single-selection']">
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="primary" (click)="save()">
       <ion-button>
-        Next
+        Save
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -23,15 +23,9 @@
       >
         <span class="selectedOption">
           {{arrayOfObjects[option]['name']}}
-          <!-- <span class="remover"> X </span> -->
         </span>
       </ion-col>
     </ion-row>
-    <!-- <ng-template #nothingSelected>
-      <ion-row>
-        Nothing selected yet
-      </ion-row>
-    </ng-template> -->
   </ion-grid>
 
   <ion-list style="margin: 0px; padding: 5px; background: #999;">
