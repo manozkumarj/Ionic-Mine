@@ -31,52 +31,54 @@ export class MultiSelectionPage implements OnInit {
     let master = this.utilities.medicalHistoryPageState[
       "selectedMedicalHistory"
     ]["masterDataTag"];
+    let currentMasters = this.utilities.medicalHistoryPageState[master];
     console.log("Current master data is below");
-    console.log(this.utilities.medicalHistoryPageState[master]);
+    console.log(currentMasters);
 
     this.title = this.utilities.medicalHistoryPageState[
       "selectedMedicalHistory"
     ]["name"];
 
-    this.clonedArrayOfObjects = this.arrayOfObjects = [
-      {
-        id: 0,
-        name: "John",
-        isSelected: false,
-      },
-      {
-        id: 1,
-        name: "Honey",
-        isSelected: false,
-      },
-      {
-        id: 2,
-        name: "Donald Trump",
-        isSelected: false,
-      },
-      {
-        id: 3,
-        name: "Nair",
-        isSelected: false,
-      },
-      {
-        id: 4,
-        name: "Evan",
-        isSelected: false,
-      },
-      {
-        id: 5,
-        name: "Valen",
-        isSelected: false,
-      },
-      {
-        id: 6,
-        name: "Iffy",
-        isSelected: false,
-      },
+    let data = this.utilities.medicalHistoryPageState["selectedMedicalHistory"][
+      "data"
     ];
 
-    this.selectedObjects = [];
+    console.log("data is below");
+    console.log(data);
+
+    if (data.length > 0) {
+      this.selectedObjects = data.map((item) => {
+        return item["injury_id"];
+      });
+    }
+
+    console.log("this.selectedObjects is below");
+    console.log(this.selectedObjects);
+
+    let j = 0;
+    let generated = currentMasters.map((items) => {
+      return { ...items, id: j++, isSelected: false };
+    });
+
+    console.log("generated is below");
+    console.log(generated);
+
+    let i = 0;
+    this.clonedArrayOfObjects = this.arrayOfObjects = currentMasters.map(
+      (items) => {
+        return {
+          ...items,
+          id: i++,
+          isSelected: this.selectedObjects.includes(items["injury_id"])
+            ? true
+            : false,
+        };
+      }
+    );
+    console.log("this.clonedArrayOfObjects is below");
+    console.log(this.clonedArrayOfObjects);
+
+    // this.selectedObjects = [];
   }
 
   onChange(word) {
