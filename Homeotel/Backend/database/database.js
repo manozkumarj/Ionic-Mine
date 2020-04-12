@@ -42,7 +42,7 @@ function executeQuery(strQuery, params, res, responseSenderCallback) {
         //console.log("response -> " + JSON.stringify(rows));
         responseSenderCallback(rows, res);
       } else {
-        //console.log("query -> " + strQuery + "; error -> " + err);
+        console.log("query -> " + strQuery + "; error -> " + err);
         res.json({
           error:
             "Something went wrong while running your request. Please contact admin.",
@@ -57,15 +57,18 @@ function sendResponseNormal(rows, res) {
 }
 
 function sendResponsePhoto(rows, res) {
-	if (rows[0].length > 0 && rows[0][0]['photo']) {
-		rows[0][0]['photo'] = Buffer.from(rows[0][0]['photo'], 'binary').toString('base64');
-		res.json(rows);
-	}
-	else
-		res.json({ "error": "Something went wrong while fetching the photo. Please contact admin." });
+  if (rows[0].length > 0 && rows[0][0]["photo"]) {
+    rows[0][0]["photo"] = Buffer.from(rows[0][0]["photo"], "binary").toString(
+      "base64"
+    );
+    res.json(rows);
+  } else
+    res.json({
+      error:
+        "Something went wrong while fetching the photo. Please contact admin.",
+    });
 }
 
 exports.executeQuery = executeQuery;
 exports.sendResponseNormal = sendResponseNormal;
 exports.sendResponsePhoto = sendResponsePhoto;
-

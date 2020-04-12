@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { AlertController } from "@ionic/angular";
 import { Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { ApiService } from "src/app/services/api.service";
 
 @Component({
   selector: "app-multi-selection",
@@ -17,6 +18,7 @@ export class MultiSelectionPage implements OnInit {
   constructor(
     private utilities: UtilitiesService,
     private alertCtrl: AlertController,
+    private apiService: ApiService,
     private router: Router
   ) {}
 
@@ -121,6 +123,54 @@ export class MultiSelectionPage implements OnInit {
     }
     console.log("this.selectedObjects are below");
     console.log(this.selectedObjects);
+
+    this.selectedObjects = this.selectedObjects.map((item) => item.toString());
+    console.log("this.selectedObjects mapped are below");
+    console.log(this.selectedObjects);
+
+    let selectedObjectsString = this.selectedObjects.join(",");
+    console.log("selectedObjectsString are below");
+    console.log(selectedObjectsString);
+
+    let selectedMedicalHistory = this.utilities.medicalHistoryPageState[
+      "selectedMedicalHistory"
+    ]["tag"];
+    console.log("selectedMedicalHistory -> " + selectedMedicalHistory);
+
+    let userId = this.utilities.userId;
+    let relativeId = this.utilities.selectedRelativeId;
+    let allergiesArray = this.selectedObjects.map((element) => {
+      return [
+        userId,
+        relativeId,
+        element,
+        userId,
+        userId,
+        "timestamp",
+        "timestampp",
+      ];
+    });
+
+    console.log("allergiesArray");
+    console.log(allergiesArray);
+
+    this.apiService
+      .upsertAllergies(relativeId, selectedObjectsString, allergiesArray)
+      .subscribe((data) => {
+        console.log("Returned from Backend");
+        console.log(JSON.stringify(data));
+        if (this.utilities.isInvalidApiResponseData(data)) {
+          console.log("Returned Error");
+          console.log(data);
+          if (data["error"]) {
+            console.log("Something went wrong");
+          }
+        } else {
+          console.log("Returned Success");
+          // this.router.navigate(["/files"]);
+        }
+      });
+
     // this.router.navigate(["/medical-history"]);
   }
 }

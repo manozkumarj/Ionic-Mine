@@ -2181,6 +2181,31 @@ END $$
 DELIMITER ;
 
 --
+-- Definition of procedure `sp_user_allergies_upsert`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_allergies_upsert`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_allergies_upsert`(IN IN_user_id INT, IN IN_relative_id INT,
+                                  IN IN_commaSeparatedAllergy_ids VARCHAR(2000))
+BEGIN
+
+    DELETE FROM ehr_allergy WHERE user_id = IN_user_id AND relative_id = IN_relative_id AND allergy_id IN (IN_commaSeparatedAllergy_ids);
+
+
+    #SET @save_allergies_query = CONCAT("INSERT INTO ehr_allergy (user_id, relative_id, allergy_id, created_by, updated_by,created_at, updated_at) VALUES ",IN_commaSeparatedAllergyObject);
+    #PREPARE save_allergies_query FROM @save_allergies_query;
+    #EXECUTE save_allergies_query;
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
 -- Definition of procedure `sp_user_appointments_get`
 --
 

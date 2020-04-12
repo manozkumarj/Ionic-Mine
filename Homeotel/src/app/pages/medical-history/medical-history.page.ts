@@ -66,6 +66,7 @@ export class MedicalHistoryPage implements OnInit {
       {
         id: 0,
         name: "Allergies",
+        tag: "allergies",
         list: this.allergies,
         dataTag: "allergyData",
         masterDataTag: "m_allergies",
@@ -76,6 +77,7 @@ export class MedicalHistoryPage implements OnInit {
       {
         id: 1,
         name: "Current Medication",
+        tag: "currentMedication",
         list: this.currentMedications,
         dataTag: "currentMedicationData",
         masterDataTag: "m_currentMedication",
@@ -86,6 +88,7 @@ export class MedicalHistoryPage implements OnInit {
       {
         id: 2,
         name: "Post Medication",
+        tag: "postMedication",
         list: this.postMedications,
         dataTag: "postMedicationData",
         masterDataTag: "m_postMedication",
@@ -96,6 +99,7 @@ export class MedicalHistoryPage implements OnInit {
       {
         id: 3,
         name: "Surgeries",
+        tag: "surgeries",
         list: this.surgeries,
         dataTag: "surgeryData",
         masterDataTag: "m_surgeries",
@@ -106,6 +110,7 @@ export class MedicalHistoryPage implements OnInit {
       {
         id: 4,
         name: "Injuries",
+        tag: "injuries",
         list: this.injuries,
         dataTag: "injuryData",
         masterDataTag: "m_injuries",
@@ -116,6 +121,7 @@ export class MedicalHistoryPage implements OnInit {
       {
         id: 5,
         name: "Chronic Diseases",
+        tag: "chronics",
         list: this.chronics,
         dataTag: "chronicData",
         masterDataTag: "m_chronicDieseases",
@@ -126,6 +132,7 @@ export class MedicalHistoryPage implements OnInit {
       {
         id: 6,
         name: "Family History",
+        tag: "familyHistory",
         list: this.familyHistories,
         size: this.familyHistoryData.length > 0 ? 6 : "auto",
         redirectTo: "/multi-selection",

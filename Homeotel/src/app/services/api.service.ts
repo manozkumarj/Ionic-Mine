@@ -240,4 +240,16 @@ export class ApiService {
       this.utilities.selectedRelativeId;
     return this.http.get(this.apiUrl + path);
   }
+
+  // Upserting allergies
+  upsertAllergies(relativeId, commaSeparatedAllergies, insertableAlleryObject) {
+    var path = "/user/upsert-allergy";
+    var body = {
+      userId: this.utilities.userId,
+      relativeId,
+      commaSeparatedAllergies,
+      insertableAlleryObject,
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
 }

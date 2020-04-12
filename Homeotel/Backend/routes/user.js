@@ -416,4 +416,23 @@ router.get("/medical-history/:userId/:relativeId", (req, res) => {
   );
 });
 
+// Upserting allergies
+router.post("/upsert-allergy", (req, res) => {
+  var userID = req.body.userId;
+  var relativeId = req.body.relativeId;
+  var commaSeparatedAllergies = req.body.commaSeparatedAllergies;
+  var insertableAlleryObject = req.body.insertableAlleryObject;
+  var params = [userID, relativeId, commaSeparatedAllergies];
+
+  console.log("Received params");
+  console.log(params);
+
+  db.executeQuery(
+    "call sp_user_allergies_upsert(?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;
