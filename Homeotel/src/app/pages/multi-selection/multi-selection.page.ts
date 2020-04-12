@@ -35,6 +35,13 @@ export class MultiSelectionPage implements OnInit {
     console.log("Current master data is below");
     console.log(currentMasters);
 
+    let sortedCurrentMasters = currentMasters.sort((a, b) => {
+      if (a["name"] > b["name"]) return 1;
+      else return -1;
+    });
+    console.log("sortedCurrentMasters data is below");
+    console.log(sortedCurrentMasters);
+
     this.title = this.utilities.medicalHistoryPageState[
       "selectedMedicalHistory"
     ]["name"];
@@ -48,28 +55,27 @@ export class MultiSelectionPage implements OnInit {
 
     if (data.length > 0) {
       this.selectedObjects = data.map((item) => {
-        return item["injury_id"];
+        return item["self_id"];
       });
     }
 
     console.log("this.selectedObjects is below");
     console.log(this.selectedObjects);
 
-    let j = 0;
-    let generated = currentMasters.map((items) => {
-      return { ...items, id: j++, isSelected: false };
-    });
-
-    console.log("generated is below");
-    console.log(generated);
+    // let j = 0;
+    // let generated = currentMasters.map((items) => {
+    //   return { ...items, id: j++, isSelected: false };
+    // });
+    // console.log("generated is below");
+    // console.log(generated);
 
     let i = 0;
-    this.clonedArrayOfObjects = this.arrayOfObjects = currentMasters.map(
+    this.clonedArrayOfObjects = this.arrayOfObjects = sortedCurrentMasters.map(
       (items) => {
         return {
           ...items,
           id: i++,
-          isSelected: this.selectedObjects.includes(items["injury_id"])
+          isSelected: this.selectedObjects.includes(items["self_id"])
             ? true
             : false,
         };
@@ -78,7 +84,7 @@ export class MultiSelectionPage implements OnInit {
     console.log("this.clonedArrayOfObjects is below");
     console.log(this.clonedArrayOfObjects);
 
-    // this.selectedObjects = [];
+    this.selectedObjects = [];
   }
 
   onChange(word) {
@@ -93,24 +99,28 @@ export class MultiSelectionPage implements OnInit {
   chooser(id) {
     console.log("Item will be chosen " + id);
     this.arrayOfObjects[id]["isSelected"] = true;
-    this.selectedObjects.push(id);
   }
 
   remover(id) {
     console.log("Item will be removed " + id);
     this.arrayOfObjects[id]["isSelected"] = false;
-    this.selectedObjects = this.selectedObjects.filter(
-      (option) => option != id
-    );
   }
 
   save() {
+    let filterSelected = this.arrayOfObjects.filter((obj) => obj["isSelected"]);
+    this.selectedObjects = filterSelected.map((obj) => {
+      if (obj["isSelected"]) {
+        return obj["self_id"];
+      } else {
+        return false;
+      }
+    });
     if (this.selectedObjects.length == 0) {
       alert("Please select at least one item");
       return false;
     }
     console.log("this.selectedObjects are below");
     console.log(this.selectedObjects);
-    this.router.navigate(["/medical-history"]);
+    // this.router.navigate(["/medical-history"]);
   }
 }

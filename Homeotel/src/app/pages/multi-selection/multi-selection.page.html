@@ -13,19 +13,16 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid *ngIf="selectedObjects.length > 0; else nothingSelected">
-    <ion-row>
-      <ion-col
-        size="auto"
-        class="optionsList"
-        *ngFor="let option of selectedObjects"
-        (click)="remover(option)"
-      >
-        <span class="selectedOption">
-          {{arrayOfObjects[option]['name']}}
-        </span>
-      </ion-col>
-    </ion-row>
+  <ion-grid *ngIf="clonedArrayOfObjects.length > 0">
+    <span *ngFor="let object of clonedArrayOfObjects">
+      <ion-row *ngIf="object.isSelected == true">
+        <ion-col size="auto" class="optionsList" (click)="remover(object.id)">
+          <span class="selectedOption">
+            {{object.name}}
+          </span>
+        </ion-col>
+      </ion-row>
+    </span>
   </ion-grid>
 
   <ion-list style="margin: 0px; padding: 5px; background: #999;">

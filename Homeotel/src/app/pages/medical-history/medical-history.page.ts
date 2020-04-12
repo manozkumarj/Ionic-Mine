@@ -150,10 +150,30 @@ export class MedicalHistoryPage implements OnInit {
         ) {
           console.log("Data returned from backend");
           this.m_allergies = data[0];
+          this.m_allergies = this.m_allergies.map((obj) => {
+            return { ...obj, self_id: obj["allergy_id"] };
+          });
+
           this.medications = data[1];
+          this.medications = this.medications.map((obj) => {
+            return { ...obj, self_id: obj["medication_id"] };
+          });
+
           this.m_surgeries = data[2];
+          this.m_surgeries = this.m_surgeries.map((obj) => {
+            return { ...obj, self_id: obj["surgery_id"] };
+          });
+
           this.m_injuries = data[3];
+          this.m_injuries = this.m_injuries.map((obj) => {
+            return { ...obj, self_id: obj["injury_id"] };
+          });
+
           this.m_chronicDieseases = data[4];
+          this.m_chronicDieseases = this.m_chronicDieseases.map((obj) => {
+            return { ...obj, self_id: obj["disease_id"] };
+          });
+
           this.m_familyHistory = data[5];
 
           this.allergyData = data[6];
@@ -163,7 +183,12 @@ export class MedicalHistoryPage implements OnInit {
           this.currentMedicationData = data[7];
           this.postMedicationData = data[8];
           this.surgeryData = data[9];
+
           this.injuryData = data[10];
+          this.injuryData = this.injuryData.map((obj) => {
+            return { ...obj, self_id: obj["injury_id"] };
+          });
+
           this.chronicData = data[11];
           this.familyHistoryData = data[12];
 
