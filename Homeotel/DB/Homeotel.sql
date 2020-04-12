@@ -879,8 +879,8 @@ CREATE TABLE `ehr_post_medication` (
 
 /*!40000 ALTER TABLE `ehr_post_medication` DISABLE KEYS */;
 INSERT INTO `ehr_post_medication` (`id`,`user_id`,`relative_id`,`medication_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,1,1,1,'2020',1,'2020'),
- (2,1,1,2,1,'2020',1,'2020');
+ (1,1,1,16,1,'2020',1,'2020'),
+ (2,1,1,17,1,'2020',1,'2020');
 /*!40000 ALTER TABLE `ehr_post_medication` ENABLE KEYS */;
 
 

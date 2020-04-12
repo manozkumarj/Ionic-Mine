@@ -177,12 +177,26 @@ export class MedicalHistoryPage implements OnInit {
           this.m_familyHistory = data[5];
 
           this.allergyData = data[6];
+          this.allergyData = this.allergyData.map((obj) => {
+            return { ...obj, self_id: obj["allergy_id"] };
+          });
           console.log("this.allergyData is below");
           console.log(this.allergyData);
 
           this.currentMedicationData = data[7];
+          this.currentMedicationData = this.currentMedicationData.map((obj) => {
+            return { ...obj, self_id: obj["medication_id"] };
+          });
+
           this.postMedicationData = data[8];
+          this.postMedicationData = this.postMedicationData.map((obj) => {
+            return { ...obj, self_id: obj["medication_id"] };
+          });
+
           this.surgeryData = data[9];
+          this.surgeryData = this.surgeryData.map((obj) => {
+            return { ...obj, self_id: obj["surgery_id"] };
+          });
 
           this.injuryData = data[10];
           this.injuryData = this.injuryData.map((obj) => {
@@ -190,6 +204,10 @@ export class MedicalHistoryPage implements OnInit {
           });
 
           this.chronicData = data[11];
+          this.chronicData = this.chronicData.map((obj) => {
+            return { ...obj, self_id: obj["disease_id"] };
+          });
+
           this.familyHistoryData = data[12];
 
           if (this.allergyData.length > 0) {

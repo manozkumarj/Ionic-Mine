@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid *ngIf="clonedArrayOfObjects.length > 0">
+  <ion-grid *ngIf="clonedArrayOfObjects.length > 0" class="selectedItemsGrid">
     <span *ngFor="let object of clonedArrayOfObjects">
       <ion-row *ngIf="object.isSelected == true">
         <ion-col size="auto" class="optionsList" (click)="remover(object.id)">
