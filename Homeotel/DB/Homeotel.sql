@@ -646,7 +646,7 @@ CREATE TABLE `ehr_allergy` (
   PRIMARY KEY (`id`,`user_id`,`relative_id`),
   KEY `FK_ehr_allergy_id` (`allergy_id`),
   CONSTRAINT `FK_ehr_allergy_id` FOREIGN KEY (`allergy_id`) REFERENCES `m_allergy` (`allergy_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_allergy`
@@ -654,8 +654,8 @@ CREATE TABLE `ehr_allergy` (
 
 /*!40000 ALTER TABLE `ehr_allergy` DISABLE KEYS */;
 INSERT INTO `ehr_allergy` (`id`,`user_id`,`relative_id`,`allergy_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (21,1,1,3,1,'2020-04-13 11:06:18',1,'2020-04-13 11:06:18'),
- (22,1,1,11,1,'2020-04-13 11:06:18',1,'2020-04-13 11:06:18');
+ (25,1,1,9,1,'2020-04-13 15:04:58',1,'2020-04-13 15:04:58'),
+ (26,1,1,12,1,'2020-04-13 15:04:58',1,'2020-04-13 15:04:58');
 /*!40000 ALTER TABLE `ehr_allergy` ENABLE KEYS */;
 
 
@@ -879,8 +879,8 @@ CREATE TABLE `ehr_post_medication` (
 
 /*!40000 ALTER TABLE `ehr_post_medication` DISABLE KEYS */;
 INSERT INTO `ehr_post_medication` (`id`,`user_id`,`relative_id`,`medication_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,1,16,1,'2020',1,'2020'),
- (2,1,1,17,1,'2020',1,'2020');
+ (1,1,1,6,1,'2020',1,'2020'),
+ (2,1,1,7,1,'2020',1,'2020');
 /*!40000 ALTER TABLE `ehr_post_medication` ENABLE KEYS */;
 
 
@@ -1078,6 +1078,37 @@ INSERT INTO `m_blood_group` (`blood_group_id`,`name`,`is_active`) VALUES
  (7,'O -ve','1'),
  (8,'O +ve','1');
 /*!40000 ALTER TABLE `m_blood_group` ENABLE KEYS */;
+
+
+--
+-- Definition of table `m_current_medication`
+--
+
+DROP TABLE IF EXISTS `m_current_medication`;
+CREATE TABLE `m_current_medication` (
+  `current_medication_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`current_medication_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_current_medication`
+--
+
+/*!40000 ALTER TABLE `m_current_medication` DISABLE KEYS */;
+INSERT INTO `m_current_medication` (`current_medication_id`,`name`,`is_active`) VALUES 
+ (1,'Acarbose','1'),
+ (2,'Acebutolol hcl','1'),
+ (3,'Acetazolamide','1'),
+ (4,'Advair Diskus','1'),
+ (5,'Afeditab CR\r','1'),
+ (6,'Albuterol','1'),
+ (7,'Albuterol sulfate','1'),
+ (8,'Alendronate sodium','1'),
+ (9,'Amantadine','1'),
+ (10,'Amiloride hcl','1');
+/*!40000 ALTER TABLE `m_current_medication` ENABLE KEYS */;
 
 
 --
@@ -1455,6 +1486,37 @@ CREATE TABLE `m_parameter` (
 
 /*!40000 ALTER TABLE `m_parameter` DISABLE KEYS */;
 /*!40000 ALTER TABLE `m_parameter` ENABLE KEYS */;
+
+
+--
+-- Definition of table `m_post_medication`
+--
+
+DROP TABLE IF EXISTS `m_post_medication`;
+CREATE TABLE `m_post_medication` (
+  `post_medication_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`post_medication_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_post_medication`
+--
+
+/*!40000 ALTER TABLE `m_post_medication` DISABLE KEYS */;
+INSERT INTO `m_post_medication` (`post_medication_id`,`name`,`is_active`) VALUES 
+ (1,'Aminophylline','1'),
+ (2,'Amlodipine atorvastatin','1'),
+ (3,'Amlodipine besylate','1'),
+ (4,'Anagrelide','1'),
+ (5,'Anastrozole','1'),
+ (6,'Budesonide','1'),
+ (7,'Bumetanide','1'),
+ (8,'Buproban SR','1'),
+ (9,'Bupropion SR','1'),
+ (10,'Betaxolol hcl','1');
+/*!40000 ALTER TABLE `m_post_medication` ENABLE KEYS */;
 
 
 --
@@ -2041,7 +2103,9 @@ END;
 
   SELECT * FROM homeotel.m_allergy where is_active =1;
 
-  SELECT * FROM homeotel.m_medication where is_active =1;
+  SELECT * FROM homeotel.m_current_medication where is_active =1;
+
+  SELECT * FROM homeotel.m_post_medication where is_active =1;
 
   SELECT * FROM homeotel.m_surgery where is_active =1;
 
@@ -2057,11 +2121,11 @@ END;
     where user_id = IN_user_id AND relative_id = IN_relative_id;
 
   SELECT em.medication_id, m.name FROM homeotel.ehr_current_medication em
-    LEFT JOIN m_medication m ON em.medication_id = m.medication_id
+    LEFT JOIN m_current_medication m ON em.medication_id = m.current_medication_id
     where user_id = IN_user_id AND relative_id = IN_relative_id;
 
   SELECT em.medication_id, m.name FROM homeotel.ehr_post_medication em
-    LEFT JOIN m_medication m ON em.medication_id = m.medication_id
+    LEFT JOIN m_post_medication m ON em.medication_id = m.post_medication_id
     where user_id = IN_user_id AND relative_id = IN_relative_id;
 
   SELECT es.surgery_id, m.name FROM homeotel.ehr_surgery es
@@ -2569,6 +2633,95 @@ END;
  SELECT * FROM d_user d where (email=IN_username and password=IN_password) OR (username=IN_username and password=IN_password);
 
  END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_medical_history_upsert`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_medical_history_upsert`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_medical_history_upsert`(IN IN_medical_history_name VARCHAR(255), IN IN_user_id INT,
+                                               IN IN_relative_id INT, IN IN_commaSeparatedAllergy_ids VARCHAR(2000),
+                                               IN IN_commaSeparatedAllergyObject VARCHAR(2000))
+BEGIN
+
+DECLARE Var_table_name VARCHAR(30);
+DECLARE Var_id_field_name VARCHAR(30);
+
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+START TRANSACTION;
+
+    IF(IN_medical_history_name = 'allergies') THEN
+
+     SET Var_table_name = 'ehr_allergy';
+     SET Var_id_field_name = 'allergy_id';
+
+    ELSEIF(IN_medical_history_name = 'currentMedication') THEN
+
+     SET Var_table_name = 'ehr_current_medication';
+     SET Var_id_field_name = 'medication_id';
+
+    ELSEIF(IN_medical_history_name = 'postMedication') THEN
+
+     SET Var_table_name = 'ehr_post_medication';
+     SET Var_id_field_name = 'medication_id';
+
+    ELSEIF(IN_medical_history_name = 'surgeries') THEN
+
+     SET Var_table_name = 'ehr_surgery';
+     SET Var_id_field_name = 'surgery_id';
+
+    ELSEIF(IN_medical_history_name = 'injuries') THEN
+
+     SET Var_table_name = 'ehr_injury';
+     SET Var_id_field_name = 'injury_id';
+
+    ELSEIF(IN_medical_history_name = 'chronics') THEN
+
+     SET Var_table_name = 'ehr_chronic';
+     SET Var_id_field_name = 'disease_id';
+
+    END IF;
+
+
+    set @sql = concat("DELETE FROM ",Var_table_name,"
+                          WHERE user_id = ",IN_user_id," AND relative_id = ",IN_relative_id);
+    PREPARE q FROM @sql;
+    execute q;
+
+    SET @save_allergies_query = CONCAT("INSERT INTO ",Var_table_name,"
+                            (user_id, relative_id, ",Var_id_field_name,", created_by, updated_by,created_at, updated_at)
+                            VALUES ",replace(IN_commaSeparatedAllergyObject,"timestamp",now()));
+    PREPARE save_allergies_query FROM @save_allergies_query;
+    EXECUTE save_allergies_query;
+
+END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
 DELIMITER ;

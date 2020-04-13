@@ -242,9 +242,15 @@ export class ApiService {
   }
 
   // Upserting allergies
-  upsertAllergies(relativeId, commaSeparatedAllergies, insertableAlleryObject) {
-    var path = "/user/upsert-allergy";
+  upsertMedicalHistory(
+    selectedMedicalHistoryTag,
+    relativeId,
+    commaSeparatedAllergies,
+    insertableAlleryObject
+  ) {
+    var path = "/user/upsert-medical-history";
     var body = {
+      selectedMedicalHistoryTag,
       userId: this.utilities.userId,
       relativeId,
       commaSeparatedAllergies,

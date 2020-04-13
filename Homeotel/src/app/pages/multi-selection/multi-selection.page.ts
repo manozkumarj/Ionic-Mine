@@ -37,12 +37,12 @@ export class MultiSelectionPage implements OnInit {
     console.log("Current master data is below");
     console.log(currentMasters);
 
-    let sortedCurrentMasters = currentMasters.sort((a, b) => {
-      if (a["name"] > b["name"]) return 1;
-      else return -1;
-    });
-    console.log("sortedCurrentMasters data is below");
-    console.log(sortedCurrentMasters);
+    // let sortedCurrentMasters = currentMasters.sort((a, b) => {
+    //   if (a["name"] > b["name"]) return 1;
+    //   else return -1;
+    // });
+    // console.log("sortedCurrentMasters data is below");
+    // console.log(sortedCurrentMasters);
 
     this.title = this.utilities.medicalHistoryPageState[
       "selectedMedicalHistory"
@@ -72,7 +72,7 @@ export class MultiSelectionPage implements OnInit {
     // console.log(generated);
 
     let i = 0;
-    this.clonedArrayOfObjects = this.arrayOfObjects = sortedCurrentMasters.map(
+    this.clonedArrayOfObjects = this.arrayOfObjects = currentMasters.map(
       (items) => {
         return {
           ...items,
@@ -132,10 +132,10 @@ export class MultiSelectionPage implements OnInit {
     console.log("selectedObjectsString are below");
     console.log(selectedObjectsString);
 
-    let selectedMedicalHistory = this.utilities.medicalHistoryPageState[
+    let selectedMedicalHistoryTag = this.utilities.medicalHistoryPageState[
       "selectedMedicalHistory"
     ]["tag"];
-    console.log("selectedMedicalHistory -> " + selectedMedicalHistory);
+    console.log("selectedMedicalHistoryTag -> " + selectedMedicalHistoryTag);
 
     let userId = this.utilities.userId;
     let relativeId = this.utilities.selectedRelativeId;
@@ -164,7 +164,12 @@ export class MultiSelectionPage implements OnInit {
     // console.log(allergiesArray);
 
     this.apiService
-      .upsertAllergies(relativeId, selectedObjectsString, comma)
+      .upsertMedicalHistory(
+        selectedMedicalHistoryTag,
+        relativeId,
+        selectedObjectsString,
+        comma
+      )
       .subscribe((data) => {
         console.log("Returned from Backend");
         console.log(JSON.stringify(data));

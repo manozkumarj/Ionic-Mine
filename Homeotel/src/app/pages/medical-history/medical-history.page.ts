@@ -57,10 +57,10 @@ export class MedicalHistoryPage {
     this.getMedicalHistories();
   }
 
-  ionViewWillEnter() {
-    this.getMedicalHistories();
-    this.setMedicalHistories();
-  }
+  // ionViewWillEnter() {
+  // this.getMedicalHistories();
+  // this.setMedicalHistories();
+  // }
 
   setMedicalHistories() {
     this.medicalHistories = [
@@ -162,69 +162,74 @@ export class MedicalHistoryPage {
             return { ...obj, self_id: obj["allergy_id"] };
           });
 
-          this.medications = data[1];
-          this.medications = this.medications.map((obj) => {
-            return { ...obj, self_id: obj["medication_id"] };
+          this.m_currentMedication = data[1];
+          this.m_currentMedication = this.m_currentMedication.map((obj) => {
+            return { ...obj, self_id: obj["current_medication_id"] };
           });
 
-          this.m_surgeries = data[2];
+          this.m_postMedication = data[2];
+          this.m_postMedication = this.m_postMedication.map((obj) => {
+            return { ...obj, self_id: obj["post_medication_id"] };
+          });
+
+          this.m_surgeries = data[3];
           this.m_surgeries = this.m_surgeries.map((obj) => {
             return { ...obj, self_id: obj["surgery_id"] };
           });
 
-          this.m_injuries = data[3];
+          this.m_injuries = data[4];
           this.m_injuries = this.m_injuries.map((obj) => {
             return { ...obj, self_id: obj["injury_id"] };
           });
 
-          this.m_chronicDieseases = data[4];
+          this.m_chronicDieseases = data[5];
           this.m_chronicDieseases = this.m_chronicDieseases.map((obj) => {
             return { ...obj, self_id: obj["disease_id"] };
           });
 
-          this.m_familyHistory = data[5];
+          this.m_familyHistory = data[6];
 
-          this.allergyData = data[6];
+          this.allergyData = data[7];
           this.allergyData = this.allergyData.map((obj) => {
             return { ...obj, self_id: obj["allergy_id"] };
           });
           console.log("this.allergyData is below");
           console.log(this.allergyData);
 
-          this.currentMedicationData = data[7];
+          this.currentMedicationData = data[8];
           this.currentMedicationData = this.currentMedicationData.map((obj) => {
             return { ...obj, self_id: obj["medication_id"] };
           });
 
-          this.postMedicationData = data[8];
+          this.postMedicationData = data[9];
           this.postMedicationData = this.postMedicationData.map((obj) => {
             return { ...obj, self_id: obj["medication_id"] };
           });
 
-          this.surgeryData = data[9];
+          this.surgeryData = data[10];
           this.surgeryData = this.surgeryData.map((obj) => {
             return { ...obj, self_id: obj["surgery_id"] };
           });
 
-          this.injuryData = data[10];
+          this.injuryData = data[11];
           this.injuryData = this.injuryData.map((obj) => {
             return { ...obj, self_id: obj["injury_id"] };
           });
 
-          this.chronicData = data[11];
+          this.chronicData = data[12];
           this.chronicData = this.chronicData.map((obj) => {
             return { ...obj, self_id: obj["disease_id"] };
           });
 
-          this.familyHistoryData = data[12];
+          this.familyHistoryData = data[13];
 
           if (this.allergyData.length > 0) {
             this.allergies = "Comma separation";
             let names = this.allergyData.map((item) => {
               return item["name"];
             });
-            // console.log("names -> ");
-            // console.log(names);
+            console.log("allergies names below -> ");
+            console.log(names);
             this.allergies = names.join(", ");
           }
 
@@ -288,14 +293,11 @@ export class MedicalHistoryPage {
 
           this.utilities.medicalHistoryPageState[
             "m_currentMedication"
-          ] = this.medications.filter(
-            (medication) => medication["medication_type_id"] == 1
-          );
+          ] = this.m_currentMedication;
+
           this.utilities.medicalHistoryPageState[
             "m_postMedication"
-          ] = this.medications.filter(
-            (medication) => medication["medication_type_id"] == 2
-          );
+          ] = this.m_postMedication;
 
           this.utilities.medicalHistoryPageState[
             "m_surgeries"
