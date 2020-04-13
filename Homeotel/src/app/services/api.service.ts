@@ -234,7 +234,7 @@ export class ApiService {
   // Getting medical history details & masters
   getMedicalHistories() {
     var path =
-      "/user/medical-history/" +
+      "/user/medical-history-masters-and-data/" +
       this.utilities.userId +
       "/" +
       this.utilities.selectedRelativeId;
@@ -257,5 +257,15 @@ export class ApiService {
       insertableAlleryObject,
     };
     return this.http.post(this.apiUrl + path, body);
+  }
+
+  // Getting Lifestyle details & masters
+  getLifestyles() {
+    var path =
+      "/user/lifestyle-masters-and-data/" +
+      this.utilities.userId +
+      "/" +
+      this.utilities.selectedRelativeId;
+    return this.http.get(this.apiUrl + path);
   }
 }

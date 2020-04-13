@@ -3,20 +3,17 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Next Qustions</ion-title>
+    <ion-title>{{title}}</ion-title>
     <ion-buttons slot="primary">
-      <ion-button [routerLink]="['/medical-history']">
+      <ion-button [routerLink]="['/lifestyle']">
         None
-      </ion-button>
-      <ion-button [routerLink]="['/medical-history']">
-        Next
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-list style="margin: 0px; padding: 5px;background: #999;">
+  <ion-list style="margin: 0px; padding: 5px; background: #999;">
     <ion-input
       placeholder="Type to Search..."
       style="background: #999; color: #fff; padding: 5px;"

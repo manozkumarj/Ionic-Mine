@@ -818,93 +818,23 @@ CREATE TABLE `ehr_lifestyle` (
   `excercise_id` int(10) unsigned DEFAULT NULL,
   `activity_level_id` int(10) unsigned DEFAULT NULL,
   `profession_id` int(10) unsigned DEFAULT NULL,
+  `food_id` int(10) unsigned DEFAULT NULL,
+  `heat_id` int(10) unsigned DEFAULT NULL,
   `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) NOT NULL,
   PRIMARY KEY (`lifestyle_id`,`user_id`,`relative_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_lifestyle`
 --
 
 /*!40000 ALTER TABLE `ehr_lifestyle` DISABLE KEYS */;
+INSERT INTO `ehr_lifestyle` (`lifestyle_id`,`user_id`,`relative_id`,`smoking_id`,`alcohol_id`,`excercise_id`,`activity_level_id`,`profession_id`,`food_id`,`heat_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,1,1,1,2,3,4,8,2,4,1,'2020-04-13 19:28:20',1,'2020-04-13 19:28:20');
 /*!40000 ALTER TABLE `ehr_lifestyle` ENABLE KEYS */;
-
-
---
--- Definition of table `ehr_lifestyle_alcohol`
---
-
-DROP TABLE IF EXISTS `ehr_lifestyle_alcohol`;
-CREATE TABLE `ehr_lifestyle_alcohol` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `relative_id` int(10) unsigned NOT NULL,
-  `alcohol_id` int(10) unsigned NOT NULL,
-  `created_by` int(10) unsigned NOT NULL,
-  `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`,`user_id`,`relative_id`,`alcohol_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `ehr_lifestyle_alcohol`
---
-
-/*!40000 ALTER TABLE `ehr_lifestyle_alcohol` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ehr_lifestyle_alcohol` ENABLE KEYS */;
-
-
---
--- Definition of table `ehr_lifestyle_food`
---
-
-DROP TABLE IF EXISTS `ehr_lifestyle_food`;
-CREATE TABLE `ehr_lifestyle_food` (
-  `user_id` int(10) unsigned NOT NULL,
-  `relative_id` int(10) unsigned NOT NULL,
-  `food_id` int(10) unsigned NOT NULL,
-  `created_by` int(10) unsigned NOT NULL,
-  `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`,`food_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `ehr_lifestyle_food`
---
-
-/*!40000 ALTER TABLE `ehr_lifestyle_food` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ehr_lifestyle_food` ENABLE KEYS */;
-
-
---
--- Definition of table `ehr_lifestyle_smooking`
---
-
-DROP TABLE IF EXISTS `ehr_lifestyle_smooking`;
-CREATE TABLE `ehr_lifestyle_smooking` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `relative_id` int(10) unsigned NOT NULL,
-  `smooking_id` int(10) unsigned NOT NULL,
-  `created_by` int(10) unsigned NOT NULL,
-  `created_at` varchar(45) NOT NULL,
-  `updated_by` int(10) unsigned DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`,`user_id`,`relative_id`,`smooking_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `ehr_lifestyle_smooking`
---
-
-/*!40000 ALTER TABLE `ehr_lifestyle_smooking` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ehr_lifestyle_smooking` ENABLE KEYS */;
 
 
 --
@@ -1236,27 +1166,27 @@ CREATE TABLE `m_drugs` (
 
 
 --
--- Definition of table `m_exercise`
+-- Definition of table `m_excercise`
 --
 
-DROP TABLE IF EXISTS `m_exercise`;
-CREATE TABLE `m_exercise` (
-  `exercise_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `m_excercise`;
+CREATE TABLE `m_excercise` (
+  `excercise_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `is_active` varchar(45) NOT NULL,
-  PRIMARY KEY (`exercise_id`)
+  PRIMARY KEY (`excercise_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `m_exercise`
+-- Dumping data for table `m_excercise`
 --
 
-/*!40000 ALTER TABLE `m_exercise` DISABLE KEYS */;
-INSERT INTO `m_exercise` (`exercise_id`,`name`,`is_active`) VALUES 
+/*!40000 ALTER TABLE `m_excercise` DISABLE KEYS */;
+INSERT INTO `m_excercise` (`excercise_id`,`name`,`is_active`) VALUES 
  (1,'Regular','1'),
  (2,'Lazy','1'),
  (3,'Once in full moon','1');
-/*!40000 ALTER TABLE `m_exercise` ENABLE KEYS */;
+/*!40000 ALTER TABLE `m_excercise` ENABLE KEYS */;
 
 
 --
@@ -2114,8 +2044,8 @@ DROP PROCEDURE IF EXISTS `sp_master_lifestyle_get`;
 
 DELIMITER $$
 
-/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_master_lifestyle_get`()
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_master_lifestyle_get`(IN IN_user_id INT, IN IN_relative_id INT)
 BEGIN
 
 DECLARE exit handler for sqlexception
@@ -2136,29 +2066,50 @@ DECLARE exit handler for sqlwarning
 
 END;
 
- SELECT smoking_id as id, name, 'smoking' as master_type from m_smoking WHERE is_active = 1
+  SELECT * FROM homeotel.m_smoking where is_active =1;
 
-Union
+  SELECT * FROM homeotel.m_alcohol where is_active =1;
 
- SELECT alcohol_id as id, name, 'alcohol' as master_type from m_alcohol WHERE is_active = 1
+  SELECT * FROM homeotel.m_excercise where is_active =1;
 
-Union
+  SELECT * FROM homeotel.m_activity_level where is_active =1;
 
- SELECT exercise_id as id, name, 'exercise' as master_type from m_exercise WHERE is_active = 1
+  SELECT * FROM homeotel.m_profession where is_active =1;
 
-Union
+  SELECT * FROM homeotel.m_food where is_active =1;
 
- SELECT activity_level_id as id, name, 'activity_level' as master_type from m_activity_level WHERE is_active = 1
+  SELECT * FROM homeotel.m_heat where is_active =1;
 
-Union
+  # fetching existing data
+  SELECT el.smoking_id, m.name FROM homeotel.ehr_lifestyle el
+    LEFT JOIN m_smoking m ON el.smoking_id = m.smoking_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
 
- SELECT profession_id as id, name, 'profession' as master_type from m_profession WHERE is_active = 1
+  SELECT el.alcohol_id, m.name FROM homeotel.ehr_lifestyle el
+    LEFT JOIN m_alcohol m ON el.alcohol_id = m.alcohol_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
 
-Union
+  SELECT el.excercise_id, m.name FROM homeotel.ehr_lifestyle el
+    LEFT JOIN m_excercise m ON el.excercise_id = m.excercise_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
 
- SELECT food_id as id, name, 'food' as master_type from m_food WHERE is_active = 1
+  SELECT el.activity_level_id, m.name FROM homeotel.ehr_lifestyle el
+    LEFT JOIN m_activity_level m ON el.activity_level_id = m.activity_level_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
 
- ;
+  SELECT el.profession_id, m.name FROM homeotel.ehr_lifestyle el
+    LEFT JOIN m_profession m ON el.profession_id = m.profession_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
+
+  SELECT el.food_id, m.name FROM homeotel.ehr_lifestyle el
+    LEFT JOIN m_food m ON el.food_id = m.food_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
+
+  SELECT el.heat_id, m.name FROM homeotel.ehr_lifestyle el
+    LEFT JOIN m_heat m ON el.heat_id = m.heat_id
+    where user_id = IN_user_id AND relative_id = IN_relative_id;
+
+
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 

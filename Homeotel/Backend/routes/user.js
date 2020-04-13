@@ -402,19 +402,22 @@ router.get("/master/issue", (req, res) => {
 });
 
 // Getting medical history details & masters
-router.get("/medical-history/:userId/:relativeId", (req, res) => {
-  var userId = req.params.userId;
-  var relativeId = req.params.relativeId;
-  var params = [userId, relativeId];
-  // console.log("Received params -> " + params);
+router.get(
+  "/medical-history-masters-and-data/:userId/:relativeId",
+  (req, res) => {
+    var userId = req.params.userId;
+    var relativeId = req.params.relativeId;
+    var params = [userId, relativeId];
+    // console.log("Received params -> " + params);
 
-  db.executeQuery(
-    "call sp_master_medical_history_get(?,?)",
-    params,
-    res,
-    db.sendResponseNormal
-  );
-});
+    db.executeQuery(
+      "call sp_master_medical_history_get(?,?)",
+      params,
+      res,
+      db.sendResponseNormal
+    );
+  }
+);
 
 // Upserting allergies
 router.post("/upsert-medical-history", (req, res) => {
@@ -436,6 +439,21 @@ router.post("/upsert-medical-history", (req, res) => {
 
   db.executeQuery(
     "call sp_user_medical_history_upsert(?,?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
+// Getting Lifestyle details & masters
+router.get("/lifestyle-masters-and-data/:userId/:relativeId", (req, res) => {
+  var userId = req.params.userId;
+  var relativeId = req.params.relativeId;
+  var params = [userId, relativeId];
+  // console.log("Received params -> " + params);
+
+  db.executeQuery(
+    "call sp_master_lifestyle_get(?,?)",
     params,
     res,
     db.sendResponseNormal
