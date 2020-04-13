@@ -810,6 +810,7 @@ INSERT INTO `ehr_injury` (`id`,`user_id`,`relative_id`,`injury_id`,`created_by`,
 
 DROP TABLE IF EXISTS `ehr_lifestyle`;
 CREATE TABLE `ehr_lifestyle` (
+  `lifestyle_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `smoking_id` int(10) unsigned DEFAULT NULL,
@@ -820,8 +821,8 @@ CREATE TABLE `ehr_lifestyle` (
   `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
-  `updated_at` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`,`relative_id`)
+  `updated_at` varchar(45) NOT NULL,
+  PRIMARY KEY (`lifestyle_id`,`user_id`,`relative_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -830,6 +831,31 @@ CREATE TABLE `ehr_lifestyle` (
 
 /*!40000 ALTER TABLE `ehr_lifestyle` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ehr_lifestyle` ENABLE KEYS */;
+
+
+--
+-- Definition of table `ehr_lifestyle_alcohol`
+--
+
+DROP TABLE IF EXISTS `ehr_lifestyle_alcohol`;
+CREATE TABLE `ehr_lifestyle_alcohol` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `relative_id` int(10) unsigned NOT NULL,
+  `alcohol_id` int(10) unsigned NOT NULL,
+  `created_by` int(10) unsigned NOT NULL,
+  `created_at` varchar(45) NOT NULL,
+  `updated_by` int(10) unsigned DEFAULT NULL,
+  `updated_at` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`,`user_id`,`relative_id`,`alcohol_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ehr_lifestyle_alcohol`
+--
+
+/*!40000 ALTER TABLE `ehr_lifestyle_alcohol` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ehr_lifestyle_alcohol` ENABLE KEYS */;
 
 
 --
@@ -854,6 +880,31 @@ CREATE TABLE `ehr_lifestyle_food` (
 
 /*!40000 ALTER TABLE `ehr_lifestyle_food` DISABLE KEYS */;
 /*!40000 ALTER TABLE `ehr_lifestyle_food` ENABLE KEYS */;
+
+
+--
+-- Definition of table `ehr_lifestyle_smooking`
+--
+
+DROP TABLE IF EXISTS `ehr_lifestyle_smooking`;
+CREATE TABLE `ehr_lifestyle_smooking` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `relative_id` int(10) unsigned NOT NULL,
+  `smooking_id` int(10) unsigned NOT NULL,
+  `created_by` int(10) unsigned NOT NULL,
+  `created_at` varchar(45) NOT NULL,
+  `updated_by` int(10) unsigned DEFAULT NULL,
+  `updated_at` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`,`user_id`,`relative_id`,`smooking_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ehr_lifestyle_smooking`
+--
+
+/*!40000 ALTER TABLE `ehr_lifestyle_smooking` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ehr_lifestyle_smooking` ENABLE KEYS */;
 
 
 --
@@ -950,11 +1001,11 @@ INSERT INTO `ehr_vital` (`vital_id`,`user_id`,`relative_id`,`temperature`,`pulse
 
 DROP TABLE IF EXISTS `m_activity_level`;
 CREATE TABLE `m_activity_level` (
-  `activity_level_id` int(10) unsigned NOT NULL,
+  `activity_level_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `is_active` varchar(45) NOT NULL,
   PRIMARY KEY (`activity_level_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `m_activity_level`
@@ -962,9 +1013,10 @@ CREATE TABLE `m_activity_level` (
 
 /*!40000 ALTER TABLE `m_activity_level` DISABLE KEYS */;
 INSERT INTO `m_activity_level` (`activity_level_id`,`name`,`is_active`) VALUES 
- (1,'Level 1','1'),
- (2,'Level 2','1'),
- (3,'Level 3 ','1');
+ (1,'Super high','1'),
+ (2,'High','1'),
+ (3,'Medium','1'),
+ (4,'Low','1');
 /*!40000 ALTER TABLE `m_activity_level` ENABLE KEYS */;
 
 
@@ -974,11 +1026,11 @@ INSERT INTO `m_activity_level` (`activity_level_id`,`name`,`is_active`) VALUES
 
 DROP TABLE IF EXISTS `m_alcohol`;
 CREATE TABLE `m_alcohol` (
-  `alcohol_id` int(10) unsigned NOT NULL,
+  `alcohol_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `is_active` varchar(45) NOT NULL,
   PRIMARY KEY (`alcohol_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `m_alcohol`
@@ -987,7 +1039,9 @@ CREATE TABLE `m_alcohol` (
 /*!40000 ALTER TABLE `m_alcohol` DISABLE KEYS */;
 INSERT INTO `m_alcohol` (`alcohol_id`,`name`,`is_active`) VALUES 
  (1,'Occasionally','1'),
- (2,'Addicted','1');
+ (2,'Addicted','1'),
+ (3,'Regularly','1'),
+ (4,'Never','1');
 /*!40000 ALTER TABLE `m_alcohol` ENABLE KEYS */;
 
 
@@ -1187,11 +1241,11 @@ CREATE TABLE `m_drugs` (
 
 DROP TABLE IF EXISTS `m_exercise`;
 CREATE TABLE `m_exercise` (
-  `exercise_id` int(10) unsigned NOT NULL,
+  `exercise_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `is_active` varchar(45) NOT NULL,
   PRIMARY KEY (`exercise_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `m_exercise`
@@ -1236,11 +1290,11 @@ INSERT INTO `m_file_type` (`file_type_id`,`name`,`icon`,`is_active`) VALUES
 
 DROP TABLE IF EXISTS `m_food`;
 CREATE TABLE `m_food` (
-  `food_id` int(10) unsigned NOT NULL,
+  `food_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `is_active` varchar(45) NOT NULL,
   PRIMARY KEY (`food_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `m_food`
@@ -1296,6 +1350,31 @@ INSERT INTO `m_gender` (`gender_id`,`name`,`is_active`) VALUES
  (2,'Female','1'),
  (3,'Other','1');
 /*!40000 ALTER TABLE `m_gender` ENABLE KEYS */;
+
+
+--
+-- Definition of table `m_heat`
+--
+
+DROP TABLE IF EXISTS `m_heat`;
+CREATE TABLE `m_heat` (
+  `heat_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `is_active` varchar(45) NOT NULL,
+  PRIMARY KEY (`heat_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `m_heat`
+--
+
+/*!40000 ALTER TABLE `m_heat` DISABLE KEYS */;
+INSERT INTO `m_heat` (`heat_id`,`name`,`is_active`) VALUES 
+ (1,'Cold intolerance','1'),
+ (2,'Cold tolerance','1'),
+ (3,'Heat intolerance','1'),
+ (4,'Heat tolerance','1');
+/*!40000 ALTER TABLE `m_heat` ENABLE KEYS */;
 
 
 --
@@ -1544,11 +1623,11 @@ CREATE TABLE `m_potency` (
 
 DROP TABLE IF EXISTS `m_profession`;
 CREATE TABLE `m_profession` (
-  `profession_id` int(10) unsigned NOT NULL,
+  `profession_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `is_active` varchar(45) NOT NULL,
   PRIMARY KEY (`profession_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `m_profession`
@@ -1556,8 +1635,21 @@ CREATE TABLE `m_profession` (
 
 /*!40000 ALTER TABLE `m_profession` DISABLE KEYS */;
 INSERT INTO `m_profession` (`profession_id`,`name`,`is_active`) VALUES 
- (1,'White Collar','1'),
- (2,'No Collar','1');
+ (1,'Family Physician','1'),
+ (2,'Pediatrician','1'),
+ (3,'Gynecologist','1'),
+ (4,'Surgeon','1'),
+ (5,'Psychiatrist','1'),
+ (6,'Cardiologist','1'),
+ (7,'Dermatologist','1'),
+ (8,'Endocrinologist','1'),
+ (9,'Gastroenterologist','1'),
+ (10,'Nephrologist','1'),
+ (11,'Ophthalmologist','1'),
+ (12,'Otolaryngologist','1'),
+ (13,'Pulmonologist','1'),
+ (14,'Neurologist','1'),
+ (15,'Radiologist','1');
 /*!40000 ALTER TABLE `m_profession` ENABLE KEYS */;
 
 
@@ -1686,11 +1778,11 @@ CREATE TABLE `m_severity` (
 
 DROP TABLE IF EXISTS `m_smoking`;
 CREATE TABLE `m_smoking` (
-  `smoking_id` int(10) unsigned NOT NULL,
+  `smoking_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `is_active` varchar(45) NOT NULL,
   PRIMARY KEY (`smoking_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `m_smoking`
@@ -1699,7 +1791,9 @@ CREATE TABLE `m_smoking` (
 /*!40000 ALTER TABLE `m_smoking` DISABLE KEYS */;
 INSERT INTO `m_smoking` (`smoking_id`,`name`,`is_active`) VALUES 
  (1,'Chain smoker','1'),
- (2,'Occasionally','1');
+ (2,'Occasionally','1'),
+ (3,'Regularly','1'),
+ (4,'Never','1');
 /*!40000 ALTER TABLE `m_smoking` ENABLE KEYS */;
 
 
