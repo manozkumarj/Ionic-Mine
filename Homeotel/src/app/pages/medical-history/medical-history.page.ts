@@ -8,7 +8,7 @@ import { Router } from "@angular/router";
   templateUrl: "./medical-history.page.html",
   styleUrls: ["./medical-history.page.scss"],
 })
-export class MedicalHistoryPage implements OnInit {
+export class MedicalHistoryPage {
   medicalHistories: any[] = [];
 
   allergyData: any[] = [];
@@ -57,7 +57,8 @@ export class MedicalHistoryPage implements OnInit {
     this.getMedicalHistories();
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
+    this.getMedicalHistories();
     this.setMedicalHistories();
   }
 

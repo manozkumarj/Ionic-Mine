@@ -11,9 +11,9 @@ import { ApiService } from "src/app/services/api.service";
 })
 export class MultiSelectionPage implements OnInit {
   title;
-  arrayOfObjects;
-  selectedObjects;
-  clonedArrayOfObjects;
+  arrayOfObjects: any[] = [];
+  selectedObjects: any[] = [];
+  clonedArrayOfObjects: any[] = [];
 
   constructor(
     private utilities: UtilitiesService,
@@ -163,23 +163,23 @@ export class MultiSelectionPage implements OnInit {
     // console.log("allergiesArray");
     // console.log(allergiesArray);
 
-    // this.apiService
-    //   .upsertAllergies(relativeId, selectedObjectsString, comma)
-    //   .subscribe((data) => {
-    //     console.log("Returned from Backend");
-    //     console.log(JSON.stringify(data));
-    //     if (this.utilities.isInvalidApiResponseData(data)) {
-    //       console.log("Returned Error");
-    //       console.log(data);
-    //       if (data["error"]) {
-    //         console.log("Something went wrong");
-    //       }
-    //     } else {
-    //       console.log("Returned Success");
-    //       // this.router.navigate(["/files"]);
-    //     }
-    //   });
+    this.apiService
+      .upsertAllergies(relativeId, selectedObjectsString, comma)
+      .subscribe((data) => {
+        console.log("Returned from Backend");
+        console.log(JSON.stringify(data));
+        if (this.utilities.isInvalidApiResponseData(data)) {
+          console.log("Returned Error");
+          console.log(data);
+          if (data["error"]) {
+            console.log("Something went wrong");
+          }
+        } else {
+          console.log("Returned Success");
+          // this.router.navigate(["/files"]);
+        }
+      });
 
-    // this.router.navigate(["/medical-history"]);
+    this.router.navigate(["/medical-history"]);
   }
 }

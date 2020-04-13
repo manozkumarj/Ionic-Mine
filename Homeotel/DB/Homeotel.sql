@@ -646,7 +646,7 @@ CREATE TABLE `ehr_allergy` (
   PRIMARY KEY (`id`,`user_id`,`relative_id`),
   KEY `FK_ehr_allergy_id` (`allergy_id`),
   CONSTRAINT `FK_ehr_allergy_id` FOREIGN KEY (`allergy_id`) REFERENCES `m_allergy` (`allergy_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_allergy`
@@ -654,8 +654,8 @@ CREATE TABLE `ehr_allergy` (
 
 /*!40000 ALTER TABLE `ehr_allergy` DISABLE KEYS */;
 INSERT INTO `ehr_allergy` (`id`,`user_id`,`relative_id`,`allergy_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,1,2,1,'2020',1,'2020'),
- (2,1,1,3,1,'2020',1,'2020');
+ (21,1,1,3,1,'2020-04-13 11:06:18',1,'2020-04-13 11:06:18'),
+ (22,1,1,11,1,'2020-04-13 11:06:18',1,'2020-04-13 11:06:18');
 /*!40000 ALTER TABLE `ehr_allergy` ENABLE KEYS */;
 
 
@@ -2190,15 +2190,18 @@ DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_allergies_upsert`(IN IN_user_id INT, IN IN_relative_id INT,
-                                  IN IN_commaSeparatedAllergy_ids VARCHAR(2000))
+                         IN IN_commaSeparatedAllergy_ids VARCHAR(2000),IN IN_commaSeparatedAllergyObject VARCHAR(2000))
 BEGIN
 
-    DELETE FROM ehr_allergy WHERE user_id = IN_user_id AND relative_id = IN_relative_id AND allergy_id IN (IN_commaSeparatedAllergy_ids);
+    set @sql = concat("DELETE FROM ehr_allergy WHERE user_id = ",IN_user_id," AND relative_id = ",IN_relative_id);
+    PREPARE q FROM @sql;
+    execute q;
 
 
-    #SET @save_allergies_query = CONCAT("INSERT INTO ehr_allergy (user_id, relative_id, allergy_id, created_by, updated_by,created_at, updated_at) VALUES ",IN_commaSeparatedAllergyObject);
-    #PREPARE save_allergies_query FROM @save_allergies_query;
-    #EXECUTE save_allergies_query;
+    SET @save_allergies_query = CONCAT("INSERT INTO ehr_allergy (user_id, relative_id, allergy_id, created_by, updated_by,created_at, updated_at)
+                                        VALUES ",replace(IN_commaSeparatedAllergyObject,"timestamp",now()));
+    PREPARE save_allergies_query FROM @save_allergies_query;
+    EXECUTE save_allergies_query;
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

@@ -118,8 +118,8 @@ router.get("/find-doctor/:uuid", (req, res) => {
 router.get("/doctor-homeokits/:doctorId/:userId", (req, res) => {
   var doctorId = req.params.doctorId;
   var userId = req.params.userId;
-  console.log("Received doctorId -> " + doctorId);
-  console.log("Received userId -> " + userId);
+  // console.log("Received doctorId -> " + doctorId);
+  // console.log("Received userId -> " + userId);
   var params = [doctorId, userId];
 
   db.executeQuery(
@@ -133,7 +133,7 @@ router.get("/doctor-homeokits/:doctorId/:userId", (req, res) => {
 // getting user's appointments
 router.get("/appointments/:userId", (req, res) => {
   var userId = req.params.userId;
-  console.log("Received userId -> " + userId);
+  // console.log("Received userId -> " + userId);
   var params = [userId];
 
   db.executeQuery(
@@ -177,7 +177,7 @@ router.post("/purchase-homeokit", (req, res) => {
 // Fetch doctor consultant details masters
 router.get("/doctor-consultant-details-masters/:doctorId", (req, res) => {
   var doctorId = req.params.doctorId;
-  console.log("Received doctorId -> " + doctorId);
+  // console.log("Received doctorId -> " + doctorId);
   var params = [doctorId];
 
   db.executeQuery(
@@ -209,8 +209,8 @@ router.post("/book-appointment", (req, res) => {
     mainComplaint,
   ];
 
-  console.log("Received params");
-  console.log(params);
+  // console.log("Received params");
+  // console.log(params);
 
   db.executeQuery(
     "call sp_user_book_appointment(?,?,?,?,?,?,?,?)",
@@ -241,8 +241,8 @@ router.post("/upsert-complaint-details", (req, res) => {
     complaintDescription,
   ];
 
-  console.log("Received params");
-  console.log(params);
+  // console.log("Received params");
+  // console.log(params);
 
   db.executeQuery(
     "call sp_user_complaint_detail(?,?,?,?,?,?,?,?)",
@@ -314,8 +314,8 @@ router.post("/upsert-vital", (req, res) => {
     bpDiastolic,
   ];
 
-  console.log("Received params");
-  console.log(params);
+  // console.log("Received params");
+  // console.log(params);
 
   db.executeQuery(
     "call sp_user_vital_upsert(?,?,?,?,?,?,?,?)",
@@ -328,7 +328,7 @@ router.post("/upsert-vital", (req, res) => {
 // Fetching vitals
 router.get("/get-vitals/:userId", (req, res) => {
   var userId = req.params.userId;
-  console.log("Received userId -> " + userId);
+  // console.log("Received userId -> " + userId);
   var params = [userId];
 
   db.executeQuery(
@@ -342,7 +342,7 @@ router.get("/get-vitals/:userId", (req, res) => {
 // Fetching files
 router.get("/get-files/:userId", (req, res) => {
   var userId = req.params.userId;
-  console.log("Received userId -> " + userId);
+  // console.log("Received userId -> " + userId);
   var params = [userId];
 
   db.executeQuery(
@@ -362,8 +362,8 @@ router.post("/upsert-file", (req, res) => {
   var photo = req.body.photo;
   var params = [userID, relativeId, fileId, fileTypeId, photo];
 
-  console.log("Received params");
-  console.log(params);
+  // console.log("Received params");
+  // console.log(params);
 
   db.executeQuery(
     "call sp_user_file_upsert(?,?,?,?,?)",
@@ -406,7 +406,7 @@ router.get("/medical-history/:userId/:relativeId", (req, res) => {
   var userId = req.params.userId;
   var relativeId = req.params.relativeId;
   var params = [userId, relativeId];
-  console.log("Received params -> " + params);
+  // console.log("Received params -> " + params);
 
   db.executeQuery(
     "call sp_master_medical_history_get(?,?)",
@@ -422,13 +422,18 @@ router.post("/upsert-allergy", (req, res) => {
   var relativeId = req.body.relativeId;
   var commaSeparatedAllergies = req.body.commaSeparatedAllergies;
   var insertableAlleryObject = req.body.insertableAlleryObject;
-  var params = [userID, relativeId, commaSeparatedAllergies];
+  var params = [
+    userID,
+    relativeId,
+    commaSeparatedAllergies,
+    insertableAlleryObject,
+  ];
 
   console.log("Received params");
   console.log(params);
 
   db.executeQuery(
-    "call sp_user_allergies_upsert(?,?,?)",
+    "call sp_user_allergies_upsert(?,?,?,?)",
     params,
     res,
     db.sendResponseNormal
