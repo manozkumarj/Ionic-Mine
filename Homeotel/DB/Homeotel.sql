@@ -646,7 +646,7 @@ CREATE TABLE `ehr_allergy` (
   PRIMARY KEY (`id`,`user_id`,`relative_id`),
   KEY `FK_ehr_allergy_id` (`allergy_id`),
   CONSTRAINT `FK_ehr_allergy_id` FOREIGN KEY (`allergy_id`) REFERENCES `m_allergy` (`allergy_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_allergy`
@@ -654,8 +654,8 @@ CREATE TABLE `ehr_allergy` (
 
 /*!40000 ALTER TABLE `ehr_allergy` DISABLE KEYS */;
 INSERT INTO `ehr_allergy` (`id`,`user_id`,`relative_id`,`allergy_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (25,1,1,9,1,'2020-04-13 15:04:58',1,'2020-04-13 15:04:58'),
- (26,1,1,12,1,'2020-04-13 15:04:58',1,'2020-04-13 15:04:58');
+ (36,1,1,2,1,'2020-04-13 19:24:51',1,'2020-04-13 19:24:51'),
+ (37,1,1,10,1,'2020-04-13 19:24:51',1,'2020-04-13 19:24:51');
 /*!40000 ALTER TABLE `ehr_allergy` ENABLE KEYS */;
 
 
@@ -676,7 +676,7 @@ CREATE TABLE `ehr_chronic` (
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`disease_id`),
   KEY `FK_ehr_disease_id` (`disease_id`),
   CONSTRAINT `FK_ehr_disease_id` FOREIGN KEY (`disease_id`) REFERENCES `m_disease` (`disease_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_chronic`
@@ -684,8 +684,8 @@ CREATE TABLE `ehr_chronic` (
 
 /*!40000 ALTER TABLE `ehr_chronic` DISABLE KEYS */;
 INSERT INTO `ehr_chronic` (`id`,`user_id`,`relative_id`,`disease_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,1,8,1,'2020',1,'2020'),
- (2,1,1,9,1,'2020',1,'2020');
+ (3,1,1,5,1,'2020-04-13 19:28:34',1,'2020-04-13 19:28:34'),
+ (4,1,1,6,1,'2020-04-13 19:28:34',1,'2020-04-13 19:28:34');
 /*!40000 ALTER TABLE `ehr_chronic` ENABLE KEYS */;
 
 
@@ -712,8 +712,8 @@ CREATE TABLE `ehr_current_medication` (
 
 /*!40000 ALTER TABLE `ehr_current_medication` DISABLE KEYS */;
 INSERT INTO `ehr_current_medication` (`id`,`user_id`,`relative_id`,`medication_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,1,4,1,'2020',1,'2020'),
- (2,1,1,5,1,'2020',1,'2020');
+ (1,1,1,2,1,'2020-04-13 19:26:55',1,'2020-04-13 19:26:55'),
+ (2,1,1,5,1,'2020-04-13 19:26:55',1,'2020-04-13 19:26:55');
 /*!40000 ALTER TABLE `ehr_current_medication` ENABLE KEYS */;
 
 
@@ -791,7 +791,7 @@ CREATE TABLE `ehr_injury` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`injury_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_injury`
@@ -799,8 +799,8 @@ CREATE TABLE `ehr_injury` (
 
 /*!40000 ALTER TABLE `ehr_injury` DISABLE KEYS */;
 INSERT INTO `ehr_injury` (`id`,`user_id`,`relative_id`,`injury_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,1,6,1,'2020',1,'2020'),
- (2,1,1,7,1,'2020',1,'2020');
+ (3,1,1,9,1,'2020-04-13 19:28:20',1,'2020-04-13 19:28:20'),
+ (4,1,1,10,1,'2020-04-13 19:28:20',1,'2020-04-13 19:28:20');
 /*!40000 ALTER TABLE `ehr_injury` ENABLE KEYS */;
 
 
@@ -871,7 +871,7 @@ CREATE TABLE `ehr_post_medication` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`medication_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_post_medication`
@@ -879,8 +879,8 @@ CREATE TABLE `ehr_post_medication` (
 
 /*!40000 ALTER TABLE `ehr_post_medication` DISABLE KEYS */;
 INSERT INTO `ehr_post_medication` (`id`,`user_id`,`relative_id`,`medication_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,1,6,1,'2020',1,'2020'),
- (2,1,1,7,1,'2020',1,'2020');
+ (3,1,1,9,1,'2020-04-13 19:27:46',1,'2020-04-13 19:27:46'),
+ (4,1,1,10,1,'2020-04-13 19:27:46',1,'2020-04-13 19:27:46');
 /*!40000 ALTER TABLE `ehr_post_medication` ENABLE KEYS */;
 
 
@@ -899,7 +899,7 @@ CREATE TABLE `ehr_surgery` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`surgery_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_surgery`
@@ -907,8 +907,7 @@ CREATE TABLE `ehr_surgery` (
 
 /*!40000 ALTER TABLE `ehr_surgery` DISABLE KEYS */;
 INSERT INTO `ehr_surgery` (`id`,`user_id`,`relative_id`,`surgery_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,1,5,1,'2020',1,'2020'),
- (2,1,1,6,1,'2020',1,'2020');
+ (3,1,1,5,1,'2020-04-13 19:28:01',1,'2020-04-13 19:28:01');
 /*!40000 ALTER TABLE `ehr_surgery` ENABLE KEYS */;
 
 
@@ -2720,6 +2719,8 @@ START TRANSACTION;
                             VALUES ",replace(IN_commaSeparatedAllergyObject,"timestamp",now()));
     PREPARE save_allergies_query FROM @save_allergies_query;
     EXECUTE save_allergies_query;
+
+COMMIT;
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

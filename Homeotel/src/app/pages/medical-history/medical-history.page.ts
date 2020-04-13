@@ -312,10 +312,10 @@ export class MedicalHistoryPage {
             "m_familyHistory"
           ] = this.m_familyHistory;
 
-          console.log(
-            "this.utilities.medicalHistoryPageState is showing below"
-          );
-          console.log(this.utilities.medicalHistoryPageState);
+          // console.log(
+          //   "this.utilities.medicalHistoryPageState is showing below"
+          // );
+          // console.log(this.utilities.medicalHistoryPageState);
 
           this.setMedicalHistories();
         } else {
