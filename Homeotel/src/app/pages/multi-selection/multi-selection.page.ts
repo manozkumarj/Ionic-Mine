@@ -139,37 +139,46 @@ export class MultiSelectionPage implements OnInit {
 
     let userId = this.utilities.userId;
     let relativeId = this.utilities.selectedRelativeId;
-    let allergiesArray = this.selectedObjects.map((element) => {
-      return [
-        userId,
-        relativeId,
-        element,
-        userId,
-        userId,
-        "timestamp",
-        "timestampp",
-      ];
+
+    let comma = "";
+
+    this.selectedObjects.forEach((element) => {
+      comma += "(";
+      comma += userId + ",";
+      comma += relativeId + ",";
+      comma += element + ",";
+      comma += userId + ",";
+      comma += userId + ",";
+      comma += "'timestamp',";
+      comma += "'timestamp'";
+      comma += ")";
+      comma += ", ";
     });
 
-    console.log("allergiesArray");
-    console.log(allergiesArray);
+    comma = comma.replace(/,\s*$/, "");
 
-    this.apiService
-      .upsertAllergies(relativeId, selectedObjectsString, allergiesArray)
-      .subscribe((data) => {
-        console.log("Returned from Backend");
-        console.log(JSON.stringify(data));
-        if (this.utilities.isInvalidApiResponseData(data)) {
-          console.log("Returned Error");
-          console.log(data);
-          if (data["error"]) {
-            console.log("Something went wrong");
-          }
-        } else {
-          console.log("Returned Success");
-          // this.router.navigate(["/files"]);
-        }
-      });
+    console.log("comma -> ");
+    console.log(comma);
+
+    // console.log("allergiesArray");
+    // console.log(allergiesArray);
+
+    // this.apiService
+    //   .upsertAllergies(relativeId, selectedObjectsString, comma)
+    //   .subscribe((data) => {
+    //     console.log("Returned from Backend");
+    //     console.log(JSON.stringify(data));
+    //     if (this.utilities.isInvalidApiResponseData(data)) {
+    //       console.log("Returned Error");
+    //       console.log(data);
+    //       if (data["error"]) {
+    //         console.log("Something went wrong");
+    //       }
+    //     } else {
+    //       console.log("Returned Success");
+    //       // this.router.navigate(["/files"]);
+    //     }
+    //   });
 
     // this.router.navigate(["/medical-history"]);
   }
