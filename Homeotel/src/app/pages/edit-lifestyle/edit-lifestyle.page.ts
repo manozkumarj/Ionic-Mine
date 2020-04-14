@@ -115,13 +115,95 @@ export class EditLifestylePage implements OnInit {
     console.log(currentMasters);
 
     this.options = currentMasters;
-    this.currentItemValue = value;
   }
 
   ngOnInit() {}
 
-  answered = (value) => {
+  answered = (id) => {
     console.log("answered -> " + this.currentQuestion);
-    this.router.navigate([this.forwardLink]);
+    console.log("id -> " + id);
+
+    let smokingId =
+      this.currentQuestion == "one"
+        ? id
+        : this.utilities.lifestylePageState["smokingId"];
+    this.utilities.lifestylePageState["smokingId"] = smokingId;
+
+    let alcoholId =
+      this.currentQuestion == "two"
+        ? id
+        : this.utilities.lifestylePageState["alcoholId"];
+    this.utilities.lifestylePageState["alcoholId"] = alcoholId;
+
+    let excerciseId =
+      this.currentQuestion == "three"
+        ? id
+        : this.utilities.lifestylePageState["excerciseId"];
+    this.utilities.lifestylePageState["excerciseId"] = excerciseId;
+
+    let activityId =
+      this.currentQuestion == "four"
+        ? id
+        : this.utilities.lifestylePageState["activityId"];
+    this.utilities.lifestylePageState["activityId"] = activityId;
+
+    let professionId =
+      this.currentQuestion == "five"
+        ? id
+        : this.utilities.lifestylePageState["professionId"];
+    this.utilities.lifestylePageState["professionId"] = professionId;
+
+    let foodId =
+      this.currentQuestion == "six"
+        ? id
+        : this.utilities.lifestylePageState["foodId"];
+    this.utilities.lifestylePageState["foodId"] = foodId;
+
+    let heatId =
+      this.currentQuestion == "seven"
+        ? id
+        : this.utilities.lifestylePageState["heatId"];
+    this.utilities.lifestylePageState["heatId"] = heatId;
+
+    console.log(
+      smokingId +
+        "--" +
+        alcoholId +
+        "--" +
+        excerciseId +
+        "--" +
+        activityId +
+        "--" +
+        professionId +
+        "--" +
+        foodId +
+        "--" +
+        heatId
+    );
+
+    this.apiService
+      .updateUserLifestyleDetails(
+        smokingId,
+        alcoholId,
+        excerciseId,
+        activityId,
+        professionId,
+        foodId,
+        heatId
+      )
+      .subscribe((data) => {
+        console.log("Returned from Backend");
+        console.log(JSON.stringify(data));
+        if (this.utilities.isInvalidApiResponseData(data)) {
+          console.log("Returned Error");
+          console.log(data[0][0]);
+          if (data[0][0]["error"]) {
+            console.log("Something went wrong");
+          }
+        } else {
+          console.log("Returned Success");
+          this.router.navigate([this.forwardLink]);
+        }
+      });
   };
 }

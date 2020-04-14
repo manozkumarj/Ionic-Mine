@@ -192,6 +192,7 @@ export class LifestylePage implements OnInit {
             this.smokingId = smokingInfo["smoking_id"];
             this.smoking = smokingInfo["name"];
           }
+          this.utilities.lifestylePageState["smokingId"] = this.smokingId;
 
           if (data[8].length > 0) {
             let alcoholInfo = data[8][0];
@@ -200,6 +201,7 @@ export class LifestylePage implements OnInit {
             this.alcoholId = alcoholInfo["alcohol_id"];
             this.alcohol = alcoholInfo["name"];
           }
+          this.utilities.lifestylePageState["alcoholId"] = this.alcoholId;
 
           if (data[9].length > 0) {
             let excerciseInfo = data[9][0];
@@ -208,6 +210,7 @@ export class LifestylePage implements OnInit {
             this.excerciseId = excerciseInfo["excercise_id"];
             this.excercise = excerciseInfo["name"];
           }
+          this.utilities.lifestylePageState["excerciseId"] = this.excerciseId;
 
           if (data[10].length > 0) {
             let activityInfo = data[10][0];
@@ -216,6 +219,7 @@ export class LifestylePage implements OnInit {
             this.activityId = activityInfo["activity_level_id"];
             this.activity = activityInfo["name"];
           }
+          this.utilities.lifestylePageState["activityId"] = this.activityId;
 
           if (data[11].length > 0) {
             let professionInfo = data[11][0];
@@ -224,6 +228,7 @@ export class LifestylePage implements OnInit {
             this.professionId = professionInfo["profession_id"];
             this.profession = professionInfo["name"];
           }
+          this.utilities.lifestylePageState["professionId"] = this.professionId;
 
           if (data[12].length > 0) {
             let foodInfo = data[12][0];
@@ -232,6 +237,7 @@ export class LifestylePage implements OnInit {
             this.foodId = foodInfo["food_id"];
             this.food = foodInfo["name"];
           }
+          this.utilities.lifestylePageState["foodId"] = this.foodId;
 
           if (data[13].length > 0) {
             let heatInfo = data[13][0];
@@ -240,6 +246,7 @@ export class LifestylePage implements OnInit {
             this.heatId = heatInfo["heat_id"];
             this.heat = heatInfo["name"];
           }
+          this.utilities.lifestylePageState["heatId"] = this.heatId;
 
           this.loadLifestyles();
         } else {
@@ -255,9 +262,6 @@ export class LifestylePage implements OnInit {
     this.utilities.lifestylePageState["selectedLifestyle"] = this.lifestyles[
       id
     ];
-
-    // Assigning values
-    this.utilities.lifestylePageState["smokingId"] = this.smokingId;
 
     this.router.navigate([this.lifestyles[id]["redirectTo"]]);
   }

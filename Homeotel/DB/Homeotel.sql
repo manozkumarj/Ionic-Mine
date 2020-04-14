@@ -825,13 +825,15 @@ CREATE TABLE `ehr_lifestyle` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) NOT NULL,
   PRIMARY KEY (`lifestyle_id`,`user_id`,`relative_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_lifestyle`
 --
 
 /*!40000 ALTER TABLE `ehr_lifestyle` DISABLE KEYS */;
+INSERT INTO `ehr_lifestyle` (`lifestyle_id`,`user_id`,`relative_id`,`smoking_id`,`alcohol_id`,`excercise_id`,`activity_level_id`,`profession_id`,`food_id`,`heat_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (7,1,1,3,2,2,3,8,1,1,1,'2020-04-14 15:59:37',1,'2020-04-14 16:01:33');
 /*!40000 ALTER TABLE `ehr_lifestyle` ENABLE KEYS */;
 
 
@@ -2692,6 +2694,8 @@ START TRANSACTION;
                IN_profession_id, IN_food_id, IN_heat_id, user_id, user_id, now(), now());
 
   END IF;
+
+COMMIT;
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

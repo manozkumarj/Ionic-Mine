@@ -268,4 +268,29 @@ export class ApiService {
       this.utilities.selectedRelativeId;
     return this.http.get(this.apiUrl + path);
   }
+
+  // Upserting lifestyle
+  updateUserLifestyleDetails(
+    smokingId,
+    alcoholId,
+    excerciseId,
+    activityId,
+    professionId,
+    foodId,
+    heatId
+  ) {
+    var path = "/user/upsert-lifestyle";
+    var body = {
+      userId: this.utilities.userId,
+      relativeId: this.utilities.selectedRelativeId,
+      smokingId,
+      alcoholId,
+      excerciseId,
+      activityId,
+      professionId,
+      foodId,
+      heatId,
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
 }

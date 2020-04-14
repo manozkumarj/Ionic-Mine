@@ -460,4 +460,39 @@ router.get("/lifestyle-masters-and-data/:userId/:relativeId", (req, res) => {
   );
 });
 
+// Upserting Lifestyle
+router.post("/upsert-lifestyle", (req, res) => {
+  var userID = req.body.userId;
+  var relativeId = req.body.relativeId;
+  var smokingId = req.body.smokingId;
+  var alcoholId = req.body.alcoholId;
+  var excerciseId = req.body.excerciseId;
+  var activityId = req.body.activityId;
+  var professionId = req.body.professionId;
+  var foodId = req.body.foodId;
+  var heatId = req.body.heatId;
+
+  var params = [
+    userID,
+    relativeId,
+    smokingId,
+    alcoholId,
+    excerciseId,
+    activityId,
+    professionId,
+    foodId,
+    heatId,
+  ];
+
+  console.log("Received params");
+  console.log(params);
+
+  db.executeQuery(
+    "call sp_user_lifestyle_upsert(?,?,?,?,?,?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;
