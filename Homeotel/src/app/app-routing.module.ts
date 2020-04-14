@@ -329,11 +329,63 @@ const routes: Routes = [
       import("./pages/edit-profile/edit-profile.module").then(
         (m) => m.EditProfilePageModule
       ),
-  },  {
-    path: 'multi-selection',
-    loadChildren: () => import('./pages/multi-selection/multi-selection.module').then( m => m.MultiSelectionPageModule)
   },
-
+  {
+    path: "multi-selection",
+    loadChildren: () =>
+      import("./pages/multi-selection/multi-selection.module").then(
+        (m) => m.MultiSelectionPageModule
+      ),
+  },
+  {
+    path: "edit-lifestyle/:one/:two/:three/:four/:five/:six/:seven",
+    loadChildren: () =>
+      import("./pages/edit-lifestyle/edit-lifestyle.module").then(
+        (m) => m.EditLifestylePageModule
+      ),
+  },
+  {
+    path: "edit-lifestyle/:one/:two/:three/:four/:five/:six",
+    loadChildren: () =>
+      import("./pages/edit-lifestyle/edit-lifestyle.module").then(
+        (m) => m.EditLifestylePageModule
+      ),
+  },
+  {
+    path: "edit-lifestyle/:one/:two/:three/:four/:five",
+    loadChildren: () =>
+      import("./pages/edit-lifestyle/edit-lifestyle.module").then(
+        (m) => m.EditLifestylePageModule
+      ),
+  },
+  {
+    path: "edit-lifestyle/:one/:two/:three/:four",
+    loadChildren: () =>
+      import("./pages/edit-lifestyle/edit-lifestyle.module").then(
+        (m) => m.EditLifestylePageModule
+      ),
+  },
+  {
+    path: "edit-lifestyle/:one/:two/:three",
+    loadChildren: () =>
+      import("./pages/edit-lifestyle/edit-lifestyle.module").then(
+        (m) => m.EditLifestylePageModule
+      ),
+  },
+  {
+    path: "edit-lifestyle/:one/:two",
+    loadChildren: () =>
+      import("./pages/edit-lifestyle/edit-lifestyle.module").then(
+        (m) => m.EditLifestylePageModule
+      ),
+  },
+  {
+    path: "edit-lifestyle/:one",
+    loadChildren: () =>
+      import("./pages/edit-lifestyle/edit-lifestyle.module").then(
+        (m) => m.EditLifestylePageModule
+      ),
+  },
 ];
 
 @NgModule({

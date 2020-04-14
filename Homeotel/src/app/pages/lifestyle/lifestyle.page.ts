@@ -56,7 +56,7 @@ export class LifestylePage implements OnInit {
         list: this.smoking,
         value: this.smokingId,
         masterDataTag: "m_smoking",
-        redirectTo: "/single-selection",
+        redirectTo: "/edit-lifestyle/1",
       },
       {
         id: 1,
@@ -65,7 +65,7 @@ export class LifestylePage implements OnInit {
         list: this.alcohol,
         value: this.alcoholId,
         masterDataTag: "m_alcohol",
-        redirectTo: "/single-selection",
+        redirectTo: "/edit-lifestyle/1/2",
       },
       {
         id: 2,
@@ -74,7 +74,7 @@ export class LifestylePage implements OnInit {
         list: this.excercise,
         value: this.excerciseId,
         masterDataTag: "m_excercise",
-        redirectTo: "/single-selection",
+        redirectTo: "/edit-lifestyle/1/2/3",
       },
       {
         id: 3,
@@ -83,7 +83,7 @@ export class LifestylePage implements OnInit {
         list: this.activity,
         value: this.activityId,
         masterDataTag: "m_activity_level",
-        redirectTo: "/single-selection",
+        redirectTo: "/edit-lifestyle/1/2/3/4",
       },
       {
         id: 4,
@@ -92,7 +92,7 @@ export class LifestylePage implements OnInit {
         list: this.profession,
         value: this.professionId,
         masterDataTag: "m_profession",
-        redirectTo: "/single-selection",
+        redirectTo: "/edit-lifestyle/1/2/3/4/5",
       },
       {
         id: 5,
@@ -101,7 +101,7 @@ export class LifestylePage implements OnInit {
         list: this.food,
         value: this.foodId,
         masterDataTag: "m_food",
-        redirectTo: "/single-selection",
+        redirectTo: "/edit-lifestyle/1/2/3/4/5/6",
       },
       {
         id: 6,
@@ -110,7 +110,7 @@ export class LifestylePage implements OnInit {
         list: this.heat,
         value: this.heatId,
         masterDataTag: "m_heat",
-        redirectTo: "/single-selection",
+        redirectTo: "/edit-lifestyle/1/2/3/4/5/6/7",
       },
     ];
   }
@@ -130,36 +130,57 @@ export class LifestylePage implements OnInit {
           console.log("Data returned from backend");
 
           this.m_smoking = data[0];
+          this.m_smoking = this.m_smoking.map((item) => {
+            return { ...item, self_id: item["smoking_id"] };
+          });
           this.utilities.lifestylePageState["m_smoking"] = this.m_smoking;
           console.log("this.m_smoking is below");
           console.log(this.m_smoking);
 
           this.m_alcohol = data[1];
+          this.m_alcohol = this.m_alcohol.map((item) => {
+            return { ...item, self_id: item["alcohol_id"] };
+          });
           this.utilities.lifestylePageState["m_alcohol"] = this.m_alcohol;
           console.log("this.m_alcohol is below");
           console.log(this.m_alcohol);
 
           this.m_excercise = data[2];
+          this.m_excercise = this.m_excercise.map((item) => {
+            return { ...item, self_id: item["excercise_id"] };
+          });
           this.utilities.lifestylePageState["m_excercise"] = this.m_excercise;
           console.log("this.m_excercise is below");
           console.log(this.m_excercise);
 
           this.m_activity = data[3];
+          this.m_activity = this.m_activity.map((item) => {
+            return { ...item, self_id: item["activity_level_id"] };
+          });
           this.utilities.lifestylePageState["m_activity"] = this.m_activity;
           console.log("this.m_activity_level is below");
           console.log(this.m_activity);
 
           this.m_profession = data[4];
+          this.m_profession = this.m_profession.map((item) => {
+            return { ...item, self_id: item["profession_id"] };
+          });
           this.utilities.lifestylePageState["m_profession"] = this.m_profession;
           console.log("this.m_profession is below");
           console.log(this.m_profession);
 
           this.m_food = data[5];
+          this.m_food = this.m_food.map((item) => {
+            return { ...item, self_id: item["food_id"] };
+          });
           this.utilities.lifestylePageState["m_food"] = this.m_food;
           console.log("this.m_food is below");
           console.log(this.m_food);
 
           this.m_heat = data[6];
+          this.m_heat = this.m_heat.map((item) => {
+            return { ...item, self_id: item["heat_id"] };
+          });
           this.utilities.lifestylePageState["m_heat"] = this.m_heat;
           console.log("this.m_heat is below");
           console.log(this.m_heat);

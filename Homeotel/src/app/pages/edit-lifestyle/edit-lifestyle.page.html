@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button [routerLink]="['/lifestyle']">
+        None
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid
+    style="
+      height: 30%;
+      background-color: #eab841;
+      color: #fff;
+      font-size: 18px;
+    "
+  >
+    <ion-row
+      style="height: 100%;"
+      class="ion-justify-content-center ion-align-items-center"
+    >
+      {{question}}
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="btnsGrid">
+    <ion-row *ngFor="let option of options">
+      <ion-col
+        (click)="answered(option.self_id)"
+        [ngClass]="{'btn-success' : option.self_id == currentItemValue }"
+      >
+        {{option.name}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
