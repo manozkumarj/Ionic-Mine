@@ -12,12 +12,14 @@ export class EditLifestylePage implements OnInit {
   title;
   options: any[] = [];
 
-  currentItemValue = "";
+  currentItemValue;
   columnName = "";
   backwardLink;
   forwardLink;
   question;
   currentQuestion;
+
+  masterDataTag;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -41,33 +43,85 @@ export class EditLifestylePage implements OnInit {
     console.log("this.utilities.lifestylePageState-selectedLifestyle is below");
     console.log(this.utilities.lifestylePageState["selectedLifestyle"]);
 
-    this.title = this.utilities.lifestylePageState["selectedLifestyle"]["name"];
-
-    let master = this.utilities.lifestylePageState["selectedLifestyle"][
-      "masterDataTag"
-    ];
-
-    let tag = this.utilities.lifestylePageState["selectedLifestyle"]["tag"];
-
     let value = this.utilities.lifestylePageState["selectedLifestyle"]["value"];
-
-    let currentMasters = this.utilities.lifestylePageState[master];
-    console.log("Current master data is below");
-    console.log(currentMasters);
-
-    this.options = currentMasters;
 
     if (paramSeven) {
       console.log("paramSeven");
       this.title = `${paramSeven} of 7`;
-      this.backwardLink = `/edit-profile/1/2/3/4/5/6`;
-      this.forwardLink = `/profile`;
+      this.backwardLink = `/edit-lifestyle/1/2/3/4/5/6`;
+      this.forwardLink = `/lifestyle`;
       this.question = "Heat preference";
       this.currentQuestion = "seven";
-      this.columnName = tag;
-      this.currentItemValue = value;
+      this.masterDataTag = "m_heat";
+      this.currentItemValue = this.utilities.lifestylePageState["heatId"];
+    } else if (paramSix) {
+      console.log("paramSix");
+      this.title = `${paramSix} of 7`;
+      this.backwardLink = `/edit-lifestyle/1/2/3/4/5`;
+      this.forwardLink = `/edit-lifestyle/1/2/3/4/5/6/7`;
+      this.question = "Food preference";
+      this.currentQuestion = "six";
+      this.masterDataTag = "m_food";
+      this.currentItemValue = this.utilities.lifestylePageState["foodId"];
+    } else if (paramFive) {
+      console.log("paramFive");
+      this.title = `${paramFive} of 7`;
+      this.backwardLink = `/edit-lifestyle/1/2/3/4`;
+      this.forwardLink = `/edit-lifestyle/1/2/3/4/5/6`;
+      this.question = "Profession";
+      this.currentQuestion = "five";
+      this.masterDataTag = "m_profession";
+      this.currentItemValue = this.utilities.lifestylePageState["professionId"];
+    } else if (paramFour) {
+      console.log("paramFour");
+      this.title = `${paramFour} of 7`;
+      this.backwardLink = `/edit-lifestyle/1/2/3`;
+      this.forwardLink = `/edit-lifestyle/1/2/3/4/5`;
+      this.question = "Activity level";
+      this.currentQuestion = "four";
+      this.masterDataTag = "m_activity";
+      this.currentItemValue = this.utilities.lifestylePageState["activityId"];
+    } else if (paramThree) {
+      console.log("paramThree");
+      this.title = `${paramThree} of 7`;
+      this.backwardLink = `/edit-lifestyle/1/2`;
+      this.forwardLink = `/edit-lifestyle/1/2/3/4`;
+      this.question = "Excercise";
+      this.currentQuestion = "three";
+      this.masterDataTag = "m_excercise";
+      this.currentItemValue = this.utilities.lifestylePageState["excerciseId"];
+    } else if (paramTwo) {
+      console.log("paramTwo");
+      this.title = `${paramTwo} of 7`;
+      this.backwardLink = `/edit-lifestyle/1`;
+      this.forwardLink = `/edit-lifestyle/1/2/3`;
+      this.question = "Alcohol";
+      this.currentQuestion = "two";
+      this.masterDataTag = "m_alcohol";
+      this.currentItemValue = this.utilities.lifestylePageState["alcoholId"];
+    } else if (paramOne) {
+      console.log("paramOne");
+      this.title = `${paramOne} of 7`;
+      this.backwardLink = `/lifestyle`;
+      this.forwardLink = `/edit-lifestyle/1/2`;
+      this.question = "Smoking";
+      this.currentQuestion = "one";
+      this.masterDataTag = "m_smoking";
+      this.currentItemValue = this.utilities.lifestylePageState["smokingId"];
     }
+
+    let currentMasters = this.utilities.lifestylePageState[this.masterDataTag];
+    console.log("Current master data is below");
+    console.log(currentMasters);
+
+    this.options = currentMasters;
+    this.currentItemValue = value;
   }
 
   ngOnInit() {}
+
+  answered = (value) => {
+    console.log("answered -> " + this.currentQuestion);
+    this.router.navigate([this.forwardLink]);
+  };
 }

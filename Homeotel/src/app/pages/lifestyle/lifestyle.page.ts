@@ -19,13 +19,13 @@ export class LifestylePage implements OnInit {
   food = "Select";
   heat = "Select";
 
-  smokingId: number;
-  alcoholId: number;
-  excerciseId: number;
-  activityId: number;
-  professionId: number;
-  foodId: number;
-  heatId: number;
+  smokingId: number = null;
+  alcoholId: number = null;
+  excerciseId: number = null;
+  activityId: number = null;
+  professionId: number = null;
+  foodId: number = null;
+  heatId: number = null;
 
   m_smoking: any[] = [];
   m_alcohol: any[] = [];
@@ -82,7 +82,7 @@ export class LifestylePage implements OnInit {
         tag: "activity",
         list: this.activity,
         value: this.activityId,
-        masterDataTag: "m_activity_level",
+        masterDataTag: "m_activity",
         redirectTo: "/edit-lifestyle/1/2/3/4",
       },
       {
@@ -185,47 +185,61 @@ export class LifestylePage implements OnInit {
           console.log("this.m_heat is below");
           console.log(this.m_heat);
 
-          let smokingInfo = data[7][0];
-          console.log("smoking is below");
-          console.log(smokingInfo);
-          this.smokingId = smokingInfo["smoking_id"];
-          this.smoking = smokingInfo["name"];
+          if (data[7].length > 0) {
+            let smokingInfo = data[7][0];
+            console.log("smoking is below");
+            console.log(smokingInfo);
+            this.smokingId = smokingInfo["smoking_id"];
+            this.smoking = smokingInfo["name"];
+          }
 
-          let alcoholInfo = data[8][0];
-          console.log("alcohol is below");
-          console.log(alcoholInfo);
-          this.alcoholId = alcoholInfo["alcohol_id"];
-          this.alcohol = alcoholInfo["name"];
+          if (data[8].length > 0) {
+            let alcoholInfo = data[8][0];
+            console.log("alcohol is below");
+            console.log(alcoholInfo);
+            this.alcoholId = alcoholInfo["alcohol_id"];
+            this.alcohol = alcoholInfo["name"];
+          }
 
-          let excerciseInfo = data[9][0];
-          console.log("excercise is below");
-          console.log(excerciseInfo);
-          this.excerciseId = excerciseInfo["excercise_id"];
-          this.excercise = excerciseInfo["name"];
+          if (data[9].length > 0) {
+            let excerciseInfo = data[9][0];
+            console.log("excercise is below");
+            console.log(excerciseInfo);
+            this.excerciseId = excerciseInfo["excercise_id"];
+            this.excercise = excerciseInfo["name"];
+          }
 
-          let activityInfo = data[10][0];
-          console.log("activity is below");
-          console.log(activityInfo);
-          this.activityId = activityInfo["activity_level_id"];
-          this.activity = activityInfo["name"];
+          if (data[10].length > 0) {
+            let activityInfo = data[10][0];
+            console.log("activity is below");
+            console.log(activityInfo);
+            this.activityId = activityInfo["activity_level_id"];
+            this.activity = activityInfo["name"];
+          }
 
-          let professionInfo = data[11][0];
-          console.log("profession is below");
-          console.log(professionInfo);
-          this.professionId = professionInfo["profession_id"];
-          this.profession = professionInfo["name"];
+          if (data[11].length > 0) {
+            let professionInfo = data[11][0];
+            console.log("profession is below");
+            console.log(professionInfo);
+            this.professionId = professionInfo["profession_id"];
+            this.profession = professionInfo["name"];
+          }
 
-          let foodInfo = data[12][0];
-          console.log("food is below");
-          console.log(foodInfo);
-          this.foodId = foodInfo["food_id"];
-          this.food = foodInfo["name"];
+          if (data[12].length > 0) {
+            let foodInfo = data[12][0];
+            console.log("food is below");
+            console.log(foodInfo);
+            this.foodId = foodInfo["food_id"];
+            this.food = foodInfo["name"];
+          }
 
-          let heatInfo = data[13][0];
-          console.log("heat is below");
-          console.log(heatInfo);
-          this.heatId = heatInfo["heat_id"];
-          this.heat = heatInfo["name"];
+          if (data[13].length > 0) {
+            let heatInfo = data[13][0];
+            console.log("heat is below");
+            console.log(heatInfo);
+            this.heatId = heatInfo["heat_id"];
+            this.heat = heatInfo["name"];
+          }
 
           this.loadLifestyles();
         } else {
@@ -241,6 +255,10 @@ export class LifestylePage implements OnInit {
     this.utilities.lifestylePageState["selectedLifestyle"] = this.lifestyles[
       id
     ];
+
+    // Assigning values
+    this.utilities.lifestylePageState["smokingId"] = this.smokingId;
+
     this.router.navigate([this.lifestyles[id]["redirectTo"]]);
   }
 }

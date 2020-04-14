@@ -825,15 +825,13 @@ CREATE TABLE `ehr_lifestyle` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) NOT NULL,
   PRIMARY KEY (`lifestyle_id`,`user_id`,`relative_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_lifestyle`
 --
 
 /*!40000 ALTER TABLE `ehr_lifestyle` DISABLE KEYS */;
-INSERT INTO `ehr_lifestyle` (`lifestyle_id`,`user_id`,`relative_id`,`smoking_id`,`alcohol_id`,`excercise_id`,`activity_level_id`,`profession_id`,`food_id`,`heat_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,1,1,2,3,4,8,2,4,1,'2020-04-13 19:28:20',1,'2020-04-13 19:28:20');
 /*!40000 ALTER TABLE `ehr_lifestyle` ENABLE KEYS */;
 
 
@@ -2635,6 +2633,67 @@ END;
  SELECT * FROM d_doctor d where uuid=IN_uuid;
 
  END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_lifestyle_upsert`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_lifestyle_upsert`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_lifestyle_upsert`(IN IN_user_id INT, IN IN_relative_id INT,
+                           IN IN_smoking_id INT, IN IN_alcohol_id INT, IN IN_excercise_id INT, IN IN_activity_level_id INT,
+                           IN IN_profession_id INT, IN IN_food_id INT, IN IN_heat_id INT)
+BEGIN
+
+DECLARE lifestyleCount INT;
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+START TRANSACTION;
+
+  SET lifestyleCount = (SELECT COUNT(*) FROM ehr_lifestyle WHERE user_id = IN_user_id AND relative_id = IN_relative_id);
+
+  IF (lifestyleCount > 0) THEN
+
+    UPDATE ehr_lifestyle SET smoking_id = IN_smoking_id, alcohol_id = IN_alcohol_id, excercise_id = IN_excercise_id,
+      activity_level_id = IN_activity_level_id, profession_id = IN_profession_id, food_id = IN_food_id,
+      heat_id = IN_heat_id, updated_at=now()
+     WHERE user_id = IN_user_id AND relative_id = IN_relative_id;
+
+  ELSE
+
+    INSERT INTO ehr_lifestyle (user_id, relative_id, smoking_id, alcohol_id, excercise_id, activity_level_id, profession_id,
+               food_id, heat_id, created_by, updated_by, created_at, updated_at)
+               VALUES (IN_user_id, IN_relative_id, IN_smoking_id,IN_alcohol_id,IN_excercise_id, IN_activity_level_id,
+               IN_profession_id, IN_food_id, IN_heat_id, user_id, user_id, now(), now());
+
+  END IF;
+
+END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
 DELIMITER ;
