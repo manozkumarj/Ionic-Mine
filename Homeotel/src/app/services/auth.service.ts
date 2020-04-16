@@ -5,7 +5,7 @@ import { auth } from "firebase/app";
 import { AngularFireAuth } from "@angular/fire/auth";
 import {
   AngularFirestore,
-  AngularFirestoreDocument
+  AngularFirestoreDocument,
 } from "@angular/fire/firestore";
 
 import { Observable, of } from "rxjs";
@@ -17,6 +17,8 @@ import { Platform } from "@ionic/angular";
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
+  isLoggedIn = false;
+
   user$: Observable<any>;
 
   constructor(
@@ -27,7 +29,7 @@ export class AuthService {
     public platform: Platform
   ) {
     this.user$ = this.afAuth.authState.pipe(
-      switchMap(user => {
+      switchMap((user) => {
         if (user) {
           return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
         } else {
@@ -35,6 +37,10 @@ export class AuthService {
         }
       })
     );
+  }
+
+  isAuthenticated() {
+    return this.isLoggedIn;
   }
 
   googleLogin() {
@@ -53,15 +59,16 @@ export class AuthService {
       .login({
         webClientId:
           "1068240429142-octvvrtg33j5ioms4b1g01bh95f8ikee.apps.googleusercontent.com",
-        offline: true
+        offline: true,
       })
       .then(
-        res => {
+        (res) => {
           console.log(res);
           alert(JSON.stringify(res));
+          this.isLoggedIn = true;
           this.router.navigate(["/home"]);
         },
-        err => {
+        (err) => {
           console.log(err);
         }
       );
@@ -90,7 +97,7 @@ export class AuthService {
     let userDetails = {
       key: user.uid,
       email: user.email,
-      displayName: user.displayName
+      displayName: user.displayName,
     };
 
     const userRef: AngularFirestoreDocument<User> = this.afs.doc(
@@ -103,7 +110,7 @@ export class AuthService {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
-      photoURL: user.photoURL
+      photoURL: user.photoURL,
     };
 
     this.router.navigate(["/home"]);

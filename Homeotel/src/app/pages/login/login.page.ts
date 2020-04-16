@@ -44,7 +44,9 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.auth.isLoggedIn = false;
+  }
 
   async presentToastSuccess() {
     const toast = await this.toastController.create({
@@ -161,8 +163,8 @@ export class LoginPage implements OnInit {
     let username = this.loginForm.get("username").value.trim();
     let password = this.loginForm.get("password").value.trim();
 
-    username = "aaa";
-    password = "aaa";
+    // username = "aaa";
+    // password = "aaa";
 
     if (username && password) {
       this.apiService.loginUser(username, password).subscribe((data) => {
@@ -177,6 +179,7 @@ export class LoginPage implements OnInit {
             console.log("Returned Error");
             this.presentToastWarning();
           } else {
+            this.auth.isLoggedIn = true;
             console.log("Returned Success");
             this.toastSuccessMsg = "Login Success.";
             this.presentToastSuccess();

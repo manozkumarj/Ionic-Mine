@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
+import { AuthGuard } from "./services/auth-guard.service";
 
 const routes: Routes = [
   { path: "", redirectTo: "initialization", pathMatch: "full" },
@@ -12,6 +13,7 @@ const routes: Routes = [
     path: "home",
     loadChildren: () =>
       import("./pages/home/home.module").then((m) => m.HomePageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: "initialization",
@@ -19,21 +21,25 @@ const routes: Routes = [
       import("./pages/initialization/initialization.module").then(
         (m) => m.InitializationPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "profile",
     loadChildren: () =>
       import("./pages/profile/profile.module").then((m) => m.ProfilePageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: "doctors",
     loadChildren: () =>
       import("./pages/doctors/doctors.module").then((m) => m.DoctorsPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: "records",
     loadChildren: () =>
       import("./pages/records/records.module").then((m) => m.RecordsPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: "family-members",
@@ -41,6 +47,7 @@ const routes: Routes = [
       import("./pages/family-members/family-members.module").then(
         (m) => m.FamilyMembersPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "view-doctor/:id",
@@ -48,6 +55,7 @@ const routes: Routes = [
       import("./pages/view-doctor/view-doctor.module").then(
         (m) => m.ViewDoctorPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "settings",
@@ -55,6 +63,7 @@ const routes: Routes = [
       import("./pages/settings/settings.module").then(
         (m) => m.SettingsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "help-center",
@@ -62,6 +71,7 @@ const routes: Routes = [
       import("./pages/help-center/help-center.module").then(
         (m) => m.HelpCenterPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "homeo-kits/:doctor-id",
@@ -69,6 +79,7 @@ const routes: Routes = [
       import("./pages/homeo-kits/homeo-kits.module").then(
         (m) => m.HomeoKitsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "homeo-kits",
@@ -76,6 +87,7 @@ const routes: Routes = [
       import("./pages/homeo-kits/homeo-kits.module").then(
         (m) => m.HomeoKitsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "health-records",
@@ -83,6 +95,7 @@ const routes: Routes = [
       import("./pages/health-records/health-records.module").then(
         (m) => m.HealthRecordsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "appointments",
@@ -90,6 +103,7 @@ const routes: Routes = [
       import("./pages/appointments/appointments.module").then(
         (m) => m.AppointmentsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "payments/:id",
@@ -97,6 +111,7 @@ const routes: Routes = [
       import("./pages/payments/payments.module").then(
         (m) => m.PaymentsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "payments",
@@ -104,6 +119,7 @@ const routes: Routes = [
       import("./pages/payments/payments.module").then(
         (m) => m.PaymentsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "my-doctors",
@@ -111,11 +127,13 @@ const routes: Routes = [
       import("./pages/my-doctors/my-doctors.module").then(
         (m) => m.MyDoctorsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "modal",
     loadChildren: () =>
       import("./pages/modal/modal.module").then((m) => m.ModalPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: "payment-gateways",
@@ -123,6 +141,7 @@ const routes: Routes = [
       import("./pages/payment-gateways/payment-gateways.module").then(
         (m) => m.PaymentGatewaysPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "slot-selection",
@@ -130,6 +149,7 @@ const routes: Routes = [
       import("./pages/slot-selection/slot-selection.module").then(
         (m) => m.SlotSelectionPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "consultation-details",
@@ -137,6 +157,7 @@ const routes: Routes = [
       import("./pages/consultation-details/consultation-details.module").then(
         (m) => m.ConsultationDetailsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "issue-details/:id",
@@ -144,6 +165,7 @@ const routes: Routes = [
       import("./pages/issue-details/issue-details.module").then(
         (m) => m.IssueDetailsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "appointment-details",
@@ -151,6 +173,7 @@ const routes: Routes = [
       import("./pages/appointment-details/appointment-details.module").then(
         (m) => m.AppointmentDetailsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "appointment-questions/:one/:two/:three/:four",
@@ -158,6 +181,7 @@ const routes: Routes = [
       import("./pages/appointment-questions/appointment-questions.module").then(
         (m) => m.AppointmentQuestionsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "appointment-questions/:one/:two/:three",
@@ -165,6 +189,7 @@ const routes: Routes = [
       import("./pages/appointment-questions/appointment-questions.module").then(
         (m) => m.AppointmentQuestionsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "appointment-questions/:one/:two",
@@ -172,6 +197,7 @@ const routes: Routes = [
       import("./pages/appointment-questions/appointment-questions.module").then(
         (m) => m.AppointmentQuestionsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "appointment-questions/:one",
@@ -179,11 +205,13 @@ const routes: Routes = [
       import("./pages/appointment-questions/appointment-questions.module").then(
         (m) => m.AppointmentQuestionsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "vitals",
     loadChildren: () =>
       import("./pages/vitals/vitals.module").then((m) => m.VitalsPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: "vital-questions/:one/:two/:three/:four",
@@ -191,6 +219,7 @@ const routes: Routes = [
       import("./pages/vital-questions/vital-questions.module").then(
         (m) => m.VitalQuestionsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "vital-questions/:one/:two/:three",
@@ -198,6 +227,7 @@ const routes: Routes = [
       import("./pages/vital-questions/vital-questions.module").then(
         (m) => m.VitalQuestionsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "vital-questions/:one/:two",
@@ -205,6 +235,7 @@ const routes: Routes = [
       import("./pages/vital-questions/vital-questions.module").then(
         (m) => m.VitalQuestionsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "vital-questions/:one",
@@ -212,6 +243,7 @@ const routes: Routes = [
       import("./pages/vital-questions/vital-questions.module").then(
         (m) => m.VitalQuestionsPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "medical-history",
@@ -219,6 +251,7 @@ const routes: Routes = [
       import("./pages/medical-history/medical-history.module").then(
         (m) => m.MedicalHistoryPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "lifestyle",
@@ -226,11 +259,13 @@ const routes: Routes = [
       import("./pages/lifestyle/lifestyle.module").then(
         (m) => m.LifestylePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "files",
     loadChildren: () =>
       import("./pages/files/files.module").then((m) => m.FilesPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: "previous-consultations",
@@ -238,6 +273,7 @@ const routes: Routes = [
       import(
         "./pages/previous-consultations/previous-consultations.module"
       ).then((m) => m.PreviousConsultationsPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: "completed-consultation-details",
@@ -245,6 +281,7 @@ const routes: Routes = [
       import(
         "./pages/completed-consultation-details/completed-consultation-details.module"
       ).then((m) => m.CompletedConsultationDetailsPageModule),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-file",
@@ -252,6 +289,7 @@ const routes: Routes = [
       import("./pages/edit-file/edit-file.module").then(
         (m) => m.EditFilePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "allergies",
@@ -259,6 +297,7 @@ const routes: Routes = [
       import("./pages/allergies/allergies.module").then(
         (m) => m.AllergiesPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "single-selection",
@@ -266,6 +305,7 @@ const routes: Routes = [
       import("./pages/single-selection/single-selection.module").then(
         (m) => m.SingleSelectionPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-profile/:one/:two/:three/:four/:five/:six/:seven/:eight/:nine",
@@ -273,6 +313,7 @@ const routes: Routes = [
       import("./pages/edit-profile/edit-profile.module").then(
         (m) => m.EditProfilePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-profile/:one/:two/:three/:four/:five/:six/:seven/:eight",
@@ -280,6 +321,7 @@ const routes: Routes = [
       import("./pages/edit-profile/edit-profile.module").then(
         (m) => m.EditProfilePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-profile/:one/:two/:three/:four/:five/:six/:seven",
@@ -287,6 +329,7 @@ const routes: Routes = [
       import("./pages/edit-profile/edit-profile.module").then(
         (m) => m.EditProfilePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-profile/:one/:two/:three/:four/:five/:six",
@@ -294,6 +337,7 @@ const routes: Routes = [
       import("./pages/edit-profile/edit-profile.module").then(
         (m) => m.EditProfilePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-profile/:one/:two/:three/:four/:five",
@@ -301,6 +345,7 @@ const routes: Routes = [
       import("./pages/edit-profile/edit-profile.module").then(
         (m) => m.EditProfilePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-profile/:one/:two/:three/:four",
@@ -308,6 +353,7 @@ const routes: Routes = [
       import("./pages/edit-profile/edit-profile.module").then(
         (m) => m.EditProfilePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-profile/:one/:two/:three",
@@ -315,6 +361,7 @@ const routes: Routes = [
       import("./pages/edit-profile/edit-profile.module").then(
         (m) => m.EditProfilePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-profile/:one/:two",
@@ -322,6 +369,7 @@ const routes: Routes = [
       import("./pages/edit-profile/edit-profile.module").then(
         (m) => m.EditProfilePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-profile/:one",
@@ -329,6 +377,7 @@ const routes: Routes = [
       import("./pages/edit-profile/edit-profile.module").then(
         (m) => m.EditProfilePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "multi-selection",
@@ -336,6 +385,7 @@ const routes: Routes = [
       import("./pages/multi-selection/multi-selection.module").then(
         (m) => m.MultiSelectionPageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-lifestyle/:one/:two/:three/:four/:five/:six/:seven",
@@ -343,6 +393,7 @@ const routes: Routes = [
       import("./pages/edit-lifestyle/edit-lifestyle.module").then(
         (m) => m.EditLifestylePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-lifestyle/:one/:two/:three/:four/:five/:six",
@@ -350,6 +401,7 @@ const routes: Routes = [
       import("./pages/edit-lifestyle/edit-lifestyle.module").then(
         (m) => m.EditLifestylePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-lifestyle/:one/:two/:three/:four/:five",
@@ -357,6 +409,7 @@ const routes: Routes = [
       import("./pages/edit-lifestyle/edit-lifestyle.module").then(
         (m) => m.EditLifestylePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-lifestyle/:one/:two/:three/:four",
@@ -364,6 +417,7 @@ const routes: Routes = [
       import("./pages/edit-lifestyle/edit-lifestyle.module").then(
         (m) => m.EditLifestylePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-lifestyle/:one/:two/:three",
@@ -371,6 +425,7 @@ const routes: Routes = [
       import("./pages/edit-lifestyle/edit-lifestyle.module").then(
         (m) => m.EditLifestylePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-lifestyle/:one/:two",
@@ -378,6 +433,7 @@ const routes: Routes = [
       import("./pages/edit-lifestyle/edit-lifestyle.module").then(
         (m) => m.EditLifestylePageModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: "edit-lifestyle/:one",
@@ -385,6 +441,7 @@ const routes: Routes = [
       import("./pages/edit-lifestyle/edit-lifestyle.module").then(
         (m) => m.EditLifestylePageModule
       ),
+    canActivate: [AuthGuard],
   },
 ];
 

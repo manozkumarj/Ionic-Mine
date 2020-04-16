@@ -199,16 +199,21 @@ export class ModalPage implements OnInit {
       } else {
         if (data["error"]) {
           console.log("Doctor addition failed");
+          this.utilities.presentToastWarning("Failed, Something went wrong");
         } else {
           console.log("Doctor added");
+          this.utilities.presentToastSuccess("Success, Doctor added");
         }
       }
+      this.router.navigate(["/home"]);
     });
   };
 
   onCancel = (isRedirect = false) => {
     this.modalCtrl.dismiss("cancel");
     if (isRedirect) {
+      if (this.action == "makePayment")
+        this.utilities.presentToastSuccess("Success, Payment successful.");
       this.router.navigate(["/home"]);
     }
   };

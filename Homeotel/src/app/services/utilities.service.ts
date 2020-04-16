@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { ToastController } from "@ionic/angular";
 
 @Injectable()
 export class UtilitiesService {
-  userId = 1;
+  userId = null;
   isLoggedId = false;
 
   selectedRelativeId = 1;
@@ -25,7 +26,30 @@ export class UtilitiesService {
   medicalHistoryPageState: any[] = [];
   lifestylePageState: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private toastController: ToastController
+  ) {}
+
+  async presentToastSuccess(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      cssClass: "toast-success",
+      animated: true,
+    });
+    toast.present();
+  }
+
+  async presentToastWarning(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      cssClass: "toast-error",
+      animated: true,
+    });
+    toast.present();
+  }
 
   formatDate(date) {
     var d = new Date(date),

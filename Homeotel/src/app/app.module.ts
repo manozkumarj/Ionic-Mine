@@ -21,6 +21,7 @@ import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { HttpClientModule } from "@angular/common/http";
 import { ApiService } from "./services/api.service";
 import { UtilitiesService } from "./services/utilities.service";
+import { AuthGuard } from "./services/auth-guard.service";
 
 @NgModule({
   declarations: [AppComponent, ModalPage],
@@ -32,7 +33,7 @@ import { UtilitiesService } from "./services/utilities.service";
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     GooglePlus,
@@ -43,8 +44,9 @@ import { UtilitiesService } from "./services/utilities.service";
     WheelSelector,
     ApiService,
     UtilitiesService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    AuthGuard,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

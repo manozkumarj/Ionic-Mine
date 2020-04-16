@@ -3,6 +3,7 @@ import { CommonService } from "../../services/common.service";
 import { ModalController } from "@ionic/angular";
 import { ModalPage } from "../modal/modal.page";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-payment-gateways",
@@ -16,7 +17,8 @@ export class PaymentGatewaysPage implements OnInit {
   constructor(
     private commonService: CommonService,
     public modalCtrl: ModalController,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private router: Router
   ) {
     this.paymentGateways = [
       {
@@ -71,6 +73,7 @@ export class PaymentGatewaysPage implements OnInit {
       },
     });
     return await modal.present();
+    this.router.navigate(["/home"]);
   }
 
   makePayment = (id) => {
