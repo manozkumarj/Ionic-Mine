@@ -123,7 +123,7 @@ router.get("/doctor-homeokits/:doctorId/:userId", (req, res) => {
   var params = [doctorId, userId];
 
   db.executeQuery(
-    "call sp_doctor_kits_get(?,?)",
+    "call sp_user_doctorKits_get(?,?)",
     params,
     res,
     db.sendResponseNormal
@@ -181,7 +181,7 @@ router.get("/doctor-consultant-details-masters/:doctorId", (req, res) => {
   var params = [doctorId];
 
   db.executeQuery(
-    "call sp_doctor_consultant_masters_get(?)",
+    "call sp_user_doctorConsultant_masters_get(?)",
     params,
     res,
     db.sendResponseNormal
