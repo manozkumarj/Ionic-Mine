@@ -79,6 +79,7 @@ export class EditProfilePage implements OnInit {
       this.currentQuestion = "nine";
       this.columnName = "weight";
       this.inputField = this.utilities.profilePageDetails["weight"];
+      this.inputField = this.inputField ? this.inputField : "40";
       // Generating Weight options
       for (let i = 40; i <= 150; i++) {
         this.weightOptions.push({ description: i.toString() });
@@ -99,6 +100,7 @@ export class EditProfilePage implements OnInit {
       this.currentQuestion = "eight";
       this.columnName = "height";
       this.inputField = this.utilities.profilePageDetails["height"];
+      this.inputField = this.inputField ? this.inputField : "0.0";
 
       let splitHeightValue = this.inputField.split(".");
       this.feetValue = +splitHeightValue[0];
@@ -147,7 +149,7 @@ export class EditProfilePage implements OnInit {
       this.currentQuestion = "five";
       this.columnName = "dob";
       this.inputField = this.utilities.profilePageDetails["dob"];
-
+      this.inputField = this.inputField ? this.inputField : "2020-4-17";
       console.log(this.inputField);
 
       let splitDobValue = this.inputField.split("-");
@@ -390,6 +392,8 @@ export class EditProfilePage implements OnInit {
             }
           } else {
             console.log("Returned Success");
+            if (this.currentQuestion == "nine")
+              this.utilities.presentToastSuccess("Updated successfully.");
             this.router.navigate([this.forwardLink]);
           }
         });

@@ -199,10 +199,16 @@ export class EditLifestylePage implements OnInit {
           console.log(data[0][0]);
           if (data[0][0]["error"]) {
             console.log("Something went wrong");
+            this.utilities.presentToastWarning("Something went wrong");
           }
         } else {
           console.log("Returned Success");
-          this.router.navigate([this.forwardLink]);
+          if (this.currentQuestion == "seven") {
+            this.utilities.presentToastSuccess("Updated successfully");
+            this.router.navigate(["/health-records"]);
+          } else {
+            this.router.navigate([this.forwardLink]);
+          }
         }
       });
   };

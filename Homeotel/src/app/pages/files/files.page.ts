@@ -64,11 +64,7 @@ export class FilesPage implements OnInit {
       if (this.utilities.isInvalidApiResponseData(data)) {
         console.log("Returned Error");
       } else {
-        if (
-          typeof data != "undefined" &&
-          typeof data[0] != "undefined" &&
-          typeof data[0][0] != "undefined"
-        ) {
+        if (typeof data != "undefined" && typeof data[0] != "undefined") {
           console.log("Data returned from backend");
           this.files = data[0];
           console.log("this.files are showing below");

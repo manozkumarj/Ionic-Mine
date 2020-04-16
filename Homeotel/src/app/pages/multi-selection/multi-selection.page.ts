@@ -178,13 +178,13 @@ export class MultiSelectionPage implements OnInit {
           console.log(data);
           if (data["error"]) {
             console.log("Something went wrong");
+            this.utilities.presentToastWarning("Something went wrong");
           }
         } else {
           console.log("Returned Success");
-          // this.router.navigate(["/files"]);
+          this.utilities.presentToastSuccess("Updated successfully");
         }
+        this.router.navigate(["/health-records"]);
       });
-
-    this.router.navigate(["/medical-history"]);
   }
 }

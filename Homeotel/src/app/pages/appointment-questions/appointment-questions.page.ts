@@ -133,7 +133,8 @@ export class AppointmentQuestionsPage implements OnInit {
           console.log("Returned Success");
         }
       });
-
+    if (this.currentQuestion == "four")
+      this.utilities.presentToastSuccess("Updated successfully.");
     this.router.navigate([this.forwardLink]);
   };
 }

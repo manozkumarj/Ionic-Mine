@@ -90,14 +90,19 @@ export class ProfilePage implements OnInit {
 
           this.dob = this.utilities.profilePageDetails["dob"];
           this.dob = this.dob ? this.dob : "Enter";
+
           this.bloodGroup = this.utilities.profilePageDetails["blood_group_id"];
-          this.bloodGroup = this.bloodGroup ? this.bloodGroup : "Select";
+
+          // this.bloodGroup = this.bloodGroup ? this.bloodGroup : "Select";
+
           this.maritalStatus = this.utilities.profilePageDetails[
             "marital_status_id"
           ];
-          this.maritalStatus = this.maritalStatus
-            ? this.maritalStatus
-            : "Select";
+
+          // this.maritalStatus = this.maritalStatus
+          //   ? this.maritalStatus
+          //   : "Select";
+
           this.height = this.utilities.profilePageDetails["height"];
           this.height = this.height ? this.height + " Feet" : "Select";
 
@@ -163,6 +168,11 @@ export class ProfilePage implements OnInit {
             this.gender = "Select";
           }
 
+          console.log("***************************");
+          console.log("m_bloodGroup related master details showing below");
+          console.log(
+            this.utilities.bookAppointmentDoctorDetails["m_bloodGroup"]
+          );
           if (this.bloodGroup) {
             this.bloodGroup = this.m_bloodGroup[this.bloodGroup - 1]["name"];
           } else {

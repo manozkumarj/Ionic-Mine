@@ -324,6 +324,8 @@ export class VitalQuestionsPage implements OnInit {
           }
         } else {
           console.log("Returned Success");
+          if (this.currentQuestion == "four")
+            this.utilities.presentToastSuccess("Updated successfully.");
           this.router.navigate([this.forwardLink]);
         }
       });

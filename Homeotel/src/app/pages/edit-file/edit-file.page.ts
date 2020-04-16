@@ -75,6 +75,9 @@ export class EditFilePage implements OnInit {
             }
           } else {
             console.log("Returned Success");
+            if (this.utilities.filesPageState["type"] == "add")
+              this.utilities.presentToastSuccess("Added successfully");
+            else this.utilities.presentToastSuccess("Updated successfully");
             this.router.navigate(["/files"]);
           }
         });
