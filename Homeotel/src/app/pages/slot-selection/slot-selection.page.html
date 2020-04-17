@@ -10,7 +10,12 @@
 <ion-content>
   <ion-grid style="padding: 0px;" align-items-center justify-content-center>
     <ion-row
-      style="color: #000; background: #fff; border-bottom: 2px dashed #000; padding: 8px 0px;"
+      style="
+        color: #000;
+        background: #fff;
+        border-bottom: 2px dashed #000;
+        padding: 8px 0px;
+      "
     >
       <ion-col size="3.5" align-items-center justify-content-center>
         <p style="margin: 0;">
@@ -52,7 +57,13 @@
   <div class="container">
     <div class="scroll" scrollX="true" style="padding: 10px;">
       <ion-col
-        style="border: 1px solid #000; margin: 5px; border-radius: 5px; width: 300px; height: 220px;"
+        style="
+          border: 1px solid #000;
+          margin: 5px;
+          border-radius: 5px;
+          width: 300px;
+          height: 220px;
+        "
         *ngFor="let slot of allAvailableSlotsNTimings; let i = index"
         (click)="selectSlotDate(i)"
       >
@@ -66,8 +77,13 @@
 
   <ion-grid style="padding: 0px;" align-items-center justify-content-center>
     <ion-row
-      style="color: #000; text-align: center; background: #fff; border-bottom: 2px dashed #000; 
-      padding: 8px 0px;"
+      style="
+        color: #000;
+        text-align: center;
+        background: #fff;
+        border-bottom: 2px dashed #000;
+        padding: 8px 0px;
+      "
     >
       <ion-col>{{selectedSlotDate.title}}</ion-col>
     </ion-row>

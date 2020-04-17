@@ -257,7 +257,7 @@ export class SlotSelectionPage implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedSlotDate = this.allAvailableSlotsNTimings[2];
+    this.selectedSlotDate = this.allAvailableSlotsNTimings[0];
   }
 
   splitSlotTimings(startTime, endTime) {
@@ -466,7 +466,7 @@ export class SlotSelectionPage implements OnInit {
     console.log("this.utilities.bookAppointmentDetails are below");
     console.log(this.utilities.bookAppointmentDetails);
 
-    // this.router.navigate(["/consultation-details"]);
+    this.router.navigate(["/consultation-details"]);
   };
 
   selectSlotDate(id) {
