@@ -5,7 +5,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 @Component({
   selector: "app-slot-selection",
   templateUrl: "./slot-selection.page.html",
-  styleUrls: ["./slot-selection.page.scss"]
+  styleUrls: ["./slot-selection.page.scss"],
 })
 export class SlotSelectionPage implements OnInit {
   doctorId;
@@ -39,7 +39,7 @@ export class SlotSelectionPage implements OnInit {
     "September",
     "October",
     "November",
-    "December"
+    "December",
   ];
 
   days = [
@@ -49,7 +49,7 @@ export class SlotSelectionPage implements OnInit {
     "Wednesday",
     "Thursday",
     "Friday",
-    "Saturday"
+    "Saturday",
   ];
 
   d = new Date();
@@ -89,7 +89,7 @@ export class SlotSelectionPage implements OnInit {
 
     let allSlots: any[] = [];
     this.utilities.bookAppointmentDoctorDetails["doctorSlotDetails"].forEach(
-      slot => {
+      (slot) => {
         console.log(
           "weekDays -> " +
             slot["weekDays"] +
@@ -103,7 +103,7 @@ export class SlotSelectionPage implements OnInit {
         let clinicId = slot["clinicId"];
 
         let weekDaysArray = slot["weekDays"].split(",");
-        weekDaysArray.forEach(weekDay => {
+        weekDaysArray.forEach((weekDay) => {
           let currentSlot: any[] = [];
           currentSlot["fromTime"] = tempFromTime;
           currentSlot["toTime"] = tempToTime;
@@ -146,7 +146,7 @@ export class SlotSelectionPage implements OnInit {
 
           currentSlot["timings"] = [
             ...currentSlot["timings"],
-            ...this.tempTimings
+            ...this.tempTimings,
           ];
 
           // Morning slots generation
@@ -163,7 +163,7 @@ export class SlotSelectionPage implements OnInit {
 
           currentSlot["morningTimings"] = [
             ...currentSlot["morningTimings"],
-            ...this.tempTimings
+            ...this.tempTimings,
           ];
 
           // Afternoon slots generation
@@ -183,7 +183,7 @@ export class SlotSelectionPage implements OnInit {
 
           currentSlot["afternoonTimings"] = [
             ...currentSlot["afternoonTimings"],
-            ...this.tempTimings
+            ...this.tempTimings,
           ];
 
           // console.log("All timings showing below ------------");
@@ -206,13 +206,13 @@ export class SlotSelectionPage implements OnInit {
           console.log(currentSlot);
           this.allAvailableSlotsNTimings = [
             ...this.allAvailableSlotsNTimings,
-            currentSlot
+            currentSlot,
           ];
           console.log("******************************************************");
         });
         this.allAvailableWeekdays = [
           ...this.allAvailableWeekdays,
-          ...weekDaysArray
+          ...weekDaysArray,
         ];
       }
     );
@@ -438,8 +438,20 @@ export class SlotSelectionPage implements OnInit {
   selectSlot = (time, timeNSession) => {
     this.utilities.bookAppointmentDetails["time"] = time;
     this.utilities.bookAppointmentDetails["timeNSession"] = timeNSession;
+
+    let splitNGrabYear = this.selectedSlotDate["dateNtime"].split("-")[0];
+    let splitNGrabMonth = this.selectedSlotDate["dateNtime"].split("-")[1];
+    let splitNGrabDate = this.selectedSlotDate["dateNtime"].split("-")[2];
+
+    if (splitNGrabMonth.length < 2) splitNGrabMonth = "0" + splitNGrabMonth;
+    if (splitNGrabDate.length < 2) splitNGrabDate = "0" + splitNGrabDate;
+
+    this.selectedSlotDate["dateNtime"] =
+      splitNGrabYear + "-" + splitNGrabMonth + "-" + splitNGrabDate;
+
     this.utilities.bookAppointmentDetails["dateNtime"] =
       this.selectedSlotDate["dateNtime"] + " " + time + ":00";
+
     this.utilities.bookAppointmentDetails["timestamp"] = this.selectedSlotDate[
       "title"
     ];
@@ -449,7 +461,12 @@ export class SlotSelectionPage implements OnInit {
     console.log("Slot selected for ->" + time);
     console.log("timeNSession selected for ->" + timeNSession);
     console.log("timestamp selected for ->" + this.selectedSlotDate["title"]);
-    this.router.navigate(["/consultation-details"]);
+
+    console.log("*********************");
+    console.log("this.utilities.bookAppointmentDetails are below");
+    console.log(this.utilities.bookAppointmentDetails);
+
+    // this.router.navigate(["/consultation-details"]);
   };
 
   selectSlotDate(id) {

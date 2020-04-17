@@ -69,6 +69,20 @@ function sendResponsePhoto(rows, res) {
     });
 }
 
+function sendResponseWithMultiplePhotos(rows, res) {
+  if (rows[0].length > 0) {
+    for (var i = 0; i < rows[0].length; i++) {
+      if (rows[0][i]["photo"])
+        rows[0][i]["photo"] = Buffer.from(
+          rows[0][i]["photo"],
+          "binary"
+        ).toString("base64");
+    }
+    res.json(rows);
+  } else res.json({ message: "Zero rows fetched." });
+}
+
 exports.executeQuery = executeQuery;
 exports.sendResponseNormal = sendResponseNormal;
 exports.sendResponsePhoto = sendResponsePhoto;
+exports.sendResponseWithMultiplePhotos = sendResponseWithMultiplePhotos;
