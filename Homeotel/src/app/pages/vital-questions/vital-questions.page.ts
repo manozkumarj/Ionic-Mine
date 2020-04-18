@@ -21,12 +21,27 @@ export class VitalQuestionsPage implements OnInit {
   pulseRates;
   respiratoryRates;
 
-  selectedTemperature = "0.0";
-  selectedSystolic = "-NA-";
-  selectedDiastolic = "-NA-";
-  selectedPulserate = "-NA-";
+  selectedTemperature = this.utilities.vitalPageState["temperature"]
+    ? this.utilities.vitalPageState["temperature"]
+    : "0.0";
+
+  selectedSystolic = this.utilities.vitalPageState["bp_systolic"]
+    ? this.utilities.vitalPageState["bp_systolic"]
+    : "-NA-";
+
+  selectedDiastolic = this.utilities.vitalPageState["bp_diastolic"]
+    ? this.utilities.vitalPageState["bp_diastolic"]
+    : "-NA-";
+
+  selectedPulserate = this.utilities.vitalPageState["pulserate"]
+    ? this.utilities.vitalPageState["pulserate"]
+    : "-NA-";
+
+  selectedRespiratoryrate = this.utilities.vitalPageState["respiratoryrate"]
+    ? this.utilities.vitalPageState["respiratoryrate"]
+    : "-NA-";
+
   selectedBp = "-NA-";
-  selectedRespiratoryrate = "-NA-";
 
   temperatureLeftValue: number = 0;
   temperatureRightValue: number = 0;
@@ -37,7 +52,8 @@ export class VitalQuestionsPage implements OnInit {
 
   systolicOptions: any[] = [];
   diastolicOptions: any[] = [];
-  temperatureOptions: any[] = [];
+  temperatureLeftSideOptions: any[] = [];
+  temperatureRightSideOptions: any[] = [];
   pulserateOptions: any[] = [];
   respiratoryrateOptions: any[] = [];
 
@@ -90,6 +106,7 @@ export class VitalQuestionsPage implements OnInit {
       console.log(this.systolicOptions);
       console.log("diastolicOptions are below");
       console.log(this.diastolicOptions);
+      this.selectBP();
     } else if (paramThree) {
       console.log("paramThree");
       this.title = `${paramThree} of 4`;
@@ -113,6 +130,7 @@ export class VitalQuestionsPage implements OnInit {
       }
       console.log("respiratoryrateOptions are below");
       console.log(this.respiratoryrateOptions);
+      this.selectRespiratoryrate();
     } else if (paramTwo) {
       console.log("paramTwo");
       this.title = `${paramTwo} of 4`;
@@ -134,6 +152,7 @@ export class VitalQuestionsPage implements OnInit {
       }
       console.log("pulserateOptions are below");
       console.log(this.pulserateOptions);
+      this.selectPulserate();
     } else if (paramOne) {
       console.log("paramOne");
       this.title = `${paramOne} of 4`;
@@ -149,11 +168,19 @@ export class VitalQuestionsPage implements OnInit {
       this.temperatureRightValue = +splitTemperature[1];
 
       // Generating Temperature options
-      for (let i = 0; i <= 200; i++) {
-        this.temperatureOptions.push({ description: i.toString() });
+      for (let i = 0; i <= 99; i++) {
+        this.temperatureRightSideOptions.push({ description: i.toString() });
       }
-      console.log("temperatureOptions are below");
-      console.log(this.temperatureOptions);
+      for (let i = 0; i <= 200; i++) {
+        this.temperatureLeftSideOptions.push({ description: i.toString() });
+      }
+
+      console.log("temperatureLeftSideOptions are below");
+      console.log(this.temperatureLeftSideOptions);
+
+      console.log("temperatureRightSideOptions are below");
+      console.log(this.temperatureRightSideOptions);
+      this.selectTemperature();
     }
   }
 
@@ -232,7 +259,10 @@ export class VitalQuestionsPage implements OnInit {
     this.selector
       .show({
         title: "Select Temperature",
-        items: [this.temperatureOptions],
+        items: [
+          this.temperatureLeftSideOptions,
+          this.temperatureRightSideOptions,
+        ],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
         theme: "dark",
@@ -241,7 +271,12 @@ export class VitalQuestionsPage implements OnInit {
           //the number '2'
           {
             index: 0,
-            value: this.temperatureOptions[this.temperatureLeftValue]
+            value: this.temperatureLeftSideOptions[this.temperatureLeftValue]
+              .description,
+          },
+          {
+            index: 1,
+            value: this.temperatureRightSideOptions[this.temperatureRightValue]
               .description,
           },
         ],
@@ -249,11 +284,19 @@ export class VitalQuestionsPage implements OnInit {
       .then(
         (result) => {
           console.log(
-            "Selected Temperature value is --> " + result[0].description
+            "Selected Temperature left value is --> " + result[0].description
           );
           console.log(result[0].description + " at index: " + result[0].index);
           this.temperatureLeftValue = result[0].index;
-          this.selectedTemperature = result[0].description;
+
+          console.log(
+            "Selected Temperature right value is --> " + result[1].description
+          );
+          console.log(result[1].description + " at index: " + result[1].index);
+          this.temperatureRightValue = result[1].index;
+
+          this.selectedTemperature =
+            result[0].description + "." + result[1].description;
         },
         (err) => console.log("Error: ", err)
       );
@@ -297,11 +340,21 @@ export class VitalQuestionsPage implements OnInit {
 
     let vitalId = this.utilities.vitalPageState["vitalId"];
     let relativeId = this.utilities.selectedRelativeId;
-    let temperature = this.utilities.vitalPageState["temperature"];
-    let pulserate = this.utilities.vitalPageState["pulserate"];
-    let respiratoryrate = this.utilities.vitalPageState["respiratoryrate"];
-    let bpSystolic = this.utilities.vitalPageState["bp_systolic"];
-    let bpDiastolic = this.utilities.vitalPageState["bp_diastolic"];
+    let temperature = (this.utilities.vitalPageState[
+      "temperature"
+    ] = this.selectedTemperature);
+    let pulserate = (this.utilities.vitalPageState[
+      "pulserate"
+    ] = this.selectedPulserate);
+    let respiratoryrate = (this.utilities.vitalPageState[
+      "respiratoryrate"
+    ] = this.selectedRespiratoryrate);
+    let bpSystolic = (this.utilities.vitalPageState[
+      "bp_systolic"
+    ] = this.selectedSystolic);
+    let bpDiastolic = (this.utilities.vitalPageState[
+      "bp_diastolic"
+    ] = this.selectedDiastolic);
 
     this.apiService
       .upsertVitalDetails(

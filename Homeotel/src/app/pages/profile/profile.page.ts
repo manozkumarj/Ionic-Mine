@@ -269,7 +269,7 @@ export class ProfilePage implements OnInit {
   }
 
   updateProfilePhoto(photo) {
-    this.apiService.upsertUserPhoto(0, photo).subscribe((data) => {
+    this.apiService.upsertUserPhoto(1, photo).subscribe((data) => {
       console.log("Returned from Backend");
       console.log(JSON.stringify(data));
       if (this.utilities.isInvalidApiResponseData(data)) {

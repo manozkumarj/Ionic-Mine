@@ -130,8 +130,10 @@
 
         <ion-grid class="optionsGrid">
           <ion-row>
-            <ion-col size="6" class="showValue">{{selectedFeet}} </ion-col>
-            <ion-col size="6" class="showValue">{{selectedInches}} </ion-col>
+            <ion-col size="6" class="showValue">{{selectedFeet}} Feet </ion-col>
+            <ion-col size="6" class="showValue"
+              >{{selectedInches}} Inches
+            </ion-col>
           </ion-row>
         </ion-grid>
 
@@ -177,7 +179,7 @@
 
   <ion-grid
     class="btnsGrid"
-    *ngIf="currentQuestion == 'one' || currentQuestion == 'two' || currentQuestion == 'three'"
+    *ngIf="currentQuestion == 'one' || currentQuestion == 'two' || currentQuestion == 'three' || currentQuestion == 'five' || currentQuestion == 'eight' || currentQuestion == 'nine'"
   >
     <ion-row>
       <ion-col (click)="answered()" class="btn-success">

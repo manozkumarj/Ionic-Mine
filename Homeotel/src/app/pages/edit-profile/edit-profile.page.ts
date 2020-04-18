@@ -193,6 +193,10 @@ export class EditProfilePage implements OnInit {
       console.log(this.dobMonthOptions);
       console.log("dobYearOptions are below");
       console.log(this.dobYearOptions);
+
+      this.selectedDob = this.inputField =
+        this.dobYearValue + "-" + this.dobMonthValue + "-" + this.dobDateValue;
+
       this.selectDob();
 
       console.log(
@@ -296,7 +300,7 @@ export class EditProfilePage implements OnInit {
           this.dobDateValue = result[2].index;
           let d = result[2].description;
 
-          this.selectedDob = y + m + d;
+          this.selectedDob = this.inputField = y + "-" + m + "-" + d;
         },
         (err) => console.log("Error: ", err)
       );
@@ -331,9 +335,9 @@ export class EditProfilePage implements OnInit {
           console.log(result[1].description + " at index: " + result[1].index);
           this.feetValue = result[0].index;
           this.selectedFeet = result[0].description;
-
           this.inchesValue = result[1].index;
           this.selectedInches = result[1].description;
+          this.inputField = this.selectedFeet + "." + this.selectedInches;
         },
         (err) => console.log("Error: ", err)
       );
@@ -361,7 +365,7 @@ export class EditProfilePage implements OnInit {
           console.log("Selected Weight value is --> " + result[0].description);
           console.log(result[0].description + " at index: " + result[0].index);
           this.weightValue = result[0].index;
-          this.selectedWeight = result[0].description;
+          this.selectedWeight = this.inputField = result[0].description;
         },
         (err) => console.log("Error: ", err)
       );

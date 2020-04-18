@@ -40,22 +40,7 @@ export class FilesPage implements OnInit {
     this.getFiles();
   }
 
-  ngOnInit() {
-    this.files = [
-      {
-        id: 0,
-        imageUrl: "assets/images/milinda.jpg",
-        fileName: "Prescription",
-        date: "24 Mar 2020",
-      },
-      {
-        id: 1,
-        imageUrl: "assets/images/zuck.jpg",
-        fileName: "Lab Results",
-        date: "15 Mar 2019",
-      },
-    ];
-  }
+  ngOnInit() {}
 
   getFiles() {
     this.apiService.getFiles().subscribe((data) => {
@@ -164,7 +149,9 @@ export class FilesPage implements OnInit {
       let fileIndex = this.files.findIndex((file) => file["file_id"] == id);
       console.log("fileIndex -> " + fileIndex);
       console.log(this.files[fileIndex]);
-      this.utilities.filesPageState["photo"] = "assets/images/mark.jpg";
+      this.utilities.filesPageState["photo"] = this.files[fileIndex][
+        "file_blob"
+      ];
       this.utilities.filesPageState["fileTypeId"] = this.files[fileIndex][
         "file_type_id"
       ];
@@ -172,7 +159,7 @@ export class FilesPage implements OnInit {
         "file_id"
       ];
     } else {
-      this.utilities.filesPageState["photo"] = "assets/images/milinda.jpg";
+      this.utilities.filesPageState["photo"] = this.capturedSnapURL;
       this.utilities.filesPageState["fileTypeId"] = 0;
       this.utilities.filesPageState["fileId"] = 0;
     }
