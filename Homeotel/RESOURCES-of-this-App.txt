@@ -8,6 +8,16 @@ Links which helped to solve the errors I faced:
 * https://forum.ionicframework.com/t/how-to-resolve-babel-error-when-installing-geolocation-in-ionic-app/185542/2
 
 
+Process to execute the App:
+----------------------------------------------------------------------------------------
+* Delete 'node_modules', 'platforms', 'plugins' folders
+* run 'npm install npm-force-resolutions --save-dev'
+* run 'npm install'
+* run 'npx npm-force-resolutions'
+* run 'npm install'
+* run 'ionic cordova platform add android'
+* run 'ionic cordova run android --device'
+
 
 
 
