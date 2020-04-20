@@ -4,7 +4,8 @@ import { UtilitiesService } from "./utilities.service";
 
 @Injectable()
 export class ApiService {
-  apiUrl = "http://175.101.1.227:8123";
+  // apiUrl = "http://175.101.1.227:8123";
+  apiUrl = "http://localhost:8088";
   constructor(private http: HttpClient, private utilities: UtilitiesService) {}
 
   // get node id from APi
@@ -292,5 +293,17 @@ export class ApiService {
       heatId,
     };
     return this.http.post(this.apiUrl + path, body);
+  }
+
+  // Deleting vital
+  deleteVital(vitalId) {
+    var path = "/user/delete-vital/" + vitalId;
+    return this.http.get(this.apiUrl + path);
+  }
+
+  // Deleting file
+  deleteFile(fileId) {
+    var path = "/user/delete-file/" + fileId;
+    return this.http.get(this.apiUrl + path);
   }
 }

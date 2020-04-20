@@ -12,7 +12,7 @@ import { ApiService } from "src/app/services/api.service";
   styleUrls: ["./files.page.scss"],
 })
 export class FilesPage implements OnInit {
-  files;
+  files: any[] = [];
   capturedSnapURL: string;
   croppedImagepath = "";
   isLoading = false;
@@ -64,6 +64,60 @@ export class FilesPage implements OnInit {
         }
       }
     });
+  }
+
+  openOptionsMenu(id) {
+    console.log("Selected ID -> " + id);
+    let actionSheet = this.actShtCtr
+      .create({
+        cssClass: "action-sheets-basic-page",
+        buttons: [
+          {
+            text: "Edit",
+            handler: () => {
+              console.log("Edit clicked");
+              this.redirect("edit", id);
+            },
+          },
+          {
+            text: "Delete",
+            handler: () => {
+              console.log("Delte clicked");
+
+              this.apiService.deleteFile(id).subscribe((data) => {
+                console.log("Returned from Backend");
+                console.log(data);
+                if (this.utilities.isInvalidApiResponseData(data)) {
+                  console.log("Returned Error");
+                } else {
+                  if (typeof data != "undefined") {
+                    console.log("Returned from backend");
+                    this.files = this.files.filter(
+                      (file) => file.file_id !== id
+                    );
+                    this.utilities.presentToastSuccess(
+                      "Success, file is deleted."
+                    );
+                  } else {
+                    console.log("Something went wrong in backend");
+                    this.utilities.presentToastSuccess(
+                      "Failed, Something went wrong."
+                    );
+                  }
+                }
+              });
+            },
+          },
+          {
+            text: "Close",
+            role: "cancel",
+            handler: () => {
+              console.log("Cancel clicked");
+            },
+          },
+        ],
+      })
+      .then((ac) => ac.present());
   }
 
   pickImage(sourceType) {
@@ -139,6 +193,14 @@ export class FilesPage implements OnInit {
         ],
       })
       .then((ac) => ac.present());
+  }
+
+  getPhotoDataUrl(photo) {
+    if (photo) {
+      return "data:image/jpeg;base64," + photo;
+    } else {
+      return "assets/images/zuck.jpg";
+    }
   }
 
   redirect(type, id = 0) {

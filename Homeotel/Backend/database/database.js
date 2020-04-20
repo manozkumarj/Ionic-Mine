@@ -79,7 +79,7 @@ function sendResponseWithMultiplePhotos(rows, res) {
         ).toString("base64");
     }
     res.json(rows);
-  } else res.json({ message: "Zero rows fetched." });
+  } else res.json(rows);
 }
 
 exports.executeQuery = executeQuery;

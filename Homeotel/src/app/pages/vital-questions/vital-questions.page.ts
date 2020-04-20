@@ -21,34 +21,24 @@ export class VitalQuestionsPage implements OnInit {
   pulseRates;
   respiratoryRates;
 
-  selectedTemperature = this.utilities.vitalPageState["temperature"]
-    ? this.utilities.vitalPageState["temperature"]
-    : "0.0";
+  selectedTemperature;
 
-  selectedSystolic = this.utilities.vitalPageState["bp_systolic"]
-    ? this.utilities.vitalPageState["bp_systolic"]
-    : "-NA-";
+  selectedSystolic;
 
-  selectedDiastolic = this.utilities.vitalPageState["bp_diastolic"]
-    ? this.utilities.vitalPageState["bp_diastolic"]
-    : "-NA-";
+  selectedDiastolic;
 
-  selectedPulserate = this.utilities.vitalPageState["pulserate"]
-    ? this.utilities.vitalPageState["pulserate"]
-    : "-NA-";
+  selectedPulserate;
 
-  selectedRespiratoryrate = this.utilities.vitalPageState["respiratoryrate"]
-    ? this.utilities.vitalPageState["respiratoryrate"]
-    : "-NA-";
+  selectedRespiratoryrate;
 
   selectedBp = "-NA-";
 
-  temperatureLeftValue: number = 0;
-  temperatureRightValue: number = 0;
-  systolicValue: number = 0;
-  diastolicValue: number = 0;
-  pulserateValue: number = 0;
-  respiratoryrateValue: number = 0;
+  temperatureLeftValue = "0";
+  temperatureRightValue = "0";
+  systolicValue = "0";
+  diastolicValue = "0";
+  pulserateValue = "0";
+  respiratoryrateValue = "0";
 
   systolicOptions: any[] = [];
   diastolicOptions: any[] = [];
@@ -82,14 +72,17 @@ export class VitalQuestionsPage implements OnInit {
       this.title = `${paramFour} of 4`;
       this.backwardLink = `/vital-questions/1/2/3`;
       this.forwardLink = `/vitals`;
-      this.question = "Please enter your blood pressure?";
+      this.question = "Please select blood pressure?";
       this.currentQuestion = "four";
-      this.selectedSystolic = this.systolicValue = this.utilities.vitalPageState[
-        "bp_systolic"
-      ];
-      this.selectedDiastolic = this.diastolicValue = this.utilities.vitalPageState[
-        "bp_diastolic"
-      ];
+
+      this.selectedSystolic = this.utilities.vitalPageState["bp_systolic"]
+        ? this.utilities.vitalPageState["bp_systolic"]
+        : "-NA-";
+
+      this.selectedDiastolic = this.utilities.vitalPageState["bp_diastolic"]
+        ? this.utilities.vitalPageState["bp_diastolic"]
+        : "-NA-";
+
       console.log(
         "bp values -> " + this.selectedSystolic + "-" + this.selectedDiastolic
       );
@@ -112,17 +105,20 @@ export class VitalQuestionsPage implements OnInit {
       this.title = `${paramThree} of 4`;
       this.backwardLink = `/vital-questions/1/2`;
       this.forwardLink = `/vital-questions/1/2/3/4`;
-      this.question = "Please enter your respiratory rate?";
+      this.question = "Please select respiratory rate?";
       this.currentQuestion = "three";
+
       this.selectedRespiratoryrate = this.utilities.vitalPageState[
         "respiratoryrate"
       ];
       this.selectedRespiratoryrate = this.selectedRespiratoryrate
         ? this.selectedRespiratoryrate
         : "-N/A-";
+
       this.respiratoryrateValue = this.selectedRespiratoryrate
-        ? +this.selectedRespiratoryrate
-        : 0;
+        ? this.selectedRespiratoryrate.toString()
+        : "0";
+
       console.log("respiratoryrate value -> " + this.respiratoryrateValue);
       // Generating respiratoryrate options
       for (let i = 0; i <= 200; i++) {
@@ -136,16 +132,18 @@ export class VitalQuestionsPage implements OnInit {
       this.title = `${paramTwo} of 4`;
       this.backwardLink = `/vital-questions/1`;
       this.forwardLink = `/vital-questions/1/2/3`;
-      this.question = "Please enter your pulse rate?";
+      this.question = "Please select pulse rate?";
       this.currentQuestion = "two";
+
       this.selectedPulserate = this.utilities.vitalPageState["pulserate"];
       this.selectedPulserate = this.selectedPulserate
         ? this.selectedPulserate
         : "-N/A-";
+
       console.log("pulserate value -> " + this.selectedPulserate);
       this.pulserateValue = this.selectedPulserate
-        ? +this.selectedPulserate
-        : 0;
+        ? this.selectedPulserate.toString()
+        : "0";
       // Generating pulserate options
       for (let i = 0; i <= 200; i++) {
         this.pulserateOptions.push({ description: i.toString() });
@@ -158,14 +156,19 @@ export class VitalQuestionsPage implements OnInit {
       this.title = `${paramOne} of 4`;
       this.backwardLink = `/vitals`;
       this.forwardLink = `/vital-questions/1/2`;
-      this.question = "Please enter your temperature?";
+      this.question = "Please select temperature?";
       this.currentQuestion = "one";
-      let value = this.utilities.vitalPageState["temperature"].toString();
+
+      this.selectedTemperature = this.utilities.vitalPageState["temperature"]
+        ? this.utilities.vitalPageState["temperature"].toString()
+        : "0.0";
+
+      let value = this.selectedTemperature;
       this.selectedTemperature = value;
       console.log("temperature value -> " + value);
-      let splitTemperature = value.split(".");
-      this.temperatureLeftValue = +splitTemperature[0];
-      this.temperatureRightValue = +splitTemperature[1];
+      let splitTemperature = this.selectedTemperature.split(".");
+      this.temperatureLeftValue = splitTemperature[0].toString();
+      this.temperatureRightValue = splitTemperature[1].toString();
 
       // Generating Temperature options
       for (let i = 0; i <= 99; i++) {
@@ -238,18 +241,18 @@ export class VitalQuestionsPage implements OnInit {
           //the number '2'
           {
             index: 0,
-            value: this.pulserateOptions[this.diastolicValue].description,
+            value: this.pulserateOptions[this.pulserateValue].description,
           },
         ],
       })
       .then(
         (result) => {
           console.log(
-            "Selected Diastolic value is --> " + result[0].description
+            "Selected selectedPulserate value is --> " + result[0].description
           );
           console.log(result[0].description + " at index: " + result[0].index);
-          this.diastolicValue = result[0].index;
-          this.selectedDiastolic = result[0].description;
+          this.pulserateValue = result[0].index;
+          this.selectedPulserate = result[0].description;
         },
         (err) => console.log("Error: ", err)
       );

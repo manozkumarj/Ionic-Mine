@@ -60,7 +60,29 @@ export class VitalsPage implements OnInit {
             text: "Delete",
             handler: () => {
               console.log("Delte clicked");
-              this.vitals = this.vitals.filter((vital) => vital.id !== id);
+
+              this.apiService.deleteVital(id).subscribe((data) => {
+                console.log("Returned from Backend");
+                console.log(data);
+                if (this.utilities.isInvalidApiResponseData(data)) {
+                  console.log("Returned Error");
+                } else {
+                  if (typeof data != "undefined") {
+                    console.log("Returned from backend");
+                    this.vitals = this.vitals.filter(
+                      (vital) => vital.vital_id !== id
+                    );
+                    this.utilities.presentToastSuccess(
+                      "Success, Vital is deleted."
+                    );
+                  } else {
+                    console.log("Something went wrong in backend");
+                    this.utilities.presentToastSuccess(
+                      "Failed, Something went wrong."
+                    );
+                  }
+                }
+              });
             },
           },
           {
@@ -104,12 +126,12 @@ export class VitalsPage implements OnInit {
         "bp_diastolic"
       ];
     } else {
-      this.utilities.vitalPageState["vitalId"] = 0;
-      this.utilities.vitalPageState["temperature"] = "0.0";
-      this.utilities.vitalPageState["pulserate"] = "0";
-      this.utilities.vitalPageState["respiratoryrate"] = "0";
-      this.utilities.vitalPageState["bp_systolic"] = "0";
-      this.utilities.vitalPageState["bp_diastolic"] = "0";
+      this.utilities.vitalPageState["vitalId"] = null;
+      this.utilities.vitalPageState["temperature"] = null;
+      this.utilities.vitalPageState["pulserate"] = null;
+      this.utilities.vitalPageState["respiratoryrate"] = null;
+      this.utilities.vitalPageState["bp_systolic"] = null;
+      this.utilities.vitalPageState["bp_diastolic"] = null;
     }
     this.router.navigate(["/vital-questions", 1]);
   }

@@ -10,20 +10,26 @@
 <ion-content>
   <div *ngIf="files.length > 0; else noFiles" style="margin-bottom: 150px;">
     <ion-grid class="grid doctorGrid" *ngFor="let file of files">
-      <ion-row
-        style="color: #000; background: #fff;"
-        (click)="redirect('edit', file.file_id)"
-      >
-        <ion-col size="3">
-          <p style="margin: 0; padding: 6px; text-align: center;">
-            <img class="fileImage" [src]="file.file_blob" height="70px" />
-          </p>
-        </ion-col>
-        <ion-col class="fileInfoCol">
-          <p class="fileName">{{file.name}}</p>
-          <p>{{file.file_date}}</p>
-        </ion-col>
-      </ion-row>
+      <ion-item detail>
+        <ion-row
+          style="color: #000; background: #fff;"
+          (click)="openOptionsMenu(file.file_id)"
+        >
+          <ion-col size="4">
+            <p style="margin: 0; padding: 6px; text-align: center;">
+              <img
+                class="fileImage"
+                [src]="getPhotoDataUrl(file.photo)"
+                height="70px"
+              />
+            </p>
+          </ion-col>
+          <ion-col class="fileInfoCol">
+            <p class="fileName">{{file.name}}</p>
+            <p>{{file.file_date}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-item>
     </ion-grid>
   </div>
 

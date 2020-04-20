@@ -349,7 +349,7 @@ router.get("/get-files/:userId", (req, res) => {
     "call sp_user_files_get(?)",
     params,
     res,
-    db.sendResponseNormal
+    db.sendResponseWithMultiplePhotos
   );
 });
 
@@ -359,7 +359,7 @@ router.post("/upsert-file", (req, res) => {
   var relativeId = req.body.relativeId;
   var fileId = req.body.fileId;
   var fileTypeId = req.body.fileTypeId;
-  var photo = req.body.photo;
+  var photo = req.body.photo ? Buffer.from(req.body.photo, "base64") : null;
   var params = [userID, relativeId, fileId, fileTypeId, photo];
 
   // console.log("Received params");
@@ -367,6 +367,20 @@ router.post("/upsert-file", (req, res) => {
 
   db.executeQuery(
     "call sp_user_file_upsert(?,?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
+// Deleting file
+router.get("/delete-file/:fileId", (req, res) => {
+  var fileId = req.params.fileId;
+  // console.log("Received fileId -> " + fileId);
+  var params = [fileId];
+
+  db.executeQuery(
+    "call sp_user_file_delete(?)",
     params,
     res,
     db.sendResponseNormal
@@ -489,6 +503,20 @@ router.post("/upsert-lifestyle", (req, res) => {
 
   db.executeQuery(
     "call sp_user_lifestyle_upsert(?,?,?,?,?,?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
+// Deleting vitals
+router.get("/delete-vital/:vitalId", (req, res) => {
+  var vitalId = req.params.vitalId;
+  // console.log("Received vitalId -> " + vitalId);
+  var params = [vitalId];
+
+  db.executeQuery(
+    "call sp_user_vital_delete(?)",
     params,
     res,
     db.sendResponseNormal
