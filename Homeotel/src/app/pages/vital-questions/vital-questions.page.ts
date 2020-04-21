@@ -75,13 +75,13 @@ export class VitalQuestionsPage implements OnInit {
       this.question = "Please select blood pressure?";
       this.currentQuestion = "four";
 
-      this.selectedSystolic = this.utilities.vitalPageState["bp_systolic"]
-        ? this.utilities.vitalPageState["bp_systolic"]
-        : "-NA-";
+      let getSystolic = this.utilities.vitalPageState["bp_systolic"];
+      this.selectedSystolic = getSystolic ? getSystolic : "-NA-";
+      this.systolicValue = getSystolic ? getSystolic.toString() : "0";
 
-      this.selectedDiastolic = this.utilities.vitalPageState["bp_diastolic"]
-        ? this.utilities.vitalPageState["bp_diastolic"]
-        : "-NA-";
+      let getDiastolic = this.utilities.vitalPageState["bp_diastolic"];
+      this.selectedDiastolic = getDiastolic ? getDiastolic : "-NA-";
+      this.diastolicValue = getDiastolic ? getDiastolic.toString() : "0";
 
       console.log(
         "bp values -> " + this.selectedSystolic + "-" + this.selectedDiastolic
@@ -108,18 +108,17 @@ export class VitalQuestionsPage implements OnInit {
       this.question = "Please select respiratory rate?";
       this.currentQuestion = "three";
 
-      this.selectedRespiratoryrate = this.utilities.vitalPageState[
-        "respiratoryrate"
-      ];
-      this.selectedRespiratoryrate = this.selectedRespiratoryrate
-        ? this.selectedRespiratoryrate
+      let getRespiratoryrate = this.utilities.vitalPageState["respiratoryrate"];
+
+      this.selectedRespiratoryrate = getRespiratoryrate
+        ? getRespiratoryrate
         : "-N/A-";
 
-      this.respiratoryrateValue = this.selectedRespiratoryrate
-        ? this.selectedRespiratoryrate.toString()
+      this.respiratoryrateValue = getRespiratoryrate
+        ? getRespiratoryrate.toString()
         : "0";
 
-      console.log("respiratoryrate value -> " + this.respiratoryrateValue);
+      console.log("respiratoryrate value -> " + getRespiratoryrate);
       // Generating respiratoryrate options
       for (let i = 0; i <= 200; i++) {
         this.respiratoryrateOptions.push({ description: i.toString() });
@@ -135,15 +134,11 @@ export class VitalQuestionsPage implements OnInit {
       this.question = "Please select pulse rate?";
       this.currentQuestion = "two";
 
-      this.selectedPulserate = this.utilities.vitalPageState["pulserate"];
-      this.selectedPulserate = this.selectedPulserate
-        ? this.selectedPulserate
-        : "-N/A-";
+      let getPulserate = this.utilities.vitalPageState["pulserate"];
+      this.selectedPulserate = getPulserate ? getPulserate.toString() : "-N/A-";
 
-      console.log("pulserate value -> " + this.selectedPulserate);
-      this.pulserateValue = this.selectedPulserate
-        ? this.selectedPulserate.toString()
-        : "0";
+      console.log("pulserate value -> " + getPulserate);
+      this.pulserateValue = getPulserate ? getPulserate.toString() : "0";
       // Generating pulserate options
       for (let i = 0; i <= 200; i++) {
         this.pulserateOptions.push({ description: i.toString() });
@@ -374,8 +369,8 @@ export class VitalQuestionsPage implements OnInit {
         console.log(JSON.stringify(data));
         if (this.utilities.isInvalidApiResponseData(data)) {
           console.log("Returned Error");
-          console.log(data[0][0]);
-          if (data[0][0]["error"]) {
+          console.log(data);
+          if (data["error"]) {
             console.log("Something went wrong");
           }
         } else {

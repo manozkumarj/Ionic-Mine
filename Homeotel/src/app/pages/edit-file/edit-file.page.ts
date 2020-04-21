@@ -69,8 +69,8 @@ export class EditFilePage implements OnInit {
           console.log(JSON.stringify(data));
           if (this.utilities.isInvalidApiResponseData(data)) {
             console.log("Returned Error");
-            console.log(data[0][0]);
-            if (data[0][0]["error"]) {
+            console.log(data);
+            if (data["error"]) {
               console.log("Something went wrong");
             }
           } else {

@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 
 const app = express();
 const cors = require("cors");
-const port = 8088;
+const port = 8123;
 
 // parsing the data
 app.use(bodyParser.json({ limit: "10mb" }));
