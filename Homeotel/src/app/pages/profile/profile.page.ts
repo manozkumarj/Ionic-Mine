@@ -190,8 +190,8 @@ export class ProfilePage implements OnInit {
           // Master data
           let photoData = data[2];
           if (photoData.length > 0) {
-            console.log("photoData -> ");
-            console.log(photoData[0]["photo"]);
+            // console.log("photoData -> ");
+            // console.log(photoData[0]["photo"]);
             this.profilePhoto = this.getPhotoDataUrl(photoData[0]["photo"]);
           } else {
             this.profilePhoto = "assets/images/milinda.jpg";
@@ -205,7 +205,7 @@ export class ProfilePage implements OnInit {
 
   getPhotoDataUrl(photoImgData) {
     if (photoImgData) {
-      return "data:image/jpeg;base64," + photoImgData;
+      return photoImgData;
     } else {
       return "assets/images/zuck.jpg";
     }
@@ -274,12 +274,15 @@ export class ProfilePage implements OnInit {
       console.log(JSON.stringify(data));
       if (this.utilities.isInvalidApiResponseData(data)) {
         console.log("Returned Error");
-        console.log(data[0][0]);
-        if (data[0][0]["error"]) {
+        console.log(data);
+        if (data["error"]) {
           console.log("Something went wrong");
         }
       } else {
         console.log("Returned Success");
+        this.utilities.presentToastSuccess(
+          "Profile photo updated successfully."
+        );
       }
     });
   }

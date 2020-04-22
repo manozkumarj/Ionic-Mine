@@ -211,6 +211,7 @@ export class VitalQuestionsPage implements OnInit {
           console.log(result[0].description + " at index: " + result[0].index);
           this.systolicValue = result[0].index;
           this.selectedSystolic = result[0].description;
+          this.utilities.vitalPageState["bp_systolic"] = this.selectedSystolic;
 
           console.log(
             "Selected Diastolic value is --> " + result[1].description
@@ -218,6 +219,9 @@ export class VitalQuestionsPage implements OnInit {
           console.log(result[1].description + " at index: " + result[1].index);
           this.diastolicValue = result[1].index;
           this.selectedDiastolic = result[1].description;
+          this.utilities.vitalPageState[
+            "bp_diastolic"
+          ] = this.selectedDiastolic;
         },
         (err) => console.log("Error: ", err)
       );
@@ -248,6 +252,7 @@ export class VitalQuestionsPage implements OnInit {
           console.log(result[0].description + " at index: " + result[0].index);
           this.pulserateValue = result[0].index;
           this.selectedPulserate = result[0].description;
+          this.utilities.vitalPageState["pulserate"] = this.selectedPulserate;
         },
         (err) => console.log("Error: ", err)
       );
@@ -295,6 +300,10 @@ export class VitalQuestionsPage implements OnInit {
 
           this.selectedTemperature =
             result[0].description + "." + result[1].description;
+
+          this.utilities.vitalPageState[
+            "temperature"
+          ] = this.selectedTemperature;
         },
         (err) => console.log("Error: ", err)
       );
@@ -326,6 +335,9 @@ export class VitalQuestionsPage implements OnInit {
           console.log(result[0].description + " at index: " + result[0].index);
           this.respiratoryrateValue = result[0].index;
           this.selectedRespiratoryrate = result[0].description;
+          this.utilities.vitalPageState[
+            "respiratoryrate"
+          ] = this.selectedRespiratoryrate;
         },
         (err) => console.log("Error: ", err)
       );
@@ -338,21 +350,12 @@ export class VitalQuestionsPage implements OnInit {
 
     let vitalId = this.utilities.vitalPageState["vitalId"];
     let relativeId = this.utilities.selectedRelativeId;
-    let temperature = (this.utilities.vitalPageState[
-      "temperature"
-    ] = this.selectedTemperature);
-    let pulserate = (this.utilities.vitalPageState[
-      "pulserate"
-    ] = this.selectedPulserate);
-    let respiratoryrate = (this.utilities.vitalPageState[
-      "respiratoryrate"
-    ] = this.selectedRespiratoryrate);
-    let bpSystolic = (this.utilities.vitalPageState[
-      "bp_systolic"
-    ] = this.selectedSystolic);
-    let bpDiastolic = (this.utilities.vitalPageState[
-      "bp_diastolic"
-    ] = this.selectedDiastolic);
+
+    let temperature = this.utilities.vitalPageState["temperature"];
+    let pulserate = this.utilities.vitalPageState["pulserate"];
+    let respiratoryrate = this.utilities.vitalPageState["respiratoryrate"];
+    let bpSystolic = this.utilities.vitalPageState["bp_systolic"];
+    let bpDiastolic = this.utilities.vitalPageState["bp_diastolic"];
 
     this.apiService
       .upsertVitalDetails(

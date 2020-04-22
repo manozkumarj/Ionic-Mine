@@ -1,7 +1,7 @@
 * https://www.youtube.com/watch?v=L5WWrGMsnpw
 * https://www.freakyjolly.com/ionic-4-show-native-like-toast-messages-in-ionic-application-in-2-steps-without-any-plugin/
 
-
+* https://stackoverflow.com/questions/8062496/how-to-change-max-allowed-packet-size
 
 Links which helped to solve the errors I faced:
 ----------------------------------------------------------------------------
