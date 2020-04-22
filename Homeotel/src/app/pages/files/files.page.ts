@@ -197,7 +197,7 @@ export class FilesPage implements OnInit {
 
   getPhotoDataUrl(photo) {
     if (photo) {
-      return "data:image/jpeg;base64," + photo;
+      return photo;
     } else {
       return "assets/images/zuck.jpg";
     }

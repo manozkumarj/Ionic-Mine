@@ -349,7 +349,7 @@ router.get("/get-files/:userId", (req, res) => {
     "call sp_user_files_get(?)",
     params,
     res,
-    db.sendResponseWithMultiplePhotos
+    db.sendResponseNormal
   );
 });
 
@@ -359,7 +359,7 @@ router.post("/upsert-file", (req, res) => {
   var relativeId = req.body.relativeId;
   var fileId = req.body.fileId;
   var fileTypeId = req.body.fileTypeId;
-  var photo = req.body.photo ? Buffer.from(req.body.photo, "base64") : null;
+  var photo = req.body.photo;
   var params = [userID, relativeId, fileId, fileTypeId, photo];
 
   // console.log("Received params");

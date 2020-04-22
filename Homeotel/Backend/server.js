@@ -6,8 +6,8 @@ const cors = require("cors");
 const port = 8123;
 
 // parsing the data
-app.use(bodyParser.json({ limit: "10mb" }));
-app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
+app.use(bodyParser.json({ limit: "100mb" }));
+app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
 
 // cross orgin related code
 app.use(cors());
