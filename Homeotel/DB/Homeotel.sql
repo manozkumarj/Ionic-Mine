@@ -4214,7 +4214,7 @@ DECLARE exit handler for sqlwarning
 
 END;
 
- SELECT * FROM d_doctor d where uuid=IN_uuid;
+ SELECT d.*, p.experience FROM d_doctor d LEFT JOIN dd_professional p ON d.id = p.doctor_id where d.id NOT IN(SELECT Group_concat(doctor_id) FROM du_doctor) AND uuid=IN_uuid;
 
  END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

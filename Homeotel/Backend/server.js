@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const morgan = require("morgan");
 
 const app = express();
 const cors = require("cors");
@@ -12,6 +13,7 @@ app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
 // cross orgin related code
 app.use(cors());
 app.options("*", cors());
+app.use(morgan("dev"));
 
 // importing doctor related routes from routes folder
 const doctorRoutes = require("./routes/doctor");
