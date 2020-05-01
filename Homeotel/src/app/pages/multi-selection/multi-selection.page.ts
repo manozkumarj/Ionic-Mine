@@ -140,25 +140,25 @@ export class MultiSelectionPage implements OnInit {
     let userId = this.utilities.userId;
     let relativeId = this.utilities.selectedRelativeId;
 
-    let comma = "";
+    let commaSeparated = "";
 
     this.selectedObjects.forEach((element) => {
-      comma += "(";
-      comma += userId + ",";
-      comma += relativeId + ",";
-      comma += element + ",";
-      comma += userId + ",";
-      comma += userId + ",";
-      comma += "'timestamp',";
-      comma += "'timestamp'";
-      comma += ")";
-      comma += ", ";
+      commaSeparated += "(";
+      commaSeparated += userId + ",";
+      commaSeparated += relativeId + ",";
+      commaSeparated += element + ",";
+      commaSeparated += userId + ",";
+      commaSeparated += userId + ",";
+      commaSeparated += "'timestamp',";
+      commaSeparated += "'timestamp'";
+      commaSeparated += ")";
+      commaSeparated += ", ";
     });
 
-    comma = comma.replace(/,\s*$/, "");
+    commaSeparated = commaSeparated.replace(/,\s*$/, "");
 
-    console.log("comma -> ");
-    console.log(comma);
+    console.log("commaSeparated -> ");
+    console.log(commaSeparated);
 
     // console.log("allergiesArray");
     // console.log(allergiesArray);
@@ -168,7 +168,7 @@ export class MultiSelectionPage implements OnInit {
         selectedMedicalHistoryTag,
         relativeId,
         selectedObjectsString,
-        comma
+        commaSeparated
       )
       .subscribe((data) => {
         console.log("Returned from Backend");

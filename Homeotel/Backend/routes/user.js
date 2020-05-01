@@ -541,4 +541,23 @@ router.get(
   }
 );
 
+// Upserting allergies
+router.post("/upsert-relation-medical-history", (req, res) => {
+  var userID = req.body.userId;
+  var relativeId = req.body.relativeId;
+  var relationId = req.body.relationId;
+  var commaSeparated = req.body.commaSeparated;
+  var params = [userID, relativeId, relationId, commaSeparated];
+
+  console.log("Received params");
+  console.log(params);
+
+  db.executeQuery(
+    "call sp_user_relation_medical_history_upsert(?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;

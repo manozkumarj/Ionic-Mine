@@ -317,4 +317,16 @@ export class ApiService {
       this.utilities.selectedRelativeId;
     return this.http.get(this.apiUrl + path);
   }
+
+  // Upserting upsertRelationMedicalHistory
+  upsertRelationMedicalHistory(userId, relativeId, relationId, commaSeparated) {
+    var path = "/user/upsert-relation-medical-history";
+    var body = {
+      userId,
+      relativeId,
+      relationId,
+      commaSeparated,
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
 }

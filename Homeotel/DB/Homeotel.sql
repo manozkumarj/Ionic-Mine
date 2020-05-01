@@ -663,13 +663,16 @@ CREATE TABLE `ehr_allergy` (
   PRIMARY KEY (`id`,`user_id`,`relative_id`),
   KEY `FK_ehr_allergy_id` (`allergy_id`),
   CONSTRAINT `FK_ehr_allergy_id` FOREIGN KEY (`allergy_id`) REFERENCES `m_allergy` (`allergy_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_allergy`
 --
 
 /*!40000 ALTER TABLE `ehr_allergy` DISABLE KEYS */;
+INSERT INTO `ehr_allergy` (`id`,`user_id`,`relative_id`,`allergy_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,2,1,3,2,'2020-04-30 09:50:45',2,'2020-04-30 09:50:45'),
+ (2,2,1,7,2,'2020-04-30 09:50:45',2,'2020-04-30 09:50:45');
 /*!40000 ALTER TABLE `ehr_allergy` ENABLE KEYS */;
 
 
@@ -690,13 +693,15 @@ CREATE TABLE `ehr_chronic` (
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`disease_id`),
   KEY `FK_ehr_disease_id` (`disease_id`),
   CONSTRAINT `FK_ehr_disease_id` FOREIGN KEY (`disease_id`) REFERENCES `m_disease` (`disease_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_chronic`
 --
 
 /*!40000 ALTER TABLE `ehr_chronic` DISABLE KEYS */;
+INSERT INTO `ehr_chronic` (`id`,`user_id`,`relative_id`,`disease_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,2,1,8,2,'2020-04-30 09:51:23',2,'2020-04-30 09:51:23');
 /*!40000 ALTER TABLE `ehr_chronic` ENABLE KEYS */;
 
 
@@ -715,13 +720,16 @@ CREATE TABLE `ehr_current_medication` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`medication_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_current_medication`
 --
 
 /*!40000 ALTER TABLE `ehr_current_medication` DISABLE KEYS */;
+INSERT INTO `ehr_current_medication` (`id`,`user_id`,`relative_id`,`medication_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,2,1,6,2,'2020-04-30 09:50:54',2,'2020-04-30 09:50:54'),
+ (2,2,1,9,2,'2020-04-30 09:50:54',2,'2020-04-30 09:50:54');
 /*!40000 ALTER TABLE `ehr_current_medication` ENABLE KEYS */;
 
 
@@ -741,13 +749,17 @@ CREATE TABLE `ehr_family_history` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`relation_id`,`disease_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_family_history`
 --
 
 /*!40000 ALTER TABLE `ehr_family_history` DISABLE KEYS */;
+INSERT INTO `ehr_family_history` (`id`,`user_id`,`relative_id`,`relation_id`,`disease_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,2,1,1,1,1,NULL,1,NULL),
+ (2,2,1,1,2,1,NULL,1,NULL),
+ (3,2,1,3,1,1,NULL,1,NULL);
 /*!40000 ALTER TABLE `ehr_family_history` ENABLE KEYS */;
 
 
@@ -794,13 +806,15 @@ CREATE TABLE `ehr_injury` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`injury_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_injury`
 --
 
 /*!40000 ALTER TABLE `ehr_injury` DISABLE KEYS */;
+INSERT INTO `ehr_injury` (`id`,`user_id`,`relative_id`,`injury_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,2,1,5,2,'2020-04-30 09:51:18',2,'2020-04-30 09:51:18');
 /*!40000 ALTER TABLE `ehr_injury` ENABLE KEYS */;
 
 
@@ -825,13 +839,15 @@ CREATE TABLE `ehr_lifestyle` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) NOT NULL,
   PRIMARY KEY (`lifestyle_id`,`user_id`,`relative_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_lifestyle`
 --
 
 /*!40000 ALTER TABLE `ehr_lifestyle` DISABLE KEYS */;
+INSERT INTO `ehr_lifestyle` (`lifestyle_id`,`user_id`,`relative_id`,`smoking_id`,`alcohol_id`,`excercise_id`,`activity_level_id`,`profession_id`,`food_id`,`heat_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,2,1,2,2,3,1,2,3,2,2,'2020-04-30 09:48:49',2,'2020-04-30 09:48:57');
 /*!40000 ALTER TABLE `ehr_lifestyle` ENABLE KEYS */;
 
 
@@ -898,13 +914,16 @@ CREATE TABLE `ehr_post_medication` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`medication_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_post_medication`
 --
 
 /*!40000 ALTER TABLE `ehr_post_medication` DISABLE KEYS */;
+INSERT INTO `ehr_post_medication` (`id`,`user_id`,`relative_id`,`medication_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,2,1,8,2,'2020-04-30 09:51:02',2,'2020-04-30 09:51:02'),
+ (2,2,1,9,2,'2020-04-30 09:51:02',2,'2020-04-30 09:51:02');
 /*!40000 ALTER TABLE `ehr_post_medication` ENABLE KEYS */;
 
 
@@ -923,13 +942,16 @@ CREATE TABLE `ehr_surgery` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`surgery_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_surgery`
 --
 
 /*!40000 ALTER TABLE `ehr_surgery` DISABLE KEYS */;
+INSERT INTO `ehr_surgery` (`id`,`user_id`,`relative_id`,`surgery_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (1,2,1,2,2,'2020-04-30 09:51:10',2,'2020-04-30 09:51:10'),
+ (2,2,1,9,2,'2020-04-30 09:51:10',2,'2020-04-30 09:51:10');
 /*!40000 ALTER TABLE `ehr_surgery` ENABLE KEYS */;
 
 
@@ -3709,6 +3731,52 @@ END $$
 DELIMITER ;
 
 --
+-- Definition of procedure `sp_master_relations_medical_history_get`
+--
+
+DROP PROCEDURE IF EXISTS `sp_master_relations_medical_history_get`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_master_relations_medical_history_get`(IN IN_user_id INT, IN IN_relative_id INT)
+BEGIN
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+  SELECT * FROM homeotel.m_disease where is_active =1;
+
+  SELECT * FROM homeotel.m_relation where is_active =1;
+
+  SELECT efh.relative_id, efh.relation_id, efh.disease_id, md.name as diseaseName, mr.name as relationName
+    FROM homeotel.ehr_family_history efh
+    LEFT JOIN m_disease md ON efh.disease_id = md.disease_id
+    LEFT JOIN m_relation mr ON efh.relation_id = mr.relation_id
+    where efh.user_id = IN_user_id AND efh.relative_id = IN_relative_id;
+
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
 -- Definition of procedure `sp_user_add_doctor`
 --
 
@@ -4611,6 +4679,58 @@ START TRANSACTION;
 
 
 COMMIT;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_relation_medical_history_upsert`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_relation_medical_history_upsert`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_relation_medical_history_upsert`(IN IN_user_id INT,
+                         IN IN_relative_id INT, IN IN_relation_id INT, IN IN_commaSeparated VARCHAR(2000))
+BEGIN
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+    ROLLBACK;
+
+END;
+
+START TRANSACTION;
+
+    set @sql = concat("DELETE FROM ehr_family_history WHERE user_id = ",IN_user_id," AND relative_id = ",IN_relative_id," AND relation_id = ",IN_relation_id);
+    PREPARE q FROM @sql;
+    execute q;
+
+    SET @save_query = CONCAT("INSERT INTO ehr_family_history
+                            (user_id, relative_id, relation_id, disease_id, created_by, updated_by,created_at, updated_at)
+                            VALUES ",replace(IN_commaSeparated,"timestamp",now()));
+    PREPARE save_query FROM @save_query;
+    EXECUTE save_query;
+
+COMMIT;
+
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 

@@ -13,6 +13,7 @@ export class EditRelationMedicalHistoryPage implements OnInit {
   arrayOfObjects: any[] = [];
   selectedObjects: any[] = [];
   clonedArrayOfObjects: any[] = [];
+  currentRelationId;
 
   constructor(
     private utilities: UtilitiesService,
@@ -37,6 +38,10 @@ export class EditRelationMedicalHistoryPage implements OnInit {
     this.selectedObjects = this.utilities.relationsMedicalHistoryPageState[
       "selectedMedicalHistory"
     ]["selectedDiseaseIds"];
+
+    this.currentRelationId = this.utilities.relationsMedicalHistoryPageState[
+      "selectedMedicalHistory"
+    ]["relation_id"];
 
     console.log("this.selectedObjects is below");
     console.log(this.selectedObjects);
@@ -95,5 +100,54 @@ export class EditRelationMedicalHistoryPage implements OnInit {
     }
     console.log("this.selectedObjects are below");
     console.log(this.selectedObjects);
+
+    let userId = this.utilities.userId;
+    let relativeId = this.utilities.selectedRelativeId;
+    let relationId = this.currentRelationId;
+
+    let commaSeparated = "";
+
+    this.selectedObjects.forEach((diseaseId) => {
+      commaSeparated += "(";
+      commaSeparated += userId + ",";
+      commaSeparated += relativeId + ",";
+      commaSeparated += relationId + ",";
+      commaSeparated += diseaseId + ",";
+      commaSeparated += userId + ",";
+      commaSeparated += userId + ",";
+      commaSeparated += "'timestamp',";
+      commaSeparated += "'timestamp'";
+      commaSeparated += ")";
+      commaSeparated += ", ";
+    });
+
+    commaSeparated = commaSeparated.replace(/,\s*$/, "");
+
+    console.log("commaSeparated -> ");
+    console.log(commaSeparated);
+
+    this.apiService
+      .upsertRelationMedicalHistory(
+        userId,
+        relativeId,
+        relationId,
+        commaSeparated
+      )
+      .subscribe((data) => {
+        console.log("Returned from Backend");
+        console.log(JSON.stringify(data));
+        if (this.utilities.isInvalidApiResponseData(data)) {
+          console.log("Returned Error");
+          console.log(data);
+          if (data["error"]) {
+            console.log("Something went wrong");
+            this.utilities.presentToastWarning("Something went wrong");
+          }
+        } else {
+          console.log("Returned Success");
+          this.utilities.presentToastSuccess("Updated successfully");
+        }
+        this.router.navigate(["/health-records"]);
+      });
   }
 }
