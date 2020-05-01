@@ -39,7 +39,7 @@ export class MedicalHistoryRelationsPage implements OnInit {
           let i = 0;
           relations.forEach((relation) => {
             let tempObj = {};
-            let selectedDiseasesIds = [];
+            let selectedDiseaseIds = [];
 
             let list = "Select";
             let getCurrentDiseaseData = this.existingData.filter(
@@ -50,7 +50,7 @@ export class MedicalHistoryRelationsPage implements OnInit {
                 (disease) => disease.diseaseName
               );
 
-              selectedDiseasesIds = getCurrentDiseaseData.map(
+              selectedDiseaseIds = getCurrentDiseaseData.map(
                 (disease) => disease.disease_id
               );
 
@@ -61,7 +61,7 @@ export class MedicalHistoryRelationsPage implements OnInit {
             tempObj["relation_id"] = relation["relation_id"];
             tempObj["relation_name"] = relation["name"];
             tempObj["list"] = list;
-            tempObj["selectedDiseasesIds"] = selectedDiseasesIds;
+            tempObj["selectedDiseaseIds"] = selectedDiseaseIds;
 
             this.relationsWithData.push(tempObj);
           });
@@ -79,5 +79,15 @@ export class MedicalHistoryRelationsPage implements OnInit {
     console.log(this.relationsWithData[id]);
     console.log("Diseases masters -> ");
     console.log(this.diseases);
+
+    this.utilities.relationsMedicalHistoryPageState[
+      "selectedMedicalHistory"
+    ] = this.relationsWithData[id];
+
+    this.utilities.relationsMedicalHistoryPageState[
+      "diseasesMaster"
+    ] = this.diseases;
+
+    this.router.navigate(["/edit-relation-medical-history"]);
   }
 }

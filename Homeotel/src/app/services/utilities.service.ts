@@ -24,6 +24,7 @@ export class UtilitiesService {
   vitalPageState: any[] = [];
   filesPageState: any[] = [];
   medicalHistoryPageState: any[] = [];
+  relationsMedicalHistoryPageState: any[] = [];
   lifestylePageState: any[] = [];
 
   constructor(

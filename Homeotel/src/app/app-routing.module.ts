@@ -451,6 +451,14 @@ const routes: Routes = [
       ).then((m) => m.MedicalHistoryRelationsPageModule),
     canActivate: [AuthGuard],
   },
+  {
+    path: "edit-relation-medical-history",
+    loadChildren: () =>
+      import(
+        "./pages/edit-relation-medical-history/edit-relation-medical-history.module"
+      ).then((m) => m.EditRelationMedicalHistoryPageModule),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
