@@ -1,2 +1,2 @@
-* Changed 'sp_user_find_doctor' SP
+* Created 'sp_master_relations_medical_history_get' SP
 * 

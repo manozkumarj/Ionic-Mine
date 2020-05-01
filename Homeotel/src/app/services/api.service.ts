@@ -4,9 +4,9 @@ import { UtilitiesService } from "./utilities.service";
 
 @Injectable()
 export class ApiService {
-  apiUrl = "http://192.168.43.22:8123";
+  // apiUrl = "http://192.168.43.22:8123";
   // apiUrl = "http://175.101.1.227:8123";
-  // apiUrl = "http://localhost:8088";
+  apiUrl = "http://localhost:8123";
   constructor(private http: HttpClient, private utilities: UtilitiesService) {}
 
   // get node id from APi
@@ -305,6 +305,16 @@ export class ApiService {
   // Deleting file
   deleteFile(fileId) {
     var path = "/user/delete-file/" + fileId;
+    return this.http.get(this.apiUrl + path);
+  }
+
+  // Getting relations medical history details & masters
+  getRelationsMedicalHistories() {
+    var path =
+      "/user/relations-medical-history-masters-and-data/" +
+      this.utilities.userId +
+      "/" +
+      this.utilities.selectedRelativeId;
     return this.http.get(this.apiUrl + path);
   }
 }

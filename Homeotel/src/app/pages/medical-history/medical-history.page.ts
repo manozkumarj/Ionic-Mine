@@ -136,7 +136,7 @@ export class MedicalHistoryPage {
         tag: "familyHistory",
         list: this.familyHistories,
         size: this.familyHistoryData.length > 0 ? 6 : "auto",
-        redirectTo: "/multi-selection",
+        redirectTo: "/medical-history-relations",
       },
     ];
 

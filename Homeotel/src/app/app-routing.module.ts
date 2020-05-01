@@ -443,6 +443,14 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
+  {
+    path: "medical-history-relations",
+    loadChildren: () =>
+      import(
+        "./pages/medical-history-relations/medical-history-relations.module"
+      ).then((m) => m.MedicalHistoryRelationsPageModule),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({

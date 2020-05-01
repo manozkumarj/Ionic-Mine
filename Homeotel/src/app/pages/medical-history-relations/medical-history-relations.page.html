@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/medical-history"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Relation's Medical History</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="relationsWithData.length > 0; else noRelations">
+    <ion-item
+      *ngFor="let relation of relationsWithData"
+      detail
+      (click)="redirect(relation.id)"
+    >
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            {{relation.relation_name}}
+          </ion-col>
+          <ion-col size="auto">
+            {{relation.list}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noRelations>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> There are no Relations </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+</ion-content>

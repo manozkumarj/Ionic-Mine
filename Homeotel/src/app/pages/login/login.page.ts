@@ -163,8 +163,8 @@ export class LoginPage implements OnInit {
     let username = this.loginForm.get("username").value.trim();
     let password = this.loginForm.get("password").value.trim();
 
-    // username = "aaa";
-    // password = "aaa";
+    username = "manoj";
+    password = "manoj";
 
     if (username && password) {
       this.apiService.loginUser(username, password).subscribe((data) => {

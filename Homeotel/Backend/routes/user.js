@@ -523,4 +523,22 @@ router.get("/delete-vital/:vitalId", (req, res) => {
   );
 });
 
+// Getting relations medical history details & masters
+router.get(
+  "/relations-medical-history-masters-and-data/:userId/:relativeId",
+  (req, res) => {
+    var userId = req.params.userId;
+    var relativeId = req.params.relativeId;
+    var params = [userId, relativeId];
+    // console.log("Received params -> " + params);
+
+    db.executeQuery(
+      "call sp_master_relations_medical_history_get(?,?)",
+      params,
+      res,
+      db.sendResponseNormal
+    );
+  }
+);
+
 module.exports = router;
