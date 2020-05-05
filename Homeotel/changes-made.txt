@@ -1,2 +1,2 @@
-* Created 'sp_master_relations_medical_history_get' SP
-* Created 'sp_user_relation_medical_history_upsert' SP
+* Modified 'sp_user_login' SP
+* 

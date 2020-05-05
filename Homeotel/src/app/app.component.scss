@@ -1,4 +1,9 @@
 .border-bottom {
-    border-bottom: 1px solid #ddd;
-  }
-  
+  border-bottom: 1px solid #ddd;
+}
+
+.three-dots {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

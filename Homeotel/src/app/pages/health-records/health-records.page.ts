@@ -46,7 +46,11 @@ export class HealthRecordsPage implements OnInit {
 
   person(id) {
     console.log("Selected person ID -> " + id);
-    this.selectedPerson = id;
+    if (id == 0) {
+      this.router.navigate(["/add-relative"]);
+    } else {
+      this.selectedPerson = id;
+    }
   }
 
   redirector(id) {

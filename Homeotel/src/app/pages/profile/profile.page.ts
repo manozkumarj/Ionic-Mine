@@ -17,7 +17,7 @@ export class ProfilePage implements OnInit {
   croppedImagepath = "";
   isLoading = false;
 
-  profilePhoto: string = "assets/images/milinda.jpg";
+  profilePhoto: string;
   name;
   username;
   phone;
@@ -192,23 +192,17 @@ export class ProfilePage implements OnInit {
           if (photoData.length > 0) {
             // console.log("photoData -> ");
             // console.log(photoData[0]["photo"]);
-            this.profilePhoto = this.getPhotoDataUrl(photoData[0]["photo"]);
+            this.profilePhoto = this.utilities.getPhotoDataUrl(
+              photoData[0]["photo"]
+            );
           } else {
-            this.profilePhoto = "assets/images/milinda.jpg";
+            this.utilities.getPhotoDataUrl(null);
           }
         } else {
           console.log("No user found with provided user ID");
         }
       }
     });
-  }
-
-  getPhotoDataUrl(photoImgData) {
-    if (photoImgData) {
-      return photoImgData;
-    } else {
-      return "assets/images/zuck.jpg";
-    }
   }
 
   openMenu() {

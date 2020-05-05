@@ -135,7 +135,7 @@ export class MedicalHistoryPage {
         name: "Family History",
         tag: "familyHistory",
         list: this.familyHistories,
-        size: this.familyHistoryData.length > 0 ? 6 : "auto",
+        size: "auto",
         redirectTo: "/medical-history-relations",
       },
     ];
@@ -284,7 +284,7 @@ export class MedicalHistoryPage {
           }
 
           if (this.familyHistoryData.length > 0) {
-            this.familyHistories = "Comma separation";
+            this.familyHistories = "Select";
           }
 
           this.utilities.medicalHistoryPageState[

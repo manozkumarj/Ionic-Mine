@@ -169,7 +169,7 @@ export class LoginPage implements OnInit {
     if (username && password) {
       this.apiService.loginUser(username, password).subscribe((data) => {
         console.log("Returned from Backend");
-        // console.log(JSON.stringify(data));
+        console.log(JSON.stringify(data));
         if (
           typeof data != "undefined" &&
           typeof data[0] != "undefined" &&
@@ -179,12 +179,17 @@ export class LoginPage implements OnInit {
             console.log("Returned Error");
             this.presentToastWarning();
           } else {
+            let res = data[0][0];
             this.auth.isLoggedIn = true;
             console.log("Returned Success");
             this.toastSuccessMsg = "Login Success.";
             this.presentToastSuccess();
             this.utilities.isLoggedId = true;
-            this.utilities.userId = data[0][0]["user_id"];
+            this.utilities.userId = res["user_id"];
+            this.utilities.currentUserDetails["userName"] = res["name"]
+              ? res["name"]
+              : res["username"];
+            this.utilities.currentUserDetails["photo"] = res["photo"];
             this.router.navigate(["/home"]);
             this.resetLoginFormValues();
           }

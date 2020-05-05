@@ -15,6 +15,8 @@ export class UtilitiesService {
   purchasableHomeokitId;
   purchasableHomeokitPrice;
 
+  currentUserDetails = {};
+
   bookAppointmentDoctorDetails = {};
   bookAppointmentDetails = {};
   selectedAppointmentComplaintDetails = {};
@@ -62,6 +64,14 @@ export class UtilitiesService {
     if (day.length < 2) day = "0" + day;
 
     return [year, month, day].join("-");
+  }
+
+  getPhotoDataUrl(photoImgData) {
+    if (photoImgData) {
+      return photoImgData;
+    } else {
+      return "assets/images/avatar.png";
+    }
   }
 
   isValidEmail(email) {

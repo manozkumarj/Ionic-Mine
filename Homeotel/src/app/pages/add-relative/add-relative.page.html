@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add relative</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form action="#" [formGroup]="relativeForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col (click)="openMenu()">
+          <p style="margin: 0; text-align: center;">
+            <img
+              [src]="utilities.getPhotoDataUrl(profilePhoto)"
+              height="100px"
+              style="border-radius: 100%; border: 2px solid #999;"
+            />
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-align-items-center">
+          <ion-input
+            type="text"
+            class="field"
+            placeholder="Enter Relative name*"
+            formControlName="relativeName"
+          ></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-select
+            placeholder="Select relation"
+            class="field"
+            formControlName="relationId"
+          >
+            <ion-select-option value="1">Monther</ion-select-option>
+            <ion-select-option value="2">Father</ion-select-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="text-align: center;">
+          <ion-button class="field" type="submit" color="primary"
+            >Save</ion-button
+          >
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
