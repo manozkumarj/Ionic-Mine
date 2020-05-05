@@ -35,7 +35,6 @@ p {
   font-weight: bold;
   color: #000;
   text-align: center;
-  padding: 8px;
   border-radius: 5px;
   margin: 10px;
 }
@@ -76,4 +75,30 @@ p {
   font-size: 22px;
   font-weight: bold;
   padding: 10px;
+}
+
+.container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  .scroll {
+    display: flex;
+    overflow: auto;
+  }
+  .scroll .individ {
+    width: 100px;
+    height: 130px;
+    float: left;
+    margin: 0px 5px;
+    border-radius: 3px;
+  }
+}
+
+.add img {
+  width: 75px !important;
+  height: 75px !important;
+  min-width: 75px;
 }

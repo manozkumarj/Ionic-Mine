@@ -101,13 +101,14 @@ router.get("/user-details/:userId", (req, res) => {
 });
 
 // Searching doctor with UUID
-router.get("/find-doctor/:uuid", (req, res) => {
+router.get("/find-doctor/:userId/:uuid", (req, res) => {
+  var userId = req.params.userId;
   var uuid = req.params.uuid;
   // console.log("Received uuid -> " + uuid);
-  var params = [uuid];
+  var params = [userId, uuid];
 
   db.executeQuery(
-    "call sp_user_find_doctor(?)",
+    "call sp_user_find_doctor(?,?)",
     params,
     res,
     db.sendResponseNormal

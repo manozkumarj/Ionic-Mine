@@ -51,7 +51,7 @@ export class ApiService {
 
   // Searching doctor with UUID
   findDoctor(uuid) {
-    var path = "/user/find-doctor/" + uuid;
+    var path = "/user/find-doctor/" + this.utilities.userId + "/" + uuid;
     return this.http.get(this.apiUrl + path);
   }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { ApiService } from "src/app/services/api.service";
 
 @Component({
   selector: "app-consultation-details",
@@ -8,7 +9,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
   styleUrls: ["./consultation-details.page.scss"],
 })
 export class ConsultationDetailsPage implements OnInit {
-  selectedPerson = 0;
+  selectedPerson = 1;
   doctorId;
   doctorName;
   doctorUsername;
@@ -18,7 +19,13 @@ export class ConsultationDetailsPage implements OnInit {
 
   description;
 
-  constructor(private router: Router, private utilities: UtilitiesService) {
+  userRelatives: any[] = [];
+
+  constructor(
+    private router: Router,
+    private utilities: UtilitiesService,
+    private apiService: ApiService
+  ) {
     this.doctorId = this.utilities.bookAppointmentDoctorDetails["id"];
     this.doctorName = this.utilities.bookAppointmentDoctorDetails["name"];
     this.doctorUsername = this.utilities.bookAppointmentDoctorDetails[
@@ -37,13 +44,32 @@ export class ConsultationDetailsPage implements OnInit {
       this.utilities.bookAppointmentDetails["timestamp"] +
       " : " +
       this.utilities.bookAppointmentDetails["timeNSession"];
+    this.getUserRelatives();
   }
 
   ngOnInit() {}
 
+  getUserRelatives() {
+    this.apiService.getUserRelatives().subscribe((data) => {
+      console.log("Returned from Backend");
+      console.log(data);
+      if (this.utilities.isInvalidApiResponseData(data)) {
+        console.log("Returned Error");
+      } else {
+        if (typeof data != "undefined" && typeof data[0] != "undefined") {
+          this.userRelatives = data[0];
+        }
+      }
+    });
+  }
+
   person(id) {
     console.log("Selected person ID -> " + id);
-    this.selectedPerson = id;
+    if (id == 0) {
+      this.router.navigate(["/add-relative"]);
+    } else {
+      this.selectedPerson = id;
+    }
   }
 
   goToPaymentgateways() {
