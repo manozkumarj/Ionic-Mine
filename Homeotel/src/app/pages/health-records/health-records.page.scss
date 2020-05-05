@@ -11,7 +11,6 @@ p {
   font-weight: bold;
   color: #000;
   text-align: center;
-  padding: 8px;
   border-radius: 5px;
   margin: 10px;
 }
@@ -19,6 +18,12 @@ p {
 .add {
   font-size: 68px;
   border-radius: 100%;
+}
+
+.add img {
+  width: 75px !important;
+  height: 75px !important;
+  min-width: 75px;
 }
 
 .plusIcon {
@@ -39,7 +44,15 @@ p {
     display: none;
   }
   .scroll {
+    display: flex;
     overflow: auto;
+  }
+  .scroll .individ {
+    width: 100px;
+    height: 130px;
+    float: left;
+    margin: 0px 5px;
+    border-radius: 3px;
   }
 }
 
