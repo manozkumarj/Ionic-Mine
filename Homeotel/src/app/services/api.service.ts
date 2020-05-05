@@ -318,6 +318,12 @@ export class ApiService {
     return this.http.get(this.apiUrl + path);
   }
 
+  // Getting relations masters
+  getRelationsMasters() {
+    var path = "/user/relations-masters-get";
+    return this.http.get(this.apiUrl + path);
+  }
+
   // Upserting upsertRelationMedicalHistory
   upsertRelationMedicalHistory(userId, relativeId, relationId, commaSeparated) {
     var path = "/user/upsert-relation-medical-history";
@@ -326,6 +332,18 @@ export class ApiService {
       relativeId,
       relationId,
       commaSeparated,
+    };
+    return this.http.post(this.apiUrl + path, body);
+  }
+
+  // Update user photo
+  addUserRelative(relativeName, relationId, photo) {
+    var path = "/user/add-relative";
+    var body = {
+      userId: this.utilities.userId,
+      relativeName,
+      relationId,
+      photo,
     };
     return this.http.post(this.apiUrl + path, body);
   }

@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <form action="#" [formGroup]="relativeForm">
+  <form [formGroup]="relativeForm" (ngSubmit)="submit(relativeForm.value)">
     <ion-grid>
       <ion-row>
         <ion-col (click)="openMenu()">
@@ -38,8 +38,12 @@
             class="field"
             formControlName="relationId"
           >
-            <ion-select-option value="1">Monther</ion-select-option>
-            <ion-select-option value="2">Father</ion-select-option>
+            <ion-select-option
+              *ngFor="let relation of relationsMaster"
+              value="{{relation.relation_id}}"
+            >
+              {{relation.name}}
+            </ion-select-option>
           </ion-select>
         </ion-col>
       </ion-row>

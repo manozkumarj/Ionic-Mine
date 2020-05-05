@@ -541,6 +541,19 @@ router.get(
   }
 );
 
+// Getting relations medical history details & masters
+router.get("/relations-masters-get", (req, res) => {
+  var params = [];
+  // console.log("Received params -> " + params);
+
+  db.executeQuery(
+    "call sp_master_relations_get()",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 // Upserting allergies
 router.post("/upsert-relation-medical-history", (req, res) => {
   var userID = req.body.userId;
@@ -554,6 +567,24 @@ router.post("/upsert-relation-medical-history", (req, res) => {
 
   db.executeQuery(
     "call sp_user_relation_medical_history_upsert(?,?,?,?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
+router.post("/add-relative", (req, res) => {
+  var userID = req.body.userId;
+  var relativeName = req.body.relativeName;
+  var relationId = req.body.relationId;
+  var photo = req.body.photo;
+  var params = [userID, relativeName, relationId, photo];
+
+  console.log("Received params");
+  console.log(params);
+
+  db.executeQuery(
+    "call sp_user_add_relative_save(?,?,?,?)",
     params,
     res,
     db.sendResponseNormal

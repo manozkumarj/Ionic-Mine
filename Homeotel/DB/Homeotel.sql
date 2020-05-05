@@ -631,18 +631,21 @@ CREATE TABLE `du_relative` (
   `user_id` int(10) unsigned NOT NULL,
   `relative_id` int(10) unsigned NOT NULL,
   `relative_name` varchar(100) NOT NULL,
+  `photo` mediumtext NOT NULL,
   `created_by` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `du_relative`
 --
 
 /*!40000 ALTER TABLE `du_relative` DISABLE KEYS */;
+INSERT INTO `du_relative` (`id`,`user_id`,`relative_id`,`relative_name`,`photo`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
+ (3,2,3,'aaaa','dsdsd',2,'2020-05-05 15:51:05',2,'2020-05-05 15:51:05');
 /*!40000 ALTER TABLE `du_relative` ENABLE KEYS */;
 
 
@@ -749,7 +752,7 @@ CREATE TABLE `ehr_family_history` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`,`user_id`,`relative_id`,`relation_id`,`disease_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ehr_family_history`
@@ -757,9 +760,12 @@ CREATE TABLE `ehr_family_history` (
 
 /*!40000 ALTER TABLE `ehr_family_history` DISABLE KEYS */;
 INSERT INTO `ehr_family_history` (`id`,`user_id`,`relative_id`,`relation_id`,`disease_id`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,2,1,1,1,1,NULL,1,NULL),
- (2,2,1,1,2,1,NULL,1,NULL),
- (3,2,1,3,1,1,NULL,1,NULL);
+ (3,2,1,3,1,1,NULL,1,NULL),
+ (4,2,1,1,1,2,'2020-05-01 16:46:31',2,'2020-05-01 16:46:31'),
+ (5,2,1,1,5,2,'2020-05-01 16:46:31',2,'2020-05-01 16:46:31'),
+ (6,2,1,1,8,2,'2020-05-01 16:46:31',2,'2020-05-01 16:46:31'),
+ (7,2,2,2,3,2,'2020-05-05 07:55:56',2,'2020-05-05 07:55:56'),
+ (8,2,2,2,6,2,'2020-05-05 07:55:56',2,'2020-05-05 07:55:56');
 /*!40000 ALTER TABLE `ehr_family_history` ENABLE KEYS */;
 
 
@@ -3731,6 +3737,44 @@ END $$
 DELIMITER ;
 
 --
+-- Definition of procedure `sp_master_relations_get`
+--
+
+DROP PROCEDURE IF EXISTS `sp_master_relations_get`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_master_relations_get`()
+BEGIN
+
+DECLARE exit handler for sqlexception
+  BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+DECLARE exit handler for sqlwarning
+ BEGIN
+
+    GET DIAGNOSTICS CONDITION 1
+    @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+    SELECT @p1 as error_code  , @p2 as error;
+
+END;
+
+  SELECT * FROM homeotel.m_relation where is_active =1;
+
+
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
 -- Definition of procedure `sp_master_relations_medical_history_get`
 --
 
@@ -3819,6 +3863,28 @@ START TRANSACTION;
 
 
 COMMIT;
+END $$
+/*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
+
+DELIMITER ;
+
+--
+-- Definition of procedure `sp_user_add_relative_save`
+--
+
+DROP PROCEDURE IF EXISTS `sp_user_add_relative_save`;
+
+DELIMITER $$
+
+/*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_user_add_relative_save`(IN IN_user_id INT,
+                                              IN IN_relative_name VARCHAR(100), IN IN_relation_id INT,IN IN_photo MEDIUMTEXT)
+BEGIN
+
+
+  INSERT INTO du_relative (user_id, relative_id, relative_name, photo, created_by, updated_by, created_at, updated_at)
+    VALUES (IN_user_id, IN_relation_id, IN_relative_name, IN_photo, IN_user_id, IN_user_id, now(), now());
+
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
@@ -4387,7 +4453,10 @@ DECLARE exit handler for sqlwarning
 
 END;
 
- SELECT * FROM d_user d where (email=IN_username and password=IN_password) OR (username=IN_username and password=IN_password);
+ SELECT u.user_id, u.username, u.name, p.photo
+   FROM d_user u
+   Left JOIN du_photo p ON u.user_id = p.user_id AND p.relative_id = 1
+   where (u.email=IN_username and u.password=IN_password) OR (u.username=IN_username and u.password=IN_password);
 
  END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

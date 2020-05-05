@@ -1,2 +1,4 @@
 * Modified 'sp_user_login' SP
+* Created 'sp_master_relations_get' SP
+* Created 'sp_user_add_relative_save' SP
 * 

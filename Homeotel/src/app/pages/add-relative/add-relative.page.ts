@@ -18,6 +18,8 @@ export class AddRelativePage implements OnInit {
   relativeName: string;
   relationId: number;
 
+  relationsMaster;
+
   imagePickerOptions = {
     maximumImagesCount: 1,
     quality: 50,
@@ -41,9 +43,24 @@ export class AddRelativePage implements OnInit {
       relativeName: new FormControl("", Validators.required),
       relationId: new FormControl("", Validators.required),
     });
+    this.getRelationsMasters();
   }
 
   ngOnInit() {}
+
+  getRelationsMasters() {
+    this.apiService.getRelationsMasters().subscribe((data) => {
+      console.log("Returned from Backend");
+      console.log(data);
+      if (this.utilities.isInvalidApiResponseData(data)) {
+        console.log("Returned Error");
+      } else {
+        if (typeof data != "undefined" && typeof data[0] != "undefined") {
+          this.relationsMaster = data[0];
+        }
+      }
+    });
+  }
 
   openMenu() {
     console.log("Actionsheet is opened");
@@ -94,10 +111,50 @@ export class AddRelativePage implements OnInit {
         this.selectedPhoto = base64Image;
       },
       (err) => {
+        this.selectedPhoto = "dsdsd";
         // Handle error
         console.log(err);
         alert("Something went wrong...");
       }
     );
+  }
+
+  submit(values) {
+    console.log("Form is submitted, below are the values");
+    console.log(values);
+    console.log("Submit clicked");
+    let relativeName = this.relativeForm.get("relativeName").value.trim();
+    let relationId = this.relativeForm.get("relationId").value;
+
+    if (!relativeName) {
+      alert("Please enter relative name");
+      return false;
+    } else if (!relationId) {
+      alert("Please select relation");
+      return false;
+    } else if (!this.selectedPhoto) {
+      alert("Please choose relative photo");
+      return false;
+    }
+
+    console.log("Form can be submitted now");
+
+    this.apiService
+      .addUserRelative(relativeName, relationId, this.selectedPhoto)
+      .subscribe((data) => {
+        console.log("Returned from Backend");
+        console.log(JSON.stringify(data));
+        if (this.utilities.isInvalidApiResponseData(data)) {
+          console.log("Returned Error");
+          console.log(data);
+          if (data["error"]) {
+            console.log("Something went wrong");
+          }
+        } else {
+          console.log("Returned Success");
+          this.utilities.presentToastSuccess("Relative added successfully.");
+          this.utilities.selectedRelativeId = relationId;
+        }
+      });
   }
 }
