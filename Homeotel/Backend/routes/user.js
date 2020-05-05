@@ -591,4 +591,18 @@ router.post("/add-relative", (req, res) => {
   );
 });
 
+// Getting user's relatives
+router.get("/relatives-get/:userId", (req, res) => {
+  var userId = req.params.userId;
+  console.log("Received userId -> " + userId);
+  var params = [userId];
+
+  db.executeQuery(
+    "call sp_user_relatives_get(?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;

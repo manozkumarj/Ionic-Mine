@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Router } from "@angular/router";
+import { ApiService } from "src/app/services/api.service";
 
 @Component({
   selector: "app-health-records",
@@ -12,7 +13,13 @@ export class HealthRecordsPage implements OnInit {
 
   selectedPerson = 1;
 
-  constructor(private router: Router, private utilities: UtilitiesService) {
+  userRelatives: any[] = [];
+
+  constructor(
+    private router: Router,
+    private utilities: UtilitiesService,
+    private apiService: ApiService
+  ) {
     this.healthRecords = [
       {
         id: 0,
@@ -40,9 +47,24 @@ export class HealthRecordsPage implements OnInit {
         redirectUrl: "/previous-consultations",
       },
     ];
+    this.getUserRelatives();
   }
 
   ngOnInit() {}
+
+  getUserRelatives() {
+    this.apiService.getUserRelatives().subscribe((data) => {
+      console.log("Returned from Backend");
+      console.log(data);
+      if (this.utilities.isInvalidApiResponseData(data)) {
+        console.log("Returned Error");
+      } else {
+        if (typeof data != "undefined" && typeof data[0] != "undefined") {
+          this.userRelatives = data[0];
+        }
+      }
+    });
+  }
 
   person(id) {
     console.log("Selected person ID -> " + id);

@@ -26,7 +26,7 @@
     >
       <div>
         <img
-          src="assets/images/milinda.jpg"
+          [src]="utilities.getPhotoDataUrl(utilities.currentUserDetails['photo'])"
           height="80px"
           style="border-radius: 100%;"
         />
@@ -34,18 +34,19 @@
       <p>Self</p>
     </ion-col>
     <ion-col
+      *ngFor="let relative of userRelatives"
       class="person"
-      (click)="person(2)"
-      [style.border]="selectedPerson == 2 ? '2px solid #0a9f28' : '2px solid #fff' "
+      (click)="person(relative.relative_id)"
+      [style.border]="selectedPerson == relative.relative_id ? '2px solid #0a9f28' : '2px solid #fff' "
     >
       <div>
         <img
-          src="assets/images/sergey.jpg"
+          [src]="utilities.getPhotoDataUrl(relative.photo)"
           height="80px"
           style="border-radius: 100%;"
         />
       </div>
-      <p>Juli Jay</p>
+      <p>{{relative.relative_name}}</p>
     </ion-col>
   </ion-row>
 

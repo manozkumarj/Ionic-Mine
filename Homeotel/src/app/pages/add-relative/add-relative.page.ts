@@ -153,7 +153,8 @@ export class AddRelativePage implements OnInit {
         } else {
           console.log("Returned Success");
           this.utilities.presentToastSuccess("Relative added successfully.");
-          this.utilities.selectedRelativeId = relationId;
+          // this.utilities.selectedRelativeId = relationId;
+          this.router.navigate(["/home"]);
         }
       });
   }
