@@ -8,7 +8,52 @@
 </ion-header>
 
 <ion-content>
-  <ion-row class="dashedBorderBottom" style="padding: 6px;">
+  <div class="container dashedBorderBottom" style="padding: 6px;">
+    <div class="scroll" scrollX="true">
+      <span
+        class="person"
+        (click)="person(0)"
+        [style.border]="selectedPerson == 0 ? '2px solid #0a9f28' : '2px solid #fff' "
+      >
+        <span class="add">
+          <ion-icon class="plusIcon" name="add-outline"></ion-icon>
+        </span>
+        <span>Add</span>
+      </span>
+      <span
+        class="person"
+        (click)="person(1)"
+        [style.border]="selectedPerson == 1 ? '2px solid #0a9f28' : '2px solid #fff' "
+      >
+        <span>
+          <img
+            [src]="utilities.getPhotoDataUrl(utilities.currentUserDetails['photo'])"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </span>
+        <span>Self</span>
+      </span>
+      <span
+        *ngFor="let relative of userRelatives"
+        class="person"
+        (click)="person(relative.relative_id)"
+        [style.border]="selectedPerson == relative.relative_id ? '2px solid #0a9f28' : '2px solid #fff' "
+      >
+        <span>
+          <img
+            [src]="utilities.getPhotoDataUrl(relative.photo)"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </span>
+        <span>{{relative.relative_name}}</span>
+      </span>
+    </div>
+  </div>
+
+  <!--   
+  <ion-row class="dashedBorderBottom" style="padding: 6px;" nowrap>
     <ion-col
       class="person"
       (click)="person(0)"
@@ -48,7 +93,7 @@
       </div>
       <p>{{relative.relative_name}}</p>
     </ion-col>
-  </ion-row>
+  </ion-row> -->
 
   <ion-list *ngIf="healthRecords.length > 0; else noHealthRecords">
     <ion-item
