@@ -69,7 +69,7 @@ export class HealthRecordsPage implements OnInit {
   person(id) {
     console.log("Selected person ID -> " + id);
     if (id == 0) {
-      this.router.navigate(["/add-relative"]);
+      this.router.navigate(["/add-relative/home"]);
     } else {
       this.selectedPerson = id;
     }

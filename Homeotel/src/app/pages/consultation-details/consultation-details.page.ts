@@ -66,7 +66,7 @@ export class ConsultationDetailsPage implements OnInit {
   person(id) {
     console.log("Selected person ID -> " + id);
     if (id == 0) {
-      this.router.navigate(["/add-relative"]);
+      this.router.navigate(["/add-relative/slot-selection"]);
     } else {
       this.selectedPerson = id;
     }

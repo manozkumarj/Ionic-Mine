@@ -74,3 +74,9 @@ ion-toolbar {
     margin-top: 10%;
   }
 }
+
+.three-dots {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

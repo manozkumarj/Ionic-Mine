@@ -460,7 +460,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: "add-relative",
+    path: "add-relative/:redirect-to",
     loadChildren: () =>
       import("./pages/add-relative/add-relative.module").then(
         (m) => m.AddRelativePageModule

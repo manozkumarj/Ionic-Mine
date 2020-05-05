@@ -3,7 +3,7 @@ import { ApiService } from "src/app/services/api.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ActionSheetController } from "@ionic/angular";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
 
 @Component({
@@ -20,6 +20,8 @@ export class AddRelativePage implements OnInit {
 
   relationsMaster;
 
+  redirectTo: string;
+
   imagePickerOptions = {
     maximumImagesCount: 1,
     quality: 50,
@@ -33,6 +35,7 @@ export class AddRelativePage implements OnInit {
   };
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
     private utilities: UtilitiesService,
     private actShtCtr: ActionSheetController,
@@ -43,6 +46,10 @@ export class AddRelativePage implements OnInit {
       relativeName: new FormControl("", Validators.required),
       relationId: new FormControl("", Validators.required),
     });
+
+    this.redirectTo = this.activatedRoute.snapshot.paramMap.get("redirect-to");
+    console.log("redirectTo -> " + this.redirectTo);
+
     this.getRelationsMasters();
   }
 
@@ -154,7 +161,7 @@ export class AddRelativePage implements OnInit {
           console.log("Returned Success");
           this.utilities.presentToastSuccess("Relative added successfully.");
           // this.utilities.selectedRelativeId = relationId;
-          this.router.navigate(["/home"]);
+          this.router.navigate([this.redirectTo]);
         }
       });
   }
