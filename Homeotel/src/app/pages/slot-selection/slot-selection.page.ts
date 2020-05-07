@@ -253,10 +253,14 @@ export class SlotSelectionPage implements OnInit {
 
           // console.log("Current slot details below ------------");
           // console.log(currentSlot);
-          this.allAvailableSlotsNTimings = [
-            ...this.allAvailableSlotsNTimings,
-            currentSlot,
-          ];
+
+          // this.allAvailableSlotsNTimings = [
+          //   ...this.allAvailableSlotsNTimings,
+          //   currentSlot,
+          // ];
+
+          this.allAvailableSlotsNTimings.push(currentSlot);
+
           // console.log("******************************************************");
         });
         this.allAvailableWeekdays = [
@@ -285,7 +289,36 @@ export class SlotSelectionPage implements OnInit {
       (item) => item.weekDay == this.todayId
     );
 
+    let allAvailableSlotsNTimingsCount = this.allAvailableSlotsNTimings.length;
+
+    let allAvailableSlotsNTimingsClone1 = [...this.allAvailableSlotsNTimings];
+    let allAvailableSlotsNTimingsClone2 = [...this.allAvailableSlotsNTimings];
+
+    allAvailableSlotsNTimingsClone1.splice(
+      getIndexOfToday,
+      allAvailableSlotsNTimingsCount - getIndexOfToday
+    );
+
+    allAvailableSlotsNTimingsClone2.splice(0, getIndexOfToday);
+
     console.log("getIndexOfToday --> " + getIndexOfToday);
+    console.log(
+      "allAvailableSlotsNTimingsCount --> " + allAvailableSlotsNTimingsCount
+    );
+
+    console.log("allAvailableSlotsNTimingsClone1 is below");
+    console.log(allAvailableSlotsNTimingsClone1);
+
+    console.log("allAvailableSlotsNTimingsClone2 is below");
+    console.log(allAvailableSlotsNTimingsClone2);
+
+    this.allAvailableSlotsNTimings = [
+      ...allAvailableSlotsNTimingsClone2,
+      ...allAvailableSlotsNTimingsClone1,
+    ];
+
+    console.log("allAvailableSlotsNTimings is below");
+    console.log(this.allAvailableSlotsNTimings);
 
     this.allAvailableWeekdays = this.allAvailableWeekdays.sort((a, b) => {
       if (a > b) return 1;
