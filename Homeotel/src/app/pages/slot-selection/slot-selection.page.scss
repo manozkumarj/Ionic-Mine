@@ -59,13 +59,28 @@ p {
 
 .container {
   width: 100%;
-  //   background-color: green;
   overflow: hidden;
   white-space: nowrap;
   ::-webkit-scrollbar {
     display: none;
   }
   .scroll {
+    display: flex;
     overflow: auto;
+  }
+  .wrap {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .scroll .individ {
+    float: left;
+    margin: 0px 5px;
+    border-radius: 3px;
+    border: 1px solid #000;
+    margin: 5px;
+    border-radius: 5px;
+    width: 300px;
+    padding: 10px;
+    text-align: center;
   }
 }

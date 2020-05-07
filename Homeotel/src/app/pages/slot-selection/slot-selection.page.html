@@ -36,42 +36,22 @@
     </ion-row>
   </ion-grid>
 
-  <!-- <ion-grid>
-    <ion-row
-      style="color: #000; text-align: center; background: #fff; border-bottom: 2px dashed #000; 
-      padding: 8px 0px;"
-    >
-      <ion-col
-        style="border: 1px solid #000; margin: 6px; border-radius: 5px;"
+  <div class="container" style="padding: 6px;">
+    <div class="scroll" scrollX="true">
+      <div
         *ngFor="let slot of allAvailableSlotsNTimings; let i = index"
         (click)="selectSlotDate(i)"
+        class="individ"
       >
-        <p class="boldBlack">{{slot.title}}</p>
-        <p class="slotsStatus slotsAvailable">
-          {{slot.morningTimings.length + slot.afternoonTimings.length}} slots
-        </p>
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
-
-  <div class="container">
-    <div class="scroll" scrollX="true" style="padding: 10px;">
-      <ion-col
-        style="
-          border: 1px solid #000;
-          margin: 5px;
-          border-radius: 5px;
-          width: 300px;
-          height: 220px;
-        "
-        *ngFor="let slot of allAvailableSlotsNTimings; let i = index"
-        (click)="selectSlotDate(i)"
-      >
-        <span class="boldBlack">{{slot.title}}</span>
-        <span class="slotsStatus slotsAvailable">
-          {{slot.morningTimings.length + slot.afternoonTimings.length}} slots
-        </span>
-      </ion-col>
+        <div class="person">
+          <div class="name-holder three-dots boldBlack">
+            {{slot.title}}
+          </div>
+          <div class="name-holder three-dots slotsStatus slotsAvailable">
+            {{slot.morningTimings.length + slot.afternoonTimings.length}} slots
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -81,8 +61,10 @@
         color: #000;
         text-align: center;
         background: #fff;
+        border-top: 2px dashed #000;
         border-bottom: 2px dashed #000;
         padding: 8px 0px;
+        font-weight: bold;
       "
     >
       <ion-col>{{selectedSlotDate.title}}</ion-col>
@@ -100,15 +82,31 @@
         {{selectedSlotDate.morningTimings.length}} slots
       </ion-col>
     </ion-row>
+
     <ion-row>
-      <ion-col
-        *ngFor="let slot of selectedSlotDate.morningTimings"
-        (click)="selectSlot(slot, slot+'AM')"
-        style="border: 1px solid #000; margin: 6px; border-radius: 5px;"
-      >
-        <p class="slotsStatus slotsAvailable">{{slot}} AM</p>
-      </ion-col>
-      <ion-col> </ion-col>
+      <div class="container" style="padding: 6px;">
+        <div class="wrap" scrollX="true">
+          <div
+            *ngFor="let slot of selectedSlotDate.morningTimings"
+            (click)="selectSlot(slot, slot+'AM')"
+            style="
+              border: 1px solid #000;
+              margin: 6px;
+              border-radius: 5px;
+              width: 28%;
+              padding: 8px;
+              text-align: center;
+            "
+            class="individ"
+          >
+            <div class="person">
+              <div class="name-holder three-dots boldBlack">
+                {{slot}} AM
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </ion-row>
 
     <!-- Afternoon slots -->
@@ -124,14 +122,31 @@
         {{selectedSlotDate.afternoonTimings.length}} slots
       </ion-col>
     </ion-row>
+
     <ion-row>
-      <ion-col
-        *ngFor="let slot of selectedSlotDate.afternoonTimings"
-        (click)="selectSlot(slot, slot+' PM')"
-        style="border: 1px solid #000; margin: 6px; border-radius: 5px;"
-      >
-        <p class="slotsStatus slotsAvailable">{{slot}} PM</p>
-      </ion-col>
+      <div class="container" style="padding: 6px;">
+        <div class="wrap" scrollX="true">
+          <div
+            *ngFor="let slot of selectedSlotDate.afternoonTimings"
+            (click)="selectSlot(slot, slot+'PM')"
+            style="
+              border: 1px solid #000;
+              margin: 6px;
+              border-radius: 5px;
+              width: 28%;
+              padding: 8px;
+              text-align: center;
+            "
+            class="individ"
+          >
+            <div class="person">
+              <div class="name-holder three-dots boldBlack">
+                {{slot}} PM
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </ion-row>
   </ion-grid>
 </ion-content>
