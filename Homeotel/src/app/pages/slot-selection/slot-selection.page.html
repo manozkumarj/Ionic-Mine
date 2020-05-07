@@ -98,10 +98,14 @@
               text-align: center;
             "
             class="individ"
+            [ngStyle]="{'background':slot[1] === true ? 'red' : 'black' }"
           >
             <div class="person">
-              <div class="name-holder three-dots boldBlack">
-                {{slot}} AM
+              <div
+                class="name-holder three-dots boldBlack"
+                [ngStyle]="{'color':slot[1] === true ? 'white' : 'black' }"
+              >
+                {{slot[0]}} AM
               </div>
             </div>
           </div>

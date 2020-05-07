@@ -207,7 +207,8 @@ export class SlotSelectionPage implements OnInit {
             currentSlot["fromTime"],
             currentSlot["toTime"],
             12,
-            1
+            1,
+            nextDate
           );
 
           currentSlot["morningTimings"] = [
@@ -424,7 +425,7 @@ export class SlotSelectionPage implements OnInit {
     }
   }
 
-  generateMorningSlots(startTime, endTime, maxTime, iteration) {
+  generateMorningSlots(startTime, endTime, maxTime, iteration, thisDate) {
     let splitStartTime = startTime.split(":");
     let startOne = +splitStartTime[0];
     let startTwo = splitStartTime[1];
@@ -462,11 +463,20 @@ export class SlotSelectionPage implements OnInit {
       }
 
       if (generateOne < maxTime) {
-        sendRes = generateOne.toString() + ":" + generateTwo.toString();
+        sendRes = [
+          generateOne.toString() + ":" + generateTwo.toString(),
+          false,
+        ];
         this.tempTimings.push(sendRes);
 
         if (sendRes) {
-          this.generateMorningSlots(sendRes, endTime, maxTime, ++iteration);
+          this.generateMorningSlots(
+            sendRes[0],
+            endTime,
+            maxTime,
+            ++iteration,
+            thisDate
+          );
         }
       }
     }
