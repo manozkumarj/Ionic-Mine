@@ -5,4 +5,5 @@
 * Modified 'sp_user_find_doctor' SP
 * Modified 'm_relation' table data
 * Modified 'd_appointment' table structure
+* Modified 'sp_user_doctorConsultant_masters_get' SP
 * 

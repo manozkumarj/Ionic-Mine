@@ -88,7 +88,7 @@
         <div class="wrap" scrollX="true">
           <div
             *ngFor="let slot of selectedSlotDate.morningTimings"
-            (click)="selectSlot(slot, slot+'AM')"
+            (click)="selectSlot(slot[0], slot[0]+' AM')"
             style="
               border: 1px solid #000;
               margin: 6px;
@@ -98,7 +98,7 @@
               text-align: center;
             "
             class="individ"
-            [ngStyle]="{'background':slot[1] === true ? 'red' : 'black' }"
+            [ngStyle]="{'background':slot[1] === true ? 'red' : 'white' }"
           >
             <div class="person">
               <div
@@ -132,7 +132,7 @@
         <div class="wrap" scrollX="true">
           <div
             *ngFor="let slot of selectedSlotDate.afternoonTimings"
-            (click)="selectSlot(slot, slot+'PM')"
+            (click)="selectSlot(slot, slot+' PM')"
             style="
               border: 1px solid #000;
               margin: 6px;

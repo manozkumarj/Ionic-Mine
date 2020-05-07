@@ -36,8 +36,8 @@ CREATE TABLE `d_appointment` (
   `appointment_at` varchar(45) DEFAULT NULL,
   `booked_at` varchar(45) DEFAULT NULL,
   `amount_paid` varchar(45) DEFAULT NULL,
-  `payment_status` int(11) DEFAULT 0,
-  `appointment_status` int(11) DEFAULT 0,
+  `payment_status` int(11) DEFAULT 1,
+  `appointment_status` int(11) DEFAULT 1,
   `advice` varchar(500) DEFAULT NULL,
   `notes` varchar(500) DEFAULT NULL,
   `review_date` varchar(50) DEFAULT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE `d_appointment` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`appointment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_appointment`
@@ -54,7 +54,11 @@ CREATE TABLE `d_appointment` (
 
 /*!40000 ALTER TABLE `d_appointment` DISABLE KEYS */;
 INSERT INTO `d_appointment` (`appointment_id`,`user_id`,`relative_id`,`doctor_id`,`mode_id`,`main_complaint`,`appointment_at`,`booked_at`,`amount_paid`,`payment_status`,`appointment_status`,`advice`,`notes`,`review_date`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,0,1,1,'test','2020-04-23 10:00:00',NULL,'30',0,0,NULL,NULL,NULL,1,'2020-04-21 14:01:23',1,'2020-04-21 14:01:23');
+ (1,1,1,1,1,'test','2020-05-11 11:00:00',NULL,'30',0,1,NULL,NULL,NULL,1,'2020-04-21 14:01:23',1,'2020-04-21 14:01:23'),
+ (2,2,3,1,4,'sdsdsd','2020-05-10 12:30:00',NULL,'500',0,1,NULL,NULL,NULL,2,'2020-05-07 13:08:53',2,'2020-05-07 13:08:53'),
+ (3,2,1,1,3,'qwerty','2020-05-10 11:00:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 15:05:41',2,'2020-05-07 15:05:41'),
+ (4,2,1,1,3,'zasedf','2020-05-07 11:30:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 15:12:18',2,'2020-05-07 15:12:18'),
+ (5,2,1,1,3,'nhfyee','2020-05-07 17:00:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 15:55:11',2,'2020-05-07 15:55:11');
 /*!40000 ALTER TABLE `d_appointment` ENABLE KEYS */;
 
 
@@ -170,7 +174,7 @@ CREATE TABLE `d_transaction` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`transaction_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_transaction`
@@ -179,7 +183,11 @@ CREATE TABLE `d_transaction` (
 /*!40000 ALTER TABLE `d_transaction` DISABLE KEYS */;
 INSERT INTO `d_transaction` (`transaction_id`,`user_id`,`doctor_id`,`appointment_id`,`kit_id`,`transaction_type_id`,`transaction_amount`,`taxes`,`charges`,`net_amount`,`transaction_at`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
  (1,1,1,1,NULL,1,30,0,0,30,'2020-04-21 14:01:23',1,'2020-04-21 14:01:23',1,'2020-04-21 14:01:23'),
- (2,1,1,NULL,1,3,100,0,0,100,'2020-04-21 14:09:58',1,'2020-04-21 14:09:58',1,'2020-04-21 14:09:58');
+ (2,1,1,NULL,1,3,100,0,0,100,'2020-04-21 14:09:58',1,'2020-04-21 14:09:58',1,'2020-04-21 14:09:58'),
+ (3,2,1,2,NULL,1,500,0,0,500,'2020-05-07 13:08:54',2,'2020-05-07 13:08:54',2,'2020-05-07 13:08:54'),
+ (4,2,1,3,NULL,1,30,0,0,30,'2020-05-07 15:05:42',2,'2020-05-07 15:05:42',2,'2020-05-07 15:05:42'),
+ (5,2,1,4,NULL,1,30,0,0,30,'2020-05-07 15:12:18',2,'2020-05-07 15:12:18',2,'2020-05-07 15:12:18'),
+ (6,2,1,5,NULL,1,30,0,0,30,'2020-05-07 15:55:11',2,'2020-05-07 15:55:11',2,'2020-05-07 15:55:11');
 /*!40000 ALTER TABLE `d_transaction` ENABLE KEYS */;
 
 
@@ -296,7 +304,7 @@ CREATE TABLE `da_log` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_log`
@@ -304,7 +312,11 @@ CREATE TABLE `da_log` (
 
 /*!40000 ALTER TABLE `da_log` DISABLE KEYS */;
 INSERT INTO `da_log` (`log_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_id`,`mode_id`,`appointment_at`,`appointment_status`,`is_latest`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,0,1,1,1,'2020-04-23 10:00:00',0,0,1,'2020-04-21 14:01:23',1,'2020-04-21 14:01:23');
+ (1,1,0,1,1,1,'2020-04-23 10:00:00',0,0,1,'2020-04-21 14:01:23',1,'2020-04-21 14:01:23'),
+ (2,2,3,1,2,4,'2020-05-10 12:30:00',0,0,2,'2020-05-07 13:08:54',2,'2020-05-07 13:08:54'),
+ (3,2,1,1,3,3,'2020-05-10 11:00,false:00',0,0,2,'2020-05-07 15:05:41',2,'2020-05-07 15:05:41'),
+ (4,2,1,1,4,3,'2020-05-07 17:30:00',0,0,2,'2020-05-07 15:12:18',2,'2020-05-07 15:12:18'),
+ (5,2,1,1,5,3,'2020-05-07 17:00:00',0,0,2,'2020-05-07 15:55:11',2,'2020-05-07 15:55:11');
 /*!40000 ALTER TABLE `da_log` ENABLE KEYS */;
 
 
@@ -352,7 +364,7 @@ CREATE TABLE `dd_clinic` (
   `walkin_fee` int(10) unsigned NOT NULL,
   `created_at` varchar(45) NOT NULL,
   PRIMARY KEY (`clinic_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dd_clinic`
@@ -360,7 +372,8 @@ CREATE TABLE `dd_clinic` (
 
 /*!40000 ALTER TABLE `dd_clinic` DISABLE KEYS */;
 INSERT INTO `dd_clinic` (`clinic_id`,`doctor_id`,`clinic_name`,`clinic_address`,`walkin_fee`,`created_at`) VALUES 
- (1,1,'test clin','HNo 1, Jubilee hills',300,'2020-04-21 13:16:56');
+ (1,1,'test clin','HNo 1, Jubilee hills',300,'2020-04-21 13:16:56'),
+ (2,1,'test clin2 ','HNo 2, HYD',500,'2020-04-21 13:16:56');
 /*!40000 ALTER TABLE `dd_clinic` ENABLE KEYS */;
 
 
@@ -483,7 +496,7 @@ CREATE TABLE `ddc_timing` (
   `remarks` varchar(100) DEFAULT NULL,
   `created_at` varchar(45) NOT NULL,
   PRIMARY KEY (`id`,`doctor_id`,`clinic_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ddc_timing`
@@ -491,7 +504,8 @@ CREATE TABLE `ddc_timing` (
 
 /*!40000 ALTER TABLE `ddc_timing` DISABLE KEYS */;
 INSERT INTO `ddc_timing` (`id`,`doctor_id`,`clinic_id`,`week_days`,`from_time`,`to_time`,`remarks`,`created_at`) VALUES 
- (1,1,1,'0,6','10:00','18:00',NULL,'2020-04-21 13:16:56');
+ (1,1,1,'1,2,3,4,5','10:00','18:00',NULL,'2020-04-21 13:16:56'),
+ (2,1,2,'6,0','11:00','14:00',NULL,'2020-04-21 13:16:56');
 /*!40000 ALTER TABLE `ddc_timing` ENABLE KEYS */;
 
 
@@ -1802,7 +1816,7 @@ CREATE TABLE `m_relation` (
   `name` varchar(45) NOT NULL,
   `is_active` varchar(45) NOT NULL,
   PRIMARY KEY (`relation_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `m_relation`
@@ -1810,18 +1824,19 @@ CREATE TABLE `m_relation` (
 
 /*!40000 ALTER TABLE `m_relation` DISABLE KEYS */;
 INSERT INTO `m_relation` (`relation_id`,`name`,`is_active`) VALUES 
- (1,'Father','1'),
- (2,'Mother','1'),
- (3,'Elder brother','1'),
- (4,'Younger brother','1'),
- (5,'Elder sister','1'),
- (6,'Younger sister','1'),
- (7,'Uncle','1'),
- (8,'Aunt','1'),
- (9,'Husband','1'),
- (10,'Wife','1'),
- (11,'Son','1'),
- (12,'Daughter','1');
+ (1,'Self','1'),
+ (2,'Father','1'),
+ (3,'Mother','1'),
+ (4,'Elder brother','1'),
+ (5,'Younger brother','1'),
+ (6,'Elder sister','1'),
+ (7,'Younger sister','1'),
+ (8,'Uncle','1'),
+ (9,'Aunt','1'),
+ (10,'Husband','1'),
+ (11,'Wife','1'),
+ (12,'Son','1'),
+ (13,'Daughter','1');
 /*!40000 ALTER TABLE `m_relation` ENABLE KEYS */;
 
 
@@ -4149,6 +4164,9 @@ END;
 
  SELECT clinic_id AS colOne, week_days AS colTwo, from_time AS colThree, to_time AS colFour,
  'doctorSlotDetails' AS  master_type FROM ddc_timing where doctor_id=IN_doctorId;
+
+SELECT appointment_at FROM d_appointment WHERE doctor_id = IN_doctorId AND appointment_status = 1;
+
 
 
 END $$

@@ -23,6 +23,7 @@ export class SlotSelectionPage implements OnInit {
 
   allAvailableWeekdays: any[] = [];
   allAvailableSlots: any[] = [];
+  bookedSlots: any[] = [];
   allAvailableSlotsNTimings: any[] = [];
 
   selectedSlotDate: any[] = [];
@@ -53,16 +54,16 @@ export class SlotSelectionPage implements OnInit {
   ];
 
   d = new Date();
-  currentMonth = this.d.getMonth() + 1;
+  currentMonth = this.padDatePart(this.d.getMonth() + 1);
   currentYear = this.d.getFullYear();
   todayId = this.d.getDay();
-  todayDate = this.d.getDate();
-  tomorrowDate = this.d.getDate() + 1;
-  todayPlus2sDate = this.d.getDate() + 2;
-  todayPlus3sDate = this.d.getDate() + 3;
-  todayPlus4sDate = this.d.getDate() + 4;
-  todayPlus5sDate = this.d.getDate() + 5;
-  todayPlus6sDate = this.d.getDate() + 6;
+  todayDate = this.padDatePart(this.d.getDate());
+  tomorrowDate = this.padDatePart(this.d.getDate() + 1);
+  todayPlus2sDate = this.padDatePart(this.d.getDate() + 2);
+  todayPlus3sDate = this.padDatePart(this.d.getDate() + 3);
+  todayPlus4sDate = this.padDatePart(this.d.getDate() + 4);
+  todayPlus5sDate = this.padDatePart(this.d.getDate() + 5);
+  todayPlus6sDate = this.padDatePart(this.d.getDate() + 6);
 
   tomorrowId = this.todayId < 6 ? this.todayId + 1 : 0;
   todayPlus2daysId = this.tomorrowId < 6 ? this.tomorrowId + 1 : 0;
@@ -136,6 +137,10 @@ export class SlotSelectionPage implements OnInit {
     console.log("threeDigitMonth -> " + this.threeDigitMonth);
     console.log("threeDigitDayName -> " + this.threeDigitDayName);
 
+    this.bookedSlots = this.utilities.bookAppointmentDoctorDetails[
+      "bookedAppointments"
+    ];
+
     let allSlots: any[] = [];
     this.utilities.bookAppointmentDoctorDetails["doctorSlotDetails"].forEach(
       (slot) => {
@@ -208,7 +213,7 @@ export class SlotSelectionPage implements OnInit {
             currentSlot["toTime"],
             12,
             1,
-            nextDate
+            currentSlot["dateNtime"]
           );
 
           currentSlot["morningTimings"] = [
@@ -283,8 +288,8 @@ export class SlotSelectionPage implements OnInit {
         else return -1;
       }
     );
-    console.log("allAvailableSlotsNTimings is below");
-    console.log(this.allAvailableSlotsNTimings);
+    // console.log("allAvailableSlotsNTimings is below");
+    // console.log(this.allAvailableSlotsNTimings);
 
     let getIndexOfToday = this.allAvailableSlotsNTimings.findIndex(
       (item) => item.weekDay == this.todayId
@@ -302,16 +307,16 @@ export class SlotSelectionPage implements OnInit {
 
     allAvailableSlotsNTimingsClone2.splice(0, getIndexOfToday);
 
-    console.log("getIndexOfToday --> " + getIndexOfToday);
-    console.log(
-      "allAvailableSlotsNTimingsCount --> " + allAvailableSlotsNTimingsCount
-    );
+    // console.log("getIndexOfToday --> " + getIndexOfToday);
+    // console.log(
+    //   "allAvailableSlotsNTimingsCount --> " + allAvailableSlotsNTimingsCount
+    // );
 
-    console.log("allAvailableSlotsNTimingsClone1 is below");
-    console.log(allAvailableSlotsNTimingsClone1);
+    // console.log("allAvailableSlotsNTimingsClone1 is below");
+    // console.log(allAvailableSlotsNTimingsClone1);
 
-    console.log("allAvailableSlotsNTimingsClone2 is below");
-    console.log(allAvailableSlotsNTimingsClone2);
+    // console.log("allAvailableSlotsNTimingsClone2 is below");
+    // console.log(allAvailableSlotsNTimingsClone2);
 
     this.allAvailableSlotsNTimings = [
       ...allAvailableSlotsNTimingsClone2,
@@ -425,7 +430,7 @@ export class SlotSelectionPage implements OnInit {
     }
   }
 
-  generateMorningSlots(startTime, endTime, maxTime, iteration, thisDate) {
+  generateMorningSlots(startTime, endTime, maxTime, iteration, dateNtime) {
     let splitStartTime = startTime.split(":");
     let startOne = +splitStartTime[0];
     let startTwo = splitStartTime[1];
@@ -463,10 +468,10 @@ export class SlotSelectionPage implements OnInit {
       }
 
       if (generateOne < maxTime) {
-        sendRes = [
-          generateOne.toString() + ":" + generateTwo.toString(),
-          false,
-        ];
+        let time = generateOne.toString() + ":" + generateTwo.toString();
+        let getAvailability = this.isSlotBooked(dateNtime + " " + time);
+
+        sendRes = [time, getAvailability.length > 0 ? true : false];
         this.tempTimings.push(sendRes);
 
         if (sendRes) {
@@ -475,7 +480,7 @@ export class SlotSelectionPage implements OnInit {
             endTime,
             maxTime,
             ++iteration,
-            thisDate
+            dateNtime
           );
         }
       }
@@ -549,6 +554,14 @@ export class SlotSelectionPage implements OnInit {
 
   padDatePart(part) {
     return ("0" + part).slice(-2);
+  }
+
+  isSlotBooked(dateNtime) {
+    let modifyDateNtime = dateNtime + ":00";
+    console.log("Checking isSlotBooked -> " + modifyDateNtime);
+    return this.bookedSlots.filter(
+      (slot) => slot.appointment_at == modifyDateNtime
+    );
   }
 
   selectSlot = (time, timeNSession) => {

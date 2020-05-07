@@ -153,6 +153,10 @@ export class ModalPage implements OnInit {
                   "doctorSlotDetails"
                 ] = this.doctorSlotDetails;
               }
+
+              this.utilities.bookAppointmentDoctorDetails[
+                "bookedAppointments"
+              ] = data[1];
             });
             // console.log(this.doctorDetails);
             // console.log(this.doctorSlotDetails);
