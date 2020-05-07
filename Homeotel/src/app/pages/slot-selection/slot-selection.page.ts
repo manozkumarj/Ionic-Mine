@@ -233,7 +233,8 @@ export class SlotSelectionPage implements OnInit {
             currentSlot["fromTime"],
             currentSlot["toTime"],
             currentSlot["toTime"].split(":")[0],
-            1
+            1,
+            currentSlot["dateNtime"]
           );
 
           currentSlot["afternoonTimings"] = [
@@ -487,7 +488,7 @@ export class SlotSelectionPage implements OnInit {
     }
   }
 
-  generateAfternoonSlots(startTime, endTime, maxTime, iteration) {
+  generateAfternoonSlots(startTime, endTime, maxTime, iteration, dateNtime) {
     // console.log("startTime -> " + startTime);
     let splitStartTime = startTime.split(":");
     let startOne = +splitStartTime[0];
@@ -527,18 +528,38 @@ export class SlotSelectionPage implements OnInit {
         }
 
         if (generateOne <= maxTime) {
-          sendRes = generateOne.toString() + ":" + generateTwo.toString();
+          let time = generateOne.toString() + ":" + generateTwo.toString();
+          let getAvailability = this.isSlotBooked(dateNtime + " " + time);
+
+          sendRes = [time, getAvailability.length > 0 ? true : false];
           this.tempTimings.push(sendRes);
 
           if (sendRes) {
-            this.generateAfternoonSlots(sendRes, endTime, maxTime, ++iteration);
+            this.generateAfternoonSlots(
+              sendRes[0],
+              endTime,
+              maxTime,
+              ++iteration,
+              dateNtime
+            );
           }
         }
       }
     } else {
       generateOne = ++generateOne;
-      sendRes = generateOne.toString() + ":" + generateTwo.toString();
-      this.generateAfternoonSlots(sendRes, endTime, maxTime, iteration);
+
+      let time = generateOne.toString() + ":" + generateTwo.toString();
+      let getAvailability = this.isSlotBooked(dateNtime + " " + time);
+
+      sendRes = [time, getAvailability.length > 0 ? true : false];
+
+      this.generateAfternoonSlots(
+        sendRes[0],
+        endTime,
+        maxTime,
+        iteration,
+        dateNtime
+      );
     }
   }
 
@@ -564,7 +585,11 @@ export class SlotSelectionPage implements OnInit {
     );
   }
 
-  selectSlot = (time, timeNSession) => {
+  selectSlot = (time, timeNSession, isSlotBooked) => {
+    if (isSlotBooked) {
+      this.utilities.presentToastWarning("This slot is already booked");
+      return false;
+    }
     this.utilities.bookAppointmentDetails["time"] = time;
     this.utilities.bookAppointmentDetails["timeNSession"] = timeNSession;
 

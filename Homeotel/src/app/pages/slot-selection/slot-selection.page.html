@@ -88,7 +88,7 @@
         <div class="wrap" scrollX="true">
           <div
             *ngFor="let slot of selectedSlotDate.morningTimings"
-            (click)="selectSlot(slot[0], slot[0]+' AM')"
+            (click)="selectSlot(slot[0], slot[0]+' AM', slot[1])"
             style="
               border: 1px solid #000;
               margin: 6px;
@@ -132,7 +132,7 @@
         <div class="wrap" scrollX="true">
           <div
             *ngFor="let slot of selectedSlotDate.afternoonTimings"
-            (click)="selectSlot(slot, slot+' PM')"
+            (click)="selectSlot(slot[0], slot[0]+' PM', slot[1])"
             style="
               border: 1px solid #000;
               margin: 6px;
@@ -142,10 +142,14 @@
               text-align: center;
             "
             class="individ"
+            [ngStyle]="{'background':slot[1] === true ? 'red' : 'white' }"
           >
             <div class="person">
-              <div class="name-holder three-dots boldBlack">
-                {{slot}} PM
+              <div
+                class="name-holder three-dots boldBlack"
+                [ngStyle]="{'color':slot[1] === true ? 'white' : 'black' }"
+              >
+                {{slot[0]}} PM
               </div>
             </div>
           </div>
