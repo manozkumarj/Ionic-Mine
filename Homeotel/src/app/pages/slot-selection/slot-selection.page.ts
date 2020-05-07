@@ -58,11 +58,60 @@ export class SlotSelectionPage implements OnInit {
   todayId = this.d.getDay();
   todayDate = this.d.getDate();
   tomorrowDate = this.d.getDate() + 1;
+  todayPlus2sDate = this.d.getDate() + 2;
+  todayPlus3sDate = this.d.getDate() + 3;
+  todayPlus4sDate = this.d.getDate() + 4;
+  todayPlus5sDate = this.d.getDate() + 5;
+  todayPlus6sDate = this.d.getDate() + 6;
+
   tomorrowId = this.todayId < 6 ? this.todayId + 1 : 0;
+  todayPlus2daysId = this.tomorrowId < 6 ? this.tomorrowId + 1 : 0;
+  todayPlus3daysId = this.todayPlus2daysId < 6 ? this.todayPlus2daysId + 1 : 0;
+  todayPlus4daysId = this.todayPlus3daysId < 6 ? this.todayPlus3daysId + 1 : 0;
+  todayPlus5daysId = this.todayPlus4daysId < 6 ? this.todayPlus4daysId + 1 : 0;
+  todayPlus6daysId = this.todayPlus5daysId < 6 ? this.todayPlus5daysId + 1 : 0;
+
   threeDigitMonth = this.monthNames[this.d.getMonth()].slice(0, 3);
   threeDigitDayName = this.days[this.d.getDay()].slice(0, 3);
 
   constructor(private router: Router, private utilities: UtilitiesService) {
+    // console.log("todayId -> " + this.todayId + " --> " + this.todayDate);
+    // console.log(
+    //   "tomorrowId -> " + this.tomorrowId + " --> " + this.tomorrowDate
+    // );
+    // console.log(
+    //   "todayPlus2daysId -> " +
+    //     this.todayPlus2daysId +
+    //     " --> " +
+    //     this.todayPlus2sDate
+    // );
+    // console.log(
+    //   "todayPlus3daysId -> " +
+    //     this.todayPlus3daysId +
+    //     " --> " +
+    //     this.todayPlus3sDate
+    // );
+    // console.log(
+    //   "todayPlus4daysId -> " +
+    //     this.todayPlus4daysId +
+    //     " --> " +
+    //     this.todayPlus4sDate
+    // );
+    // console.log(
+    //   "todayPlus5daysId -> " +
+    //     this.todayPlus5daysId +
+    //     " --> " +
+    //     this.todayPlus5sDate
+    // );
+    // console.log(
+    //   "todayPlus6daysId -> " +
+    //     this.todayPlus6daysId +
+    //     " --> " +
+    //     this.todayPlus6sDate
+    // );
+
+    // console.log("todayPlus6sDate -> " + this.todayPlus6sDate);
+
     this.doctorId = this.utilities.bookAppointmentDoctorDetails["id"];
     this.doctorName = this.utilities.bookAppointmentDoctorDetails["name"];
     this.doctorUsername = this.utilities.bookAppointmentDoctorDetails[
@@ -109,7 +158,7 @@ export class SlotSelectionPage implements OnInit {
           currentSlot["toTime"] = tempToTime;
           currentSlot["weekDay"] = weekDay;
           currentSlot["clinicId"] = clinicId;
-          let nextDate = ++this.tomorrowDate;
+          let nextDate = this.grabDate(weekDay);
           currentSlot["date"] = currentSlot["title"] =
             currentSlot["weekDay"] == this.todayId
               ? "Today"
@@ -202,13 +251,13 @@ export class SlotSelectionPage implements OnInit {
           //   console.log("Has no 12:00 slot");
           // }
 
-          console.log("Current slot details below ------------");
-          console.log(currentSlot);
+          // console.log("Current slot details below ------------");
+          // console.log(currentSlot);
           this.allAvailableSlotsNTimings = [
             ...this.allAvailableSlotsNTimings,
             currentSlot,
           ];
-          console.log("******************************************************");
+          // console.log("******************************************************");
         });
         this.allAvailableWeekdays = [
           ...this.allAvailableWeekdays,
@@ -231,6 +280,12 @@ export class SlotSelectionPage implements OnInit {
     );
     console.log("allAvailableSlotsNTimings is below");
     console.log(this.allAvailableSlotsNTimings);
+
+    let getIndexOfToday = this.allAvailableSlotsNTimings.findIndex(
+      (item) => item.weekDay == this.todayId
+    );
+
+    console.log("getIndexOfToday --> " + getIndexOfToday);
 
     this.allAvailableWeekdays = this.allAvailableWeekdays.sort((a, b) => {
       if (a > b) return 1;
@@ -258,6 +313,24 @@ export class SlotSelectionPage implements OnInit {
 
   ngOnInit() {
     this.selectedSlotDate = this.allAvailableSlotsNTimings[0];
+  }
+
+  grabDate(day) {
+    if (day == this.todayId) {
+      return this.todayDate;
+    } else if (day == this.tomorrowId) {
+      return this.tomorrowDate;
+    } else if (day == this.todayPlus2daysId) {
+      return this.todayPlus2sDate;
+    } else if (day == this.todayPlus3daysId) {
+      return this.todayPlus3sDate;
+    } else if (day == this.todayPlus4daysId) {
+      return this.todayPlus4sDate;
+    } else if (day == this.todayPlus5daysId) {
+      return this.todayPlus5sDate;
+    } else if (day == this.todayPlus6daysId) {
+      return this.todayPlus6sDate;
+    }
   }
 
   splitSlotTimings(startTime, endTime) {
