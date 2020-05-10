@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ModalController } from "@ionic/angular";
 import { ModalPage } from "../modal/modal.page";
+import { AlertController } from "@ionic/angular";
 
 @Component({
   selector: "app-appointment-details",
@@ -21,6 +22,7 @@ export class AppointmentDetailsPage implements OnInit {
   doctorId;
 
   constructor(
+    private alertCtrl: AlertController,
     private router: Router,
     private utilities: UtilitiesService,
     public modalCtrl: ModalController
@@ -77,5 +79,28 @@ export class AppointmentDetailsPage implements OnInit {
       },
     });
     return await modal.present();
+  }
+
+  cancelSlot() {
+    this.alertCtrl
+      .create({
+        header: "Are you sure?",
+        message: "Do you want to cancel the slot?",
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel",
+          },
+          {
+            text: "Cancel Slot",
+            handler: () => {
+              alert("Slot will be cancelled");
+            },
+          },
+        ],
+      })
+      .then((alertEl) => {
+        alertEl.present();
+      });
   }
 }

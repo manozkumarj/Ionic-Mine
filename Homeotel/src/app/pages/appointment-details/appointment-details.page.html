@@ -101,7 +101,7 @@
     </ion-row>
     <ion-row class="continue">
       <ion-col>
-        <button [routerLink]="['/appointments']" class="btn buyButton">
+        <button (click)="cancelSlot()" class="btn buyButton">
           Cancel
         </button>
       </ion-col>
