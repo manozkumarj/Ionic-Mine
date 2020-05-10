@@ -617,8 +617,8 @@ export class SlotSelectionPage implements OnInit {
     return this.editableSlotDateAndTime == modifyDateNtime ? true : false;
   }
 
-  selectSlot = (time, timeNSession, isSlotBooked) => {
-    if (isSlotBooked) {
+  selectSlot = (time, timeNSession, isSlotBooked, isEditingSlot) => {
+    if (!isEditingSlot && isSlotBooked) {
       this.utilities.presentToastWarning("This slot is already booked");
       return false;
     }

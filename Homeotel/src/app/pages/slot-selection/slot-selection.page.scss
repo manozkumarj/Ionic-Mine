@@ -84,3 +84,29 @@ p {
     text-align: center;
   }
 }
+
+.indicationsGrid {
+  padding: 10px;
+  border-bottom: 2px dashed #000;
+}
+
+.indicationsRow {
+  margin: 5px 0px;
+}
+
+.bookedSlotsIndication {
+  padding: 15px;
+  background: red;
+  border-radius: 100px;
+}
+
+.editingSlotIndication {
+  padding: 15px;
+  background: green;
+  border-radius: 100px;
+}
+
+.bookedSlotsIndicationTitle,
+.editingSlotIndicationTitle {
+  font-size: 18px;
+}
