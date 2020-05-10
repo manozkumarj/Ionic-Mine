@@ -25,6 +25,7 @@ export class MyDoctorsPage implements OnInit {
     private utilities: UtilitiesService
   ) {
     this.getCurrentUserDoctors();
+    this.utilities.selectedAppointmentComplaintDetails = {};
   }
 
   ngOnInit() {}

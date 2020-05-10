@@ -28,6 +28,9 @@ export class SlotSelectionPage implements OnInit {
 
   selectedSlotDate: any[] = [];
 
+  isEditSlot: boolean = false;
+  editableSlotDateAndTime: String = null;
+
   monthNames = [
     "January",
     "February",
@@ -76,6 +79,16 @@ export class SlotSelectionPage implements OnInit {
   threeDigitDayName = this.days[this.d.getDay()].slice(0, 3);
 
   constructor(private router: Router, private utilities: UtilitiesService) {
+    console.log("this.utilities.selectedAppointmentComplaintDetails is below");
+    console.log(this.utilities.selectedAppointmentComplaintDetails);
+
+    if (this.utilities.selectedAppointmentComplaintDetails["appointment_at"]) {
+      this.isEditSlot = true;
+      this.editableSlotDateAndTime = this.utilities.selectedAppointmentComplaintDetails[
+        "appointment_at"
+      ];
+    }
+
     // console.log("todayId -> " + this.todayId + " --> " + this.todayDate);
     // console.log(
     //   "tomorrowId -> " + this.tomorrowId + " --> " + this.tomorrowDate
@@ -471,8 +484,11 @@ export class SlotSelectionPage implements OnInit {
       if (generateOne < maxTime) {
         let time = generateOne.toString() + ":" + generateTwo.toString();
         let getAvailability = this.isSlotBooked(dateNtime + " " + time);
+        let getAvailability_boolean = getAvailability.length > 0 ? true : false;
 
-        sendRes = [time, getAvailability.length > 0 ? true : false];
+        let isEditingSlot_boolean = this.isEditingSlot(dateNtime + " " + time);
+
+        sendRes = [time, getAvailability_boolean, isEditingSlot_boolean];
         this.tempTimings.push(sendRes);
 
         if (sendRes) {
@@ -530,8 +546,14 @@ export class SlotSelectionPage implements OnInit {
         if (generateOne <= maxTime) {
           let time = generateOne.toString() + ":" + generateTwo.toString();
           let getAvailability = this.isSlotBooked(dateNtime + " " + time);
+          let getAvailability_boolean =
+            getAvailability.length > 0 ? true : false;
 
-          sendRes = [time, getAvailability.length > 0 ? true : false];
+          let isEditingSlot_boolean = this.isEditingSlot(
+            dateNtime + " " + time
+          );
+
+          sendRes = [time, getAvailability_boolean, isEditingSlot_boolean];
           this.tempTimings.push(sendRes);
 
           if (sendRes) {
@@ -550,8 +572,11 @@ export class SlotSelectionPage implements OnInit {
 
       let time = generateOne.toString() + ":" + generateTwo.toString();
       let getAvailability = this.isSlotBooked(dateNtime + " " + time);
+      let getAvailability_boolean = getAvailability.length > 0 ? true : false;
 
-      sendRes = [time, getAvailability.length > 0 ? true : false];
+      let isEditingSlot_boolean = this.isEditingSlot(dateNtime + " " + time);
+
+      sendRes = [time, getAvailability_boolean, isEditingSlot_boolean];
 
       this.generateAfternoonSlots(
         sendRes[0],
@@ -579,10 +604,17 @@ export class SlotSelectionPage implements OnInit {
 
   isSlotBooked(dateNtime) {
     let modifyDateNtime = dateNtime + ":00";
-    console.log("Checking isSlotBooked -> " + modifyDateNtime);
+    // console.log("Checking isSlotBooked -> " + modifyDateNtime);
     return this.bookedSlots.filter(
       (slot) => slot.appointment_at == modifyDateNtime
     );
+  }
+
+  isEditingSlot(dateNtime) {
+    let modifyDateNtime = dateNtime + ":00";
+    // console.log("isEditingSlot --> Checking isSlotBooked -> " + modifyDateNtime);
+
+    return this.editableSlotDateAndTime == modifyDateNtime ? true : false;
   }
 
   selectSlot = (time, timeNSession, isSlotBooked) => {

@@ -98,12 +98,12 @@
               text-align: center;
             "
             class="individ"
-            [ngStyle]="{'background':slot[1] === true ? 'red' : 'white' }"
+            [ngStyle]="{'background':slot[2] === true ? 'green' : (slot[1] === true ? 'red' : 'white') }"
           >
             <div class="person">
               <div
                 class="name-holder three-dots boldBlack"
-                [ngStyle]="{'color':slot[1] === true ? 'white' : 'black' }"
+                [ngStyle]="{'color':slot[2] === true ? 'white' : (slot[1] === true ? 'white' : 'black') }"
               >
                 {{slot[0]}} AM
               </div>
@@ -142,12 +142,12 @@
               text-align: center;
             "
             class="individ"
-            [ngStyle]="{'background':slot[1] === true ? 'red' : 'white' }"
+            [ngStyle]="{'background':slot[2] === true ? 'green' : (slot[1] === true ? 'red' : 'white') }"
           >
             <div class="person">
               <div
                 class="name-holder three-dots boldBlack"
-                [ngStyle]="{'color':slot[1] === true ? 'white' : 'black' }"
+                [ngStyle]="{'color':slot[2] === true ? 'white' : (slot[1] === true ? 'white' : 'black') }"
               >
                 {{slot[0]}} PM
               </div>

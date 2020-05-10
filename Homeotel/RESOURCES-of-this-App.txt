@@ -15,8 +15,18 @@ Process to execute the App:
 * run 'npm install'
 * run 'npx npm-force-resolutions'
 * run 'npm install'
-* run 'ionic cordova platform add android'
-* run 'ionic cordova run android --device'
+
+Note: Above all commands same to generate APK & running the app in browser
+
+Note: After following/running above commands
+	<<IF>> If we want to generate APK then run below two commands
+		* run 'ionic cordova platform add android'
+		* run 'ionic cordova run android --device'
+
+	<<ELSE IF>> If we want to run the app in browser then run below command
+		* ionic serve
+
+
 
 
 

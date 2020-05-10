@@ -84,6 +84,10 @@ export class AppointmentsPage implements OnInit {
       selectedAppointment["relative_id"];
     this.utilities.selectedAppointmentComplaintDetails["appointment_id"] =
       selectedAppointment["appointment_id"];
+
+    this.utilities.selectedAppointmentComplaintDetails["appointment_at"] =
+      selectedAppointment["appointment_at"];
+
     this.utilities.selectedAppointmentComplaintDetails["doctor_id"] =
       selectedAppointment["doctor_id"];
     this.utilities.selectedAppointmentComplaintDetails["doctorName"] =
