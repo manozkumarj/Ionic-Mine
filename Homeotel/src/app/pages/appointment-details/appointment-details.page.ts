@@ -4,6 +4,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { ModalController } from "@ionic/angular";
 import { ModalPage } from "../modal/modal.page";
 import { AlertController } from "@ionic/angular";
+import { ApiService } from "src/app/services/api.service";
 
 @Component({
   selector: "app-appointment-details",
@@ -25,6 +26,7 @@ export class AppointmentDetailsPage implements OnInit {
     private alertCtrl: AlertController,
     private router: Router,
     private utilities: UtilitiesService,
+    private apiService: ApiService,
     public modalCtrl: ModalController
   ) {
     this.doctorName = this.utilities.selectedAppointmentComplaintDetails[
@@ -94,7 +96,29 @@ export class AppointmentDetailsPage implements OnInit {
           {
             text: "Cancel Slot",
             handler: () => {
-              alert("Slot will be cancelled");
+              // alert("Slot will be cancelled");
+
+              let appointmentId = this.utilities
+                .selectedAppointmentComplaintDetails["appointment_id"];
+              this.apiService
+                .cancelAppointment(appointmentId)
+                .subscribe((data) => {
+                  console.log("Returned from Backend");
+                  console.log(JSON.stringify(data));
+                  if (this.utilities.isInvalidApiResponseData(data)) {
+                    console.log("Returned Error");
+                    console.log(data[0]);
+                    if (data[0]["error"]) {
+                      console.log("Something went wrong");
+                    }
+                  } else {
+                    console.log("Returned Success");
+                    this.utilities.presentToastSuccess(
+                      "Appointment cancelled successfully"
+                    );
+                    this.router.navigate(["/home"]);
+                  }
+                });
             },
           },
         ],

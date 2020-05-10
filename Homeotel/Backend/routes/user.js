@@ -606,4 +606,17 @@ router.get("/relatives-get/:userId", (req, res) => {
   );
 });
 
+// Cancelling an appointment
+router.put("/cancel-appointment", (req, res) => {
+  var appointmentId = req.body.appointmentId;
+  var params = [appointmentId];
+
+  db.executeQuery(
+    "call sp_user_cancel_appointment(?)",
+    params,
+    res,
+    db.sendResponseNormal
+  );
+});
+
 module.exports = router;

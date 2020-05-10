@@ -6,4 +6,5 @@
 * Modified 'm_relation' table data
 * Modified 'd_appointment' table structure
 * Modified 'sp_user_doctorConsultant_masters_get' SP
+* Created 'sp_user_cancel_appointment' SP
 * 

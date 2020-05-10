@@ -353,4 +353,12 @@ export class ApiService {
     var path = "/user/relatives-get/" + this.utilities.userId;
     return this.http.get(this.apiUrl + path);
   }
+
+  cancelAppointment(appointmentId) {
+    var path = "/user/cancel-appointment";
+    var body = {
+      appointmentId: appointmentId,
+    };
+    return this.http.put(this.apiUrl + path, body);
+  }
 }
