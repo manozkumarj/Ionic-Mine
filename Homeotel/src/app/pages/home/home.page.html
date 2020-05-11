@@ -60,11 +60,23 @@
         <div>Scheduled Appointments</div>
       </ion-col>
     </ion-row>
-    <ion-row align-items-center justify-content-center>
+    <ion-row
+      *ngIf="allAppointments.length > 0; else noAppointments"
+      align-items-center
+      justify-content-center
+    >
       <ion-col>
-        <p>You don't have any</p>
-        <p>appointments scheduled</p>
+        <p>View scheduled appointments</p>
       </ion-col>
     </ion-row>
+
+    <ng-template #noAppointments>
+      <ion-row align-items-center justify-content-center>
+        <ion-col>
+          <p>You don't have any</p>
+          <p>appointments scheduled</p>
+        </ion-col>
+      </ion-row>
+    </ng-template>
   </ion-grid>
 </ion-content>

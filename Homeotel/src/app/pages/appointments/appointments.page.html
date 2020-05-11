@@ -148,10 +148,10 @@
             <ion-col
               *ngIf="previousAppointment.is_recurring && previousAppointment.recurring_freq && previousAppointment.severity_id && previousAppointment.complaint_description"
               size="3"
-              (click)="addDetails(previousAppointment.appointment_id, true)"
+              (click)="addDetails(previousAppointment.appointment_id, false)"
             >
               <button class="btn appoinmentButton">
-                View EHR
+                View Details
               </button>
             </ion-col>
           </ion-row>
