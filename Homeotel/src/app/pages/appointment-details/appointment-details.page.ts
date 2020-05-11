@@ -15,6 +15,8 @@ export class AppointmentDetailsPage implements OnInit {
   doctorName;
   doctorUsername;
   complaintDescription;
+  doctorSpecialisation;
+  doctorPhoto;
 
   recurring;
   recurringSince;
@@ -29,12 +31,17 @@ export class AppointmentDetailsPage implements OnInit {
     private apiService: ApiService,
     public modalCtrl: ModalController
   ) {
-    this.doctorName = this.utilities.selectedAppointmentComplaintDetails[
-      "doctorName"
+    this.doctorName = this.utilities.bookAppointmentDoctorDetails["name"];
+    this.doctorUsername = this.utilities.bookAppointmentDoctorDetails[
+      "username"
     ];
-    this.doctorUsername = this.utilities.selectedAppointmentComplaintDetails[
-      "doctorUserame"
+    this.doctorSpecialisation = this.utilities.bookAppointmentDoctorDetails[
+      "specialisation"
     ];
+    this.doctorPhoto = this.utilities.bookAppointmentDoctorDetails[
+      "doctorPhoto"
+    ];
+
     this.complaintDescription = this.utilities.selectedAppointmentComplaintDetails[
       "complaint_description"
     ];

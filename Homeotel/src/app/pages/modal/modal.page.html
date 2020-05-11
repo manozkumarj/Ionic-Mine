@@ -90,7 +90,7 @@
             <ion-col size="3.5" align-items-center justify-content-center>
               <p style="margin: 0;">
                 <img
-                  src="assets/images/milinda.jpg"
+                  [src]="utilities.getPhotoDataUrl(utilities.bookAppointmentDoctorDetails['doctorPhoto'] && utilities.bookAppointmentDoctorDetails['doctorPhoto'].photo)"
                   height="80px"
                   style="border-radius: 100%;"
                 />
@@ -98,9 +98,10 @@
             </ion-col>
             <ion-col style="padding-top: 25px;">
               <p class="docName">
-                {{doctorDetails[0] && doctorDetails[0].name}}
+                {{doctorDetails[0] && (doctorDetails[0].doctorName ?
+                doctorDetails[0].doctorName : doctorDetails[0].username)}}
               </p>
-              <p>{{doctorDetails[0] && doctorDetails[0].username}}</p>
+              <p>{{doctorDetails[0] && doctorDetails[0].specialisation}}</p>
             </ion-col>
           </ion-row>
           <ion-row

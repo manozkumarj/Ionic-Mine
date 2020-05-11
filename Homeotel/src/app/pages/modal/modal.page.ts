@@ -130,11 +130,15 @@ export class ModalPage implements OnInit {
                 this.doctorDetails.push({
                   name: masterRow.colOne,
                   username: masterRow.colTwo,
+                  photo: masterRow.colThree,
+                  specialisation: masterRow.colFour,
                 });
                 this.utilities.bookAppointmentDoctorDetails["name"] =
                   masterRow.colOne;
                 this.utilities.bookAppointmentDoctorDetails["username"] =
                   masterRow.colTwo;
+                this.utilities.bookAppointmentDoctorDetails["specialisation"] =
+                  masterRow.colFour;
               } else if (masterRow.master_type == "modes") {
                 this.doctorConsultationModesAndDetails.push({
                   id: masterRow.colOne,
@@ -142,6 +146,9 @@ export class ModalPage implements OnInit {
                   time: masterRow.colThree,
                   price: masterRow.colFour,
                 });
+
+                // console.log("this.doctorConsultationModesAndDetails is below");
+                // console.log(this.doctorConsultationModesAndDetails);
               } else if (masterRow.master_type == "doctorSlotDetails") {
                 this.doctorSlotDetails.push({
                   clinicId: masterRow.colOne,
@@ -157,6 +164,8 @@ export class ModalPage implements OnInit {
               this.utilities.bookAppointmentDoctorDetails[
                 "bookedAppointments"
               ] = data[1];
+              this.utilities.bookAppointmentDoctorDetails["doctorPhoto"] =
+                data[2]["photo"];
             });
             // console.log(this.doctorDetails);
             // console.log(this.doctorSlotDetails);

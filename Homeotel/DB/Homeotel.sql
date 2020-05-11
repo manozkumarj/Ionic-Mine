@@ -60,7 +60,7 @@ INSERT INTO `d_appointment` (`appointment_id`,`user_id`,`relative_id`,`doctor_id
  (5,2,1,1,3,'nhfyee','2020-05-07 17:00:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 15:55:11',2,'2020-05-07 15:55:11'),
  (6,2,1,1,3,'aswedftg','2020-05-07 14:30:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 16:17:37',2,'2020-05-07 16:17:37'),
  (7,2,1,1,3,'asqwerfght','2020-05-08 13:30:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42'),
- (9,2,1,1,2,'eerr','2020-05-11 10:30:00',NULL,'20',0,0,NULL,NULL,NULL,2,'2020-05-11 11:43:57',2,'2020-05-11 11:52:18');
+ (9,2,1,1,4,'wowoww','2020-05-11 10:30:00',NULL,'500',0,0,NULL,NULL,NULL,2,'2020-05-11 11:43:57',2,'2020-05-11 19:14:15');
 /*!40000 ALTER TABLE `d_appointment` ENABLE KEYS */;
 
 
@@ -193,7 +193,7 @@ INSERT INTO `d_transaction` (`transaction_id`,`user_id`,`doctor_id`,`appointment
  (7,2,1,6,NULL,1,30,0,0,30,'2020-05-07 16:17:37',2,'2020-05-07 16:17:37',2,'2020-05-07 16:17:37'),
  (8,2,1,7,NULL,1,30,0,0,30,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42'),
  (9,2,1,8,NULL,2,30,0,0,30,'2020-05-11 11:30:04',2,'2020-05-11 11:30:04',2,'2020-05-11 11:55:54'),
- (10,2,1,9,NULL,1,20,0,0,20,'2020-05-11 11:52:18',2,'2020-05-11 11:43:57',2,'2020-05-11 11:52:18');
+ (10,2,1,9,NULL,1,500,0,0,500,'2020-05-11 19:14:15',2,'2020-05-11 11:43:57',2,'2020-05-11 19:14:15');
 /*!40000 ALTER TABLE `d_transaction` ENABLE KEYS */;
 
 
@@ -330,7 +330,7 @@ INSERT INTO `da_log` (`log_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_
  (6,2,1,1,6,3,'2020-05-07 14:30:00',0,0,2,'2020-05-07 16:17:37',2,'2020-05-07 16:17:37'),
  (7,2,1,1,7,3,'2020-05-08 13:30:00',0,0,2,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42'),
  (8,2,1,1,8,1,'2020-05-11 13:00:00',0,0,2,'2020-05-11 11:30:04',2,'2020-05-11 11:30:04'),
- (9,2,1,1,9,2,'2020-05-11 10:30:00',0,0,2,'2020-05-11 11:43:57',2,'2020-05-11 11:52:18');
+ (9,2,1,1,9,4,'2020-05-11 10:30:00',0,0,2,'2020-05-11 11:43:57',2,'2020-05-11 19:14:15');
 /*!40000 ALTER TABLE `da_log` ENABLE KEYS */;
 
 
@@ -3982,11 +3982,13 @@ DECLARE exit handler for sqlwarning
 END;
 
     SELECT a.appointment_id,a.user_id,a.relative_id,a.doctor_id, a.mode_id, a.appointment_at,a.amount_paid,a.appointment_status,
-    u.username,d.name AS doctorName,d.username AS doctorUserame, c.is_recurring, c.recurring_freq, c.severity_id, c.complaint_description
+    u.username,d.name AS doctorName,d.username AS doctorUserame, c.is_recurring, c.recurring_freq, c.severity_id, c.complaint_description, dp.photo, ms.name as specialisation
     FROM d_appointment a
     LEFT JOIN d_user u ON a.user_id = u.user_id
     LEFT JOIN d_doctor d ON a.doctor_id = d.id
     LEFT JOIN da_complaint_detail c ON a.appointment_id = c.appointment_id
+   LEFT JOIN dd_photo dp ON dp.doctor_id = a.doctor_id
+   LEFT JOIN m_specialisation ms ON ms.id = a.doctor_id
      where a.user_id = IN_userId;
 
 
@@ -4213,7 +4215,11 @@ DECLARE exit handler for sqlwarning
 
 END;
 
- SELECT name AS colOne, username AS colTwo, '' AS colThree, '' AS colFour,'doctorDetails' AS  master_type FROM d_doctor where id=IN_doctorId
+ SELECT d.name AS colOne, d.username AS colTwo, '' AS colThree, ms.name AS colFour,'doctorDetails' AS  master_type
+   FROM d_doctor d
+   LEFT JOIN dd_photo dp ON dp.doctor_id = d.id
+   LEFT JOIN m_specialisation ms ON ms.id = d.id
+   where d.id=IN_doctorId
 
  UNION
 
@@ -4226,6 +4232,11 @@ END;
  'doctorSlotDetails' AS  master_type FROM ddc_timing where doctor_id=IN_doctorId;
 
 SELECT appointment_at FROM d_appointment WHERE doctor_id = IN_doctorId AND appointment_status = 0;
+
+
+SELECT photo FROM dd_photo WHERE doctor_id=IN_doctorId;
+
+
 
 
 
@@ -4435,9 +4446,10 @@ DECLARE exit handler for sqlwarning
 
 END;
 
- SELECT d.id, d.name as doctorName, d.uuid, d.username, p.experience, ms.name as specialisation FROM d_doctor d
+ SELECT d.id, d.name as doctorName, d.uuid, d.username, p.experience, ms.name as specialisation, dp.photo FROM d_doctor d
    LEFT JOIN dd_professional p ON d.id = p.doctor_id
    LEFT JOIN m_specialisation ms ON ms.id = p.doctor_id
+   LEFT JOIN dd_photo dp ON dp.doctor_id = d.id
    where uuid=IN_uuid;
 
 # where d.id NOT IN(SELECT Group_concat(doctor_id) FROM du_doctor WHERE user_id = 2) AND uuid=IN_uuid;

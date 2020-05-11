@@ -16,15 +16,18 @@
       <ion-col size="3.5" align-items-center justify-content-center>
         <p style="margin: 0;">
           <img
-            src="assets/images/milinda.jpg"
+            [src]="utilities.getPhotoDataUrl(doctorPhoto)"
             height="80px"
             style="border-radius: 100%;"
           />
         </p>
       </ion-col>
       <ion-col style="padding-top: 25px;">
-        <p class="docName">{{doctorName | uppercase}}</p>
-        <p class="designation">{{doctorUsername}}</p>
+        <p class="docName">
+          {{doctorName ? (doctorName | uppercase) : (doctorUsername |
+          uppercase)}}
+        </p>
+        <p class="designation">{{doctorSpecialisation}}</p>
       </ion-col>
     </ion-row>
     <ion-row class="solidBorderBottom" style="padding: 6px;">

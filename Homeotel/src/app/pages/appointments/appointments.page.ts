@@ -105,6 +105,17 @@ export class AppointmentsPage implements OnInit {
       "complaint_description"
     ] = selectedAppointment["complaint_description"];
 
+    this.utilities.bookAppointmentDoctorDetails["id"] =
+      selectedAppointment["doctor_id"];
+    this.utilities.bookAppointmentDoctorDetails["name"] =
+      selectedAppointment["doctorName"];
+    this.utilities.bookAppointmentDoctorDetails["username"] =
+      selectedAppointment["doctorUserame"];
+    this.utilities.bookAppointmentDoctorDetails["specialisation"] =
+      selectedAppointment["specialisation"];
+    this.utilities.bookAppointmentDoctorDetails["doctorPhoto"] =
+      selectedAppointment["photo"];
+
     console.log(this.utilities.selectedAppointmentComplaintDetails);
     if (!isViewEHR) {
       this.router.navigate(["/appointment-questions", 1]);
