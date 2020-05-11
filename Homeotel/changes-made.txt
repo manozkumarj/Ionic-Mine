@@ -7,4 +7,6 @@
 * Modified 'd_appointment' table structure
 * Modified 'sp_user_doctorConsultant_masters_get' SP
 * Created 'sp_user_cancel_appointment' SP
+* Modified 'sp_user_doctors' SP
+* Modified 'sp_user_find_doctor' SP
 * 

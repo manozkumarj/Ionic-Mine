@@ -21,16 +21,18 @@
             "
           >
             <img
-              src="assets/images/zuck.jpg"
+              [src]="utilities.getPhotoDataUrl(doctor.photo)"
               height="80px"
               style="border-radius: 100%;"
             />
           </p>
         </ion-col>
         <ion-col>
-          <p class="docName">{{doctor.name}}</p>
-          <p>Homeopathy Ayush</p>
-          <p>{{doctor.id}} years experience</p>
+          <p class="docName">
+            {{doctor.doctorName ? doctor.doctorName : doctor.username}}
+          </p>
+          <p>{{doctor.specialisation}}</p>
+          <p>{{doctor.experience}} years experience</p>
         </ion-col>
       </ion-row>
       <ion-row>

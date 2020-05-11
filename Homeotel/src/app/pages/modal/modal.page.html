@@ -20,15 +20,18 @@
                   "
                 >
                   <img
-                    src="assets/images/milinda.jpg"
+                    [src]="utilities.getPhotoDataUrl(doctorDetails[0].photo)"
                     height="80px"
                     style="border-radius: 100%;"
                   />
                 </p>
               </ion-col>
               <ion-col>
-                <p class="docName">{{doctorDetails[0].name}}</p>
-                <p>Homeopathy Ayush</p>
+                <p class="docName">
+                  {{doctorDetails[0].doctorName ? doctorDetails[0].doctorName :
+                  doctorDetails[0].username}}
+                </p>
+                <p>{{doctorDetails[0].specialisation}}</p>
                 <p>{{doctorDetails[0].experience}} years experience</p>
               </ion-col>
             </ion-row>

@@ -46,7 +46,7 @@ CREATE TABLE `d_appointment` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`appointment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_appointment`
@@ -54,12 +54,13 @@ CREATE TABLE `d_appointment` (
 
 /*!40000 ALTER TABLE `d_appointment` DISABLE KEYS */;
 INSERT INTO `d_appointment` (`appointment_id`,`user_id`,`relative_id`,`doctor_id`,`mode_id`,`main_complaint`,`appointment_at`,`booked_at`,`amount_paid`,`payment_status`,`appointment_status`,`advice`,`notes`,`review_date`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,1,1,1,'test','2020-05-11 11:00:00',NULL,'30',0,0,NULL,NULL,NULL,1,'2020-04-21 14:01:23',1,'2020-04-21 14:01:23'),
- (3,2,1,1,3,'qwerty','2020-05-10 11:00:00',NULL,'30',1,0,NULL,NULL,NULL,2,'2020-05-07 15:05:41',2,'2020-05-07 15:05:41'),
+ (1,1,1,1,1,'test','2020-04-21 11:00:00',NULL,'30',0,1,NULL,NULL,NULL,1,'2020-04-21 14:01:23',1,'2020-04-21 14:01:23'),
+ (3,2,1,1,3,'qwerty','2020-05-10 11:00:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 15:05:41',2,'2020-05-07 15:05:41'),
  (4,2,1,1,3,'zasedf','2020-05-07 11:30:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 15:12:18',2,'2020-05-07 15:12:18'),
  (5,2,1,1,3,'nhfyee','2020-05-07 17:00:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 15:55:11',2,'2020-05-07 15:55:11'),
  (6,2,1,1,3,'aswedftg','2020-05-07 14:30:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 16:17:37',2,'2020-05-07 16:17:37'),
- (7,2,1,1,3,'asqwerfght','2020-05-08 13:30:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42');
+ (7,2,1,1,3,'asqwerfght','2020-05-08 13:30:00',NULL,'30',1,1,NULL,NULL,NULL,2,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42'),
+ (9,2,1,1,2,'eerr','2020-05-11 10:30:00',NULL,'20',0,0,NULL,NULL,NULL,2,'2020-05-11 11:43:57',2,'2020-05-11 11:52:18');
 /*!40000 ALTER TABLE `d_appointment` ENABLE KEYS */;
 
 
@@ -175,7 +176,7 @@ CREATE TABLE `d_transaction` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`transaction_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_transaction`
@@ -190,7 +191,9 @@ INSERT INTO `d_transaction` (`transaction_id`,`user_id`,`doctor_id`,`appointment
  (5,2,1,4,NULL,1,30,0,0,30,'2020-05-07 15:12:18',2,'2020-05-07 15:12:18',2,'2020-05-07 15:12:18'),
  (6,2,1,5,NULL,1,30,0,0,30,'2020-05-07 15:55:11',2,'2020-05-07 15:55:11',2,'2020-05-07 15:55:11'),
  (7,2,1,6,NULL,1,30,0,0,30,'2020-05-07 16:17:37',2,'2020-05-07 16:17:37',2,'2020-05-07 16:17:37'),
- (8,2,1,7,NULL,1,30,0,0,30,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42');
+ (8,2,1,7,NULL,1,30,0,0,30,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42'),
+ (9,2,1,8,NULL,2,30,0,0,30,'2020-05-11 11:30:04',2,'2020-05-11 11:30:04',2,'2020-05-11 11:55:54'),
+ (10,2,1,9,NULL,1,20,0,0,20,'2020-05-11 11:52:18',2,'2020-05-11 11:43:57',2,'2020-05-11 11:52:18');
 /*!40000 ALTER TABLE `d_transaction` ENABLE KEYS */;
 
 
@@ -249,7 +252,7 @@ CREATE TABLE `da_complaint_detail` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`complaint_detail_id`,`user_id`,`relative_id`,`doctor_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_complaint_detail`
@@ -257,8 +260,11 @@ CREATE TABLE `da_complaint_detail` (
 
 /*!40000 ALTER TABLE `da_complaint_detail` DISABLE KEYS */;
 INSERT INTO `da_complaint_detail` (`complaint_detail_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_id`,`is_recurring`,`recurring_freq`,`severity_id`,`complaint_description`,`created_by`,`created_at`,`updated_by`,`updated_at`) VALUES 
- (1,1,0,1,1,'1','2','3','rwrwr',1,'2020-04-21 14:10:47',2,'2020-05-09 21:18:56'),
- (2,2,3,1,2,'1','2','3','rwrwr',2,'2020-05-09 21:18:50',2,'2020-05-09 21:18:56');
+ (1,1,0,1,1,'2','2','1','ytedwd',1,'2020-04-21 14:10:47',2,'2020-05-11 11:44:18'),
+ (2,2,3,1,2,'2','2','1','ytedwd',2,'2020-05-09 21:18:50',2,'2020-05-11 11:44:18'),
+ (3,2,1,1,3,'2','2','1','ytedwd',2,'2020-05-11 11:28:58',2,'2020-05-11 11:44:18'),
+ (4,2,1,1,8,'2','2','1','ytedwd',2,'2020-05-11 11:43:24',2,'2020-05-11 11:44:18'),
+ (5,2,1,1,9,'2','2','1','ytedwd',2,'2020-05-11 11:44:12',2,'2020-05-11 11:44:18');
 /*!40000 ALTER TABLE `da_complaint_detail` ENABLE KEYS */;
 
 
@@ -308,7 +314,7 @@ CREATE TABLE `da_log` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `da_log`
@@ -322,7 +328,9 @@ INSERT INTO `da_log` (`log_id`,`user_id`,`relative_id`,`doctor_id`,`appointment_
  (4,2,1,1,4,3,'2020-05-07 17:30:00',0,0,2,'2020-05-07 15:12:18',2,'2020-05-07 15:12:18'),
  (5,2,1,1,5,3,'2020-05-07 17:00:00',0,0,2,'2020-05-07 15:55:11',2,'2020-05-07 15:55:11'),
  (6,2,1,1,6,3,'2020-05-07 14:30:00',0,0,2,'2020-05-07 16:17:37',2,'2020-05-07 16:17:37'),
- (7,2,1,1,7,3,'2020-05-08 13:30:00',0,0,2,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42');
+ (7,2,1,1,7,3,'2020-05-08 13:30:00',0,0,2,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42'),
+ (8,2,1,1,8,1,'2020-05-11 13:00:00',0,0,2,'2020-05-11 11:30:04',2,'2020-05-11 11:30:04'),
+ (9,2,1,1,9,2,'2020-05-11 10:30:00',0,0,2,'2020-05-11 11:43:57',2,'2020-05-11 11:52:18');
 /*!40000 ALTER TABLE `da_log` ENABLE KEYS */;
 
 
@@ -4308,7 +4316,12 @@ DECLARE exit handler for sqlwarning
 
 END;
 
- SELECT * FROM du_doctor du LEFT JOIN d_doctor d ON du.doctor_id = d.id where du.user_id=IN_userId;
+ SELECT d.id, d.name as doctorName, d.uuid, d.username, dp.photo, p.experience, ms.name as specialisation FROM du_doctor du
+   LEFT JOIN d_doctor d ON du.doctor_id = d.id
+   LEFT JOIN dd_photo dp ON dp.doctor_id = d.id
+   LEFT JOIN dd_professional p ON p.doctor_id = d.id
+   LEFT JOIN m_specialisation ms ON ms.id = d.id
+   where du.user_id=IN_userId;
 
  END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
@@ -4422,8 +4435,9 @@ DECLARE exit handler for sqlwarning
 
 END;
 
- SELECT d.*, p.experience FROM d_doctor d
+ SELECT d.id, d.name as doctorName, d.uuid, d.username, p.experience, ms.name as specialisation FROM d_doctor d
    LEFT JOIN dd_professional p ON d.id = p.doctor_id
+   LEFT JOIN m_specialisation ms ON ms.id = p.doctor_id
    where uuid=IN_uuid;
 
 # where d.id NOT IN(SELECT Group_concat(doctor_id) FROM du_doctor WHERE user_id = 2) AND uuid=IN_uuid;
