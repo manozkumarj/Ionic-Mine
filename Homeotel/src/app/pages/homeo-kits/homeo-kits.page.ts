@@ -46,7 +46,7 @@ export class HomeoKitsPage implements OnInit {
   getCurrentDoctorsHomeokits(doctorId) {
     this.apiService.getCurrentDoctorsHomeokits(doctorId).subscribe((data) => {
       console.log("Returned from Backend");
-      // console.log(JSON.stringify(data));
+      console.log(data);
       if (this.utilities.isInvalidApiResponseData(data)) {
         console.log("Returned Error");
       } else {
@@ -93,4 +93,12 @@ export class HomeoKitsPage implements OnInit {
     this.commonService.selectedHomeKitCost = price;
     this.router.navigate(["/payment-gateways"]);
   };
+
+  getKitPhoto(photoImgData) {
+    if (photoImgData) {
+      return photoImgData;
+    } else {
+      return "assets/images/homeokit-1.jpg";
+    }
+  }
 }

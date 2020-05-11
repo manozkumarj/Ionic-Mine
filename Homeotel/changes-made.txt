@@ -10,4 +10,5 @@
 * Modified 'sp_user_doctors' SP
 * Modified 'sp_user_find_doctor' SP
 * Modified 'sp_user_appointments_get' SP
+* Modified 'sp_user_doctorKits_get' SP
 * 

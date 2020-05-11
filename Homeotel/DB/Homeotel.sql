@@ -176,7 +176,7 @@ CREATE TABLE `d_transaction` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `updated_at` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`transaction_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `d_transaction`
@@ -193,7 +193,8 @@ INSERT INTO `d_transaction` (`transaction_id`,`user_id`,`doctor_id`,`appointment
  (7,2,1,6,NULL,1,30,0,0,30,'2020-05-07 16:17:37',2,'2020-05-07 16:17:37',2,'2020-05-07 16:17:37'),
  (8,2,1,7,NULL,1,30,0,0,30,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42',2,'2020-05-07 16:22:42'),
  (9,2,1,8,NULL,2,30,0,0,30,'2020-05-11 11:30:04',2,'2020-05-11 11:30:04',2,'2020-05-11 11:55:54'),
- (10,2,1,9,NULL,1,500,0,0,500,'2020-05-11 19:14:15',2,'2020-05-11 11:43:57',2,'2020-05-11 19:14:15');
+ (10,2,1,9,NULL,1,500,0,0,500,'2020-05-11 19:14:15',2,'2020-05-11 11:43:57',2,'2020-05-11 19:14:15'),
+ (11,2,1,NULL,1,3,100,0,0,100,'2020-05-11 20:56:15',2,'2020-05-11 20:56:15',2,'2020-05-11 20:56:15');
 /*!40000 ALTER TABLE `d_transaction` ENABLE KEYS */;
 
 
@@ -537,7 +538,7 @@ CREATE TABLE `dk_order` (
   `order_status` varchar(45) DEFAULT NULL,
   `created_at` varchar(45) NOT NULL,
   PRIMARY KEY (`id`,`doctor_id`,`user_id`,`kit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `dk_order`
@@ -545,7 +546,8 @@ CREATE TABLE `dk_order` (
 
 /*!40000 ALTER TABLE `dk_order` DISABLE KEYS */;
 INSERT INTO `dk_order` (`id`,`user_id`,`doctor_id`,`kit_id`,`amount_paid`,`order_status`,`created_at`) VALUES 
- (1,1,1,1,'100','completed','2020-04-21 14:09:58');
+ (1,1,1,1,'100','completed','2020-04-21 14:09:58'),
+ (2,2,1,1,'100','completed','2020-05-11 20:56:15');
 /*!40000 ALTER TABLE `dk_order` ENABLE KEYS */;
 
 
@@ -4278,11 +4280,27 @@ DECLARE exit handler for sqlwarning
 END;
 
      IF (IN_doctorId = 0) THEN
-        SELECT * FROM dd_kit d where doctor_id IN (SELECT concat(doctor_id) FROM du_doctor where user_id=IN_userId);
-        SELECT o.kit_id, o.created_at, k.name, k.description, k.price FROM dk_order o LEFT JOIN dd_kit k ON o.kit_id = k.kit_id WHERE user_id=IN_userId;
+
+        SELECT d.kit_id, d.doctor_id, d.description, d.name, d.price, p.photo FROM dd_kit d
+        LEFT JOIN dk_photo p ON d.kit_id = p.kit_id
+        where d.doctor_id IN (SELECT concat(doctor_id) FROM du_doctor where user_id=IN_userId);
+
+        SELECT o.kit_id, o.created_at, k.name, k.description, k.price, p.photo FROM dk_order o
+        LEFT JOIN dd_kit k ON o.kit_id = k.kit_id
+        LEFT JOIN dk_photo p ON o.kit_id = p.kit_id
+        WHERE user_id=IN_userId;
+
      ELSE
-        SELECT * FROM dd_kit d where doctor_id = IN_doctorId;
-        SELECT o.kit_id, o.created_at, k.name, k.description, k.price FROM dk_order o LEFT JOIN dd_kit k ON o.kit_id = k.kit_id WHERE o.doctor_id = IN_doctorId AND o.user_id=IN_userId;
+
+        SELECT d.kit_id, d.doctor_id, d.description, d.name, d.price, p.photo FROM dd_kit d
+        LEFT JOIN dk_photo p ON d.kit_id = p.kit_id
+        where d.doctor_id = IN_doctorId;
+
+        SELECT o.kit_id, o.created_at, k.name, k.description, k.price, p.photo FROM dk_order o
+        LEFT JOIN dd_kit k ON o.kit_id = k.kit_id
+        LEFT JOIN dk_photo p ON o.kit_id = p.kit_id
+        WHERE o.doctor_id = IN_doctorId AND o.user_id=IN_userId;
+
      END IF;
 
 

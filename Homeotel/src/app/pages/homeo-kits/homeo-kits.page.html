@@ -34,7 +34,7 @@
             <ion-col size="2">
               <p class="picHolder">
                 <img
-                  src="assets/images/homeokit-1.jpg"
+                  [src]="getKitPhoto(homeokit.photo)"
                   height="45px"
                   style="border-radius: 100%;"
                 />
@@ -78,7 +78,7 @@
             <ion-col size="2">
               <p class="picHolder">
                 <img
-                  src="assets/images/homeokit-1.jpg"
+                  [src]="getKitPhoto(orderedHomeokit.photo)"
                   height="45px"
                   style="border-radius: 100%;"
                 />
