@@ -189,7 +189,7 @@ export class VitalQuestionsPage implements OnInit {
         items: [this.systolicOptions, this.diastolicOptions],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
-        theme: "dark",
+        theme: "light",
         wrapWheelText: true,
         defaultItems: [
           //the number '2'
@@ -234,7 +234,7 @@ export class VitalQuestionsPage implements OnInit {
         items: [this.pulserateOptions],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
-        theme: "dark",
+        theme: "light",
         wrapWheelText: true,
         defaultItems: [
           //the number '2'
@@ -268,7 +268,7 @@ export class VitalQuestionsPage implements OnInit {
         ],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
-        theme: "dark",
+        theme: "light",
         wrapWheelText: true,
         defaultItems: [
           //the number '2'
@@ -316,7 +316,7 @@ export class VitalQuestionsPage implements OnInit {
         items: [this.respiratoryrateOptions],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
-        theme: "dark",
+        theme: "light",
         wrapWheelText: true,
         defaultItems: [
           //the number '2'

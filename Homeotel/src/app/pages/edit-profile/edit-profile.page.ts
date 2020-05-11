@@ -263,7 +263,7 @@ export class EditProfilePage implements OnInit {
         items: [this.dobYearOptions, this.dobMonthOptions, this.dobDateOptions],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
-        theme: "dark",
+        theme: "light",
         wrapWheelText: true,
         defaultItems: [
           //the number '2'
@@ -313,7 +313,7 @@ export class EditProfilePage implements OnInit {
         items: [this.feetOptions, this.inchesOptions],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
-        theme: "dark",
+        theme: "light",
         wrapWheelText: true,
         defaultItems: [
           //the number '2'
@@ -350,7 +350,7 @@ export class EditProfilePage implements OnInit {
         items: [this.weightOptions],
         positiveButtonText: "Done",
         negativeButtonText: "Cancel",
-        theme: "dark",
+        theme: "light",
         wrapWheelText: true,
         defaultItems: [
           //the number '2'

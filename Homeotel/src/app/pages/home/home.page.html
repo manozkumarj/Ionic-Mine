@@ -5,9 +5,9 @@
     </ion-buttons>
     <ion-grid>
       <ion-row style="text-align: center; font-size: 25px;">
-        <ion-col size='10.5'>
+        <ion-col size="10.5">
           <div>
-            Homeotel
+            Tele Homeo
           </div>
         </ion-col>
         <!-- <ion-col size="2" (click)="search()">
@@ -21,7 +21,6 @@
 </ion-header>
 
 <ion-content>
-
   <ion-grid class="grid appointmentsGrid" [routerLink]="['/my-doctors']">
     <ion-row>
       <ion-col class="card-heading">
@@ -52,7 +51,10 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid class="grid scheduledAppointmentsGrid" [routerLink]="['/appointments']">
+  <ion-grid
+    class="grid scheduledAppointmentsGrid"
+    [routerLink]="['/appointments']"
+  >
     <ion-row>
       <ion-col class="card-heading">
         <div>Scheduled Appointments</div>
@@ -65,5 +67,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>
