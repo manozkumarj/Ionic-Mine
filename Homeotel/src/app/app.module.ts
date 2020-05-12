@@ -9,6 +9,7 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { ModalPage } from "./pages/modal/modal.page";
+import { ModalPageModule } from "./pages/modal/modal.module";
 
 import { Camera } from "@ionic-native/camera/ngx";
 import { File } from "@ionic-native/file/ngx";
@@ -24,7 +25,7 @@ import { UtilitiesService } from "./services/utilities.service";
 import { AuthGuard } from "./services/auth-guard.service";
 
 @NgModule({
-  declarations: [AppComponent, ModalPage],
+  declarations: [AppComponent],
   entryComponents: [ModalPage],
   imports: [
     BrowserModule,
@@ -34,6 +35,7 @@ import { AuthGuard } from "./services/auth-guard.service";
     AngularFirestoreModule,
     AngularFireAuthModule,
     HttpClientModule,
+    ModalPageModule,
   ],
   providers: [
     GooglePlus,

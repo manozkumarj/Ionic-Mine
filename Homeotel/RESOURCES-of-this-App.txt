@@ -65,3 +65,11 @@ keytool -list -v -keystore C:\Users\USERNAME\.android\debug.keystore -alias andr
 
 
 
+Error
+----------------------------------------------------------------------------------------------------------
+ERROR in Type ModalPage in D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/pages/modal/modal.page.ts is part of the declarations of 2 modules: AppModule  in D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/app.module.ts and ModalPageModule in D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/pages/modal/modal.module.ts!
+
+Please consider moving ModalPage in D:/My-Practice-things/
+Ionic/Ionic-Mine/Homeotel/src/app/pages/modal/modal.page.ts to a higher module that imports AppModule in D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/app.module.ts and ModalPageModule in D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/pages/modal/modal.module.ts.
+
+You can also create a new NgModule that exports and includes ModalPage in D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/pages/modal/modal.page.ts then import that NgModule in AppModule in  D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/app.module.ts and Modal PageModule in D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/pages/modal/modal.module.ts.
