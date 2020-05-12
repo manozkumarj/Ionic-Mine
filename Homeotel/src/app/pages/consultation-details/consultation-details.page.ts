@@ -23,7 +23,7 @@ export class ConsultationDetailsPage implements OnInit {
 
   constructor(
     private router: Router,
-    private utilities: UtilitiesService,
+    public utilities: UtilitiesService,
     private apiService: ApiService
   ) {
     this.doctorId = this.utilities.bookAppointmentDoctorDetails["id"];

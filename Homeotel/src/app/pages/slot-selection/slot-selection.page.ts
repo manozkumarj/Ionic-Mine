@@ -80,7 +80,7 @@ export class SlotSelectionPage implements OnInit {
   threeDigitMonth = this.monthNames[this.d.getMonth()].slice(0, 3);
   threeDigitDayName = this.days[this.d.getDay()].slice(0, 3);
 
-  constructor(private router: Router, private utilities: UtilitiesService) {
+  constructor(private router: Router, public utilities: UtilitiesService) {
     console.log("this.utilities.selectedAppointmentComplaintDetails is below");
     console.log(this.utilities.selectedAppointmentComplaintDetails);
 

@@ -47,7 +47,7 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private utilities: UtilitiesService,
+    public utilities: UtilitiesService,
     private actShtCtr: ActionSheetController,
     private camera: Camera,
     private file: File,

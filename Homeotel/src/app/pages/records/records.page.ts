@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'app-records',
-  templateUrl: './records.page.html',
-  styleUrls: ['./records.page.scss'],
+  selector: "app-records",
+  templateUrl: "./records.page.html",
+  styleUrls: ["./records.page.scss"],
 })
 export class RecordsPage implements OnInit {
+  constructor() {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  search() {
+    console.log("More options clicked");
   }
-
 }

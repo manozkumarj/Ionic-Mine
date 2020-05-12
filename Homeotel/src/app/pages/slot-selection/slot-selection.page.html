@@ -45,7 +45,7 @@
       >
         <div class="person">
           <div class="name-holder three-dots boldBlack">
-            {{slot.title}}
+            {{slot['title']}}
           </div>
           <div class="name-holder three-dots slotsStatus slotsAvailable">
             {{slot.morningTimings.length + slot.afternoonTimings.length}} slots
@@ -68,7 +68,7 @@
         font-weight: bold;
       "
     >
-      <ion-col>{{selectedSlotDate.title}}</ion-col>
+      <ion-col>{{selectedSlotDate['title']}}</ion-col>
     </ion-row>
 
     <ion-grid class="indicationsGrid">
@@ -97,7 +97,7 @@
         />
       </ion-col>
       <ion-col class="heading">
-        {{selectedSlotDate.morningTimings.length}} slots
+        {{selectedSlotDate['morningTimings'].length}} slots
       </ion-col>
     </ion-row>
 
@@ -105,7 +105,7 @@
       <div class="container" style="padding: 6px;">
         <div class="wrap" scrollX="true">
           <div
-            *ngFor="let slot of selectedSlotDate.morningTimings"
+            *ngFor="let slot of selectedSlotDate['morningTimings']"
             (click)="selectSlot(slot[0], slot[0]+' AM', slot[1], slot[2])"
             style="
               border: 1px solid #000;
@@ -141,7 +141,7 @@
         />
       </ion-col>
       <ion-col class="heading">
-        {{selectedSlotDate.afternoonTimings.length}} slots
+        {{selectedSlotDate['afternoonTimings'].length}} slots
       </ion-col>
     </ion-row>
 
@@ -149,7 +149,7 @@
       <div class="container" style="padding: 6px;">
         <div class="wrap" scrollX="true">
           <div
-            *ngFor="let slot of selectedSlotDate.afternoonTimings"
+            *ngFor="let slot of selectedSlotDate['afternoonTimings']"
             (click)="selectSlot(slot[0], slot[0]+' PM', slot[1], slot[2])"
             style="
               border: 1px solid #000;

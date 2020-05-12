@@ -27,7 +27,7 @@ export class AppointmentDetailsPage implements OnInit {
   constructor(
     private alertCtrl: AlertController,
     private router: Router,
-    private utilities: UtilitiesService,
+    public utilities: UtilitiesService,
     private apiService: ApiService,
     public modalCtrl: ModalController
   ) {

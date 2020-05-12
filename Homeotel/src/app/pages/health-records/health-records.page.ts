@@ -17,7 +17,7 @@ export class HealthRecordsPage implements OnInit {
 
   constructor(
     private router: Router,
-    private utilities: UtilitiesService,
+    public utilities: UtilitiesService,
     private apiService: ApiService
   ) {
     this.healthRecords = [

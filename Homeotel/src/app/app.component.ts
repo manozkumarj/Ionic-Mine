@@ -20,7 +20,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     public menuCtrl: MenuController,
-    private commonService: CommonService,
+    public commonService: CommonService,
     public utilities: UtilitiesService
   ) {
     this.initializeApp();

@@ -24,7 +24,7 @@ export class ModalPage implements OnInit {
     private commonService: CommonService,
     private router: Router,
     private apiService: ApiService,
-    private utilities: UtilitiesService
+    public utilities: UtilitiesService
   ) {
     // componentProps can also be accessed at construction time using NavParams
     console.log(navParams.get("action"));

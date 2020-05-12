@@ -20,7 +20,7 @@ export class HomeoKitsPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private commonService: CommonService,
     private apiService: ApiService,
-    private utilities: UtilitiesService
+    public utilities: UtilitiesService
   ) {
     if (this.activatedRoute.snapshot.paramMap.get("doctor-id")) {
       this.doctorId = parseInt(

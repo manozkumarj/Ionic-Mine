@@ -9,7 +9,11 @@
                 <ion-col [routerLink]="['/home']">
                   <p style="margin: 0; text-align: center;">
                     <img
-                      [src]="utilities.getPhotoDataUrl(profilePhoto)"
+                      [src]="
+                        utilities.getPhotoDataUrl(
+                          utilities.currentUserDetails['profilePhoto']
+                        )
+                      "
                       height="95px"
                       width="95px"
                       style="border-radius: 100%;"

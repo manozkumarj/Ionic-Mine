@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
     <ion-title>Add relative</ion-title>
   </ion-toolbar>
@@ -14,7 +14,7 @@
         <ion-col (click)="openMenu()">
           <p style="margin: 0; text-align: center;">
             <img
-              [src]="utilities.getPhotoDataUrl(profilePhoto)"
+              [src]="utilities.getPhotoDataUrl(selectedPhoto)"
               height="100px"
               style="border-radius: 100%; border: 2px solid #999;"
             />

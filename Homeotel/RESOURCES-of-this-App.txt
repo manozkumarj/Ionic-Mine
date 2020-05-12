@@ -8,6 +8,12 @@ Links which helped to solve the errors I faced:
 * https://forum.ionicframework.com/t/how-to-resolve-babel-error-when-installing-geolocation-in-ionic-app/185542/2
 
 
+Useful commands:
+------------------------------------------------------------------------------
+* npm cache clean --force
+* npm install --save core-js@^3
+
+
 Process to execute the App:
 ----------------------------------------------------------------------------------------
 * Delete 'node_modules', 'platforms', 'plugins' folders

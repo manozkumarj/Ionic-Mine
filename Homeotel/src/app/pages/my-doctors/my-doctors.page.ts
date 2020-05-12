@@ -22,7 +22,7 @@ export class MyDoctorsPage implements OnInit {
     public commonService: CommonService,
     private router: Router,
     private apiService: ApiService,
-    private utilities: UtilitiesService
+    public utilities: UtilitiesService
   ) {
     this.getCurrentUserDoctors();
     this.utilities.selectedAppointmentComplaintDetails = {};

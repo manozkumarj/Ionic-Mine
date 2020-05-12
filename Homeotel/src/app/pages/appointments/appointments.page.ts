@@ -18,7 +18,7 @@ export class AppointmentsPage implements OnInit {
   constructor(
     private apiService: ApiService,
     private commonService: CommonService,
-    private utilities: UtilitiesService,
+    public utilities: UtilitiesService,
     private router: Router
   ) {}
 

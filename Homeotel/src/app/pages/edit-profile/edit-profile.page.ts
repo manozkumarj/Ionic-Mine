@@ -50,7 +50,7 @@ export class EditProfilePage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private apiService: ApiService,
-    private utilities: UtilitiesService,
+    public utilities: UtilitiesService,
     private selector: WheelSelector
   ) {
     this.currentQuestion = null;

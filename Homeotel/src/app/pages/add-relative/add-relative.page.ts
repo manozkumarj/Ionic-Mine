@@ -37,7 +37,7 @@ export class AddRelativePage implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
-    private utilities: UtilitiesService,
+    public utilities: UtilitiesService,
     private actShtCtr: ActionSheetController,
     private camera: Camera,
     private router: Router
