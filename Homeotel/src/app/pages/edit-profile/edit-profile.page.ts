@@ -152,6 +152,8 @@ export class EditProfilePage implements OnInit {
       this.inputField = this.inputField ? this.inputField : "2020-4-17";
       console.log(this.inputField);
 
+      this.selectedDob = this.inputField;
+
       let splitDobValue = this.inputField.split("-");
       let yearValue = +splitDobValue[0];
       let monthValue = +splitDobValue[1];
@@ -193,9 +195,6 @@ export class EditProfilePage implements OnInit {
       console.log(this.dobMonthOptions);
       console.log("dobYearOptions are below");
       console.log(this.dobYearOptions);
-
-      this.selectedDob = this.inputField =
-        this.dobYearValue + "-" + this.dobMonthValue + "-" + this.dobDateValue;
 
       this.selectDob();
 

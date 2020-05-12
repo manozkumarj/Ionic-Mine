@@ -21,7 +21,7 @@ Note: Above all commands same to generate APK & running the app in browser
 Note: After following/running above commands
 	<<IF>> If we want to generate APK then run below two commands
 		* run 'ionic cordova platform add android'
-		* run 'ionic cordova run android --device'
+		* run 'ionic cordova run android --device' || 'ionic cordova build android --prod --release'
 
 	<<ELSE IF>> If we want to run the app in browser then run below command
 		* ionic serve
