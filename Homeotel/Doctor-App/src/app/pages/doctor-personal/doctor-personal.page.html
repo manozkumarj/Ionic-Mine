@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/edit-doctor-profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Personal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" [routerLink] ="['/edit-personal' ,'1']">
+        <p><ion-label>Name</ion-label></p>
+        <p>{{name}}</p>
+      </ion-col>
+
+      <ion-col size="4" offset="2" (click)="uploadPhoto()">
+        <p style="margin: 0; padding: 6px; text-align: center;">
+          <img
+            [src]="commonService.currentDoctorPhoto ? commonService.currentDoctorPhoto :'assets/images/emptypic.png'"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row [routerLink] ="['/edit-personal' ,'1' ,'2']">
+      <ion-col>
+        <p><ion-label>Phone</ion-label> </p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{phone}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row [routerLink] ="['/edit-personal' ,'1' ,'2' ,'3']">
+      <ion-col>
+        <p><ion-label>Email</ion-label> </p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{email}}</p>
+      </ion-col>
+    </ion-row>
+    
+    <ion-row [routerLink] ="['/edit-personal' ,'1' ,'2' ,'3' ,'4']">
+      <ion-col>
+        <p><ion-label>Gender</ion-label> </p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{gender}}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row [routerLink] ="['/edit-personal' ,'1' ,'2' ,'3' ,'4' ,'5']">
+      <ion-col>
+        <p><ion-label>Date of birth</ion-label> </p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{dob}}</p>
+      </ion-col>
+    </ion-row>
+
+    
+  </ion-grid>
+
+  
+</ion-content>

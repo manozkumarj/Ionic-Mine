@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Consultation details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="padding: 0px;" align-items-center justify-content-center>
+    <ion-row
+      class="dashedBorderBottom"
+      style="color: #000; background: #fff; padding: 8px 0px;"
+    >
+      <ion-col size="3.5" align-items-center justify-content-center>
+        <p style="margin: 0;">
+          <img
+            src="assets/images/milinda.jpg"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+      <ion-col style="padding-top: 25px;">
+        <p class="docName">Dr. Swapna Kunduru</p>
+        <p class="designation">Homeopathy Ayush</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="dashedBorderBottom" style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Consultation Type: </span>
+          <span>Video consultation</span>
+        </p>
+        <p>
+          <span class="heading">Slot Booked: </span>
+          <span>Tomorrow, 12:15 PM</span>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Consultation is for: </span>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="dashedBorderBottom" style="padding: 6px;">
+      <ion-col
+        class="person"
+        (click)="person(0)"
+        [style.border]="selectedPerson == 0 ? '2px solid #0a9f28' : '2px solid #fff' "
+      >
+        <div class="add">
+          <ion-icon class="plusIcon" name="add-outline"></ion-icon>
+        </div>
+        <p>Add</p>
+      </ion-col>
+      <ion-col
+        class="person"
+        (click)="person(1)"
+        [style.border]="selectedPerson == 1 ? '2px solid #0a9f28' : '2px solid #fff' "
+      >
+        <div>
+          <img
+            src="assets/images/milinda.jpg"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </div>
+        <p>Self</p>
+      </ion-col>
+      <ion-col
+        class="person"
+        (click)="person(2)"
+        [style.border]="selectedPerson == 2 ? '2px solid #0a9f28' : '2px solid #fff' "
+      >
+        <div>
+          <img
+            src="assets/images/sergey.jpg"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </div>
+        <p>Juli Jay</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="dashedBorderBottom" style="padding: 6px;">
+      <ion-col>
+        <ion-textarea
+          class="complaintDescription"
+          value=""
+          placeholder="Compaint description..."
+        >
+        </ion-textarea>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="continue" [routerLink]="['/payment-gateways']">
+        <button>Continue</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

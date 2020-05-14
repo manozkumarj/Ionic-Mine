@@ -1,0 +1,42 @@
+ion-tab-bar , ion-tab-button
+{
+    color : white;
+    background-color: #0a9f28;
+}
+
+
+
+.continue {
+    text-align: center;
+    background-color: #0a9f28;
+    color: #fff;
+    position: fixed;
+    bottom: 0;
+  }
+
+  .continue button {
+    background-color: #0a9f28;
+    color: #fff;
+    border: none;
+    outline: none;
+    font-size: large;
+    padding: 10px;
+  }
+
+
+  
+.tab {
+  text-align: center;
+  background-color: #0a9f28;
+  color: #fff;
+  bottom: 0;
+}
+
+.tab button {
+  background-color: #0a9f28;
+  color: #fff;
+  border: none;
+  outline: none;
+  font-size: large;
+  padding: 10px;
+}

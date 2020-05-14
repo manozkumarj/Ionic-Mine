@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/doctor-clinics"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Clinic Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="clinicForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Clinic Name</ion-label>
+            <ion-input formControlName="name"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Address</ion-label>
+            <ion-textarea formControlName="address"></ion-textarea>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Fees</ion-label>
+            <ion-input type="number" formControlName="walkinFee"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">From date</ion-label>
+            <ion-select formControlName="fromDate">
+              <ion-select-option
+                *ngFor="let date of commonService.dates"
+                [value]="date.id"
+                >{{date.day}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">To date</ion-label>
+            <ion-select formControlName="toDate"  >
+              <div  *ngFor="let date of commonService.dates">
+                <ion-select-option
+                 *ngIf ="!(fromDate.value == date.id)"
+                [value]="date.id"
+                >{{date.day}}</ion-select-option
+              >
+              </div>
+              
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">opens at</ion-label>
+            <ion-select formControlName="opensAt">
+              <ion-select-option
+                *ngFor="let time of commonService.timings"
+                [value]="time"
+                >{{time}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">closes at</ion-label>
+            <ion-select formControlName="closesAt">
+              <ion-select-option
+                *ngFor="let time of commonService.timings"
+                [value]="time"
+                >{{time}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col style="text-align: center; margin-top: 10px;">
+          <ion-button (click)="save()">save</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

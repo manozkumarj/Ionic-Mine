@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Consultation Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="padding: 0px;" align-items-center justify-content-center>
+    <ion-row
+      class="solidBorderBottom"
+      style="color: #000; background: #fff; padding: 8px 0px;"
+    >
+      <ion-col size="3.5" align-items-center justify-content-center>
+        <p style="margin: 0;">
+          <img
+            src="assets/images/milinda.jpg"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+       <ion-col style="padding-top: 10px;" *ngFor ="let consultantDetail of consultantDetails ">
+        <p *ngIf ="consultantDetail.displayName" >{{consultantDetail.displayName}}</p>
+        <p *ngIf ="consultantDetail.mode">{{consultantDetail.mode}}</p>
+        <p *ngIf ="consultantDetail.byName"> {{consultantDetail.byName}}</p>
+        <p *ngIf ="consultantDetail.appointmentAt">{{consultantDetail.appointmentAt | date }}</p> 
+     
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf ="complaints.length >0">
+      <ion-col>
+        <p class="heading">Complaint
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="solidBorderBottom" style="margin-top: -6px;" >
+      <ion-col *ngFor ="let complaint of complaints">
+        <p *ngIf ="complaint.main_complaint" >{{complaint.main_complaint}}</p>
+        <p *ngIf ="complaint.advice" >{{complaint.advice}}</p>
+        <p *ngIf ="complaint.review_date" >{{complaint.review_date | date}}</p>
+      </ion-col>
+    </ion-row>
+
+
+
+    
+    <ion-row *ngIf ="complaintDetails.length >0">
+      <ion-col>
+        <p class="heading">Complaint Details
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-grid *ngFor = "let complaintDetail of complaintDetails" class="solidBorderBottom">
+    <ion-row *ngIf ="complaintDetail.recurring" style="margin-top: -10px;">
+     <ion-col><p>Is it recurring?</p></ion-col>
+     <ion-col><p>{{complaintDetail.recurring}}</p></ion-col>
+    </ion-row>
+    <ion-row *ngIf ="complaintDetail.recurring_freq" style="margin-top: -10px;">
+     <ion-col><p>Recurring Since</p></ion-col>
+     <ion-col><p>{{complaintDetail.recurring_freq}}</p></ion-col>
+    </ion-row>
+    <ion-row *ngIf ="complaintDetail.complaint_description" style="margin-top: -10px;">
+     <ion-col><p>Pain Description</p></ion-col>
+     <ion-col><p>{{complaintDetail.complaint_description}}</p></ion-col>
+    </ion-row>
+    
+    </ion-grid>
+
+
+
+    <ion-grid *ngFor = "let diagnosis of diagnosis" class="solidBorderBottom" style="margin-top: 0px;">
+    <ion-row >
+      <ion-col>
+        <p class="heading">Diagnosis
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-top: -10px;">
+      <ion-col *ngIf ="diagnosis.diagnosis"><p>{{diagnosis.diagnosis}}</p></ion-col>
+     <ion-col *ngIf ="diagnosis.other_diagnosis"><p>{{diagnosis.other_diagnosis}}</p></ion-col>
+    </ion-row>
+    </ion-grid>
+
+    <ion-grid *ngIf ="prescriptions.length >0"  class="solidBorderBottom" style="margin-top: 0px;">
+    <ion-row >
+      <ion-col>
+        <p class="heading">prescription
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngFor = "let prescription of prescriptions" style="margin-top: -10px;">
+      <ion-col>
+      <p *ngIf ="prescription.drug">{{prescription.drug}}</p>
+      <p *ngIf ="prescription.inst || prescription.freq">{{prescription.freq}}&nbsp;, {{prescription.inst}}</p>
+     <p *ngIf ="prescription.no_of_days">for {{prescription.no_of_days}} days</p>
+    </ion-col>
+    </ion-row>
+  </ion-grid>
+    
+  
+
+
+  </ion-grid>
+</ion-content>

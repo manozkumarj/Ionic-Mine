@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/edit-doctor-profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Clinics</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-grid *ngIf ="clinics.length >0 ; else noClinicsList">
+  
+    <ion-list   >
+      <ion-item *ngFor ="let clinic of clinics"  detail  [routerLink]="['/clinic-details' , 'edit' , clinic.clinic_id]">
+        <ion-label>{{clinic.clinic_name}}</ion-label></ion-item>
+    </ion-list>
+  
+</ion-grid>
+
+<ng-template #noClinicsList>
+  <ion-card  [routerLink]="['/clinic-details' , 'add']">
+    <ion-card-header>
+      <ion-card-title style="color: red;"> There are no clinics. please add </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ng-template>
+
+<ion-row>
+  <ion-col class="add" [routerLink]="['/clinic-details' , 'add']">
+    <button>Add Clinic</button>
+  </ion-col>
+</ion-row>
+  
+</ion-content>

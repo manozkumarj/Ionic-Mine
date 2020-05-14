@@ -1,0 +1,126 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Medical History</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngIf="allergies">
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Allergies
+          </ion-col>
+          <ion-col style="text-align: center;">
+            {{allergies}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <ion-item *ngIf="currentMedication">
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Current Medication
+          </ion-col>
+          <ion-col style="text-align: center;">
+            {{currentMedication}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <ion-item *ngIf="pastMedication">
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Past Medication
+          </ion-col>
+          <ion-col style="text-align: center;">
+            {{pastMedication}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <ion-item *ngIf="surgeries">
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Surgeries
+          </ion-col>
+          <ion-col style="text-align: center;">
+            {{surgeries}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <ion-item *ngIf="injuries">
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Injuries
+          </ion-col>
+          <ion-col style="text-align: center;">
+            {{injuries}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <ion-item *ngIf="chronics">
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Chronics
+          </ion-col>
+          <ion-col style="text-align: center;">
+            {{chronics}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-item *ngIf="familyHistories">
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col size="4">
+            Family Histories
+          </ion-col>
+          <ion-col style="text-align: center;">
+            <p *ngFor="let familyHistory of familyHistories"
+              >{{familyHistory.relationName}} -
+              {{familyHistory.diseaseName}}</p>
+            
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+</ion-content>

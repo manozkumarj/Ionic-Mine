@@ -1,0 +1,141 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="['vitals']"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button
+        *ngIf="currentQuestion == 'four'"
+        [routerLink]="[forwardLink]"
+      >
+        Done
+      </ion-button>
+      <ion-button
+        *ngIf="currentQuestion != 'four'"
+        [routerLink]="[forwardLink]"
+      >
+        Next
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid
+    style="height: 30%; background-color: #eab841; color: #fff; font-size: 18px;"
+  >
+    <ion-row
+      style="height: 100%"
+      class="ion-justify-content-center ion-align-items-center"
+    >
+      {{question}}
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramOne -->
+  <ion-grid *ngIf="currentQuestion == 'one' || currentQuestion == 'four'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              Systolic
+            </ion-col>
+            <ion-col>
+              Diastolic
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <!-- paramOne -->
+        <!-- <ion-grid class="optionsGrid">
+          <ion-row
+            *ngFor="let systolicDiastolicOption of systolicDiastolicOptions"
+          >
+            <ion-col>
+              {{systolicDiastolicOption.systolic}}
+            </ion-col>
+            <ion-col>
+              {{systolicDiastolicOption.distolic}}
+            </ion-col>
+          </ion-row>
+        </ion-grid> -->
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col size="6">
+              <p class="showValue">{{selectedSystolic}}</p>
+            </ion-col>
+            <ion-col size="6">
+              <p class="showValue">{{selectedDiastolic}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col size="6">
+              <button class="btns" (click)="selectSystolic()">
+                Select Systolic
+              </button>
+            </ion-col>
+            <ion-col size="6">
+              <button class="btns" (click)="selectDiastolic()">
+                Select Diastolic
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramTwo -->
+  <ion-grid *ngIf="currentQuestion == 'two'">
+    <ion-row>
+      <ion-col>
+        <!-- paramOne -->
+        <ion-grid class="optionsGrid">
+          <ion-row *ngFor="let pulse of pulseRates">
+            <ion-col>
+              {{pulse.pulseRate}}
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramThree -->
+  <ion-grid *ngIf="currentQuestion == 'three'">
+    <ion-row>
+      <ion-col>
+        <!-- paramOne -->
+        <ion-grid class="optionsGrid">
+          <ion-row *ngFor="let resp of respiratoryRates">
+            <ion-col>
+              {{resp.respiratoryRate}}
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-row class="skip" [routerLink]="[forwardLink]">
+    <ion-col>
+      Skip
+    </ion-col>
+  </ion-row>
+
+  <ion-list class="slide-right-left">
+    <div class="match-age">
+      <label class="item item-input min-age">
+        <input type="number" min="18" max="65" />
+      </label>
+      <label class="item item-input max-age">
+        <input type="number" min="18" max="65" />
+      </label>
+    </div>
+  </ion-list>
+</ion-content>

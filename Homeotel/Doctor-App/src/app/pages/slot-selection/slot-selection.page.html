@@ -1,0 +1,178 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Select a time slot</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="padding: 0px;" align-items-center justify-content-center>
+    <ion-row
+      style="
+        color: #000;
+        background: #fff;
+        border-bottom: 2px dashed #000;
+        padding: 8px 0px;
+      "
+    >
+      <ion-col size="3.5" align-items-center justify-content-center>
+        <p style="margin: 0;">
+          <img
+            src="assets/images/milinda.jpg"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+      <ion-col style="padding-top: 25px;">
+        <p class="docName">{{doctorName}}</p>
+        <p class="designation">{{doctorUsername}}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="heading">{{slotName}} slots</ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div class="container" style="padding: 6px;">
+    <div class="scroll" scrollX="true">
+      <div
+        *ngFor="let slot of allAvailableSlotsNTimings; let i = index"
+        (click)="selectSlotDate(i)"
+        class="individ"
+      >
+        <div class="person">
+          <div class="name-holder three-dots boldBlack">
+            {{slot.title}}
+          </div>
+          <div class="name-holder three-dots slotsStatus slotsAvailable">
+            {{slot.morningTimings.length + slot.afternoonTimings.length}} slots
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ion-grid style="padding: 0px;" align-items-center justify-content-center>
+    <ion-row
+      style="
+        color: #000;
+        text-align: center;
+        background: #fff;
+        border-top: 2px dashed #000;
+        border-bottom: 2px dashed #000;
+        padding: 8px 0px;
+        font-size: 20px;
+        font-weight: bold;
+      "
+    >
+      <ion-col>{{selectedSlotDate["title"]}}</ion-col>
+    </ion-row>
+
+    <ion-grid class="indicationsGrid">
+      <ion-row class="indicationsRow">
+        <ion-col class="bookedSlotsIndication" size="auto"> </ion-col>
+        <ion-col class="bookedSlotsIndicationTitle">
+          Booked slots
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="isEditSlot" class="indicationsRow">
+        <ion-col class="editingSlotIndication" size="auto"> </ion-col>
+        <ion-col class="editingSlotIndicationTitle">
+          Current editing slot
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- Morning slots -->
+    <ion-row>
+      <ion-col size="auto">
+        <img
+          src="assets/icons/sun-rise.png"
+          height="40px"
+          style="border-radius: 100%;"
+        />
+      </ion-col>
+      <ion-col class="heading">
+        {{selectedSlotDate["morningTimings"].length}} slots
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <div class="container" style="padding: 6px;">
+        <div class="wrap" scrollX="true">
+          <div
+            *ngFor="let slot of selectedSlotDate['morningTimings']"
+            (click)="selectSlot(slot[0], slot[0]+' AM', slot[1], slot[2])"
+            style="
+              border: 1px solid #000;
+              margin: 6px;
+              border-radius: 5px;
+              width: 28%;
+              padding: 8px;
+              text-align: center;
+            "
+            class="individ"
+            [ngStyle]="{'background':slot[2] === true ? 'green' : (slot[1] === true ? 'red' : 'white') }"
+          >
+            <div class="person">
+              <div
+                class="name-holder three-dots boldBlack"
+                [ngStyle]="{'color':slot[2] === true ? 'white' : (slot[1] === true ? 'white' : 'black') }"
+              >
+                {{slot[0]}} AM
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-row>
+
+    <!-- Afternoon slots -->
+    <ion-row>
+      <ion-col size="auto">
+        <img
+          src="assets/icons/sun.png"
+          height="40px"
+          style="border-radius: 100%;"
+        />
+      </ion-col>
+      <ion-col class="heading">
+        {{selectedSlotDate['afternoonTimings'].length}} slots
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <div class="container" style="padding: 6px;">
+        <div class="wrap" scrollX="true">
+          <div
+            *ngFor="let slot of selectedSlotDate['afternoonTimings']"
+            (click)="selectSlot(slot[0], slot[0]+' PM', slot[1], slot[2])"
+            style="
+              border: 1px solid #000;
+              margin: 6px;
+              border-radius: 5px;
+              width: 28%;
+              padding: 8px;
+              text-align: center;
+            "
+            class="individ"
+            [ngStyle]="{'background':slot[2] === true ? 'green' : (slot[1] === true ? 'red' : 'white') }"
+          >
+            <div class="person">
+              <div
+                class="name-holder three-dots boldBlack"
+                [ngStyle]="{'color':slot[2] === true ? 'white' : (slot[1] === true ? 'white' : 'black') }"
+              >
+                {{slot[0]}} PM
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-row>
+  </ion-grid>
+</ion-content>

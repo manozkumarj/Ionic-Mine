@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Payments</ion-title>
+    <ion-title slot ="primary">$ {{totalNetAmount}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf ="payments.length>0; else noPayments">
+    <ion-row style="border-bottom: 1px solid grey;" *ngFor ="let payment of payments">
+      <ion-col size="3">
+        <p style="margin: 0;padding: 6px; text-align: center;">
+          <img src="assets/images/milinda.jpg" height="70px" style="border-radius: 100%;" /></p>
+      </ion-col>
+
+      <ion-col size="6">
+        <p>{{payment.displayName}}<br>
+          {{payment.transactionType}} <br>
+          <span style="color: grey;">{{payment.transactionDate | date : 'MMM d, y, h:mm a'}}</span>
+          </p>
+
+      </ion-col>
+      <ion-col style="margin-left: -25px; padding: 20px;">
+        <p [style.color] ="getAmountColor(payment.transactionTypeId)">$ {{payment.netAmount}}</p>
+      </ion-col>
+
+
+    </ion-row>
+  </ion-grid>
+
+  <ng-template #noPayments>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title style="color: red; text-align: center;"> There are no Payments</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+
+
+

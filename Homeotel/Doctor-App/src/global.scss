@@ -1,0 +1,79 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import "~@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+.site-color {
+  color: #0a9f28 !important;
+}
+
+ion-toolbar {
+  --background: #0a9f28;
+  --background-image: linear-gradient(
+    180deg,
+    rgba(207, 64, 52, 1) 40%,
+    rgba(108, 9, 9, 1) 100%
+  );
+  --color: #fff;
+}
+
+.secondHeader {
+  background: #0a9f28;
+  background-image: linear-gradient(
+    180deg,
+    rgba(207, 64, 52, 1) 40%,
+    rgba(108, 9, 9, 1) 100%
+  );
+  -webkit-box-shadow: -1px 2px 15px -1px rgba(128, 128, 128, 1);
+  -moz-box-shadow: -1px 2px 15px -1px rgba(128, 128, 128, 1);
+  box-shadow: -1px 2px 15px -1px rgba(128, 128, 128, 1);
+}
+
+.secondHeader .active {
+  border-bottom: 3px solid #fff;
+}
+
+.findDoctorModal {
+  padding: 30px;
+  .modal-wrapper {
+    border-radius: 7px;
+    background: rgba(0, 0, 0, 0.5);
+    height: 95% !important;
+    margin-top: 10%;
+  }
+}
+.toastSuccess {
+  --background: #0a9f28;
+}
+
+.toastError {
+  --background: rgb(209, 25, 34);
+}
+
+.three-dots {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/doctor-consultation-modes"></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="primary">
+      <ion-button >
+        Disable
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{consultationType}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<form [formGroup] ="modeForm">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="1" offset="1">
+        <p ><ion-icon [name]="consultationIcon" style="color: #0a9f28;font-size: 23px;"></ion-icon></p>
+      </ion-col>
+
+      <ion-col  offset="0.5">
+        <h3>{{consultationType}}</h3>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf ="!(modeId ==4)">
+      <ion-col>
+        <ion-item>
+          <ion-label *ngIf ="!(modeId ==3)" position="floating">Minimum session in minutes</ion-label>
+          <ion-label *ngIf ="(modeId ==3)"position="floating">Session</ion-label>
+          <ion-input type="text" formControlName ="session"></ion-input>
+        </ion-item>
+
+      </ion-col>
+    </ion-row>
+
+  
+
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label *ngIf ="!((modeId ==4) || (modeId ==3))" position="floating">Price per minute</ion-label>
+          <ion-label *ngIf ="(modeId ==4) || (modeId ==3)"position="floating">Price </ion-label>
+          <ion-input type="number" formControlName ="price"></ion-input>
+        </ion-item>
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="text-align: center;">
+      <ion-col >
+        <ion-button (click) ="save()">Save</ion-button>
+      </ion-col>
+      
+    </ion-row>
+  </ion-grid>
+</form>
+</ion-content>

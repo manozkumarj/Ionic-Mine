@@ -1,0 +1,118 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Appointment Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-grid>
+  <ion-grid style="padding: 0px;" align-items-center justify-content-center *ngFor ="let consultantDetail of consultantDetails ">
+    <ion-row
+      class="solidBorderBottom"
+      style="color: #000; background: #fff; padding: 8px 0px;"
+    >
+      <ion-col size="3.5" align-items-center justify-content-center>
+        <p style="margin: 0;">
+          <img
+          [src]="commonService.currentDoctorPhoto ? commonService.currentDoctorPhoto :'assets/images/emptypic.png'"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+       <ion-col style="padding-top: 10px;" >
+        <p *ngIf ="consultantDetail.doctorName" >{{consultantDetail.doctorName}}</p>
+        <p *ngIf ="consultantDetail.mode">{{consultantDetail.mode}}</p>
+        <p *ngIf ="consultantDetail.displayName" >{{consultantDetail.displayName}}</p>
+        <p *ngIf ="consultantDetail.appointmentAt">{{consultantDetail.appointmentAt | date : 'MMM d, y, h:mm a'}}</p> 
+     
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf ="consultantDetail.mainComplaint">
+      <ion-col>
+        <p class="heading">Complaint
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="solidBorderBottom"  >
+      <ion-col >
+        <p >{{consultantDetail.mainComplaint}}</p>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+    
+    <ion-row *ngIf ="complaintDetails.length >0">
+      <ion-col>
+        <p class="heading">Complaint Details
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-grid *ngFor = "let complaintDetail of complaintDetails" class="solidBorderBottom">
+    <ion-row *ngIf ="complaintDetail.recurring" style="margin-top: -10px;">
+     <ion-col><p>Is it recurring?</p></ion-col>
+     <ion-col><p>{{complaintDetail.recurring}}</p></ion-col>
+    </ion-row>
+    <ion-row *ngIf ="complaintDetail.recurring_freq" style="margin-top: -10px;">
+     <ion-col><p>Recurring Since</p></ion-col>
+     <ion-col><p>{{complaintDetail.recurring_freq}}</p></ion-col>
+    </ion-row>
+    <ion-row *ngIf ="complaintDetail.complaint_description" style="margin-top: -10px;">
+     <ion-col><p>Pain Description</p></ion-col>
+     <ion-col><p>{{complaintDetail.complaint_description}}</p></ion-col>
+    </ion-row>
+    
+    </ion-grid>
+    
+
+      <ion-row [routerLink]="['/diagnosis' ,commonService.currentAppointmentId ]">
+        <ion-col >
+          <ion-item detail lines ="none"><ion-label>Diagnosis</ion-label></ion-item>
+          
+        </ion-col>
+
+        
+      </ion-row>
+
+      <ion-row style="margin-top: -20px;" [routerLink]="['/prescription' ,commonService.currentAppointmentId]">
+        <ion-col >
+          <ion-item detail lines ="none"><ion-label>Prescription</ion-label></ion-item>
+          
+        </ion-col>
+
+        
+      </ion-row>
+  
+
+
+
+     
+      <ion-row >
+        <ion-col>
+          <p style="text-align: center;">
+          <button  class="btn buyButton" (click) ="cancelAppointmentAlert()">
+            Cancel
+          </button></p>
+          
+        
+        </ion-col>
+
+        <ion-col>
+          <p style="text-align: center;">
+            <button (click) ="changeSlot()" class="btn appoinmentButton">
+              Change Slot
+            </button>
+          </p>
+        </ion-col>
+        
+      </ion-row>
+
+
+  </ion-grid>
+</ion-content>

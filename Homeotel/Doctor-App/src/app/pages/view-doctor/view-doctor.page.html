@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/doctors"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{selectedDoctor.name}}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button>
+        <ion-icon slot="icon-only" name="create"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>#{{selectedDoctor.id}} - {{selectedDoctor.name}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="ion-text-center">
+      <img [src]="selectedDoctor.img" class="info-img" />
+
+      <ion-item lines="none">
+        <ion-icon name="star-half" slot="start"></ion-icon>
+        <ion-label> {{selectedDoctor.name}} </ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

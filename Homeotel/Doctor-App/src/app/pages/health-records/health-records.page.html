@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Health Records</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+ 
+
+  <ion-list >
+    <ion-item
+      *ngFor="let healthRecord of healthRecords"
+      [routerLink]="[healthRecord.redirectUrl]"
+      detail lines ="none"
+    >
+      <div style="font-size: 18px;">
+        {{healthRecord.name}}
+      </div>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

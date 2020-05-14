@@ -1,0 +1,123 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button  routerLink="/doctor-professional" ></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="primary" >
+
+      <ion-button (click)="skip()" *ngIf ="!isTextField">
+        skip
+      </ion-button>
+      <ion-button (click)="submit()" *ngIf ="!lastPage">
+        next
+      </ion-button>
+
+      <ion-button (click)="submit()" *ngIf ="lastPage">
+        done
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid 
+    style="
+      height: 15%;
+      background-color: #eab841;
+      color: #fff;
+      font-size: 18px;
+    "
+  >
+    <ion-row
+      style="height: 100%;"
+      class="ion-justify-content-center ion-align-items-center"
+    >
+      {{subTitle}}
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="selectedList.length > 0 || !isTextField">
+    <ion-row>
+      <ion-col
+        size="auto"
+        class="optionsList"
+        *ngFor="let list of selectedList"
+        (click)="deSelect(list.id)"
+      >
+        <span class="selectedOption">
+          {{list.name}}
+        
+        </span>
+      </ion-col>
+    </ion-row>
+
+  
+
+  <ion-list style="margin: 0px; padding: 5px;background: #999;">
+    <ion-input
+      placeholder="Type to Search..."
+      style="background: #999; color: #fff; padding: 5px;"
+      (keyup)="onChange($event.target.value)"
+      
+    >
+    </ion-input>
+  </ion-list>
+
+
+  <ion-list
+  *ngIf="filteredList.length > 0; else nounSelectedList"
+>
+  <div *ngFor="let list of filteredList">
+    
+      
+
+      <div *ngIf="list.isSelected == false">
+        <ion-item (click)="select(list.id)">
+          <div style="font-size: 18px;">{{list.name}}</div>
+        </ion-item>
+      </div>
+    
+    
+  </div>
+</ion-list>
+
+<ng-template #nounSelectedList>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title style="color: red;"> There are no items  </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ng-template>
+</ion-grid>
+
+
+
+<ion-grid
+    *ngIf ="isTextField"
+  >
+    <ion-row>
+      <ion-col>
+        <ion-input
+          class="inputField"
+          [(ngModel)]="inputField"
+          [value]="inputField"
+          placeholder="Please enter..."
+          type ="number"
+        >
+        </ion-input>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col style="text-align: center;">
+        <ion-button (click) ="submit()">Save & continue</ion-button>
+      </ion-col>
+      
+    </ion-row>
+  </ion-grid>
+
+
+
+</ion-content>

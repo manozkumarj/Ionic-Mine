@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-grid>
+      <ion-row style="text-align: center; font-size: 25px;">
+        <ion-col size='10.5'>
+          <div>
+            Tele Homeo Pro
+          </div>
+        </ion-col>
+        <!-- <ion-col size="2" (click)="search()">
+          <div>
+            <ion-icon name="search-outline"></ion-icon>
+          </div>
+        </ion-col> -->
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid class="grid appointmentsGrid" *ngIf ="commonService.isAttender" [routerLink]="['/add-patients']" >
+    <ion-row>
+      <ion-col class="card-heading">
+        <div>Add Patient</div>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <p>Add direct walk-in Patients into</p>
+        <p>they system</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="grid homeoKitsGrid" [routerLink]="['/today-queue']">
+    <ion-row>
+      <ion-col class="card-heading">
+        <div>Today's Queue</div>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <p>See all upcoming appointments for</p>
+        <p>today. This includes all the</p>
+        <p>online as well as offline visits</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  
+  <ion-grid class="grid appointmentsGrid" *ngIf ="!commonService.isAttender" [routerLink]="['/homeo-kits']" >
+    <ion-row>
+      <ion-col class="card-heading">
+        <div>Homeo Kits</div>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <p>Add Homeo-kits , manage rates</p>
+        <p>and view all the orders for</p>
+        <p>your kits</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="grid scheduledAppointmentsGrid" [routerLink]="['/scheduled-appointments']" >
+    <ion-row>
+      <ion-col class="card-heading">
+        <div>Scheduled Appointments</div>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <p>See all the scheduled</p>
+        <p>appointments for today and future dates</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/edit-doctor-profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Consultation Modes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="margin-top: 20px;">
+  
+    <ion-row style="margin-top: -25px !important;font-size: 14px;" *ngFor ="let video of videoConsultations"[routerLink]="['/consultation-type' , video.mode_id]">
+      <ion-col size="1" offset="1">
+        <p ><ion-icon [name]="video.icon" style="color: #0a9f28;font-size: 23px;"></ion-icon></p>
+      </ion-col>
+  
+      <ion-col offset="0.5">
+        <p> <span style="font-weight: bold; font-size: 18px;">{{video.name}}</span><br>         
+         <span>Min session {{video.minimum_min}} mins ₹ {{video.price_per_min}} per minute</span> 
+         </p>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-top: -25px !important;font-size: 14px;" *ngFor ="let audio of audioConsultations"[routerLink]="['/consultation-type' , audio.mode_id]">
+      <ion-col size="1" offset="1">
+        <p ><ion-icon [name]="audio.icon" style="color: #0a9f28;font-size: 23px;"></ion-icon></p>
+      </ion-col>
+  
+      <ion-col offset="0.5">
+        <p> <span style="font-weight: bold; font-size: 18px;">{{audio.name}}</span><br>
+         
+         <span>Min session {{audio.minimum_min}} mins ₹ {{audio.price_per_min}} per minute</span> 
+         </p>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-top: -25px !important;font-size: 14px;" *ngFor ="let chat of chatConsultations"[routerLink]="['/consultation-type' , chat.mode_id]">
+      <ion-col size="1" offset="1">
+        <p ><ion-icon [name]="chat.icon" style="color: #0a9f28;font-size: 23px;"></ion-icon></p>
+      </ion-col>
+  
+      <ion-col offset="0.5">
+        <p> <span style="font-weight: bold; font-size: 18px;">{{chat.name}}</span><br>
+         
+         <span>Valid for {{chat.minimum_min}}hours ₹ {{chat.price_per_min}}</span> 
+         </p>
+      </ion-col>
+    </ion-row>
+    <ion-row style="margin-top: -25px !important;font-size: 14px;" *ngFor ="let visit of physicalVisits"[routerLink]="['/consultation-type' , visit.mode_id]">
+      <ion-col size="1" offset="1">
+        <p ><ion-icon [name]="visit.icon" style="color: #0a9f28;font-size: 23px;"></ion-icon></p>
+      </ion-col>
+  
+      <ion-col offset="0.5">
+        <p> <span style="font-weight: bold; font-size: 18px;">{{visit.name}}</span><br>
+         <span>Regular Consulatation ₹ {{visit.price_per_min}}</span> 
+         </p>
+      </ion-col>
+    </ion-row>
+  
+
+  </ion-grid>
+
+</ion-content>

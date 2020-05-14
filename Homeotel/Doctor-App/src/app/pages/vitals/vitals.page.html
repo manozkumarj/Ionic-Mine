@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Vitals</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf ="vitals.length >0 ; else noVitals">
+    <div *ngFor="let vital of vitals" class="dashedBorderBottom pad5">
+      <ion-row style="font-size: 18px; font-weight: bold;">
+        <ion-col size="auto">
+          <ion-icon name="calendar-outline" style="color: #0a9f28;;"></ion-icon>
+        </ion-col>
+        <ion-col>
+          {{vital.date | date : 'MMM d, y'}}
+        </ion-col>
+        
+      </ion-row>
+
+      <ion-row
+        *ngIf="vital.temparature != null"
+        style="font-size: 18px; padding: 5px;"
+      >
+        <ion-col>
+          Temparature
+        </ion-col>
+        <ion-col size="4">
+          {{vital.temparature}} ℉
+        </ion-col>
+      </ion-row>
+      <ion-row
+        *ngIf="vital.pulseRate != null"
+        style="font-size: 18px; padding: 5px;"
+      >
+        <ion-col>
+          Pulse Rate
+        </ion-col>
+        <ion-col size="4">
+          {{vital.pulseRate}} per min
+        </ion-col>
+      </ion-row>
+      <ion-row
+        *ngIf="vital.respirationRate != null"
+        style="font-size: 18px; padding: 5px;"
+      >
+        <ion-col>
+          Respiration Rate
+        </ion-col>
+        <ion-col size="4">
+          {{vital.respirationRate}} per min
+        </ion-col>
+      </ion-row>
+      <ion-row
+        *ngIf="vital.bloodPressure != null"
+        style="font-size: 18px; padding: 5px;"
+      >
+        <ion-col>
+          Blood Pressure
+        </ion-col>
+        <ion-col size="4">
+          {{vital.bloodPressure}}
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+
+  <ng-template #noVitals>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title style="color: red; text-align: center;">
+          There are no vitals</ion-card-title
+        >
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+
+</ion-content>

@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [routerLink] ="backwardLink"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{currentTitle}}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button   *ngIf ="currentTitle =='Advice'" (click)="submit()">Next</ion-button>
+      <ion-button [routerLink] ="forwardLink" *ngIf ="currentTitle =='Review Date'"  (click)="submit()">Done</ion-button>
+    </ion-buttons>
+  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid
+  style="
+    height: 20%;
+    background-color: #eab841;
+    color: #fff;
+    font-size: 18px;
+  "
+>
+  <ion-row
+    style="height: 100%;"
+    class="ion-justify-content-center ion-align-items-center"
+  >
+    {{currentSubTitle}}
+  </ion-row>
+</ion-grid>
+<div *ngIf ="currentTitle =='Diagnosis'">
+
+  <ion-grid >
+    <ion-row *ngIf ="diagnosisSelected">
+      <ion-col
+        size="auto"
+        class="optionsList"
+      >
+        <span class="selectedOption">
+          {{selectedList["name"]}}
+        
+        </span>
+      </ion-col>
+    </ion-row>
+
+  
+
+  <ion-list style="margin: 0px; padding: 5px;background: #999;">
+    <ion-input
+      placeholder="Type to Search..."
+      style="background: #999; color: #fff; padding: 5px;"
+      (keyup)="onChange($event.target.value)"
+      
+    >
+    </ion-input>
+  </ion-list>
+
+
+  <ion-list
+  *ngIf="filteredList.length > 0"
+>
+  <div *ngFor="let list of filteredList">
+      <div *ngIf="!(selectedList['id'] == list.id)">
+        <ion-item (click)="select(list.id)">
+          <div style="font-size: 18px;">{{list.name}}</div>
+        </ion-item>
+      </div>
+    
+    
+  </div>
+</ion-list>
+
+</ion-grid>
+
+</div>
+<div *ngIf ="currentTitle =='Advice'">
+  <ion-row>
+    <ion-col>
+      <ion-input
+        class="inputField"
+        [(ngModel)]="inputField"
+        [value]="inputField"
+        placeholder="Please enter..."
+      >
+      </ion-input>
+    </ion-col>
+  </ion-row>
+</div>
+<div *ngIf ="currentTitle =='Review Date'">
+
+  <ion-grid >
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              Review Date (YYYY-MM-DD)
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col class="showValue">{{selectedReviewDate}} </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col (click)="selectReviewDate()" class="btn-success">
+              Select Review Date
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  
+
+
+</div>
+ 
+</ion-content>

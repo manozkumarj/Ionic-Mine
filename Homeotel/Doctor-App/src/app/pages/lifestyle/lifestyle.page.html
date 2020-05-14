@@ -1,0 +1,125 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Lifestyle</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf ="lifeStyles.length >0 ; else noLifeStyles">
+  <ion-list *ngFor ="let lifeStyle of lifeStyles">
+    <ion-item *ngIf ="lifeStyle.smoking" >
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Smoking
+          </ion-col>
+          <ion-col>
+            {{lifeStyle.smoking}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+
+    <ion-item *ngIf ="lifeStyle.alcohol" >
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Alcohol
+          </ion-col>
+          <ion-col>
+            {{lifeStyle.alcohol}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+ 
+    <ion-item *ngIf ="lifeStyle.exercise" >
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Exercise
+          </ion-col>
+          <ion-col>
+            {{lifeStyle.exercise}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <ion-item *ngIf ="lifeStyle.activityLevel" >
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Activity Level
+          </ion-col>
+          <ion-col>
+            {{lifeStyle.activityLevel}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+    <ion-item *ngIf ="lifeStyle.profession" >
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Profession
+          </ion-col>
+          <ion-col>
+            {{lifeStyle.profession}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+ 
+ 
+    <ion-item *ngIf ="lifeStyle.foodPreferences" >
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            Food Preferences
+          </ion-col>
+          <ion-col>
+            {{lifeStyle.foodPreferences}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+ 
+ 
+  </ion-list>
+</div>
+
+<ng-template #noLifeStyles>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title style="color: red; text-align: center;">
+        There are no lifeStyles</ion-card-title
+      >
+    </ion-card-header>
+  </ion-card>
+</ng-template>
+
+</ion-content>

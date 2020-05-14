@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Previous Consultations</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid
+    class="grid doctorGrid"
+    *ngIf="userPreviousConsultations.length >0 ; else noPreviousConsultations"
+  >
+    <ion-row
+      style="color: #000; background: #fff;"
+      *ngFor="let userPreviousConsultation of userPreviousConsultations"
+    >
+      <ion-col
+        size="3"
+        [routerLink]="['/completed-consultation-details' , userPreviousConsultation.userId , userPreviousConsultation.relativeId]"
+      >
+        <p style="margin: 0; padding: 6px; text-align: center;">
+          <img
+          [src]="userPreviousConsultation.photo ? userPreviousConsultation.photo : 'assets/images/emptypic.png'"
+            height="50px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+      <ion-col
+        [routerLink]="['/completed-consultation-details' , userPreviousConsultation.userId , userPreviousConsultation.relativeId]"
+      >
+        <p >{{userPreviousConsultation.displayName}}</p>
+        <p>{{userPreviousConsultation.mode}}</p>
+        <p>by {{userPreviousConsultation.byName}}</p>
+        <p>{{userPreviousConsultation.appointmentAt | date : 'MMM d, y'}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ng-template #noPreviousConsultations>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title style="color: red; text-align: center;">
+          There are no Previous Consultations</ion-card-title
+        >
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+</ion-content>

@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [routerLink]="['/appointment-details' ,commonService.currentAppointmentId]"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Diagnosis</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row [routerLink] ="['/edit-diagnosis' , '1']">
+      <ion-col>
+       <p> <ion-label>Primary Diagnosis</ion-label></p>
+      </ion-col>
+      <ion-col size ="auto">
+        <p>{{diagnosisName}}</p>
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row [routerLink] ="['/edit-diagnosis' , '1' , '2']">
+      <ion-col>
+       <p> <ion-label>Advice</ion-label></p>
+      </ion-col>
+      <ion-col size ="auto">
+        <p>{{advice}}</p>
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row [routerLink] ="['/edit-diagnosis' , '1' , '2' , '3']">
+      <ion-col>
+       <p> <ion-label>Review Date</ion-label></p>
+      </ion-col>
+      <ion-col size ="auto">
+        <p>{{reviewDate}}</p>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>

@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/edit-doctor-profile"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Professional</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-grid >
+    <ion-row [routerLink] ="['/edit-professional' ,'1']">
+      <ion-col >
+        <p><ion-label>Specialisation</ion-label></p>
+        
+      </ion-col>
+
+      <ion-col size ="auto" >
+        <p>{{specialisation}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row  [routerLink] ="['/edit-professional' ,'1' , '2']">
+      <ion-col >
+       <p> <ion-label>Experience</ion-label></p>
+        
+      </ion-col>
+
+      <ion-col size="auto">
+        <p>{{experience}}</p>
+      </ion-col>
+    </ion-row>
+
+    
+    <ion-row   [routerLink] ="['/edit-professional' ,'1' , '2' ,'3']">
+      <ion-col >
+        <p><ion-label>Qualifications</ion-label></p>
+        
+      </ion-col>
+
+      <ion-col size ="auto">
+      <p>{{qualification}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row  [routerLink] ="['/edit-professional' ,'1' , '2' ,'3' , '4']">
+      <ion-col >
+        <p><ion-label>Certifications</ion-label></p>
+        
+      </ion-col>
+
+      <ion-col size ="auto">
+       <p>{{certification}}</p>
+      </ion-col>
+    </ion-row>
+
+
+    <ion-row [routerLink] ="['/edit-professional' ,'1' , '2' ,'3' , '4' ,'5']">
+      <ion-col >
+       <p> <ion-label>Awards</ion-label></p>
+        
+      </ion-col>
+
+      <ion-col size ="auto">
+        <p>{{award}}</p>
+      </ion-col>
+    </ion-row>
+
+    
+  </ion-grid>
+
+</ion-content>

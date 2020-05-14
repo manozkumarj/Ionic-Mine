@@ -1,0 +1,150 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [routerLink] ="backwardLink"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{currentTitle}}</ion-title>
+    
+    <ion-buttons slot="primary">
+      <ion-button   (click)="submit()" *ngIf ="currentTitle =='Instructions'">Next</ion-button>
+      <ion-button   (click)="submit()" *ngIf ="currentTitle =='No of days'">Done</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid
+  style="
+    height: 20%;
+    background-color: #eab841;
+    color: #fff;
+    font-size: 18px;
+  "
+>
+  <ion-row
+    style="height: 100%;"
+    class="ion-justify-content-center ion-align-items-center"
+  >
+    {{currentSubTitle}}
+  </ion-row>
+</ion-grid>
+<div >
+
+  <ion-grid *ngIf ="currentTitle =='Drug'">
+    <ion-row *ngIf ="drugSelected">
+      <ion-col
+        size="auto"
+        class="optionsList"
+      >
+        <span class="selectedOption">
+          {{selectedList["name"]}}
+        
+        </span>
+      </ion-col>
+    </ion-row>
+
+  
+
+  <ion-list style="margin: 0px; padding: 5px;background: #999;">
+    <ion-input
+      placeholder="Type to Search..."
+      style="background: #999; color: #fff; padding: 5px;"
+      (keyup)="onChange($event.target.value)"
+      
+    >
+    </ion-input>
+  </ion-list>
+
+
+  <ion-list
+  *ngIf="filteredList.length > 0"
+>
+  <div *ngFor="let list of filteredList">
+      <div *ngIf="!(selectedList['id'] == list.id)">
+        <ion-item (click)="drugChanged(list.id)">
+          <div style="font-size: 18px;">{{list.name}}</div>
+        </ion-item>
+      </div>
+    
+    
+  </div>
+</ion-list>
+
+</ion-grid>
+
+</div>
+
+<div>
+  <ion-grid *ngIf="currentTitle == 'Scale'" class="btnsGrid">
+    <ion-row *ngFor="let scale of scales">
+      <ion-col
+       (click)="scaleChanged(scale.id)"
+        [ngClass]="{'btn-success' : scale.id == inputField
+      }"
+      >
+        {{scale.name}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+
+<div>
+  <ion-grid *ngIf="currentTitle == 'Potency'" class="btnsGrid">
+    <ion-row *ngFor="let potency of filteredPotencies">
+      <ion-col
+       (click)="potencyChanged(potency.id)"
+        [ngClass]="{'btn-success' : potency.id == inputField
+      }"
+      >
+        {{potency.name}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+<div  >
+  <ion-grid *ngIf="currentTitle == 'Instructions'" class="btnsGrid">
+    <ion-row *ngFor="let instruction of instructions" >
+      <ion-col
+         (click) ="instructionsChanged(instruction.id)"
+        [ngClass]="{'btn-success' : instruction.isSelected
+      }"
+      >
+        {{instruction.name}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+<div>
+  <ion-grid *ngIf ="currentTitle =='No of days'" >
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              No of Days 
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col class="showValue">{{selectedDate}} </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col (click)="selectDays()" class="btn-success">
+              Select Days
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+</ion-content>

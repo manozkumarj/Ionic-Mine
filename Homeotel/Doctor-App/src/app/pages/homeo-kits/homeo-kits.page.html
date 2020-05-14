@@ -1,0 +1,116 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Homeo Kits</ion-title>
+  </ion-toolbar>
+</ion-header>
+    
+    
+
+
+
+<ion-content>
+  <ion-row >
+  <ion-col class="tab" size="6" [style.border-bottom]="selectedTab ==1 ? '2px solid white' : '2px solid #0a9f28'" (click)="togglingTabs(1)">
+    <button >Sell</button>
+  </ion-col>
+
+
+  <ion-col class="tab" size="6" [style.border-bottom]="selectedTab ==2 ? '2px solid white' : '2px solid #0a9f28'" (click)="togglingTabs(2)">
+    <button >Orders</button>
+  </ion-col>
+</ion-row>
+
+  
+
+    <!-- sell tab -->
+    <div *ngIf="selectedTab==1">
+      <ion-grid *ngIf="homeoKits.length > 0; else noHomeoKits">
+        
+
+        <ion-row style="border-bottom: 1px solid grey;" *ngFor ="let homeoKit of homeoKits" [routerLink]="['/kit-details' , 'edit' , homeoKit.id]">
+          <ion-col size="3">
+            <p style="margin: 0;padding: 6px; text-align: center;">
+              <img  [src]="homeoKit.photo ? homeoKit.photo :'assets/images/kit.jpeg'"  height="70px" style="border-radius: 100%;" /></p>
+          </ion-col>
+
+          <ion-col size="6">
+            <p>
+             <span>{{homeoKit.name}}</span> <br>
+             <span style="color: grey;">{{homeoKit.description}}</span>
+              </p>
+
+          </ion-col>
+
+          <ion-col size ="3" >
+            <p style=" height: 100%;  vertical-align: middle;">
+              
+            <span>$ {{homeoKit.price}}</span>
+              <ion-button>Edit</ion-button>
+            </p>
+          </ion-col>
+
+        </ion-row>
+
+        
+      
+
+       
+      </ion-grid>
+
+      <ng-template #noHomeoKits>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title style="color: red; text-align: center;"> There are no homeokits</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ng-template>
+
+
+      <ion-row>
+        <ion-col class="continue" [routerLink]="['/kit-details' , 'add']">
+          <button>Add kit</button>
+        </ion-col>
+      </ion-row>
+</div>
+
+
+
+    <!-- orders tab -->
+    <div *ngIf="selectedTab==2">
+      <ion-grid *ngIf ="homeoOrders.length>0; else noOrders">
+        <ion-row style="border-bottom: 1px solid grey;" *ngFor ="let homeoOrder of homeoOrders">
+          <ion-col size="3">
+            <p style="margin: 0;padding: 6px; text-align: center;">
+              <img  [src]="homeoOrder.photo ? homeoOrder.photo  :'assets/images/kit.jpeg'"  height="70px" style="border-radius: 100%;" /></p>
+          </ion-col>
+
+          <ion-col size="5">
+            <p>{{homeoOrder.userName}}<br>
+              {{homeoOrder.kitName}} <br>
+              <span style="color: grey;">{{homeoOrder.orderDate | date : 'MMM d, y'}}</span>
+              </p>
+
+          </ion-col>
+          <ion-col >
+            <p style="padding: 20px;">$ {{homeoOrder.amountPaid}}</p>
+          </ion-col>
+
+
+        </ion-row>
+      </ion-grid>
+
+      <ng-template #noOrders>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title style="color: red; text-align: center;"> There are no orders</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ng-template>
+
+    
+  </div>
+</ion-content>

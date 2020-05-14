@@ -1,0 +1,81 @@
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { ApiService } from "src/app/services/api.service";
+import { CommonService } from "src/app/services/common.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
+
+@Component({
+  selector: "app-payments",
+  templateUrl: "./payments.page.html",
+  styleUrls: ["./payments.page.scss"],
+})
+export class PaymentsPage implements OnInit {
+  totalNetAmount =0.00
+  payments = [];
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private apiService: ApiService,
+    public commonService: CommonService,
+    private utilities: UtilitiesService
+  ) {}
+
+  ngOnInit() {
+    this.loadPayments();
+  }
+
+  loadPayments() {
+    this.apiService
+      .getPayments(this.commonService.currentDoctorId)
+      .subscribe((data) => {
+        if (this.utilities.isInvalidApiResponseData(data)) {
+          console.log(data);
+          this.commonService.presentToast("Something went wrong", "toastError");
+        } else {
+          console.log(data);
+                   
+            if(data[0][0].total_net_amount){
+              console.log("test");
+              this.totalNetAmount = data[0][0].total_net_amount.toFixed(2)
+            }
+           
+          console.log(data[1].length)
+          this.payments = [];
+          if(data[1].length >0){
+
+            data[1].forEach((data) => {
+              var transactionType;
+  
+              if (data.transaction_for == "kit") {
+                transactionType = data.kit_name;
+              } else {
+                transactionType = data.mode_name;
+              }
+  
+              this.payments.push({
+                displayName: data.user_name,
+                transactionType: transactionType,
+                transactionDate: data.transaction_at,
+                transactionTypeId: data.transaction_type_id,
+                netAmount: data.net_amount.toFixed(2),
+              });
+            });
+  
+          }
+          this.commonService.presentToast(
+            "data loaded successfully",
+            "toastSuccess"
+          );
+        }
+      });
+  }
+
+  getAmountColor(id) {
+    var displayColor;
+    if ((id == 1 || id == 3)) {
+      displayColor = "green";
+    } else {
+      displayColor = "red";
+    }
+    return displayColor;
+  }
+}

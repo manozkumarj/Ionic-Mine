@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [routerLink]="['/appointment-details' ,commonService.currentAppointmentId]"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Prescription</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+      
+<ion-grid *ngIf ="prescriptions.length >0 ; else noPrescriptions">
+      <ion-row style="border-bottom :1px solid grey" *ngFor ="let prescription of prescriptions"(click)="editDrug(prescription.drug_id)">
+        <ion-col >
+         <p> <ion-label>{{prescription.drug_name}}</ion-label></p>
+          
+        </ion-col>
+  
+        <ion-col size ="auto" style="text-align: end;">
+          <p *ngIf ="prescription.no_of_days">
+            {{prescription.no_of_days}} days
+        </p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ng-template #noPrescriptions>
+      <ion-card  [routerLink]="['/clinic-details' , 'add']">
+        <ion-card-header>
+          <ion-card-title style="color: red;"> There are no Prescriptions. please add </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ng-template>
+  <ion-row>
+    <ion-col class="add" [routerLink]="['/edit-prescription'  ,'1']">
+      <button>Add Drug</button>
+    </ion-col>
+  </ion-row>
+</ion-content>

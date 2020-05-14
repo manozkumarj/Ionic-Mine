@@ -1,0 +1,140 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Appointments</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col
+      class="tab"
+      size="6"
+      [style.border-bottom]="selectedTab ==1 ? '2px solid white' : '2px solid #0a9f28'"
+    >
+      <button (click)="togglingTabs(1)">Upcoming</button>
+    </ion-col>
+
+    <ion-col
+      class="tab"
+      size="6"
+      [style.border-bottom]="selectedTab ==2 ? '2px solid white' : '2px solid #0a9f28'"
+    >
+      <button (click)="togglingTabs(2)">Previous</button>
+    </ion-col>
+  </ion-row>
+
+  <!-- upcoming tab -->
+  <div *ngIf="selectedTab==1">
+    <ion-grid
+      *ngIf="upComingConsultations.length >0 ;else noUpcomingConsultations"
+    >
+      <ion-row *ngFor="let upComingConsultation of upComingConsultations">
+        <ion-col size="3"  (click)="navigateToAppointmentDetailsPage(upComingConsultation.appointmentId ,upComingConsultation.appointmentAt)">
+          <p style="margin: 0;padding: 6px; text-align: center;">
+            <img
+            [src]="upComingConsultation.photo ? upComingConsultation.photo : 'assets/images/emptypic.png'"
+              height="70px"
+              style="border-radius: 100%;"
+            />
+          </p>
+        </ion-col>
+
+        <ion-col
+          size="6"
+           (click)="navigateToAppointmentDetailsPage(upComingConsultation.appointmentId ,upComingConsultation.appointmentAt)"
+          style="margin-left: -8px;"
+        >
+          <p>
+            {{upComingConsultation.displayName}}<br />
+            {{upComingConsultation.mode}}<br />
+            by {{upComingConsultation.byName}}<br>
+            {{upComingConsultation.appointmentAt | date : 'MMM d, y, h:mm a'}}
+          </p>
+        </ion-col>
+
+        <ion-col
+          *ngIf="commonService.isAttender"
+          size="3"
+          [routerLink]="['/slot-selection']"
+        >
+          <p style=" height: 100%;  vertical-align: middle;">
+            <ion-button>Edit</ion-button>
+          </p>
+        </ion-col>
+
+        <ion-col
+          *ngIf="!commonService.isAttender"
+          size="3"
+          
+          style="margin-left: -20px;"
+        >
+          <p style=" height: 100%;  vertical-align: middle;">
+            <ion-button [routerLink]="['/health-records' , upComingConsultation.userId , upComingConsultation.relativeId]">View Ehr</ion-button>
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ng-template #noUpcomingConsultations>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title style="color: red; text-align: center;">
+            There are no Upcoming Consultations</ion-card-title
+          >
+        </ion-card-header>
+      </ion-card>
+    </ng-template>
+  </div>
+
+  <!-- Previous tab -->
+  <div *ngIf="selectedTab==2">
+    <ion-grid
+      *ngIf="previousConsultations.length >0 ; else noPreviousConsultations"
+    >
+      <ion-row *ngFor="let previousConsultation of previousConsultations">
+        <ion-col size="3">
+          <p style="margin: 0;padding: 6px; text-align: center;">
+            <img
+            [src]="previousConsultation.photo ? previousConsultation.photo : 'assets/images/emptypic.png'"
+              height="70px"
+              style="border-radius: 100%;"
+            />
+          </p>
+        </ion-col>
+
+        <ion-col size="6" style="margin-left: -8px;">
+          <p>
+            {{previousConsultation.displayName}}<br />
+            {{previousConsultation.mode}}<br />
+            by {{previousConsultation.byName}}<br>
+            {{previousConsultation.appointmentAt | date : 'MMM d, y, h:mm a'}}
+          </p>
+        </ion-col>
+
+        <ion-col
+          *ngIf="!commonService.isAttender"
+          size="3"
+          [routerLink]="['/health-records' , previousConsultation.userId , previousConsultation.relativeId]"
+          style="margin-left: -20px;"
+        >
+          <p style=" height: 100%;  vertical-align: middle;">
+            <ion-button>View Ehr</ion-button>
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ng-template #noPreviousConsultations>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title style="color: red; text-align: center;">
+            There are no Completed Consultations</ion-card-title
+          >
+        </ion-card-header>
+      </ion-card>
+    </ng-template>
+  </div>
+</ion-content>

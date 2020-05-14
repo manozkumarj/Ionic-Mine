@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Today's Queue</ion-title>
+  </ion-toolbar>
+</ion-header>
+    
+    
+
+
+
+<ion-content>
+
+
+  <ion-row>
+    <ion-col class="tab" size="6" [style.border-bottom]="selectedTab ==1 ? '2px solid white' : '2px solid #0a9f28'">
+      <button (click)="togglingTabs(1)">Upcoming</button>
+    </ion-col>
+
+
+    <ion-col class="tab" size="6" [style.border-bottom]="selectedTab ==2 ? '2px solid white' : '2px solid #0a9f28'">
+      <button (click)="togglingTabs(2)">Completed</button>
+    </ion-col>
+  </ion-row>
+
+
+
+  
+
+    <!-- upcoming tab -->
+    <div *ngIf="selectedTab==1">
+      <ion-grid *ngIf ="upComingConsultations.length >0 ; else noupcomingConsultations">
+        <ion-row *ngFor ="let upComingConsultation of upComingConsultations">
+          <ion-col size="3" >
+            <p style="margin: 0;padding: 6px; text-align: center;">
+              <img [src]="upComingConsultation.photo ? upComingConsultation.photo : 'assets/images/emptypic.png'" height="70px" style="border-radius: 100%;" /></p>
+          </ion-col>
+
+          <ion-col size="5" >
+           
+            <p>{{upComingConsultation.displayName}}<br>
+              {{upComingConsultation.mode}}<br>
+              by {{upComingConsultation.byName}}<br>
+              {{upComingConsultation.appointmentAt | date : 'h:mm a'}}</p>
+
+          </ion-col>
+
+          <ion-col size ="3"*ngIf="commonService.isAttender">
+            <p style=" height: 100%;  vertical-align: middle;">
+              <ion-button>Edit</ion-button>
+            </p>
+          </ion-col>
+
+
+          
+          <ion-col size ="3"*ngIf="!commonService.isAttender" [routerLink]="['/health-records' , upComingConsultation.userId , upComingConsultation.relativeId]">
+            <p style=" height: 100%;  vertical-align: middle;">
+              <ion-button>View EHR</ion-button>
+            </p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ng-template #noupcomingConsultations>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title style="color: red; text-align: center;"> There are no Upcoming Consultations</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ng-template>
+    </div>
+
+
+
+    <!-- Completed tab -->
+    <div *ngIf="selectedTab==2">
+      <ion-grid *ngIf ="completedConsultations.length > 0 ; else noCompletedConsultations">
+        <ion-row *ngFor ="let completedConsultation of completedConsultations">
+          <ion-col size="6">
+            <p style="margin: 0;padding: 6px; text-align: center;">
+              <img [src]="completedConsultation.photo ? completedConsultation.photo : 'assets/images/emptypic.png'" height="70px" style="border-radius: 100%;" /></p>
+          </ion-col>
+
+          <ion-col size="6">
+            <p>{{completedConsultation.displayName}}<br>
+              {{completedConsultation.mode}}<br>
+              by {{completedConsultation.byName}}<br>
+              {{completedConsultation.appointmentAt | date : 'h:mm a'}}</p>
+
+          </ion-col>
+
+
+        </ion-row>
+      </ion-grid>
+
+      
+  <ng-template #noCompletedConsultations>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title style="color: red; text-align: center;"> There are no Completed Consultations</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+
+    </div>
+</ion-content>

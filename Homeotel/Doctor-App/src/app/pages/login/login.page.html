@@ -1,0 +1,39 @@
+<ion-content [fullscreen]="true">
+  <div id="main">
+    <h1 class="siteHeading">Tele Homeo Pro</h1>
+    <p class="padd10">Meet homeopathy doctors from home and also get the medicines delivered to door step.</p>
+    <div class="hero">
+      <div class="form-box" [ngStyle]="{'height': formsDivHeight }">
+        <div class="button-box">
+          <div id="btn" [ngStyle]="{'left': btnLeftValue }"></div>
+          <button type="button" class="toggle-btn" (click)="login()">Login</button>
+          <button type="button" class="toggle-btn" (click)="register()">SignUp</button>
+        </div>
+        <div *ngIf="flag==0">
+        <form id="login" action="#" [formGroup] ="loginForm" class="input-group" [ngStyle]="{'left': loginLeftValue }">
+          <input type="text" style="color: black;"class="input-field" formControlName ="userName" placeholder="Username" />
+          <input type="password" style="color: black;" class="input-field" formControlName ="password" placeholder="Password" />
+        </form>
+      </div>
+      <div *ngIf="flag==1">
+        <form id="register" action="#" class="input-group"  [formGroup] = "registrationForm" [ngStyle]="{'left': registerLeftValue }">
+          <input type="text" style="color: black;" class="input-field" formControlName ="regUserName" placeholder="Username" />
+          <input type="email" style="color: black;" class="input-field" formControlName ="regEmail" placeholder="Email" />
+          <input type="password" style="color: black;" class="input-field" formControlName ="regPassword" placeholder="Password" />
+          <div class="tcs">By pressing 'submit' you agree to our <br /> <a href="#">Terms & Conditions</a> </div>
+        </form>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn" (click)="submit()">
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </button>
+      <div class="social-icons-holder">
+        <div class="social-icons">
+          <img src="./../../assets/icons/gp.png" alt="Google" />
+          <img src="./../../assets/icons/fb.png" alt="Facebook" />
+          <img src="./../../assets/icons/tw.png" alt="Twitter" />
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
