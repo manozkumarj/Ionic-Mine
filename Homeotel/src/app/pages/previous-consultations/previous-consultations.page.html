@@ -21,7 +21,7 @@
         <ion-col size="3">
           <p style="margin: 0; padding: 6px; text-align: center;">
             <img
-              src="assets/images/milinda.jpg"
+              [src]="utilities.getPhotoDataUrl(previousAppointment.photo)"
               height="50px"
               style="border-radius: 100%;"
             />

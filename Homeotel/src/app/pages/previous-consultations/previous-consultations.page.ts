@@ -15,7 +15,7 @@ export class PreviousConsultationsPage implements OnInit {
   constructor(
     private apiService: ApiService,
     private commonService: CommonService,
-    private utilities: UtilitiesService,
+    public utilities: UtilitiesService,
     private router: Router
   ) {}
 
@@ -88,6 +88,9 @@ export class PreviousConsultationsPage implements OnInit {
     ] = selectedAppointment["complaint_description"];
     this.utilities.selectedAppointmentComplaintDetails["appointment_at"] =
       selectedAppointment["appointment_at"];
+
+    this.utilities.bookAppointmentDoctorDetails["doctorPhoto"] =
+      selectedAppointment["photo"];
 
     console.log(this.utilities.selectedAppointmentComplaintDetails);
 

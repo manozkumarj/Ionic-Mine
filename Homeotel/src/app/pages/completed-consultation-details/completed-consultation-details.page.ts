@@ -12,6 +12,7 @@ export class CompletedConsultationDetailsPage implements OnInit {
   doctorUsername;
   appointmentAt;
   complaintDescription;
+  doctorPhoto;
 
   recurring;
   recurringSince;
@@ -19,7 +20,7 @@ export class CompletedConsultationDetailsPage implements OnInit {
   description;
   doctorId;
 
-  constructor(private router: Router, private utilities: UtilitiesService) {
+  constructor(private router: Router, public utilities: UtilitiesService) {
     this.doctorName = this.utilities.selectedAppointmentComplaintDetails[
       "doctorName"
     ];
@@ -28,6 +29,10 @@ export class CompletedConsultationDetailsPage implements OnInit {
     ];
     this.complaintDescription = this.utilities.selectedAppointmentComplaintDetails[
       "complaint_description"
+    ];
+
+    this.doctorPhoto = this.utilities.bookAppointmentDoctorDetails[
+      "doctorPhoto"
     ];
 
     this.recurring =

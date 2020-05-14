@@ -274,6 +274,7 @@ export class ProfilePage implements OnInit {
         }
       } else {
         console.log("Returned Success");
+        this.utilities.currentUserDetails["photo"] = photo;
         this.utilities.presentToastSuccess(
           "Profile photo updated successfully."
         );

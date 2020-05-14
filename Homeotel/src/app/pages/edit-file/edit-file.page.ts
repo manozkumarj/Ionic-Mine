@@ -52,12 +52,14 @@ export class EditFilePage implements OnInit {
     let selectedFile = this.selectedFile;
     if (!selectedFile) {
       alert("Please select file type");
+      return false;
     }
 
     let fileId = this.utilities.filesPageState["fileId"];
     let fileTypeId = selectedFile;
     let relativeId = this.utilities.selectedRelativeId;
-    let photo = this.utilities.filesPageState["photo"];
+    let photo = this.photo;
+    console.log(fileId + " --- " + relativeId + " --- " + fileTypeId);
 
     if (relativeId && fileTypeId && photo) {
       console.log("Submit");
@@ -81,6 +83,8 @@ export class EditFilePage implements OnInit {
             this.router.navigate(["/health-records"]);
           }
         });
+    } else {
+      alert("Something went wrong");
     }
   }
 }

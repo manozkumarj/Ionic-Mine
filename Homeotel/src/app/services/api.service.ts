@@ -4,9 +4,10 @@ import { UtilitiesService } from "./utilities.service";
 
 @Injectable()
 export class ApiService {
-  // apiUrl = "http://192.168.43.22:8123";
+  apiUrl = "http://192.168.43.22:8123";
   // apiUrl = "http://localhost:8123";
-  apiUrl = "http://175.101.1.227:8123";
+  // apiUrl = "http://175.101.1.227:8123";
+
   constructor(private http: HttpClient, private utilities: UtilitiesService) {}
 
   // get node id from APi
