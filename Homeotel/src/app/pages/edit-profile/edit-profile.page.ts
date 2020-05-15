@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { WheelSelector } from "@ionic-native/wheel-selector/ngx";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-edit-profile",
@@ -51,6 +52,7 @@ export class EditProfilePage implements OnInit {
     private router: Router,
     private apiService: ApiService,
     public utilities: UtilitiesService,
+    private loadingController: LoadingController,
     private selector: WheelSelector
   ) {
     this.currentQuestion = null;
@@ -370,7 +372,7 @@ export class EditProfilePage implements OnInit {
       );
   }
 
-  answered = (value?) => {
+  answered = async (value?) => {
     console.log("answered -> " + this.currentQuestion);
 
     if (!value) {
@@ -382,23 +384,33 @@ export class EditProfilePage implements OnInit {
         "this.columnName -> " + this.columnName + " & value -> " + value
       );
 
-      this.apiService
-        .updateUserProfileDetails(this.columnName, value)
-        .subscribe((data) => {
-          console.log("Returned from Backend");
-          console.log(JSON.stringify(data));
-          if (this.utilities.isInvalidApiResponseData(data)) {
-            console.log("Returned Error");
-            console.log(data[0][0]);
-            if (data[0][0]["error"]) {
-              console.log("Something went wrong");
-            }
-          } else {
-            console.log("Returned Success");
-            if (this.currentQuestion == "nine")
-              this.utilities.presentToastSuccess("Updated successfully.");
-            this.router.navigate([this.forwardLink]);
-          }
+      const loading = await this.loadingController
+        .create({
+          message: "Saving...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
+            this.apiService
+              .updateUserProfileDetails(this.columnName, value)
+              .subscribe((data) => {
+                a.dismiss();
+                console.log("Returned from Backend");
+                console.log(JSON.stringify(data));
+                if (this.utilities.isInvalidApiResponseData(data)) {
+                  console.log("Returned Error");
+                  console.log(data[0][0]);
+                  if (data[0][0]["error"]) {
+                    console.log("Something went wrong");
+                  }
+                } else {
+                  console.log("Returned Success");
+                  if (this.currentQuestion == "nine")
+                    this.utilities.presentToastSuccess("Updated successfully.");
+                  this.router.navigate([this.forwardLink]);
+                }
+              });
+          });
         });
     } else {
       alert("Please provide value");

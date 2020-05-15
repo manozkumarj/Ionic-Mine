@@ -5,6 +5,7 @@ import { ActionSheetController } from "@ionic/angular";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Validators, FormGroup, FormControl } from "@angular/forms";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-add-relative",
@@ -39,6 +40,7 @@ export class AddRelativePage implements OnInit {
     private apiService: ApiService,
     public utilities: UtilitiesService,
     private actShtCtr: ActionSheetController,
+    private loadingController: LoadingController,
     private camera: Camera,
     private router: Router
   ) {
@@ -55,18 +57,28 @@ export class AddRelativePage implements OnInit {
 
   ngOnInit() {}
 
-  getRelationsMasters() {
-    this.apiService.getRelationsMasters().subscribe((data) => {
-      console.log("Returned from Backend");
-      console.log(data);
-      if (this.utilities.isInvalidApiResponseData(data)) {
-        console.log("Returned Error");
-      } else {
-        if (typeof data != "undefined" && typeof data[0] != "undefined") {
-          this.relationsMaster = data[0];
-        }
-      }
-    });
+  async getRelationsMasters() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getRelationsMasters().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (typeof data != "undefined" && typeof data[0] != "undefined") {
+                this.relationsMaster = data[0];
+              }
+            }
+          });
+        });
+      });
   }
 
   openMenu() {
@@ -126,7 +138,7 @@ export class AddRelativePage implements OnInit {
     );
   }
 
-  submit(values) {
+  async submit(values) {
     console.log("Form is submitted, below are the values");
     console.log(values);
     console.log("Submit clicked");
@@ -146,23 +158,35 @@ export class AddRelativePage implements OnInit {
 
     console.log("Form can be submitted now");
 
-    this.apiService
-      .addUserRelative(relativeName, relationId, this.selectedPhoto)
-      .subscribe((data) => {
-        console.log("Returned from Backend");
-        console.log(JSON.stringify(data));
-        if (this.utilities.isInvalidApiResponseData(data)) {
-          console.log("Returned Error");
-          console.log(data);
-          if (data["error"]) {
-            console.log("Something went wrong");
-          }
-        } else {
-          console.log("Returned Success");
-          this.utilities.presentToastSuccess("Relative added successfully.");
-          // this.utilities.selectedRelativeId = relationId;
-          this.router.navigate([this.redirectTo]);
-        }
+    const loading = await this.loadingController
+      .create({
+        message: "Saving...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService
+            .addUserRelative(relativeName, relationId, this.selectedPhoto)
+            .subscribe((data) => {
+              a.dismiss();
+              console.log("Returned from Backend");
+              console.log(JSON.stringify(data));
+              if (this.utilities.isInvalidApiResponseData(data)) {
+                console.log("Returned Error");
+                console.log(data);
+                if (data["error"]) {
+                  console.log("Something went wrong");
+                }
+              } else {
+                console.log("Returned Success");
+                this.utilities.presentToastSuccess(
+                  "Relative added successfully."
+                );
+                // this.utilities.selectedRelativeId = relationId;
+                this.router.navigate([this.redirectTo]);
+              }
+            });
+        });
       });
   }
 }

@@ -3,6 +3,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { AlertController } from "@ionic/angular";
 import { ApiService } from "src/app/services/api.service";
 import { Router } from "@angular/router";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-edit-relation-medical-history",
@@ -19,6 +20,7 @@ export class EditRelationMedicalHistoryPage implements OnInit {
     private utilities: UtilitiesService,
     private alertCtrl: AlertController,
     private apiService: ApiService,
+    private loadingController: LoadingController,
     private router: Router
   ) {
     console.clear();
@@ -85,7 +87,7 @@ export class EditRelationMedicalHistoryPage implements OnInit {
     this.arrayOfObjects[id]["isSelected"] = false;
   }
 
-  save() {
+  async save() {
     let filterSelected = this.arrayOfObjects.filter((obj) => obj["isSelected"]);
     this.selectedObjects = filterSelected.map((obj) => {
       if (obj["isSelected"]) {
@@ -126,28 +128,38 @@ export class EditRelationMedicalHistoryPage implements OnInit {
     console.log("commaSeparated -> ");
     console.log(commaSeparated);
 
-    this.apiService
-      .upsertRelationMedicalHistory(
-        userId,
-        relativeId,
-        relationId,
-        commaSeparated
-      )
-      .subscribe((data) => {
-        console.log("Returned from Backend");
-        console.log(JSON.stringify(data));
-        if (this.utilities.isInvalidApiResponseData(data)) {
-          console.log("Returned Error");
-          console.log(data);
-          if (data["error"]) {
-            console.log("Something went wrong");
-            this.utilities.presentToastWarning("Something went wrong");
-          }
-        } else {
-          console.log("Returned Success");
-          this.utilities.presentToastSuccess("Updated successfully");
-        }
-        this.router.navigate(["/health-records"]);
+    const loading = await this.loadingController
+      .create({
+        message: "Saving...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService
+            .upsertRelationMedicalHistory(
+              userId,
+              relativeId,
+              relationId,
+              commaSeparated
+            )
+            .subscribe((data) => {
+              a.dismiss();
+              console.log("Returned from Backend");
+              console.log(JSON.stringify(data));
+              if (this.utilities.isInvalidApiResponseData(data)) {
+                console.log("Returned Error");
+                console.log(data);
+                if (data["error"]) {
+                  console.log("Something went wrong");
+                  this.utilities.presentToastWarning("Something went wrong");
+                }
+              } else {
+                console.log("Returned Success");
+                this.utilities.presentToastSuccess("Updated successfully");
+              }
+              this.router.navigate(["/health-records"]);
+            });
+        });
       });
   }
 }

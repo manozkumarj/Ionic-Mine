@@ -203,7 +203,11 @@ export class ApiService {
 
   // Fetching Files
   getFiles() {
-    var path = "/user/get-files/" + this.utilities.userId;
+    var path =
+      "/user/get-files/" +
+      this.utilities.userId +
+      "/" +
+      this.utilities.selectedRelativeId;
     return this.http.get(this.apiUrl + path);
   }
 

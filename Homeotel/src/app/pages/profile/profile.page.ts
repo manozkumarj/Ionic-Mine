@@ -282,24 +282,34 @@ export class ProfilePage implements OnInit {
     );
   }
 
-  updateProfilePhoto(photo) {
-    this.apiService.upsertUserPhoto(1, photo).subscribe((data) => {
-      console.log("Returned from Backend");
-      console.log(JSON.stringify(data));
-      if (this.utilities.isInvalidApiResponseData(data)) {
-        console.log("Returned Error");
-        console.log(data);
-        if (data["error"]) {
-          console.log("Something went wrong");
-        }
-      } else {
-        console.log("Returned Success");
-        this.utilities.currentUserDetails["photo"] = photo;
-        this.utilities.presentToastSuccess(
-          "Profile photo updated successfully."
-        );
-      }
-    });
+  async updateProfilePhoto(photo) {
+    const loading = await this.loadingController
+      .create({
+        message: "Saving...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.upsertUserPhoto(1, photo).subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(JSON.stringify(data));
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+              console.log(data);
+              if (data["error"]) {
+                console.log("Something went wrong");
+              }
+            } else {
+              console.log("Returned Success");
+              this.utilities.currentUserDetails["photo"] = photo;
+              this.utilities.presentToastSuccess(
+                "Profile photo updated successfully."
+              );
+            }
+          });
+        });
+      });
   }
 
   navigateToEditProfile(type) {

@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { WheelSelector } from "@ionic-native/wheel-selector/ngx";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-vital-questions",
@@ -52,6 +53,7 @@ export class VitalQuestionsPage implements OnInit {
     private router: Router,
     private selector: WheelSelector,
     private apiService: ApiService,
+    private loadingController: LoadingController,
     private utilities: UtilitiesService
   ) {}
 
@@ -343,7 +345,7 @@ export class VitalQuestionsPage implements OnInit {
       );
   }
 
-  save() {
+  async save() {
     console.log("About to upsert Vital's data into DB");
     console.log("this.utilities.vitalPageState is below");
     console.log(this.utilities.vitalPageState);
@@ -357,31 +359,41 @@ export class VitalQuestionsPage implements OnInit {
     let bpSystolic = this.utilities.vitalPageState["bp_systolic"];
     let bpDiastolic = this.utilities.vitalPageState["bp_diastolic"];
 
-    this.apiService
-      .upsertVitalDetails(
-        vitalId,
-        relativeId,
-        temperature,
-        pulserate,
-        respiratoryrate,
-        bpSystolic,
-        bpDiastolic
-      )
-      .subscribe((data) => {
-        console.log("Returned from Backend");
-        console.log(JSON.stringify(data));
-        if (this.utilities.isInvalidApiResponseData(data)) {
-          console.log("Returned Error");
-          console.log(data);
-          if (data["error"]) {
-            console.log("Something went wrong");
-          }
-        } else {
-          console.log("Returned Success");
-          if (this.currentQuestion == "four")
-            this.utilities.presentToastSuccess("Updated successfully.");
-          this.router.navigate([this.forwardLink]);
-        }
+    const loading = await this.loadingController
+      .create({
+        message: "Saving...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService
+            .upsertVitalDetails(
+              vitalId,
+              relativeId,
+              temperature,
+              pulserate,
+              respiratoryrate,
+              bpSystolic,
+              bpDiastolic
+            )
+            .subscribe((data) => {
+              a.dismiss();
+              console.log("Returned from Backend");
+              console.log(JSON.stringify(data));
+              if (this.utilities.isInvalidApiResponseData(data)) {
+                console.log("Returned Error");
+                console.log(data);
+                if (data["error"]) {
+                  console.log("Something went wrong");
+                }
+              } else {
+                console.log("Returned Success");
+                if (this.currentQuestion == "four")
+                  this.utilities.presentToastSuccess("Updated successfully.");
+                this.router.navigate([this.forwardLink]);
+              }
+            });
+        });
       });
 
     // this.router.navigate(["/vitals"]);

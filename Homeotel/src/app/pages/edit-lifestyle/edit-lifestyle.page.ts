@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { Router, ActivatedRoute } from "@angular/router";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-edit-lifestyle",
@@ -25,6 +26,7 @@ export class EditLifestylePage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private utilities: UtilitiesService,
     private apiService: ApiService,
+    private loadingController: LoadingController,
     private router: Router
   ) {
     this.currentQuestion = null;
@@ -119,7 +121,7 @@ export class EditLifestylePage implements OnInit {
 
   ngOnInit() {}
 
-  answered = (id) => {
+  answered = async (id) => {
     console.log("answered -> " + this.currentQuestion);
     console.log("id -> " + id);
 
@@ -181,35 +183,45 @@ export class EditLifestylePage implements OnInit {
         heatId
     );
 
-    this.apiService
-      .updateUserLifestyleDetails(
-        smokingId,
-        alcoholId,
-        excerciseId,
-        activityId,
-        professionId,
-        foodId,
-        heatId
-      )
-      .subscribe((data) => {
-        console.log("Returned from Backend");
-        console.log(JSON.stringify(data));
-        if (this.utilities.isInvalidApiResponseData(data)) {
-          console.log("Returned Error");
-          console.log(data[0][0]);
-          if (data[0][0]["error"]) {
-            console.log("Something went wrong");
-            this.utilities.presentToastWarning("Something went wrong");
-          }
-        } else {
-          console.log("Returned Success");
-          if (this.currentQuestion == "seven") {
-            this.utilities.presentToastSuccess("Updated successfully");
-            this.router.navigate(["/health-records"]);
-          } else {
-            this.router.navigate([this.forwardLink]);
-          }
-        }
+    const loading = await this.loadingController
+      .create({
+        message: "Saving...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService
+            .updateUserLifestyleDetails(
+              smokingId,
+              alcoholId,
+              excerciseId,
+              activityId,
+              professionId,
+              foodId,
+              heatId
+            )
+            .subscribe((data) => {
+              a.dismiss();
+              console.log("Returned from Backend");
+              console.log(JSON.stringify(data));
+              if (this.utilities.isInvalidApiResponseData(data)) {
+                console.log("Returned Error");
+                console.log(data[0][0]);
+                if (data[0][0]["error"]) {
+                  console.log("Something went wrong");
+                  this.utilities.presentToastWarning("Something went wrong");
+                }
+              } else {
+                console.log("Returned Success");
+                if (this.currentQuestion == "seven") {
+                  this.utilities.presentToastSuccess("Updated successfully");
+                  this.router.navigate(["/health-records"]);
+                } else {
+                  this.router.navigate([this.forwardLink]);
+                }
+              }
+            });
+        });
       });
   };
 }

@@ -342,13 +342,14 @@ router.get("/get-vitals/:userId/:relativeId", (req, res) => {
 });
 
 // Fetching files
-router.get("/get-files/:userId", (req, res) => {
+router.get("/get-files/:userId/:relativeId", (req, res) => {
   var userId = req.params.userId;
+  var relativeId = req.params.relativeId;
   // console.log("Received userId -> " + userId);
-  var params = [userId];
+  var params = [userId, relativeId];
 
   db.executeQuery(
-    "call sp_user_files_get(?)",
+    "call sp_user_files_get(?,?)",
     params,
     res,
     db.sendResponseNormal
