@@ -6,6 +6,7 @@ import { ToastController } from "@ionic/angular";
 import { ApiService } from "./../../services/api.service";
 import { UtilitiesService } from "./../../services/utilities.service";
 import { Platform } from "@ionic/angular";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-login",
@@ -33,6 +34,7 @@ export class LoginPage implements OnInit {
     private apiService: ApiService,
     public utilities: UtilitiesService,
     private toastController: ToastController,
+    private loadingController: LoadingController,
     private platform: Platform
   ) {
     this.registerForm = new FormGroup({
@@ -128,7 +130,7 @@ export class LoginPage implements OnInit {
     console.log("submit() triggered - focused form is -> " + focused);
   }
 
-  register() {
+  async register() {
     console.log("About register");
     console.log(this.registerForm.value);
     let username = this.registerForm.get("username").value.trim();
@@ -136,29 +138,39 @@ export class LoginPage implements OnInit {
     let password = this.registerForm.get("password").value.trim();
 
     if (username && email && password) {
-      this.apiService
-        .registerUser(username, email, password)
-        .subscribe((data) => {
-          console.log("Returned from Backend");
-          // console.log(JSON.stringify(data));
-          if (this.utilities.isInvalidApiResponseData(data)) {
-            console.log("Returned Error");
-            // console.log(data[0][0]);
-            if (data[0][0]["error"].includes(username)) {
-              this.toastErrorMsg = "Username already exist";
-            } else if (data[0][0]["error"].includes(email)) {
-              this.toastErrorMsg = "Email already exist";
-            } else {
-              this.toastErrorMsg = "Something went wrong";
-            }
-            this.presentToastWarning();
-          } else {
-            console.log("Returned Success");
-            this.toastSuccessMsg = "Success, you can login now.";
-            this.presentToastSuccess();
-            this.loginTab();
-            this.resetRegisterFormValues();
-          }
+      const loading = await this.loadingController
+        .create({
+          message: "Please wait...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
+            this.apiService
+              .registerUser(username, email, password)
+              .subscribe((data) => {
+                a.dismiss();
+                console.log("Returned from Backend");
+                // console.log(JSON.stringify(data));
+                if (this.utilities.isInvalidApiResponseData(data)) {
+                  console.log("Returned Error");
+                  // console.log(data[0][0]);
+                  if (data[0][0]["error"].includes(username)) {
+                    this.toastErrorMsg = "Username already exist";
+                  } else if (data[0][0]["error"].includes(email)) {
+                    this.toastErrorMsg = "Email already exist";
+                  } else {
+                    this.toastErrorMsg = "Something went wrong";
+                  }
+                  this.presentToastWarning();
+                } else {
+                  console.log("Returned Success");
+                  this.toastSuccessMsg = "Success, you can login now.";
+                  this.presentToastSuccess();
+                  this.loginTab();
+                  this.resetRegisterFormValues();
+                }
+              });
+          });
         });
     } else {
       this.toastErrorMsg = "Please enter username, email, and password.";
@@ -166,7 +178,7 @@ export class LoginPage implements OnInit {
     }
   }
 
-  login() {
+  async login() {
     console.log("About Login");
     console.log(this.loginForm.value);
     let username = this.loginForm.get("username").value.trim();
@@ -176,39 +188,49 @@ export class LoginPage implements OnInit {
     password = "manoj";
 
     if (username && password) {
-      this.apiService.loginUser(username, password).subscribe((data) => {
-        console.log("Returned from Backend");
-        // console.log(JSON.stringify(data));
-        if (
-          typeof data != "undefined" &&
-          typeof data[0] != "undefined" &&
-          typeof data[0][0] != "undefined"
-        ) {
-          if (this.utilities.isInvalidApiResponseData(data)) {
-            console.log("Returned Error");
-            this.presentToastWarning();
-          } else {
-            let res = data[0][0];
-            this.auth.isLoggedIn = true;
-            console.log("Returned Success");
-            this.toastSuccessMsg = "Login Success.";
-            this.presentToastSuccess();
-            this.utilities.isLoggedId = true;
-            this.utilities.userId = res["user_id"];
-            this.utilities.currentUserDetails["userName"] = res["name"]
-              ? res["name"]
-              : res["username"];
-            this.utilities.currentUserDetails["photo"] = res["photo"];
-            this.router.navigate(["/home"]);
-            this.resetLoginFormValues();
-          }
-        } else {
-          console.log("Returned from Backend");
-          this.toastErrorMsg =
-            "Invalid username or password entered. Please check and try again.";
-          this.presentToastWarning();
-        }
-      });
+      const loading = await this.loadingController
+        .create({
+          message: "Please wait...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
+            this.apiService.loginUser(username, password).subscribe((data) => {
+              a.dismiss();
+              console.log("Returned from Backend");
+              // console.log(JSON.stringify(data));
+              if (
+                typeof data != "undefined" &&
+                typeof data[0] != "undefined" &&
+                typeof data[0][0] != "undefined"
+              ) {
+                if (this.utilities.isInvalidApiResponseData(data)) {
+                  console.log("Returned Error");
+                  this.presentToastWarning();
+                } else {
+                  let res = data[0][0];
+                  this.auth.isLoggedIn = true;
+                  console.log("Returned Success");
+                  this.toastSuccessMsg = "Login Success.";
+                  this.presentToastSuccess();
+                  this.utilities.isLoggedId = true;
+                  this.utilities.userId = res["user_id"];
+                  this.utilities.currentUserDetails["userName"] = res["name"]
+                    ? res["name"]
+                    : res["username"];
+                  this.utilities.currentUserDetails["photo"] = res["photo"];
+                  this.router.navigate(["/home"]);
+                  this.resetLoginFormValues();
+                }
+              } else {
+                console.log("Returned from Backend");
+                this.toastErrorMsg =
+                  "Invalid username or password entered. Please check and try again.";
+                this.presentToastWarning();
+              }
+            });
+          });
+        });
     } else {
       this.toastErrorMsg = "Please enter username and password.";
       this.presentToastWarning();
