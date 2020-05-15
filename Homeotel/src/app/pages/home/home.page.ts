@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { CommonService } from "./../../services/common.service";
 import { ApiService } from "src/app/services/api.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { Platform } from "@ionic/angular";
 
 @Component({
   selector: "app-home",
@@ -9,12 +10,14 @@ import { UtilitiesService } from "src/app/services/utilities.service";
   styleUrls: ["./home.page.scss"],
 })
 export class HomePage implements OnInit {
+  backButtonSubscription; // for storing the returned subscription
   allAppointments: any[] = [];
 
   constructor(
     private commonService: CommonService,
     private apiService: ApiService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private platform: Platform
   ) {
     this.getAppointments();
   }
@@ -43,7 +46,17 @@ export class HomePage implements OnInit {
 
   ngOnInit() {}
 
+  ngAfterViewInit() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+      navigator["app"].exitApp();
+    });
+  }
+
   search() {
     console.log("Clicked on Search");
+  }
+
+  ngOnDestroy() {
+    this.backButtonSubscription.unsubscribe();
   }
 }

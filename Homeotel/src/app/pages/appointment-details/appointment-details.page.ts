@@ -19,7 +19,7 @@ export class AppointmentDetailsPage implements OnInit {
   doctorPhoto;
 
   recurring;
-  recurringSince;
+  recurringFrequency;
   aggravatedBy;
   description;
   doctorId;
@@ -50,9 +50,19 @@ export class AppointmentDetailsPage implements OnInit {
       this.utilities.selectedAppointmentComplaintDetails["is_recurring"] == 1
         ? "Recurring"
         : "No recurring";
-    this.recurringSince = this.utilities.selectedAppointmentComplaintDetails[
+
+    let getFrequency = this.utilities.selectedAppointmentComplaintDetails[
       "recurring_freq"
     ];
+    this.recurringFrequency =
+      getFrequency == 0
+        ? "None"
+        : getFrequency == 1
+        ? "Weekly"
+        : getFrequency == 2
+        ? "Monthly"
+        : "Yearly";
+
     this.aggravatedBy =
       this.utilities.selectedAppointmentComplaintDetails["severity_id"] == 1
         ? "Food"

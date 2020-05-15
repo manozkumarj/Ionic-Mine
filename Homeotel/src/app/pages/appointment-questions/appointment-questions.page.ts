@@ -92,6 +92,11 @@ export class AppointmentQuestionsPage implements OnInit {
       this.isRecurring = this.utilities.selectedAppointmentComplaintDetails[
         "is_recurring"
       ] = ansId;
+      if (ansId == 2) {
+        this.utilities.selectedAppointmentComplaintDetails[
+          "recurring_freq"
+        ] = 0;
+      }
     } else if (this.currentQuestion == "two") {
       this.recurringFreq = this.utilities.selectedAppointmentComplaintDetails[
         "recurring_freq"
@@ -135,6 +140,8 @@ export class AppointmentQuestionsPage implements OnInit {
       });
     if (this.currentQuestion == "four")
       this.utilities.presentToastSuccess("Updated successfully.");
+    if (this.currentQuestion == "one" && ansId == 2)
+      this.router.navigate(["/appointment-questions/1/2/3"]);
     this.router.navigate([this.forwardLink]);
   };
 }

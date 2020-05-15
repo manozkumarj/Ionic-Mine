@@ -53,6 +53,15 @@
   <ion-grid *ngIf="currentQuestion == 'two'" class="btnsGrid">
     <ion-row>
       <ion-col
+        [ngClass]="{'btn-success' : recurringFreq == 0 }"
+        class="btn-success"
+        (click)="answered(0)"
+      >
+        None
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col
         [ngClass]="{'btn-success' : recurringFreq == 1 }"
         class="btn-success"
         (click)="answered(1)"

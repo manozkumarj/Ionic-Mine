@@ -5,6 +5,7 @@ import { Validators, FormGroup, FormControl } from "@angular/forms";
 import { ToastController } from "@ionic/angular";
 import { ApiService } from "./../../services/api.service";
 import { UtilitiesService } from "./../../services/utilities.service";
+import { Platform } from "@ionic/angular";
 
 @Component({
   selector: "app-login",
@@ -12,6 +13,7 @@ import { UtilitiesService } from "./../../services/utilities.service";
   styleUrls: ["./login.page.scss"],
 })
 export class LoginPage implements OnInit {
+  backButtonSubscription;
   registerForm: FormGroup;
   loginForm: FormGroup;
 
@@ -30,7 +32,8 @@ export class LoginPage implements OnInit {
     public auth: AuthService,
     private apiService: ApiService,
     public utilities: UtilitiesService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private platform: Platform
   ) {
     this.registerForm = new FormGroup({
       username: new FormControl("", Validators.required),
@@ -46,6 +49,12 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.auth.isLoggedIn = false;
+  }
+
+  ngAfterViewInit() {
+    this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+      navigator["app"].exitApp();
+    });
   }
 
   async presentToastSuccess() {
@@ -204,5 +213,9 @@ export class LoginPage implements OnInit {
       this.toastErrorMsg = "Please enter username and password.";
       this.presentToastWarning();
     }
+  }
+
+  ngOnDestroy() {
+    this.backButtonSubscription.unsubscribe();
   }
 }

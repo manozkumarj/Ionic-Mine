@@ -1,2 +1,2 @@
-* Modified 'sp_user_photo_save' SP
+* Modified 'sp_user_file_upsert' SP
 * 
