@@ -327,13 +327,14 @@ router.post("/upsert-vital", (req, res) => {
 });
 
 // Fetching vitals
-router.get("/get-vitals/:userId", (req, res) => {
+router.get("/get-vitals/:userId/:relativeId", (req, res) => {
   var userId = req.params.userId;
+  var relativeId = req.params.relativeId;
   // console.log("Received userId -> " + userId);
-  var params = [userId];
+  var params = [userId, relativeId];
 
   db.executeQuery(
-    "call sp_user_vitals_get(?)",
+    "call sp_user_vitals_get(?,?)",
     params,
     res,
     db.sendResponseNormal

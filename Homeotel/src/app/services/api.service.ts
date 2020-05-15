@@ -193,7 +193,11 @@ export class ApiService {
 
   // Fetching vitals
   getVitals() {
-    var path = "/user/get-vitals/" + this.utilities.userId;
+    var path =
+      "/user/get-vitals/" +
+      this.utilities.userId +
+      "/" +
+      this.utilities.selectedRelativeId;
     return this.http.get(this.apiUrl + path);
   }
 

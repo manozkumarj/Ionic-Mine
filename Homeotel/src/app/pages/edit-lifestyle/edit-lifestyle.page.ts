@@ -59,7 +59,7 @@ export class EditLifestylePage implements OnInit {
       this.title = `${paramSix} of 7`;
       this.backwardLink = `/edit-lifestyle/1/2/3/4/5`;
       this.forwardLink = `/edit-lifestyle/1/2/3/4/5/6/7`;
-      this.question = "Food preference";
+      this.question = "Likable Food preference";
       this.currentQuestion = "six";
       this.masterDataTag = "m_food";
       this.currentItemValue = this.utilities.lifestylePageState["foodId"];
