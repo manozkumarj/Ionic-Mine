@@ -157,7 +157,7 @@ export class EditRelationMedicalHistoryPage implements OnInit {
                 console.log("Returned Success");
                 this.utilities.presentToastSuccess("Updated successfully");
               }
-              this.router.navigate(["/health-records"]);
+              this.router.navigate(["/medical-history-relations"]);
             });
         });
       });

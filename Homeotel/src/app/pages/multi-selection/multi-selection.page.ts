@@ -194,7 +194,7 @@ export class MultiSelectionPage implements OnInit {
                 console.log("Returned Success");
                 this.utilities.presentToastSuccess("Updated successfully");
               }
-              this.router.navigate(["/health-records"]);
+              this.router.navigate(["/medical-history"]);
             });
         });
       });

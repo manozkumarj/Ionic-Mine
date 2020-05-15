@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { Router } from "@angular/router";
@@ -9,7 +9,7 @@ import { LoadingController } from "@ionic/angular";
   templateUrl: "./medical-history-relations.page.html",
   styleUrls: ["./medical-history-relations.page.scss"],
 })
-export class MedicalHistoryRelationsPage implements OnInit {
+export class MedicalHistoryRelationsPage {
   relationsWithData: any[] = [];
   diseases: any[] = [];
   existingData: any[] = [];
@@ -20,6 +20,10 @@ export class MedicalHistoryRelationsPage implements OnInit {
     private loadingController: LoadingController,
     private router: Router
   ) {
+    // this.getRelationsMedicalHistories();
+  }
+
+  ionViewWillEnter() {
     this.getRelationsMedicalHistories();
   }
 
@@ -83,8 +87,6 @@ export class MedicalHistoryRelationsPage implements OnInit {
         });
       });
   }
-
-  ngOnInit() {}
 
   redirect(id) {
     console.log("Selected ID -> " + id);

@@ -56,13 +56,13 @@ export class MedicalHistoryPage {
     private loadingController: LoadingController,
     private router: Router
   ) {
-    this.getMedicalHistories();
+    // this.getMedicalHistories();
   }
 
-  // ionViewWillEnter() {
-  // this.getMedicalHistories();
-  // this.setMedicalHistories();
-  // }
+  ionViewWillEnter() {
+    this.getMedicalHistories();
+    this.setMedicalHistories();
+  }
 
   setMedicalHistories() {
     this.medicalHistories = [
