@@ -21,7 +21,6 @@ const routes: Routes = [
       import("./pages/initialization/initialization.module").then(
         (m) => m.InitializationPageModule
       ),
-    canActivate: [AuthGuard],
   },
   {
     path: "profile",

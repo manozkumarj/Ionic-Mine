@@ -19,10 +19,14 @@ import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
+import { SQLitePorter } from "@ionic-native/sqlite-porter/ngx";
+import { SQLite } from "@ionic-native/sqlite/ngx";
 import { HttpClientModule } from "@angular/common/http";
 import { ApiService } from "./services/api.service";
 import { UtilitiesService } from "./services/utilities.service";
 import { AuthGuard } from "./services/auth-guard.service";
+import { DatabaseService } from "./services/database.service";
+import { IonicStorageModule } from "@ionic/storage";
 
 @NgModule({
   declarations: [AppComponent],
@@ -36,6 +40,7 @@ import { AuthGuard } from "./services/auth-guard.service";
     AngularFireAuthModule,
     HttpClientModule,
     ModalPageModule,
+    IonicStorageModule.forRoot(),
   ],
   providers: [
     GooglePlus,
@@ -47,8 +52,25 @@ import { AuthGuard } from "./services/auth-guard.service";
     ApiService,
     UtilitiesService,
     AuthGuard,
+    DatabaseService,
+    SQLite,
+    SQLitePorter,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private db: DatabaseService) {
+    this.db
+      .createDb()
+      .then((res) => {
+        console.log("App module.ts - createDb - Database is ready");
+      })
+      .catch((error) => {
+        console.warn(
+          "App module.ts - createDb - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
+}

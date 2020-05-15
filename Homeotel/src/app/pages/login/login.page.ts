@@ -187,6 +187,9 @@ export class LoginPage implements OnInit {
     username = "manoj";
     password = "manoj";
 
+    // username = "manoz";
+    // password = "manoz";
+
     if (username && password) {
       const loading = await this.loadingController
         .create({
