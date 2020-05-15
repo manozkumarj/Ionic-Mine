@@ -5,6 +5,7 @@ import { File } from "@ionic-native/file/ngx";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Router } from "@angular/router";
 import { ApiService } from "src/app/services/api.service";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-files",
@@ -34,6 +35,7 @@ export class FilesPage implements OnInit {
     private camera: Camera,
     private file: File,
     private router: Router,
+    private loadingController: LoadingController,
     private apiService: ApiService,
     private utilities: UtilitiesService
   ) {
@@ -42,28 +44,40 @@ export class FilesPage implements OnInit {
 
   ngOnInit() {}
 
-  getFiles() {
-    this.apiService.getFiles().subscribe((data) => {
-      console.log("Returned from Backend");
-      console.log(data);
-      if (this.utilities.isInvalidApiResponseData(data)) {
-        console.log("Returned Error");
-      } else {
-        if (typeof data != "undefined" && typeof data[0] != "undefined") {
-          console.log("Data returned from backend");
-          this.files = data[0];
-          console.log("this.files are showing below");
-          console.log(this.files);
+  async getFiles() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getFiles().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (typeof data != "undefined" && typeof data[0] != "undefined") {
+                console.log("Data returned from backend");
+                this.files = data[0];
+                console.log("this.files are showing below");
+                console.log(this.files);
 
-          let fileTypesMasters = data[1];
-          this.utilities.filesPageState["fileTypesMasters"] = fileTypesMasters;
-          console.log("this.fileTypesMasters are showing below");
-          console.log(fileTypesMasters);
-        } else {
-          console.log("Something went wrong in backend");
-        }
-      }
-    });
+                let fileTypesMasters = data[1];
+                this.utilities.filesPageState[
+                  "fileTypesMasters"
+                ] = fileTypesMasters;
+                console.log("this.fileTypesMasters are showing below");
+                console.log(fileTypesMasters);
+              } else {
+                console.log("Something went wrong in backend");
+              }
+            }
+          });
+        });
+      });
   }
 
   openOptionsMenu(id) {

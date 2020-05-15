@@ -6,6 +6,7 @@ import { ApiService } from "./../../services/api.service";
 import { CommonService } from "./../../services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Router } from "@angular/router";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-my-doctors",
@@ -22,6 +23,7 @@ export class MyDoctorsPage implements OnInit {
     public commonService: CommonService,
     private router: Router,
     private apiService: ApiService,
+    private loadingController: LoadingController,
     public utilities: UtilitiesService
   ) {
     this.getCurrentUserDoctors();
@@ -30,25 +32,35 @@ export class MyDoctorsPage implements OnInit {
 
   ngOnInit() {}
 
-  getCurrentUserDoctors() {
-    this.apiService.getCurrentUserDoctors().subscribe((data) => {
-      console.log("Returned from Backend");
-      console.log(data);
-      if (this.utilities.isInvalidApiResponseData(data)) {
-        console.log("Returned Error");
-      } else {
-        if (
-          typeof data != "undefined" &&
-          typeof data[0] != "undefined" &&
-          typeof data[0][0] != "undefined"
-        ) {
-          console.log("Has my doctors");
-          this.myDoctors = data[0];
-        } else {
-          console.log("No my doctors");
-        }
-      }
-    });
+  async getCurrentUserDoctors() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getCurrentUserDoctors().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (
+                typeof data != "undefined" &&
+                typeof data[0] != "undefined" &&
+                typeof data[0][0] != "undefined"
+              ) {
+                console.log("Has my doctors");
+                this.myDoctors = data[0];
+              } else {
+                console.log("No my doctors");
+              }
+            }
+          });
+        });
+      });
   }
 
   inputKeyUp(e) {

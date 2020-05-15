@@ -3,6 +3,7 @@ import { ApiService } from "src/app/services/api.service";
 import { CommonService } from "src/app/services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Router } from "@angular/router";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-previous-consultations",
@@ -16,6 +17,7 @@ export class PreviousConsultationsPage implements OnInit {
     private apiService: ApiService,
     private commonService: CommonService,
     public utilities: UtilitiesService,
+    private loadingController: LoadingController,
     private router: Router
   ) {}
 
@@ -25,34 +27,46 @@ export class PreviousConsultationsPage implements OnInit {
     this.getAppointments();
   }
 
-  getAppointments() {
-    this.apiService.getAppointments().subscribe((data) => {
-      console.log("Returned from Backend");
-      console.log(data);
-      console.log(data[0]);
-      if (this.utilities.isInvalidApiResponseData(data)) {
-        console.log("Returned Error");
-      } else {
-        if (
-          typeof data != "undefined" &&
-          typeof data[0] != "undefined" &&
-          typeof data[0][0] != "undefined"
-        ) {
-          this.allAppointments = data[0];
+  async getAppointments() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getAppointments().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            console.log(data[0]);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (
+                typeof data != "undefined" &&
+                typeof data[0] != "undefined" &&
+                typeof data[0][0] != "undefined"
+              ) {
+                this.allAppointments = data[0];
 
-          console.log("***************************************************");
+                console.log(
+                  "***************************************************"
+                );
 
-          this.previousAppointments = this.allAppointments.filter(
-            (appointment) => appointment["appointment_status"] == 1
-          );
+                this.previousAppointments = this.allAppointments.filter(
+                  (appointment) => appointment["appointment_status"] == 1
+                );
 
-          console.log("this.previousAppointments showing below");
-          console.log(this.previousAppointments);
-        } else {
-          console.log("Backend returned error");
-        }
-      }
-    });
+                console.log("this.previousAppointments showing below");
+                console.log(this.previousAppointments);
+              } else {
+                console.log("Backend returned error");
+              }
+            }
+          });
+        });
+      });
   }
 
   redirect(appointmentId) {

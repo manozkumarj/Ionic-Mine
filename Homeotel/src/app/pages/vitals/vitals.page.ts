@@ -3,6 +3,7 @@ import { ActionSheetController } from "@ionic/angular";
 import { Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-vitals",
@@ -15,6 +16,7 @@ export class VitalsPage implements OnInit {
     public actShtCtr: ActionSheetController,
     private router: Router,
     private apiService: ApiService,
+    private loadingController: LoadingController,
     private utilities: UtilitiesService
   ) {
     this.getVitals();
@@ -22,25 +24,35 @@ export class VitalsPage implements OnInit {
 
   ngOnInit() {}
 
-  getVitals() {
-    this.apiService.getVitals().subscribe((data) => {
-      console.log("Returned from Backend");
-      console.log(data);
-      if (this.utilities.isInvalidApiResponseData(data)) {
-        console.log("Returned Error");
-      } else {
-        if (
-          typeof data != "undefined" &&
-          typeof data[0] != "undefined" &&
-          typeof data[0][0] != "undefined"
-        ) {
-          console.log("Data returned from backend");
-          this.vitals = data[0];
-        } else {
-          console.log("Something went wrong in backend");
-        }
-      }
-    });
+  async getVitals() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getVitals().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (
+                typeof data != "undefined" &&
+                typeof data[0] != "undefined" &&
+                typeof data[0][0] != "undefined"
+              ) {
+                console.log("Data returned from backend");
+                this.vitals = data[0];
+              } else {
+                console.log("Something went wrong in backend");
+              }
+            }
+          });
+        });
+      });
   }
 
   openMenu(id) {

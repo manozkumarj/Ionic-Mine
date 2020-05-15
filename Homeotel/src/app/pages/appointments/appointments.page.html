@@ -34,7 +34,10 @@
           class="grid doctorGrid"
         >
           <ion-row style="color: #000; background: #fff;">
-            <ion-col size="2">
+            <ion-col
+              size="2"
+              [routerLink]="['/view-doctor/' + upcomingAppointment.doctor_id]"
+            >
               <p style="margin: 0; text-align: center;">
                 <img
                   [src]="utilities.getPhotoDataUrl(upcomingAppointment.photo)"
@@ -99,7 +102,10 @@
           class="grid doctorGrid"
         >
           <ion-row style="color: #000; background: #fff;">
-            <ion-col size="2">
+            <ion-col
+              size="2"
+              [routerLink]="['/view-doctor/' + previousAppointment.doctor_id]"
+            >
               <p style="margin: 0; text-align: center;">
                 <img
                   [src]="utilities.getPhotoDataUrl(previousAppointment.photo)"
