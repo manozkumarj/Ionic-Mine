@@ -220,10 +220,13 @@ export class ModalPage implements OnInit {
                     this.utilities.bookAppointmentDoctorDetails[
                       "bookedAppointments"
                     ] = data[1];
-                    this.utilities.bookAppointmentDoctorDetails["doctorPhoto"] =
-                      data[2]["photo"];
                   });
-                  // console.log(this.doctorDetails);
+                  this.utilities.bookAppointmentDoctorDetails["doctorPhoto"] =
+                    data[2][0]["photo"];
+                  this.doctorDetails.push({
+                    doctorPhoto: data[2][0]["photo"],
+                  });
+                  console.log(this.doctorDetails);
                   // console.log(this.doctorSlotDetails);
                   console.log(this.utilities.bookAppointmentDoctorDetails);
                 } else {
@@ -246,7 +249,7 @@ export class ModalPage implements OnInit {
           this.apiService.findDoctor(uuid).subscribe((data) => {
             a.dismiss();
             console.log("Returned from Backend");
-            console.log(JSON.stringify(data[0]));
+            // console.log(JSON.stringify(data[0]));
             if (this.utilities.isInvalidApiResponseData(data)) {
               console.log("Returned Error");
             } else {

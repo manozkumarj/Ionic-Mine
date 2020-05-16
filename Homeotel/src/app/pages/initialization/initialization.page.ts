@@ -16,18 +16,18 @@ export class InitializationPage implements OnInit {
     private db: DatabaseService,
     private storageService: StorageService
   ) {
-    // this.presentLoading();
+    this.presentLoading();
   }
 
   ngOnInit() {
-    if (!this.db.isDbReady) {
-      console.log("Database is not ready... Initializing DB...");
-      // this.presentLoading();
-      this.prepareDatabase();
-    } else {
-      console.log("Database is ready... :)");
-      // this.redirector();
-    }
+    // if (!this.db.isDbReady) {
+    //   console.log("Database is not ready... Initializing DB...");
+    //   // this.presentLoading();
+    //   this.prepareDatabase();
+    // } else {
+    //   console.log("Database is ready... :)");
+    //   // this.redirector();
+    // }
   }
 
   async prepareDatabase() {

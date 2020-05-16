@@ -91,7 +91,7 @@
             <ion-col size="3.5" align-items-center justify-content-center>
               <p style="margin: 0;">
                 <img
-                  [src]="utilities.getPhotoDataUrl(utilities.bookAppointmentDoctorDetails['doctorPhoto'] && utilities.bookAppointmentDoctorDetails['doctorPhoto'].photo)"
+                  [src]="utilities.getPhotoDataUrl(doctorDetails[1] && doctorDetails[1].doctorPhoto)"
                   height="80px"
                   width="80px"
                   style="border-radius: 100%;"

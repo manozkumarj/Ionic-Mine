@@ -16,7 +16,7 @@
       <ion-col size="3.5" align-items-center justify-content-center>
         <p style="margin: 0;">
           <img
-            src="assets/images/milinda.jpg"
+            [src]="utilities.getPhotoDataUrl(doctorPhoto)"
             height="80px"
             width="80px"
             style="border-radius: 100%;"
@@ -25,7 +25,7 @@
       </ion-col>
       <ion-col style="padding-top: 25px;">
         <p class="docName">{{doctorName}}</p>
-        <p class="designation">{{doctorUsername}}</p>
+        <p class="designation">{{doctorSpecialisation}}</p>
       </ion-col>
     </ion-row>
     <ion-row class="dashedBorderBottom" style="padding: 6px;">

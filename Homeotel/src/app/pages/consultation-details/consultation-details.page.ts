@@ -13,6 +13,8 @@ export class ConsultationDetailsPage implements OnInit {
   doctorId;
   doctorName;
   doctorUsername;
+  doctorSpecialisation;
+  doctorPhoto;
   modeId;
   slotName;
   slotBookedTimestamp;
@@ -30,6 +32,12 @@ export class ConsultationDetailsPage implements OnInit {
     this.doctorName = this.utilities.bookAppointmentDoctorDetails["name"];
     this.doctorUsername = this.utilities.bookAppointmentDoctorDetails[
       "username"
+    ];
+    this.doctorSpecialisation = this.utilities.bookAppointmentDoctorDetails[
+      "specialisation"
+    ];
+    this.doctorPhoto = this.utilities.bookAppointmentDoctorDetails[
+      "doctorPhoto"
     ];
     this.modeId = this.utilities.bookAppointmentDetails["bookableModeId"];
     this.slotName =
