@@ -11,7 +11,7 @@ export class DatabaseService {
   dbObject: SQLiteObject;
   isDbReady: boolean = false;
 
-  database_name: string = "homeotel_dev_2.db";
+  database_name: string = "homeotel_dev_1.db";
 
   // Tables
   table_users = "table_users";
