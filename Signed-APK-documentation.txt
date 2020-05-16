@@ -1,0 +1,37 @@
+****************************** Steps to build Signed APK file in Windows  *******************************
+* Make sure Android studio & Java JDK version-8 are installed on your system
+* Open command propmpt and navigate to Project root directory
+
+* Delete 'node_modules', 'platforms', 'plugins' folders
+* run 'npm install npm-force-resolutions --save-dev'
+* run 'npm install'
+* run 'npx npm-force-resolutions'
+* run 'npm install'
+* run 'ionic integrations enable cordova --add'
+* run 'ionic cordova platform add android'
+* Run 'ionic cordova build android --prod --release'
+  Note: Above command generates 'app-release-unsigned.apk' in [Project-root-directory]\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk
+
+* Then run 'keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000' from command prompt
+  Note: Above command generates 'my-release-key.keystore' file in root folder itself.
+
+* Then run 'jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore [ABSOLUTE-PATH-OF-app-release-unsigned.apk] alias_name'
+
+  Note: [ABSOLUTE-PATH-OF-app-release-unsigned.apk] is generally --> C:\Users\USERNAME\PROJECT-ROOT-DIRECTORY\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk
+
+* Then navigate to 'C:\Users\USERNAME\local\Android\SDK\build-tools\29.0.2' folder. There you need to find a file named 'zipalign'
+
+* Then navigate to 'C:\Users\USERNAME\local\Android\SDK\build-tools\29.0.2' folder from command prompt. 
+
+* Then run 'zipalign -v 4 [ABSOLUTE-PATH-OF-app-release-unsigned.apk] [DESIRED-NAME-OF-APP].apk'
+
+  Note: [ABSOLUTE-PATH-OF-app-release-unsigned.apk] is generally --> C:\Users\USERNAME\PROJECT-ROOT-DIRECTORY\platforms\android\app\build\outputs\apk\release\app-release-unsigned.apk
+
+  Note: [DESIRED-NAME-OF-APP] --> Whatever the name you wanna keep to generatable APK file
+
+
+
+Reference/Useful links:
+-----------------------------------------------------------------------------------------------------
+* https://ionicframework.com/docs/deployment/play-store
+* https://stackoverflow.com/questions/35173542/unable-to-sign-the-unsigned-apk

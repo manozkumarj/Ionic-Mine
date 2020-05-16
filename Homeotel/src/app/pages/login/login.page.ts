@@ -184,8 +184,8 @@ export class LoginPage implements OnInit {
     let username = this.loginForm.get("username").value.trim();
     let password = this.loginForm.get("password").value.trim();
 
-    username = "manoj";
-    password = "manoj";
+    // username = "manoj";
+    // password = "manoj";
 
     // username = "manoz";
     // password = "manoz";
