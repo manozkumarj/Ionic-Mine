@@ -371,4 +371,14 @@ export class ApiService {
     };
     return this.http.put(this.apiUrl + path, body);
   }
+
+  getDoctorMasters() {
+    var path = "/doctor/masters";
+    return this.http.get(this.apiUrl + path);
+  }
+
+  getDoctorProfile(doctorId) {
+    var path = "/doctor/profile";
+    return this.http.get(this.apiUrl + path + "/" + doctorId);
+  }
 }
