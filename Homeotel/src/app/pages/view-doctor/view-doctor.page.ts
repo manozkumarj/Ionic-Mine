@@ -46,7 +46,7 @@ export class ViewDoctorPage implements OnInit {
     private router: Router,
     private apiService: ApiService,
     private loadingController: LoadingController,
-    private utilities: UtilitiesService
+    public utilities: UtilitiesService
   ) {}
 
   ngOnInit() {

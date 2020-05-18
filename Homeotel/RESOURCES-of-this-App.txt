@@ -7,6 +7,8 @@ Links which helped to solve the errors I faced:
 ----------------------------------------------------------------------------
 * https://forum.ionicframework.com/t/how-to-resolve-babel-error-when-installing-geolocation-in-ionic-app/185542/2
 
+* https://stackoverflow.com/questions/55556201/how-to-make-use-of-android-app-bundle-in-ionic-applications
+
 
 Useful commands:
 ------------------------------------------------------------------------------
