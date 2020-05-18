@@ -169,4 +169,20 @@ export class DatabaseService {
       });
   }
   // -------------------------- For reference - ends  --------------------------}
+  crudOperations(query) {
+    return this.dbObject
+      .executeSql(query, [])
+      .then((res) => {
+        console.log(
+          "database - crudOperation - Success -> " + JSON.stringify(res)
+        );
+        return true;
+      })
+      .catch((error) => {
+        console.warn(
+          "database - crudOperation - Error -> " + JSON.stringify(error)
+        );
+        return false;
+      });
+  }
 }

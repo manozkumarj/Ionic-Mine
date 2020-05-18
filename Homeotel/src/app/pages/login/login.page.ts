@@ -168,6 +168,7 @@ export class LoginPage implements OnInit {
                   this.presentToastSuccess();
                   this.loginTab();
                   this.resetRegisterFormValues();
+                  this.resetLoginFormValues();
                 }
               });
           });
@@ -224,6 +225,7 @@ export class LoginPage implements OnInit {
                   this.utilities.currentUserDetails["photo"] = res["photo"];
                   this.router.navigate(["/home"]);
                   this.resetLoginFormValues();
+                  this.resetRegisterFormValues();
                 }
               } else {
                 console.log("Returned from Backend");

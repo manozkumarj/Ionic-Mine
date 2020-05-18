@@ -3,6 +3,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-edit-lifestyle",
@@ -26,6 +27,7 @@ export class EditLifestylePage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private utilities: UtilitiesService,
     private apiService: ApiService,
+    private db: DatabaseService,
     private loadingController: LoadingController,
     private router: Router
   ) {
@@ -201,10 +203,10 @@ export class EditLifestylePage implements OnInit {
               heatId
             )
             .subscribe((data) => {
-              a.dismiss();
               console.log("Returned from Backend");
               console.log(JSON.stringify(data));
               if (this.utilities.isInvalidApiResponseData(data)) {
+                a.dismiss();
                 console.log("Returned Error");
                 console.log(data[0][0]);
                 if (data[0][0]["error"]) {
@@ -213,6 +215,28 @@ export class EditLifestylePage implements OnInit {
                 }
               } else {
                 console.log("Returned Success");
+                let res = data[0][0];
+                if (data[0][0]["query"]) {
+                  let receivedQuery = res["query"];
+                  console.log(receivedQuery);
+
+                  this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      console.log("Lifestyle is saved successfully");
+                    })
+                    .catch((error) => {
+                      a.dismiss();
+                      console.error(
+                        "Error -> Edit lifestype save function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                } else {
+                  a.dismiss();
+                  console.log("Query property is not received from backend SP");
+                }
                 if (this.currentQuestion == "seven") {
                   this.utilities.presentToastSuccess("Updated successfully");
                   this.router.navigate(["/health-records"]);
