@@ -57,6 +57,10 @@ export class ProfilePage implements OnInit {
   ) {}
 
   ngOnInit() {
+    // this.getProfileDetails();
+  }
+
+  ionViewWillEnter() {
     this.getProfileDetails();
   }
 

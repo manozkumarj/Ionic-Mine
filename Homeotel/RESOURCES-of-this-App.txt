@@ -9,6 +9,9 @@ Links which helped to solve the errors I faced:
 
 * https://stackoverflow.com/questions/55556201/how-to-make-use-of-android-app-bundle-in-ionic-applications
 
+* https://ionicframework.com/docs/deployment/play-store
+* https://stackoverflow.com/questions/35173542/unable-to-sign-the-unsigned-apk
+
 
 Useful commands:
 ------------------------------------------------------------------------------

@@ -377,6 +377,9 @@ export class EditProfilePage implements OnInit {
 
     if (!value) {
       value = this.inputField.trim();
+      if (this.currentQuestion == "one") {
+        this.utilities.currentUserDetails["userName"] = value;
+      }
     }
 
     if (value) {
