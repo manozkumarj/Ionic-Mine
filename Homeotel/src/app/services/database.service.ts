@@ -3,6 +3,7 @@ import { SQLite, SQLiteObject } from "@ionic-native/sqlite/ngx";
 import { SQLitePorter } from "@ionic-native/sqlite-porter/ngx";
 import { Platform } from "@ionic/angular";
 import { HttpClient } from "@angular/common/http";
+import { UtilitiesService } from "./utilities.service";
 
 @Injectable({
   providedIn: "root",
@@ -16,11 +17,15 @@ export class DatabaseService {
   // Tables
   table_users = "table_users";
 
+  IN_user_id = this.utilities.userId;
+  IN_relative_id = this.utilities.selectedRelativeId;
+
   constructor(
     private plt: Platform,
     public sqlite: SQLite,
     private http: HttpClient,
-    private sqlitePorter: SQLitePorter
+    private sqlitePorter: SQLitePorter,
+    private utilities: UtilitiesService
   ) {
     this.createDb();
   }
@@ -184,5 +189,53 @@ export class DatabaseService {
         );
         return false;
       });
+  }
+
+  getLifestyles() {
+    let sql = `SELECT * FROM (SELECT * FROM m_smoking where is_active =1) AS 'm_smoking', 
+    (SELECT * FROM m_alcohol where is_active =1) AS 'm_alcohol',
+    (SELECT * FROM m_excercise where is_active =1) AS 'm_excercise',
+    (SELECT * FROM m_activity_level where is_active =1) AS 'm_activity_level',
+    (SELECT * FROM m_profession where is_active =1) AS 'm_profession',
+    (SELECT * FROM m_food where is_active =1) AS 'm_food',
+    (SELECT * FROM m_heat where is_active =1) AS 'm_heat',
+
+    (SELECT el.smoking_id, m.name FROM ehr_lifestyle el
+    LEFT JOIN m_smoking m ON el.smoking_id = m.smoking_id
+    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'smoking_data',
+
+    (SELECT el.alcohol_id, m.name FROM ehr_lifestyle el
+    LEFT JOIN m_alcohol m ON el.alcohol_id = m.alcohol_id
+    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'alcohol_data',
+
+    (SELECT el.excercise_id, m.name FROM ehr_lifestyle el
+    LEFT JOIN m_excercise m ON el.excercise_id = m.excercise_id
+    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'excercise_data',
+
+    (SELECT el.activity_level_id, m.name FROM ehr_lifestyle el
+    LEFT JOIN m_activity_level m ON el.activity_level_id = m.activity_level_id
+    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'activity_level_data',
+
+    (SELECT el.profession_id, m.name FROM ehr_lifestyle el
+    LEFT JOIN m_profession m ON el.profession_id = m.profession_id
+    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'profession_data',
+
+    (SELECT el.food_id, m.name FROM ehr_lifestyle el
+    LEFT JOIN m_food m ON el.food_id = m.food_id
+    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'food_data',
+
+    (SELECT el.heat_id, m.name FROM ehr_lifestyle el
+    LEFT JOIN m_heat m ON el.heat_id = m.heat_id
+    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'heat_data'`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let vitals = [];
+      if (res.rows.length > 0) {
+        for (let i = 0; i < res.rows.length; i++) {
+          vitals.push(res.rows.item(i));
+        }
+      }
+      return vitals;
+    });
   }
 }

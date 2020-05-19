@@ -3,6 +3,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { Router } from "@angular/router";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-lifestyle",
@@ -40,6 +41,7 @@ export class LifestylePage implements OnInit {
     private utilities: UtilitiesService,
     private apiService: ApiService,
     private loadingController: LoadingController,
+    private db: DatabaseService,
     private router: Router
   ) {
     this.getLifestyles();
@@ -47,6 +49,7 @@ export class LifestylePage implements OnInit {
 
   ngOnInit() {
     this.loadLifestyles();
+    this.loadLifestyles_SQLite();
   }
 
   loadLifestyles() {
@@ -277,6 +280,21 @@ export class LifestylePage implements OnInit {
             }
           });
         });
+      });
+  }
+
+  loadLifestyles_SQLite() {
+    this.db
+      .getLifestyles()
+      .then((lifestyleDetails) => {
+        console.log("Received lifestyle details are below -> ");
+        console.log(JSON.stringify(lifestyleDetails));
+      })
+      .catch((error) => {
+        console.error(
+          "Error -> loadLifestyles_SQLite() function returned error." +
+            JSON.stringify(error)
+        );
       });
   }
 

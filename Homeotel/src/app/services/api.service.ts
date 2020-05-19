@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { UtilitiesService } from "./utilities.service";
+import { DatabaseService } from "./database.service";
 
 @Injectable()
 export class ApiService {
@@ -9,7 +10,11 @@ export class ApiService {
   // apiUrl = "http://localhost:8123";
   apiUrl = "http://175.101.1.227:8123";
 
-  constructor(private http: HttpClient, private utilities: UtilitiesService) {}
+  constructor(
+    private http: HttpClient,
+    private db: DatabaseService,
+    private utilities: UtilitiesService
+  ) {}
 
   // get node id from APi
   getNodeDetails() {
@@ -279,6 +284,10 @@ export class ApiService {
       "/" +
       this.utilities.selectedRelativeId;
     return this.http.get(this.apiUrl + path);
+    // return this.db.getLifestyles(
+    //   this.utilities.userId,
+    //   this.utilities.selectedRelativeId
+    // );
   }
 
   // Upserting lifestyle
