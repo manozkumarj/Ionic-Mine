@@ -49,7 +49,8 @@ export class LifestylePage implements OnInit {
 
   ngOnInit() {
     this.loadLifestyles();
-    this.loadLifestyles_SQLite();
+    this.loadSmokingMasters();
+    this.loadLifestyleData();
   }
 
   loadLifestyles() {
@@ -131,7 +132,7 @@ export class LifestylePage implements OnInit {
           this.apiService.getLifestyles().subscribe((data) => {
             a.dismiss();
             console.log("Returned from Backend");
-            console.log(data);
+            // console.log(data);
             if (this.utilities.isInvalidApiResponseData(data)) {
               console.log("Returned Error");
             } else {
@@ -147,16 +148,16 @@ export class LifestylePage implements OnInit {
                   return { ...item, self_id: item["smoking_id"] };
                 });
                 this.utilities.lifestylePageState["m_smoking"] = this.m_smoking;
-                console.log("this.m_smoking is below");
-                console.log(this.m_smoking);
+                // console.log("this.m_smoking is below");
+                // console.log(this.m_smoking);
 
                 this.m_alcohol = data[1];
                 this.m_alcohol = this.m_alcohol.map((item) => {
                   return { ...item, self_id: item["alcohol_id"] };
                 });
                 this.utilities.lifestylePageState["m_alcohol"] = this.m_alcohol;
-                console.log("this.m_alcohol is below");
-                console.log(this.m_alcohol);
+                // console.log("this.m_alcohol is below");
+                // console.log(this.m_alcohol);
 
                 this.m_excercise = data[2];
                 this.m_excercise = this.m_excercise.map((item) => {
@@ -165,8 +166,8 @@ export class LifestylePage implements OnInit {
                 this.utilities.lifestylePageState[
                   "m_excercise"
                 ] = this.m_excercise;
-                console.log("this.m_excercise is below");
-                console.log(this.m_excercise);
+                // console.log("this.m_excercise is below");
+                // console.log(this.m_excercise);
 
                 this.m_activity = data[3];
                 this.m_activity = this.m_activity.map((item) => {
@@ -175,8 +176,8 @@ export class LifestylePage implements OnInit {
                 this.utilities.lifestylePageState[
                   "m_activity"
                 ] = this.m_activity;
-                console.log("this.m_activity_level is below");
-                console.log(this.m_activity);
+                // console.log("this.m_activity_level is below");
+                // console.log(this.m_activity);
 
                 this.m_profession = data[4];
                 this.m_profession = this.m_profession.map((item) => {
@@ -185,29 +186,29 @@ export class LifestylePage implements OnInit {
                 this.utilities.lifestylePageState[
                   "m_profession"
                 ] = this.m_profession;
-                console.log("this.m_profession is below");
-                console.log(this.m_profession);
+                // console.log("this.m_profession is below");
+                // console.log(this.m_profession);
 
                 this.m_food = data[5];
                 this.m_food = this.m_food.map((item) => {
                   return { ...item, self_id: item["food_id"] };
                 });
                 this.utilities.lifestylePageState["m_food"] = this.m_food;
-                console.log("this.m_food is below");
-                console.log(this.m_food);
+                // console.log("this.m_food is below");
+                // console.log(this.m_food);
 
                 this.m_heat = data[6];
                 this.m_heat = this.m_heat.map((item) => {
                   return { ...item, self_id: item["heat_id"] };
                 });
                 this.utilities.lifestylePageState["m_heat"] = this.m_heat;
-                console.log("this.m_heat is below");
-                console.log(this.m_heat);
+                // console.log("this.m_heat is below");
+                // console.log(this.m_heat);
 
                 if (data[7].length > 0) {
                   let smokingInfo = data[7][0];
-                  console.log("smoking is below");
-                  console.log(smokingInfo);
+                  // console.log("smoking is below");
+                  // console.log(smokingInfo);
                   this.smokingId = smokingInfo["smoking_id"];
                   this.smoking = smokingInfo["name"];
                 }
@@ -215,8 +216,8 @@ export class LifestylePage implements OnInit {
 
                 if (data[8].length > 0) {
                   let alcoholInfo = data[8][0];
-                  console.log("alcohol is below");
-                  console.log(alcoholInfo);
+                  // console.log("alcohol is below");
+                  // console.log(alcoholInfo);
                   this.alcoholId = alcoholInfo["alcohol_id"];
                   this.alcohol = alcoholInfo["name"];
                 }
@@ -224,8 +225,8 @@ export class LifestylePage implements OnInit {
 
                 if (data[9].length > 0) {
                   let excerciseInfo = data[9][0];
-                  console.log("excercise is below");
-                  console.log(excerciseInfo);
+                  // console.log("excercise is below");
+                  // console.log(excerciseInfo);
                   this.excerciseId = excerciseInfo["excercise_id"];
                   this.excercise = excerciseInfo["name"];
                 }
@@ -235,8 +236,8 @@ export class LifestylePage implements OnInit {
 
                 if (data[10].length > 0) {
                   let activityInfo = data[10][0];
-                  console.log("activity is below");
-                  console.log(activityInfo);
+                  // console.log("activity is below");
+                  // console.log(activityInfo);
                   this.activityId = activityInfo["activity_level_id"];
                   this.activity = activityInfo["name"];
                 }
@@ -246,8 +247,8 @@ export class LifestylePage implements OnInit {
 
                 if (data[11].length > 0) {
                   let professionInfo = data[11][0];
-                  console.log("profession is below");
-                  console.log(professionInfo);
+                  // console.log("profession is below");
+                  // console.log(professionInfo);
                   this.professionId = professionInfo["profession_id"];
                   this.profession = professionInfo["name"];
                 }
@@ -257,8 +258,8 @@ export class LifestylePage implements OnInit {
 
                 if (data[12].length > 0) {
                   let foodInfo = data[12][0];
-                  console.log("food is below");
-                  console.log(foodInfo);
+                  // console.log("food is below");
+                  // console.log(foodInfo);
                   this.foodId = foodInfo["food_id"];
                   this.food = foodInfo["name"];
                 }
@@ -266,8 +267,8 @@ export class LifestylePage implements OnInit {
 
                 if (data[13].length > 0) {
                   let heatInfo = data[13][0];
-                  console.log("heat is below");
-                  console.log(heatInfo);
+                  // console.log("heat is below");
+                  // console.log(heatInfo);
                   this.heatId = heatInfo["heat_id"];
                   this.heat = heatInfo["name"];
                 }
@@ -283,16 +284,33 @@ export class LifestylePage implements OnInit {
       });
   }
 
-  loadLifestyles_SQLite() {
+  loadSmokingMasters() {
     this.db
-      .getLifestyles()
-      .then((lifestyleDetails) => {
-        console.log("Received lifestyle details are below -> ");
-        console.log(JSON.stringify(lifestyleDetails));
+      .getSmokingMasters()
+      .then((smokingMasters) => {
+        console.log("Received SmokingMasters details are below -> ");
+        // console.log(JSON.stringify(lifestyleDetails));
+        console.log(smokingMasters);
       })
       .catch((error) => {
         console.error(
-          "Error -> loadLifestyles_SQLite() function returned error." +
+          "Error -> loadSmokingMasters() function returned error." +
+            JSON.stringify(error)
+        );
+      });
+  }
+
+  loadLifestyleData() {
+    this.db
+      .getLifestyles(this.utilities.userId, this.utilities.selectedRelativeId)
+      .then((lifestyleData) => {
+        console.log("Received lifestyleData details are below -> ");
+        // console.log(JSON.stringify(lifestyleDetails));
+        console.log(lifestyleData);
+      })
+      .catch((error) => {
+        console.error(
+          "Error -> loadlifestyleData() function returned error." +
             JSON.stringify(error)
         );
       });

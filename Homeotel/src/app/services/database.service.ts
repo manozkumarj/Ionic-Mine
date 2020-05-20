@@ -12,13 +12,10 @@ export class DatabaseService {
   dbObject: SQLiteObject;
   isDbReady: boolean = false;
 
-  database_name: string = "homeotel_dev_1.db";
+  database_name: string = "homeotel_dev_2.db";
 
   // Tables
   table_users = "table_users";
-
-  IN_user_id = this.utilities.userId;
-  IN_relative_id = this.utilities.selectedRelativeId;
 
   constructor(
     private plt: Platform,
@@ -174,6 +171,119 @@ export class DatabaseService {
       });
   }
   // -------------------------- For reference - ends  --------------------------}
+  getSmokingMasters() {
+    let sql = "SELECT smoking_id, name FROM m_smoking where is_active =1";
+    return this.dbObject.executeSql(sql, []).then((data) => {
+      let smokingMasterData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          smokingMasterData.push({
+            smoking_id: data.rows.item(i).smoking_id,
+            name: data.rows.item(i).name,
+          });
+        }
+      }
+      return smokingMasterData;
+    });
+  }
+
+  getAlcoholMasters() {
+    let sql = "SELECT alcohol_id, name FROM m_alcohol where is_active =1";
+    return this.dbObject.executeSql(sql, []).then((data) => {
+      let alcoholMasterData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          alcoholMasterData.push({
+            alcohol_id: data.rows.item(i).alcohol_id,
+            name: data.rows.item(i).name,
+          });
+        }
+      }
+      return alcoholMasterData;
+    });
+  }
+
+  getExcerciseMasters() {
+    let sql = "SELECT excercise_id, name FROM m_excercise where is_active =1";
+    return this.dbObject.executeSql(sql, []).then((data) => {
+      let excerciseMasterData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          excerciseMasterData.push({
+            excercise_id: data.rows.item(i).excercise_id,
+            name: data.rows.item(i).name,
+          });
+        }
+      }
+      return excerciseMasterData;
+    });
+  }
+
+  getActivityLevelMasters() {
+    let sql =
+      "SELECT activity_level_id, name FROM m_activity_level where is_active =1";
+    return this.dbObject.executeSql(sql, []).then((data) => {
+      let activityLevelMasterData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          activityLevelMasterData.push({
+            activity_level_id: data.rows.item(i).activity_level_id,
+            name: data.rows.item(i).name,
+          });
+        }
+      }
+      return activityLevelMasterData;
+    });
+  }
+
+  getProfessionMasters() {
+    let sql = "SELECT profession_id, name FROM m_profession where is_active =1";
+    return this.dbObject.executeSql(sql, []).then((data) => {
+      let professionMasterData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          professionMasterData.push({
+            profession_id: data.rows.item(i).profession_id,
+            name: data.rows.item(i).name,
+          });
+        }
+      }
+      return professionMasterData;
+    });
+  }
+
+  getFoodMasters() {
+    let sql = "SELECT food_id, name FROM m_food where is_active =1";
+    return this.dbObject.executeSql(sql, []).then((data) => {
+      let foodMasterData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          foodMasterData.push({
+            food_id: data.rows.item(i).food_id,
+            name: data.rows.item(i).name,
+          });
+        }
+      }
+      return foodMasterData;
+    });
+  }
+
+  getHeatMasters() {
+    let sql = "SELECT heat_id, name FROM m_heat where is_active =1";
+    return this.dbObject.executeSql(sql, []).then((data) => {
+      let heatMasterData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          heatMasterData.push({
+            heat_id: data.rows.item(i).heat_id,
+            name: data.rows.item(i).name,
+          });
+        }
+      }
+      return heatMasterData;
+    });
+  }
+
   crudOperations(query) {
     return this.dbObject
       .executeSql(query, [])
@@ -191,51 +301,30 @@ export class DatabaseService {
       });
   }
 
-  getLifestyles() {
-    let sql = `SELECT * FROM (SELECT * FROM m_smoking where is_active =1) AS 'm_smoking', 
-    (SELECT * FROM m_alcohol where is_active =1) AS 'm_alcohol',
-    (SELECT * FROM m_excercise where is_active =1) AS 'm_excercise',
-    (SELECT * FROM m_activity_level where is_active =1) AS 'm_activity_level',
-    (SELECT * FROM m_profession where is_active =1) AS 'm_profession',
-    (SELECT * FROM m_food where is_active =1) AS 'm_food',
-    (SELECT * FROM m_heat where is_active =1) AS 'm_heat',
-
-    (SELECT el.smoking_id, m.name FROM ehr_lifestyle el
-    LEFT JOIN m_smoking m ON el.smoking_id = m.smoking_id
-    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'smoking_data',
-
-    (SELECT el.alcohol_id, m.name FROM ehr_lifestyle el
-    LEFT JOIN m_alcohol m ON el.alcohol_id = m.alcohol_id
-    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'alcohol_data',
-
-    (SELECT el.excercise_id, m.name FROM ehr_lifestyle el
-    LEFT JOIN m_excercise m ON el.excercise_id = m.excercise_id
-    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'excercise_data',
-
-    (SELECT el.activity_level_id, m.name FROM ehr_lifestyle el
-    LEFT JOIN m_activity_level m ON el.activity_level_id = m.activity_level_id
-    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'activity_level_data',
-
-    (SELECT el.profession_id, m.name FROM ehr_lifestyle el
-    LEFT JOIN m_profession m ON el.profession_id = m.profession_id
-    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'profession_data',
-
-    (SELECT el.food_id, m.name FROM ehr_lifestyle el
-    LEFT JOIN m_food m ON el.food_id = m.food_id
-    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'food_data',
-
-    (SELECT el.heat_id, m.name FROM ehr_lifestyle el
-    LEFT JOIN m_heat m ON el.heat_id = m.heat_id
-    where user_id = ${this.IN_user_id} AND relative_id = ${this.IN_relative_id}) AS 'heat_data'`;
+  getLifestyles(IN_user_id, IN_relative_id) {
+    let sql = `SELECT lifestyle_id, user_id, relative_id, smoking_id, alcohol_id, excercise_id,
+    activity_level_id, profession_id, food_id, heat_id FROM ehr_lifestyle WHERE user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
 
     return this.dbObject.executeSql(sql, []).then((res) => {
-      let vitals = [];
+      let lifestyleData = [];
+      console.log(res);
       if (res.rows.length > 0) {
-        for (let i = 0; i < res.rows.length; i++) {
-          vitals.push(res.rows.item(i));
+        for (var i = 0; i < res.rows.length; i++) {
+          lifestyleData.push({
+            lifestyle_id: res.rows.item(i).lifestyle_id,
+            user_id: res.rows.item(i).user_id,
+            relative_id: res.rows.item(i).relative_id,
+            smoking_id: res.rows.item(i).smoking_id,
+            alcohol_id: res.rows.item(i).alcohol_id,
+            excercise_id: res.rows.item(i).excercise_id,
+            activity_level_id: res.rows.item(i).activity_level_id,
+            profession_id: res.rows.item(i).profession_id,
+            food_id: res.rows.item(i).food_id,
+            heat_id: res.rows.item(i).heat_id,
+          });
         }
       }
-      return vitals;
+      return lifestyleData;
     });
   }
 }
