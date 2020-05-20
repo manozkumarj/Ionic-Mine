@@ -302,19 +302,19 @@ export class DatabaseService {
   }
 
   getLifestyleMasters() {
-    let sql = `SELECT smoking_id as id, name, 'm_smoking' as 'master_type' FROM m_smoking where is_active = 1 
+    let sql = `SELECT smoking_id as id, name, 'table_smoking' as master_type FROM m_smoking where is_active = 1 
     UNION ALL
-  SELECT alcohol_id as id, name, 'm_alcohol' as 'master_type' FROM m_alcohol where is_active =1
+  SELECT alcohol_id as id, name, 'table_alcohol' as master_type FROM m_alcohol where is_active =1
     UNION ALL
-  SELECT excercise_id as id, name, 'm_excercise' as 'master_type' FROM m_excercise where is_active =1
+  SELECT excercise_id as id, name, 'table_excercise' as master_type FROM m_excercise where is_active =1
     UNION ALL
-  SELECT activity_level_id as id, name, 'm_activity_level' as 'master_type' FROM m_activity_level where is_active =1
+  SELECT activity_level_id as id, name, 'table_activity_level' as master_type FROM m_activity_level where is_active =1
     UNION ALL
-  SELECT profession_id as id, name, 'm_profession' as 'master_type' FROM m_profession where is_active =1
+  SELECT profession_id as id, name, 'table_profession' as master_type FROM m_profession where is_active =1
     UNION ALL
-  SELECT food_id as id, name, 'm_food' as 'master_type' FROM m_food where is_active =1
+  SELECT food_id as id, name, 'table_food' as master_type FROM m_food where is_active =1
     UNION ALL
-  SELECT heat_id as id, name, 'm_heat' as 'master_type' FROM m_heat where is_active =1`;
+  SELECT heat_id as id, name, 'table_heat' as master_type FROM m_heat where is_active =1`;
     return this.dbObject.executeSql(sql, []).then((data) => {
       let lifestyleMasterData = [];
       if (data.rows.length > 0) {
@@ -322,6 +322,7 @@ export class DatabaseService {
           lifestyleMasterData.push({
             id: data.rows.item(i).id,
             name: data.rows.item(i).name,
+            master_type: data.rows.item(i).master_type,
           });
         }
       }

@@ -44,7 +44,8 @@ export class LifestylePage implements OnInit {
     private db: DatabaseService,
     private router: Router
   ) {
-    this.getLifestyles();
+    // this.getLifestyles();
+    this.loadLifestyles();
   }
 
   ngOnInit() {
@@ -287,47 +288,48 @@ export class LifestylePage implements OnInit {
   loadLifestyleMasters() {
     this.db
       .getLifestyleMasters()
-      .then((lifestyleMasters) => {
+      .then((res) => {
         console.log("Received lifestyleMasters details are below -> ");
-        console.log(lifestyleMasters);
+        console.log(res);
+        let lifestyleMasters = res[0];
         lifestyleMasters.forEach((data) => {
-          if (data["master_type"] == "m_smoking") {
+          if (data["master_type"] == "table_smoking") {
             this.m_smoking.push({
               smoking_id: data.id,
               name: data.name,
               self_id: data.id,
             });
-          } else if (data["master_type"] == "m_alcohol") {
+          } else if (data["master_type"] == "table_alcohol") {
             this.m_alcohol.push({
               alcohol_id: data.id,
               name: data.name,
               self_id: data.id,
             });
-          } else if (data["master_type"] == "m_excercise") {
+          } else if (data["master_type"] == "table_excercise") {
             this.m_excercise.push({
               excercise_id: data.id,
               name: data.name,
               self_id: data.id,
             });
-          } else if (data["master_type"] == "m_activity_level") {
+          } else if (data["master_type"] == "table_activity_level") {
             this.m_activity.push({
               activity_level_id: data.id,
               name: data.name,
               self_id: data.id,
             });
-          } else if (data["master_type"] == "m_profession") {
+          } else if (data["master_type"] == "table_profession") {
             this.m_profession.push({
               profession_id: data.id,
               name: data.name,
               self_id: data.id,
             });
-          } else if (data["master_type"] == "m_food") {
+          } else if (data["master_type"] == "table_food") {
             this.m_food.push({
               food_id: data.id,
               name: data.name,
               self_id: data.id,
             });
-          } else if (data["master_type"] == "m_heat") {
+          } else if (data["master_type"] == "table_heat") {
             this.m_heat.push({
               heat_id: data.id,
               name: data.name,
@@ -349,16 +351,18 @@ export class LifestylePage implements OnInit {
           "Error -> loadLifestyleMasters() function returned error." +
             JSON.stringify(error)
         );
+        this.loadLifestyleData();
       });
   }
 
   loadLifestyleData() {
     this.db
       .getLifestyles(this.utilities.userId, this.utilities.selectedRelativeId)
-      .then((lifestyleData) => {
+      .then((res) => {
         console.log("Received lifestyleData details are below -> ");
         // console.log(JSON.stringify(lifestyleDetails));
-        console.log(lifestyleData);
+        console.log(res);
+        let lifestyleData = res[0];
         if (lifestyleData && lifestyleData.length > 0) {
           // Smoking data
           this.smokingId = lifestyleData["smoking_id"];
@@ -375,7 +379,48 @@ export class LifestylePage implements OnInit {
           );
           this.alcohol = this.m_alcohol[alcoholIndex]["name"];
           this.utilities.lifestylePageState["alcoholId"] = this.alcoholId;
+
+          // excercise data
+          this.excerciseId = lifestyleData["excercise_id"];
+          let excerciseIndex = this.m_excercise.findIndex(
+            (id) => id.excercise_id == this.excerciseId
+          );
+          this.excercise = this.m_excercise[excerciseIndex]["name"];
+          this.utilities.lifestylePageState["excerciseId"] = this.excerciseId;
+
+          // activity data
+          this.activityId = lifestyleData["activity_level_id"];
+          let activityIdIndex = this.m_activity.findIndex(
+            (id) => id.activity_level_id == this.activityId
+          );
+          this.activity = this.m_activity[activityIdIndex]["name"];
+          this.utilities.lifestylePageState["activityId"] = this.activityId;
+
+          // profession data
+          this.professionId = lifestyleData["profession_id"];
+          let professionIndex = this.m_profession.findIndex(
+            (id) => id.profession_id == this.professionId
+          );
+          this.profession = this.m_profession[professionIndex]["name"];
+          this.utilities.lifestylePageState["professionId"] = this.professionId;
+
+          // food data
+          this.foodId = lifestyleData["food_id"];
+          let foodIndex = this.m_food.findIndex(
+            (id) => id.food_id == this.foodId
+          );
+          this.food = this.m_food[foodIndex]["name"];
+          this.utilities.lifestylePageState["foodId"] = this.foodId;
+
+          // heat data
+          this.heatId = lifestyleData["heat_id"];
+          let heatIndex = this.m_heat.findIndex(
+            (id) => id.heat_id == this.heatId
+          );
+          this.heat = this.m_heat[heatIndex]["name"];
+          this.utilities.lifestylePageState["heatId"] = this.heatId;
         }
+        this.loadLifestyles();
       })
       .catch((error) => {
         console.error(
