@@ -7,7 +7,7 @@ export class UtilitiesService {
   userId = null;
   isLoggedId = false;
 
-  selectedRelativeId = 1;
+  selectedRelativeId = 0;
 
   isHomeokitPurchaseAction = false;
   isSlotBookingAction = false;

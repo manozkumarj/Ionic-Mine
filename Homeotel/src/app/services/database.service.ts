@@ -301,6 +301,34 @@ export class DatabaseService {
       });
   }
 
+  getLifestyleMasters() {
+    let sql = `SELECT smoking_id as id, name, 'm_smoking' as 'master_type' FROM m_smoking where is_active = 1 
+    UNION ALL
+  SELECT alcohol_id as id, name, 'm_alcohol' as 'master_type' FROM m_alcohol where is_active =1
+    UNION ALL
+  SELECT excercise_id as id, name, 'm_excercise' as 'master_type' FROM m_excercise where is_active =1
+    UNION ALL
+  SELECT activity_level_id as id, name, 'm_activity_level' as 'master_type' FROM m_activity_level where is_active =1
+    UNION ALL
+  SELECT profession_id as id, name, 'm_profession' as 'master_type' FROM m_profession where is_active =1
+    UNION ALL
+  SELECT food_id as id, name, 'm_food' as 'master_type' FROM m_food where is_active =1
+    UNION ALL
+  SELECT heat_id as id, name, 'm_heat' as 'master_type' FROM m_heat where is_active =1`;
+    return this.dbObject.executeSql(sql, []).then((data) => {
+      let lifestyleMasterData = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          lifestyleMasterData.push({
+            id: data.rows.item(i).id,
+            name: data.rows.item(i).name,
+          });
+        }
+      }
+      return lifestyleMasterData;
+    });
+  }
+
   getLifestyles(IN_user_id, IN_relative_id) {
     let sql = `SELECT lifestyle_id, user_id, relative_id, smoking_id, alcohol_id, excercise_id,
     activity_level_id, profession_id, food_id, heat_id FROM ehr_lifestyle WHERE user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;

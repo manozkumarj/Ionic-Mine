@@ -48,9 +48,9 @@ export class LifestylePage implements OnInit {
   }
 
   ngOnInit() {
-    this.loadLifestyles();
-    this.loadSmokingMasters();
-    this.loadLifestyleData();
+    // this.loadLifestyles();
+    this.loadLifestyleMasters();
+    // this.loadLifestyleData();
   }
 
   loadLifestyles() {
@@ -284,17 +284,69 @@ export class LifestylePage implements OnInit {
       });
   }
 
-  loadSmokingMasters() {
+  loadLifestyleMasters() {
     this.db
-      .getSmokingMasters()
-      .then((smokingMasters) => {
-        console.log("Received SmokingMasters details are below -> ");
-        // console.log(JSON.stringify(lifestyleDetails));
-        console.log(smokingMasters);
+      .getLifestyleMasters()
+      .then((lifestyleMasters) => {
+        console.log("Received lifestyleMasters details are below -> ");
+        console.log(lifestyleMasters);
+        lifestyleMasters.forEach((data) => {
+          if (data["master_type"] == "m_smoking") {
+            this.m_smoking.push({
+              smoking_id: data.id,
+              name: data.name,
+              self_id: data.id,
+            });
+          } else if (data["master_type"] == "m_alcohol") {
+            this.m_alcohol.push({
+              alcohol_id: data.id,
+              name: data.name,
+              self_id: data.id,
+            });
+          } else if (data["master_type"] == "m_excercise") {
+            this.m_excercise.push({
+              excercise_id: data.id,
+              name: data.name,
+              self_id: data.id,
+            });
+          } else if (data["master_type"] == "m_activity_level") {
+            this.m_activity.push({
+              activity_level_id: data.id,
+              name: data.name,
+              self_id: data.id,
+            });
+          } else if (data["master_type"] == "m_profession") {
+            this.m_profession.push({
+              profession_id: data.id,
+              name: data.name,
+              self_id: data.id,
+            });
+          } else if (data["master_type"] == "m_food") {
+            this.m_food.push({
+              food_id: data.id,
+              name: data.name,
+              self_id: data.id,
+            });
+          } else if (data["master_type"] == "m_heat") {
+            this.m_heat.push({
+              heat_id: data.id,
+              name: data.name,
+              self_id: data.id,
+            });
+          }
+        });
+        this.utilities.lifestylePageState["m_smoking"] = this.m_smoking;
+        this.utilities.lifestylePageState["m_alcohol"] = this.m_alcohol;
+        this.utilities.lifestylePageState["m_excercise"] = this.m_excercise;
+        this.utilities.lifestylePageState["m_activity"] = this.m_activity;
+        this.utilities.lifestylePageState["m_profession"] = this.m_profession;
+        this.utilities.lifestylePageState["m_food"] = this.m_food;
+        this.utilities.lifestylePageState["m_heat"] = this.m_heat;
+        this.loadLifestyleData();
       })
       .catch((error) => {
         console.error(
-          "Error -> loadSmokingMasters() function returned error." +
+          "Error -> loadLifestyleMasters() function returned error." +
             JSON.stringify(error)
         );
       });
@@ -307,6 +359,23 @@ export class LifestylePage implements OnInit {
         console.log("Received lifestyleData details are below -> ");
         // console.log(JSON.stringify(lifestyleDetails));
         console.log(lifestyleData);
+        if (lifestyleData && lifestyleData.length > 0) {
+          // Smoking data
+          this.smokingId = lifestyleData["smoking_id"];
+          let smokeIndex = this.m_smoking.findIndex(
+            (id) => id.smoking_id == this.smokingId
+          );
+          this.smoking = this.m_smoking[smokeIndex]["name"];
+          this.utilities.lifestylePageState["smokingId"] = this.smokingId;
+
+          // alcohol data
+          this.alcoholId = lifestyleData["alcohol_id"];
+          let alcoholIndex = this.m_alcohol.findIndex(
+            (id) => id.alcohol_id == this.alcoholId
+          );
+          this.alcohol = this.m_alcohol[alcoholIndex]["name"];
+          this.utilities.lifestylePageState["alcoholId"] = this.alcoholId;
+        }
       })
       .catch((error) => {
         console.error(

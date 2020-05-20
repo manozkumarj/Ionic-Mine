@@ -12,7 +12,7 @@ import { LoadingController } from "@ionic/angular";
 export class HealthRecordsPage implements OnInit {
   healthRecords;
 
-  selectedPerson = 1;
+  selectedPerson = this.utilities.selectedRelativeId;
 
   userRelatives: any[] = [];
 
@@ -80,7 +80,7 @@ export class HealthRecordsPage implements OnInit {
 
   person(id) {
     console.log("Selected person ID -> " + id);
-    if (id == 0) {
+    if (id == -1) {
       this.router.navigate(["/add-relative/home"]);
     } else {
       this.selectedPerson = id;

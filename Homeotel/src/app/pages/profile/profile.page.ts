@@ -294,7 +294,7 @@ export class ProfilePage implements OnInit {
       })
       .then((a) => {
         a.present().then(async (res) => {
-          this.apiService.upsertUserPhoto(1, photo).subscribe((data) => {
+          this.apiService.upsertUserPhoto(0, photo).subscribe((data) => {
             a.dismiss();
             console.log("Returned from Backend");
             console.log(JSON.stringify(data));

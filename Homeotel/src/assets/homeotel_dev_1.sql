@@ -838,19 +838,19 @@ CREATE TABLE IF NOT EXISTS "m_relation" (
   PRIMARY KEY ("relation_id")
 );
 INSERT INTO "m_relation" ("relation_id","name","is_active") VALUES 
- (1,"Self","1"),
- (2,"Father","1"),
- (3,"Mother","1"),
- (4,"Elder brother","1"),
- (5,"Younger brother","1"),
- (6,"Elder sister","1"),
- (7,"Younger sister","1"),
- (8,"Uncle","1"),
- (9,"Aunt","1"),
- (10,"Husband","1"),
- (11,"Wife","1"),
- (12,"Son","1"),
- (13,"Daughter","1");
+ (0,"Self","1"),
+ (1,"Father","1"),
+ (2,"Mother","1"),
+ (3,"Elder brother","1"),
+ (4,"Younger brother","1"),
+ (5,"Elder sister","1"),
+ (6,"Younger sister","1"),
+ (7,"Uncle","1"),
+ (8,"Aunt","1"),
+ (9,"Husband","1"),
+ (10,"Wife","1"),
+ (11,"Son","1"),
+ (12,"Daughter","1");
 CREATE TABLE IF NOT EXISTS "m_scale" (
   "scale_id" int NOT NULL,
   "name" varchar(45) NOT NULL,
