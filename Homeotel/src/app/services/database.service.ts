@@ -302,6 +302,7 @@ export class DatabaseService {
   }
 
   getLifestyleMasters() {
+    let lifestyleMasterData = [];
     let sql = `SELECT smoking_id as id, name, 'table_smoking' as master_type FROM m_smoking where is_active = 1 
     UNION ALL
   SELECT alcohol_id as id, name, 'table_alcohol' as master_type FROM m_alcohol where is_active =1
@@ -315,19 +316,26 @@ export class DatabaseService {
   SELECT food_id as id, name, 'table_food' as master_type FROM m_food where is_active =1
     UNION ALL
   SELECT heat_id as id, name, 'table_heat' as master_type FROM m_heat where is_active =1`;
-    return this.dbObject.executeSql(sql, []).then((data) => {
-      let lifestyleMasterData = [];
-      if (data.rows.length > 0) {
-        for (var i = 0; i < data.rows.length; i++) {
-          lifestyleMasterData.push({
-            id: data.rows.item(i).id,
-            name: data.rows.item(i).name,
-            master_type: data.rows.item(i).master_type,
-          });
+    return this.dbObject
+      .executeSql(sql, [])
+      .then((data) => {
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
+            lifestyleMasterData.push({
+              id: data.rows.item(i).id,
+              name: data.rows.item(i).name,
+              master_type: data.rows.item(i).master_type,
+            });
+          }
         }
-      }
-      return lifestyleMasterData;
-    });
+        return lifestyleMasterData;
+      })
+      .catch((err) => {
+        console.error(
+          "Error -> getLifestyleMasters() function returned error." +
+            JSON.stringify(err)
+        );
+      });
   }
 
   getLifestyles(IN_user_id, IN_relative_id) {

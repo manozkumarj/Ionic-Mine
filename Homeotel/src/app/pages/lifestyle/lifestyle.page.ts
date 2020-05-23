@@ -288,10 +288,10 @@ export class LifestylePage implements OnInit {
   loadLifestyleMasters() {
     this.db
       .getLifestyleMasters()
-      .then((res) => {
+      .then((res: any[]) => {
         console.log("Received lifestyleMasters details are below -> ");
         console.log(res);
-        let lifestyleMasters = res[0];
+        let lifestyleMasters = res;
         lifestyleMasters.forEach((data) => {
           if (data["master_type"] == "table_smoking") {
             this.m_smoking.push({
@@ -358,12 +358,13 @@ export class LifestylePage implements OnInit {
   loadLifestyleData() {
     this.db
       .getLifestyles(this.utilities.userId, this.utilities.selectedRelativeId)
-      .then((res) => {
+      .then((res: any[]) => {
         console.log("Received lifestyleData details are below -> ");
         // console.log(JSON.stringify(lifestyleDetails));
         console.log(res);
         let lifestyleData = res[0];
-        if (lifestyleData && lifestyleData.length > 0) {
+        console.log(lifestyleData);
+        if (lifestyleData) {
           // Smoking data
           this.smokingId = lifestyleData["smoking_id"];
           let smokeIndex = this.m_smoking.findIndex(
@@ -371,6 +372,10 @@ export class LifestylePage implements OnInit {
           );
           this.smoking = this.m_smoking[smokeIndex]["name"];
           this.utilities.lifestylePageState["smokingId"] = this.smokingId;
+
+          console.log("this.smokingId --> " + this.smokingId);
+          console.log("smokeIndex --> " + smokeIndex);
+          console.log("this.smoking --> " + this.smoking);
 
           // alcohol data
           this.alcoholId = lifestyleData["alcohol_id"];
@@ -421,6 +426,8 @@ export class LifestylePage implements OnInit {
           this.utilities.lifestylePageState["heatId"] = this.heatId;
         }
         this.loadLifestyles();
+        console.log("this.utilities.lifestylePageState are below");
+        console.log(this.utilities.lifestylePageState);
       })
       .catch((error) => {
         console.error(

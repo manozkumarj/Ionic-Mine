@@ -12,6 +12,8 @@ Links which helped to solve the errors I faced:
 * https://ionicframework.com/docs/deployment/play-store
 * https://stackoverflow.com/questions/35173542/unable-to-sign-the-unsigned-apk
 
+* https://stackoverflow.com/questions/59447679/an-unhandled-exception-occurred-job-name-getprojectmetadata-does-not-exist
+
 
 Useful commands:
 ------------------------------------------------------------------------------
