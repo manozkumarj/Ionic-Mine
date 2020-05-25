@@ -6,6 +6,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { Router } from "@angular/router";
 import { ApiService } from "src/app/services/api.service";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-files",
@@ -37,12 +38,65 @@ export class FilesPage implements OnInit {
     private router: Router,
     private loadingController: LoadingController,
     private apiService: ApiService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private db: DatabaseService
   ) {
-    this.getFiles();
+    // this.getFiles();
+    this.getLocalFiles();
   }
 
   ngOnInit() {}
+
+  async getLocalFiles() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getFiles(this.utilities.userId, this.utilities.selectedRelativeId)
+            .then((res: any[]) => {
+              console.log("Received files details are below -> ");
+              console.log(res);
+              this.files = res[0];
+              console.log("this.files are showing below");
+              console.log(this.files);
+
+              this.db
+                .getFilesMasters()
+                .then((res: any[]) => {
+                  a.dismiss();
+                  console.log("Received filesMasters are below -> ");
+                  console.log(res);
+                  let fileTypesMasters = res[0];
+                  this.utilities.filesPageState[
+                    "fileTypesMasters"
+                  ] = fileTypesMasters;
+                  console.log("this.fileTypesMasters are showing below");
+                  console.log(fileTypesMasters);
+                })
+                .catch((error) => {
+                  a.dismiss();
+                  this.utilities.presentToastWarning("Something went wrong");
+                  console.error(
+                    "Error -> getFilesMasters() function returned error." +
+                      JSON.stringify(error)
+                  );
+                });
+            })
+            .catch((error) => {
+              a.dismiss();
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> getLocalFiles() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+        });
+      });
+  }
 
   async getFiles() {
     const loading = await this.loadingController
@@ -95,31 +149,72 @@ export class FilesPage implements OnInit {
           },
           {
             text: "Delete",
-            handler: () => {
+            handler: async () => {
               console.log("Delte clicked");
 
-              this.apiService.deleteFile(id).subscribe((data) => {
-                console.log("Returned from Backend");
-                console.log(data);
-                if (this.utilities.isInvalidApiResponseData(data)) {
-                  console.log("Returned Error");
-                } else {
-                  if (typeof data != "undefined") {
-                    console.log("Returned from backend");
-                    this.files = this.files.filter(
-                      (file) => file.file_id !== id
-                    );
-                    this.utilities.presentToastSuccess(
-                      "Success, file is deleted."
-                    );
-                  } else {
-                    console.log("Something went wrong in backend");
-                    this.utilities.presentToastSuccess(
-                      "Failed, Something went wrong."
-                    );
-                  }
-                }
-              });
+              const loading = await this.loadingController
+                .create({
+                  message: "Cancelling...",
+                  translucent: true,
+                })
+                .then((a) => {
+                  a.present().then(async (res) => {
+                    this.apiService.deleteFile(id).subscribe((data) => {
+                      console.log("Returned from Backend");
+                      console.log(data);
+                      if (this.utilities.isInvalidApiResponseData(data)) {
+                        console.log("Returned Error");
+                      } else {
+                        if (typeof data != "undefined") {
+                          console.log("Returned from backend");
+                          this.files = this.files.filter(
+                            (file) => file.file_id !== id
+                          );
+
+                          let res = data[0][0];
+                          if (data[0][0]["query"]) {
+                            let receivedQuery = res["query"];
+                            console.log(receivedQuery);
+
+                            this.db
+                              .crudOperations(receivedQuery)
+                              .then((res) => {
+                                a.dismiss();
+                                console.log("file is deleted successfully");
+                              })
+                              .catch((error) => {
+                                this.utilities.presentToastWarning(
+                                  "Something went wrong."
+                                );
+                                a.dismiss();
+                                console.error(
+                                  "Error -> deleteFile function returned error." +
+                                    JSON.stringify(error)
+                                );
+                              });
+                          } else {
+                            a.dismiss();
+                            this.utilities.presentToastWarning(
+                              "Something went wrong."
+                            );
+                            console.log(
+                              "Query property is not received from backend SP"
+                            );
+                          }
+
+                          this.utilities.presentToastSuccess(
+                            "Success, file is deleted."
+                          );
+                        } else {
+                          console.log("Something went wrong in backend");
+                          this.utilities.presentToastSuccess(
+                            "Failed, Something went wrong."
+                          );
+                        }
+                      }
+                    });
+                  });
+                });
             },
           },
           {

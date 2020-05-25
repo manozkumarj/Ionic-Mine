@@ -475,4 +475,45 @@ export class DatabaseService {
       return relationsMasters;
     });
   }
+
+  getFilesMasters() {
+    let sql = `SELECT * FROM m_file_type where is_active =1`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let filesMasters = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          filesMasters.push({
+            file_type_id: res.rows.item(i).file_type_id,
+            name: res.rows.item(i).name,
+            icon: res.rows.item(i).icon,
+          });
+        }
+      }
+      return filesMasters;
+    });
+  }
+
+  getFiles(IN_user_id, IN_relative_id) {
+    let sql = `SELECT f.file_id, f.relative_id, f.file_type_id, f.file_date, f.file_blob AS photo, mf.name FROM ehr_file f LEFT JOIN m_file_type mf ON f.file_type_id = mf.file_type_id WHERE f.user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let files = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          files.push({
+            file_id: res.rows.item(i).file_id,
+            relative_id: res.rows.item(i).relative_id,
+            file_type_id: res.rows.item(i).file_type_id,
+            file_date: res.rows.item(i).file_date,
+            photo: res.rows.item(i).photo,
+            name: res.rows.item(i).name,
+          });
+        }
+      }
+      return files;
+    });
+  }
 }
