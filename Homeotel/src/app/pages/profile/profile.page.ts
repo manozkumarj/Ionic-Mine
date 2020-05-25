@@ -6,6 +6,7 @@ import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 import { File } from "@ionic-native/file/ngx";
 import { Router } from "@angular/router";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-profile",
@@ -52,6 +53,7 @@ export class ProfilePage implements OnInit {
     private actShtCtr: ActionSheetController,
     private camera: Camera,
     private loadingController: LoadingController,
+    private db: DatabaseService,
     private file: File,
     private router: Router
   ) {}
@@ -61,11 +63,163 @@ export class ProfilePage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.getProfileDetails();
+    // this.getProfileDetails();
+    this.getLocalProfileDetails();
   }
 
   moreOptions() {
     console.log("Clicked on moreOptions()");
+  }
+
+  async getLocalProfileDetails() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getProfileDetails(this.utilities.userId)
+            .then((res: any[]) => {
+              console.log("Received getProfileDetails details are below -> ");
+              // console.log(JSON.stringify(lifestyleDetails));
+              // console.log(res);
+              this.utilities.profilePageDetails = res[0];
+              console.log("this.utilities.profilePageDetails is below");
+              console.log(this.utilities.profilePageDetails);
+              if (this.utilities.profilePageDetails) {
+                this.name = this.utilities.profilePageDetails["name"];
+                this.name = this.name ? this.name : "Enter";
+                this.phone = this.utilities.profilePageDetails["phone"];
+                this.phone = this.phone ? this.phone : "Enter";
+
+                this.email = this.utilities.profilePageDetails["email"];
+                this.email = this.email ? this.email : "Enter";
+
+                this.gender = this.utilities.profilePageDetails["gender_id"];
+
+                this.dob = this.utilities.profilePageDetails["dob"];
+                this.dob = this.dob ? this.dob : "Enter";
+
+                this.bloodGroup = this.utilities.profilePageDetails[
+                  "blood_group_id"
+                ];
+                this.maritalStatus = this.utilities.profilePageDetails[
+                  "marital_status_id"
+                ];
+
+                this.height = this.utilities.profilePageDetails["height"];
+                this.height = this.height ? this.height + " Feet" : "Select";
+
+                this.weight = this.utilities.profilePageDetails["weight"];
+                this.weight = this.weight ? this.weight + " Kgs" : "Select";
+
+                // getProfileRelatedMasters starts here
+                this.db
+                  .getProfileRelatedMasters()
+                  .then((res: any[]) => {
+                    console.log(res);
+                    let masterData = res[0];
+                    masterData.forEach((masterRow) => {
+                      if (masterRow.master_type == "blood_group") {
+                        this.m_bloodGroup.push({
+                          id: masterRow.id,
+                          name: masterRow.name,
+                        });
+                        this.utilities.bookAppointmentDoctorDetails[
+                          "m_bloodGroup"
+                        ] = this.m_bloodGroup;
+                      } else if (masterRow.master_type == "marital_status") {
+                        this.m_maritaStatus.push({
+                          id: masterRow.id,
+                          name: masterRow.name,
+                        });
+                        this.utilities.bookAppointmentDoctorDetails[
+                          "m_maritaStatus"
+                        ] = this.m_maritaStatus;
+                      } else if (masterRow.master_type == "gender") {
+                        this.m_gender.push({
+                          id: masterRow.id,
+                          name: masterRow.name,
+                        });
+                        this.utilities.bookAppointmentDoctorDetails[
+                          "m_gender"
+                        ] = this.m_gender;
+                      }
+                    });
+
+                    if (this.gender) {
+                      this.gender = this.m_gender[this.gender - 1]["name"];
+                    } else {
+                      this.gender = "Select";
+                    }
+
+                    if (this.bloodGroup) {
+                      this.bloodGroup = this.m_bloodGroup[this.bloodGroup - 1][
+                        "name"
+                      ];
+                    } else {
+                      this.bloodGroup = "Select";
+                    }
+
+                    if (this.maritalStatus) {
+                      this.maritalStatus = this.m_maritaStatus[
+                        this.maritalStatus - 1
+                      ]["name"];
+                    } else {
+                      this.maritalStatus = "Select";
+                    }
+
+                    // profilePhoto starts here
+                    this.db
+                      .getProfilePhoto(this.utilities.userId)
+                      .then((res: any[]) => {
+                        a.dismiss();
+                        console.log(res);
+                        // Master data
+                        let photoData = res[0];
+                        if (photoData) {
+                          this.profilePhoto = this.utilities.getPhotoDataUrl(
+                            photoData[0]["photo"]
+                          );
+                        } else {
+                          this.utilities.getPhotoDataUrl(null);
+                        }
+                      })
+                      .catch((error) => {
+                        a.dismiss();
+                        this.utilities.presentToastWarning(
+                          "Something went wrong"
+                        );
+                        console.error(
+                          "Error -> getProfilePhoto() function returned error." +
+                            JSON.stringify(error)
+                        );
+                      });
+                  })
+                  .catch((error) => {
+                    a.dismiss();
+                    this.utilities.presentToastWarning("Something went wrong");
+                    console.error(
+                      "Error -> loadlifestyleData() function returned error." +
+                        JSON.stringify(error)
+                    );
+                  });
+              } else {
+                this.utilities.presentToastWarning("Something went wrong");
+              }
+            })
+            .catch((error) => {
+              a.dismiss();
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadlifestyleData() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+        });
+      });
   }
 
   async getProfileDetails() {
@@ -295,10 +449,10 @@ export class ProfilePage implements OnInit {
       .then((a) => {
         a.present().then(async (res) => {
           this.apiService.upsertUserPhoto(0, photo).subscribe((data) => {
-            a.dismiss();
             console.log("Returned from Backend");
             console.log(JSON.stringify(data));
             if (this.utilities.isInvalidApiResponseData(data)) {
+              a.dismiss();
               console.log("Returned Error");
               console.log(data);
               if (data["error"]) {
@@ -310,6 +464,29 @@ export class ProfilePage implements OnInit {
               this.utilities.presentToastSuccess(
                 "Profile photo updated successfully."
               );
+
+              let res = data[0][0];
+              if (data[0][0]["query"]) {
+                let receivedQuery = res["query"];
+                console.log(receivedQuery);
+
+                this.db
+                  .crudOperations(receivedQuery)
+                  .then((res) => {
+                    a.dismiss();
+                    console.log("Profile photo updated successfully");
+                  })
+                  .catch((error) => {
+                    a.dismiss();
+                    console.error(
+                      "Error -> updateProfilePhoto function returned error." +
+                        JSON.stringify(error)
+                    );
+                  });
+              } else {
+                a.dismiss();
+                console.log("Query property is not received from backend SP");
+              }
             }
           });
         });

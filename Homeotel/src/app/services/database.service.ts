@@ -364,4 +364,75 @@ export class DatabaseService {
       return lifestyleData;
     });
   }
+
+  getProfileDetails(IN_user_id) {
+    let sql = `SELECT * FROM d_user WHERE user_id = ${IN_user_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let profileDetails = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          profileDetails.push({
+            name: res.rows.item(i).name,
+            phone: res.rows.item(i).phone,
+            email: res.rows.item(i).email,
+            gender_id: res.rows.item(i).gender_id,
+            dob: res.rows.item(i).dob,
+            blood_group_id: res.rows.item(i).blood_group_id,
+            marital_status_id: res.rows.item(i).marital_status_id,
+            height: res.rows.item(i).height,
+            weight: res.rows.item(i).weight,
+          });
+        }
+      }
+      return profileDetails;
+    });
+  }
+
+  getProfileRelatedMasters() {
+    let profileRelatedMasters = [];
+    let sql = `SELECT blood_group_id AS id, name AS name, 'blood_group' as master_type from m_blood_group WHERE is_active = 1
+    Union
+    SELECT marital_status_id AS id, name AS name, 'marital_status' as master_type from m_marital_status WHERE is_active = 1
+    Union
+    SELECT gender_id AS id, name AS name, 'gender' as master_type from m_gender WHERE is_active = 1`;
+    return this.dbObject
+      .executeSql(sql, [])
+      .then((data) => {
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
+            profileRelatedMasters.push({
+              id: data.rows.item(i).id,
+              name: data.rows.item(i).name,
+              master_type: data.rows.item(i).master_type,
+            });
+          }
+        }
+        return profileRelatedMasters;
+      })
+      .catch((err) => {
+        console.error(
+          "Error -> getLifestyleMasters() function returned error." +
+            JSON.stringify(err)
+        );
+      });
+  }
+
+  getProfilePhoto(IN_user_id) {
+    let sql = `SELECT photo FROM du_photo WHERE user_id = ${IN_user_id} relative_id = 0`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let profilePhoto = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          profilePhoto.push({
+            photo: res.rows.item(i).photo,
+          });
+        }
+      }
+      return profilePhoto;
+    });
+  }
 }

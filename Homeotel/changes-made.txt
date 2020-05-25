@@ -1,4 +1,5 @@
 * Modified 'sp_user_file_upsert' SP
 * Modified 'sp_user_vitals_get' SP
 * Modified 'sp_user_files_get' SP
+* Modified 'sp_user_profile_details' SP
 * 

@@ -206,10 +206,10 @@ export class EditLifestylePage implements OnInit {
               console.log("Returned from Backend");
               console.log(JSON.stringify(data));
               if (this.utilities.isInvalidApiResponseData(data)) {
-                a.dismiss();
                 console.log("Returned Error");
                 console.log(data[0][0]);
                 if (data[0][0]["error"]) {
+                  a.dismiss();
                   console.log("Something went wrong");
                   this.utilities.presentToastWarning("Something went wrong");
                 }
