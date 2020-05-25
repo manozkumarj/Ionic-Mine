@@ -1,10 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
-import { ModalController } from "@ionic/angular";
+import { ModalController, LoadingController } from "@ionic/angular";
 import { ModalPage } from "../modal/modal.page";
 import { AlertController } from "@ionic/angular";
 import { ApiService } from "src/app/services/api.service";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-appointment-details",
@@ -29,7 +30,9 @@ export class AppointmentDetailsPage implements OnInit {
     private router: Router,
     public utilities: UtilitiesService,
     private apiService: ApiService,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    private loadingController: LoadingController,
+    private db: DatabaseService
   ) {
     this.doctorName = this.utilities.bookAppointmentDoctorDetails["name"];
     this.doctorUsername = this.utilities.bookAppointmentDoctorDetails[
@@ -112,29 +115,76 @@ export class AppointmentDetailsPage implements OnInit {
           },
           {
             text: "Cancel Slot",
-            handler: () => {
+            handler: async () => {
               // alert("Slot will be cancelled");
 
               let appointmentId = this.utilities
                 .selectedAppointmentComplaintDetails["appointment_id"];
-              this.apiService
-                .cancelAppointment(appointmentId)
-                .subscribe((data) => {
-                  console.log("Returned from Backend");
-                  console.log(JSON.stringify(data));
-                  if (this.utilities.isInvalidApiResponseData(data)) {
-                    console.log("Returned Error");
-                    console.log(data[0]);
-                    if (data[0]["error"]) {
-                      console.log("Something went wrong");
-                    }
-                  } else {
-                    console.log("Returned Success");
-                    this.utilities.presentToastSuccess(
-                      "Appointment cancelled successfully"
-                    );
-                    this.router.navigate(["/home"]);
-                  }
+
+              const loading = await this.loadingController
+                .create({
+                  message: "Cancelling...",
+                  translucent: true,
+                })
+                .then((a) => {
+                  a.present().then(async (res) => {
+                    this.apiService
+                      .cancelAppointment(appointmentId)
+                      .subscribe((data) => {
+                        console.log("Returned from Backend");
+                        console.log(JSON.stringify(data));
+                        if (this.utilities.isInvalidApiResponseData(data)) {
+                          a.dismiss();
+                          this.utilities.presentToastWarning(
+                            "Something went wrong."
+                          );
+                          console.log("Returned Error");
+                          console.log(data[0]);
+                          if (data[0]["error"]) {
+                            console.log("Something went wrong");
+                          }
+                        } else {
+                          console.log("Returned Success");
+                          this.utilities.presentToastSuccess(
+                            "Appointment cancelled successfully"
+                          );
+
+                          let res = data[0][0];
+                          if (data[0][0]["query"]) {
+                            let receivedQuery = res["query"];
+                            console.log(receivedQuery);
+
+                            this.db
+                              .crudOperations(receivedQuery)
+                              .then((res) => {
+                                a.dismiss();
+                                console.log(
+                                  "Appointment cancelled successfully"
+                                );
+                                this.router.navigate(["/home"]);
+                              })
+                              .catch((error) => {
+                                this.utilities.presentToastWarning(
+                                  "Something went wrong."
+                                );
+                                a.dismiss();
+                                console.error(
+                                  "Error -> cancelSlot function returned error." +
+                                    JSON.stringify(error)
+                                );
+                              });
+                          } else {
+                            a.dismiss();
+                            this.utilities.presentToastWarning(
+                              "Something went wrong."
+                            );
+                            console.log(
+                              "Query property is not received from backend SP"
+                            );
+                          }
+                        }
+                      });
+                  });
                 });
             },
           },

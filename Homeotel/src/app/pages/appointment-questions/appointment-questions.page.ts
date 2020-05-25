@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
+import { DatabaseService } from "src/app/services/database.service";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-appointment-questions",
@@ -27,7 +29,9 @@ export class AppointmentQuestionsPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private apiService: ApiService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private loadingController: LoadingController,
+    private db: DatabaseService
   ) {
     console.log("selectedAppointmentComplaintDetails is below");
     console.log(this.utilities.selectedAppointmentComplaintDetails);
@@ -86,7 +90,7 @@ export class AppointmentQuestionsPage implements OnInit {
     }
   }
 
-  answered = (ansId) => {
+  answered = async (ansId) => {
     console.log("ansId -> " + ansId);
     if (this.currentQuestion == "one") {
       this.isRecurring = this.utilities.selectedAppointmentComplaintDetails[
@@ -113,35 +117,80 @@ export class AppointmentQuestionsPage implements OnInit {
       console.log("enteredDescription -> " + this.description);
     }
 
-    this.apiService
-      .upsertComplaintDetails(
-        this.utilities.selectedAppointmentComplaintDetails["appointment_id"],
-        this.utilities.selectedAppointmentComplaintDetails["doctor_id"],
-        this.utilities.selectedAppointmentComplaintDetails["relative_id"],
-        this.utilities.selectedAppointmentComplaintDetails["is_recurring"],
-        this.utilities.selectedAppointmentComplaintDetails["recurring_freq"],
-        this.utilities.selectedAppointmentComplaintDetails["severity_id"],
-        this.utilities.selectedAppointmentComplaintDetails[
-          "complaint_description"
-        ]
-      )
-      .subscribe((data) => {
-        console.log("Returned from Backend");
-        console.log(JSON.stringify(data));
-        if (this.utilities.isInvalidApiResponseData(data)) {
-          console.log("Returned Error");
-          console.log(data[0][0]);
-          if (data[0][0]["error"]) {
-            console.log("Something went wrong");
-          }
-        } else {
-          console.log("Returned Success");
-        }
+    const loading = await this.loadingController
+      .create({
+        message: "Saving...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService
+            .upsertComplaintDetails(
+              this.utilities.selectedAppointmentComplaintDetails[
+                "appointment_id"
+              ],
+              this.utilities.selectedAppointmentComplaintDetails["doctor_id"],
+              this.utilities.selectedAppointmentComplaintDetails["relative_id"],
+              this.utilities.selectedAppointmentComplaintDetails[
+                "is_recurring"
+              ],
+              this.utilities.selectedAppointmentComplaintDetails[
+                "recurring_freq"
+              ],
+              this.utilities.selectedAppointmentComplaintDetails["severity_id"],
+              this.utilities.selectedAppointmentComplaintDetails[
+                "complaint_description"
+              ]
+            )
+            .subscribe((data) => {
+              console.log("Returned from Backend");
+              console.log(JSON.stringify(data));
+              if (this.utilities.isInvalidApiResponseData(data)) {
+                a.dismiss();
+                this.utilities.presentToastWarning("Something went wrong");
+                console.log("Returned Error");
+                console.log(data[0][0]);
+                if (data[0][0]["error"]) {
+                  console.log("Something went wrong");
+                }
+              } else {
+                console.log("Returned Success");
+
+                let res = data[0][0];
+                if (data[0][0]["query"]) {
+                  let receivedQuery = res["query"];
+                  console.log(receivedQuery);
+
+                  this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      console.log("upsertComplaintDetails successfully");
+                      if (this.currentQuestion == "four")
+                        this.utilities.presentToastSuccess(
+                          "Updated successfully."
+                        );
+                      if (this.currentQuestion == "one" && ansId == 2)
+                        this.router.navigate(["/appointment-questions/1/2/3"]);
+                      this.router.navigate([this.forwardLink]);
+                    })
+                    .catch((error) => {
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      a.dismiss();
+                      console.error(
+                        "Error -> upsertComplaintDetails function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                } else {
+                  a.dismiss();
+                  console.log("Query property is not received from backend SP");
+                }
+              }
+            });
+        });
       });
-    if (this.currentQuestion == "four")
-      this.utilities.presentToastSuccess("Updated successfully.");
-    if (this.currentQuestion == "one" && ansId == 2)
-      this.router.navigate(["/appointment-questions/1/2/3"]);
-    this.router.navigate([this.forwardLink]);
   };
 }
