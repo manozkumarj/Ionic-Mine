@@ -457,4 +457,22 @@ export class DatabaseService {
       return vitalDetails;
     });
   }
+
+  getRelationsMasters() {
+    let sql = `SELECT * FROM m_relation where is_active =1`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let relationsMasters = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          relationsMasters.push({
+            relation_id: res.rows.item(i).relation_id,
+            name: res.rows.item(i).name,
+          });
+        }
+      }
+      return relationsMasters;
+    });
+  }
 }
