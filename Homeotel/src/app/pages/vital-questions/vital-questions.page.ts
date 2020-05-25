@@ -4,6 +4,7 @@ import { WheelSelector } from "@ionic-native/wheel-selector/ngx";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-vital-questions",
@@ -52,6 +53,7 @@ export class VitalQuestionsPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private selector: WheelSelector,
+    private db: DatabaseService,
     private apiService: ApiService,
     private loadingController: LoadingController,
     private utilities: UtilitiesService
@@ -377,10 +379,11 @@ export class VitalQuestionsPage implements OnInit {
               bpDiastolic
             )
             .subscribe((data) => {
-              a.dismiss();
               console.log("Returned from Backend");
               console.log(JSON.stringify(data));
               if (this.utilities.isInvalidApiResponseData(data)) {
+                this.utilities.presentToastWarning("Something went wrong.");
+                a.dismiss();
                 console.log("Returned Error");
                 console.log(data);
                 if (data["error"]) {
@@ -388,9 +391,38 @@ export class VitalQuestionsPage implements OnInit {
                 }
               } else {
                 console.log("Returned Success");
-                if (this.currentQuestion == "four")
-                  this.utilities.presentToastSuccess("Updated successfully.");
-                this.router.navigate([this.forwardLink]);
+
+                let res = data[0][0];
+                if (data[0][0]["query"]) {
+                  let receivedQuery = res["query"];
+                  console.log(receivedQuery);
+
+                  this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      console.log("vitals is saved successfully");
+
+                      if (this.currentQuestion == "four")
+                        this.utilities.presentToastSuccess(
+                          "Updated successfully."
+                        );
+                      this.router.navigate([this.forwardLink]);
+                    })
+                    .catch((error) => {
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      a.dismiss();
+                      console.error(
+                        "Error -> vital save function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                } else {
+                  a.dismiss();
+                  console.log("Query property is not received from backend SP");
+                }
               }
             });
         });

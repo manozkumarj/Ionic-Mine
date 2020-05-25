@@ -435,4 +435,26 @@ export class DatabaseService {
       return profilePhoto;
     });
   }
+
+  getVitalDetails(IN_user_id, IN_relative_id) {
+    let sql = `SELECT * FROM ehr_vital WHERE user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let vitalDetails = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          vitalDetails.push({
+            vitalId: res.rows.item(i).vitalId,
+            temperature: res.rows.item(i).temperature,
+            pulse: res.rows.item(i).pulse,
+            resp_rate: res.rows.item(i).resp_rate,
+            bp_systolic: res.rows.item(i).bp_systolic,
+            bp_diastolic: res.rows.item(i).bp_diastolic,
+          });
+        }
+      }
+      return vitalDetails;
+    });
+  }
 }

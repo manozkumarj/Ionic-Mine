@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-vitals",
@@ -16,13 +17,46 @@ export class VitalsPage implements OnInit {
     public actShtCtr: ActionSheetController,
     private router: Router,
     private apiService: ApiService,
+    private db: DatabaseService,
     private loadingController: LoadingController,
     private utilities: UtilitiesService
   ) {
-    this.getVitals();
+    // this.getVitals();
+    this.getLocalVitals();
   }
 
   ngOnInit() {}
+
+  async getLocalVitals() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getVitalDetails(
+              this.utilities.userId,
+              this.utilities.selectedRelativeId
+            )
+            .then((res: any[]) => {
+              console.log("Received vital details are below -> ");
+              console.log(res);
+              a.dismiss();
+              this.vitals = res[0];
+            })
+            .catch((error) => {
+              a.dismiss();
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> getLocalVitals() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+        });
+      });
+  }
 
   async getVitals() {
     const loading = await this.loadingController
