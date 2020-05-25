@@ -6,6 +6,7 @@ import { CommonService } from "../../services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-modal",
@@ -24,6 +25,7 @@ export class ModalPage implements OnInit {
     navParams: NavParams,
     private commonService: CommonService,
     private router: Router,
+    private db: DatabaseService,
     private apiService: ApiService,
     private loadingController: LoadingController,
     public utilities: UtilitiesService
@@ -95,16 +97,45 @@ export class ModalPage implements OnInit {
           this.apiService
             .purchaseHomeokit(doctorId, kitId, price)
             .subscribe((data) => {
-              a.dismiss();
               console.log("Returned from Backend");
-              console.log(JSON.stringify(data));
+              console.log(data);
               if (this.utilities.isInvalidApiResponseData(data)) {
+                a.dismiss();
                 console.log("Returned Error");
               } else {
                 if (data["error"]) {
+                  a.dismiss();
                   console.log("Homeokit purchase payment failed");
                 } else {
                   console.log("Homeokit purchase payment success");
+
+                  let res = data[0][0];
+                  if (data[0][0]["query"]) {
+                    let receivedQuery = res["query"];
+                    console.log(receivedQuery);
+
+                    this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        a.dismiss();
+                        console.log("Homeokit purchased successfully");
+                      })
+                      .catch((error) => {
+                        this.utilities.presentToastWarning(
+                          "Something went wrong."
+                        );
+                        a.dismiss();
+                        console.error(
+                          "Error -> purchaseHomeokit function returned error." +
+                            JSON.stringify(error)
+                        );
+                      });
+                  } else {
+                    a.dismiss();
+                    console.log(
+                      "Query property is not received from backend SP"
+                    );
+                  }
                 }
               }
             });
@@ -139,10 +170,10 @@ export class ModalPage implements OnInit {
               mainComplaint
             )
             .subscribe((data) => {
-              a.dismiss();
               console.log("Returned from Backend");
-              console.log(JSON.stringify(data));
+              console.log(data);
               if (this.utilities.isInvalidApiResponseData(data)) {
+                a.dismiss();
                 console.log("Returned Error");
                 console.log(data[0][0]);
                 if (data[0][0]["error"]) {
@@ -150,6 +181,32 @@ export class ModalPage implements OnInit {
                 }
               } else {
                 console.log("Returned Success");
+
+                let res = data[0][0];
+                if (data[0][0]["query"]) {
+                  let receivedQuery = res["query"];
+                  console.log(receivedQuery);
+
+                  this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      console.log("Appointment booked successfully");
+                    })
+                    .catch((error) => {
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      a.dismiss();
+                      console.error(
+                        "Error -> bookAppointment function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                } else {
+                  a.dismiss();
+                  console.log("Query property is not received from backend SP");
+                }
               }
             });
         });
@@ -283,9 +340,8 @@ export class ModalPage implements OnInit {
           this.onCancel();
 
           this.apiService.addDoctor(doctorId).subscribe((data) => {
-            a.dismiss();
             console.log("Returned from Backend");
-            console.log(JSON.stringify(data));
+            console.log(data);
             if (this.utilities.isInvalidApiResponseData(data)) {
               console.log("Returned Error");
             } else {
@@ -297,6 +353,32 @@ export class ModalPage implements OnInit {
               } else {
                 console.log("Doctor added");
                 this.utilities.presentToastSuccess("Success, Doctor added");
+
+                let res = data[0][0];
+                if (data[0][0]["query"]) {
+                  let receivedQuery = res["query"];
+                  console.log(receivedQuery);
+
+                  this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      console.log("Doctor Added successfully");
+                    })
+                    .catch((error) => {
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      a.dismiss();
+                      console.error(
+                        "Error -> AddDoctor function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                } else {
+                  a.dismiss();
+                  console.log("Query property is not received from backend SP");
+                }
               }
             }
             this.router.navigate(["/home"]);

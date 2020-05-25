@@ -104,31 +104,69 @@ export class VitalsPage implements OnInit {
           },
           {
             text: "Delete",
-            handler: () => {
+            handler: async () => {
               console.log("Delte clicked");
 
-              this.apiService.deleteVital(id).subscribe((data) => {
-                console.log("Returned from Backend");
-                console.log(data);
-                if (this.utilities.isInvalidApiResponseData(data)) {
-                  console.log("Returned Error");
-                } else {
-                  if (typeof data != "undefined") {
-                    console.log("Returned from backend");
-                    this.vitals = this.vitals.filter(
-                      (vital) => vital.vital_id !== id
-                    );
-                    this.utilities.presentToastSuccess(
-                      "Success, Vital is deleted."
-                    );
-                  } else {
-                    console.log("Something went wrong in backend");
-                    this.utilities.presentToastSuccess(
-                      "Failed, Something went wrong."
-                    );
-                  }
-                }
-              });
+              const loading = await this.loadingController
+                .create({
+                  message: "Deleting...",
+                  translucent: true,
+                })
+                .then((a) => {
+                  a.present().then(async (res) => {
+                    this.apiService.deleteVital(id).subscribe((data) => {
+                      console.log("Returned from Backend");
+                      console.log(data);
+                      if (this.utilities.isInvalidApiResponseData(data)) {
+                        console.log("Returned Error");
+                      } else {
+                        if (typeof data != "undefined") {
+                          console.log("Returned from backend");
+                          this.vitals = this.vitals.filter(
+                            (vital) => vital.vital_id !== id
+                          );
+                          this.utilities.presentToastSuccess(
+                            "Success, Vital is deleted."
+                          );
+
+                          let res = data[0][0];
+                          if (data[0][0]["query"]) {
+                            let receivedQuery = res["query"];
+                            console.log(receivedQuery);
+
+                            this.db
+                              .crudOperations(receivedQuery)
+                              .then((res) => {
+                                a.dismiss();
+                                console.log("vitals is deleted successfully");
+                              })
+                              .catch((error) => {
+                                this.utilities.presentToastWarning(
+                                  "Something went wrong."
+                                );
+                                a.dismiss();
+                                console.error(
+                                  "Error -> vital save function returned error." +
+                                    JSON.stringify(error)
+                                );
+                              });
+                          } else {
+                            a.dismiss();
+                            console.log(
+                              "Query property is not received from backend SP"
+                            );
+                          }
+                        } else {
+                          a.dismiss();
+                          console.log("Something went wrong in backend");
+                          this.utilities.presentToastSuccess(
+                            "Something went wrong."
+                          );
+                        }
+                      }
+                    });
+                  });
+                });
             },
           },
           {
