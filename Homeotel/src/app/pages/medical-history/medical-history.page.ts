@@ -3,6 +3,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { Router } from "@angular/router";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-medical-history",
@@ -53,6 +54,7 @@ export class MedicalHistoryPage {
   constructor(
     private utilities: UtilitiesService,
     private apiService: ApiService,
+    private db: DatabaseService,
     private loadingController: LoadingController,
     private router: Router
   ) {
@@ -60,8 +62,129 @@ export class MedicalHistoryPage {
   }
 
   ionViewWillEnter() {
-    this.getMedicalHistories();
+    this.loadMedicalHistoryMasters();
     this.setMedicalHistories();
+  }
+
+  async loadMedicalHistoryMasters() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getMedicalHistoryMasters()
+            .then((res: any[]) => {
+              console.log(
+                "Received getMedicalHistoryMasters details are below -> "
+              );
+              console.log(res);
+              let lifestyleMasters = res;
+              lifestyleMasters.forEach((data) => {
+                if (data["master_type"] == "table_allergy") {
+                  this.m_allergies.push({
+                    allergy_id: data.id,
+                    name: data.name,
+                    self_id: data.id,
+                  });
+                } else if (data["master_type"] == "table_current_medication") {
+                  this.m_currentMedication.push({
+                    current_medication_id: data.id,
+                    name: data.name,
+                    self_id: data.id,
+                  });
+                } else if (data["master_type"] == "table_post_medication") {
+                  this.m_postMedication.push({
+                    post_medication_id: data.id,
+                    name: data.name,
+                    self_id: data.id,
+                  });
+                } else if (data["master_type"] == "table_surgery") {
+                  this.m_surgeries.push({
+                    surgery_id: data.id,
+                    name: data.name,
+                    self_id: data.id,
+                  });
+                } else if (data["master_type"] == "table_injury") {
+                  this.m_injuries.push({
+                    injury_id: data.id,
+                    name: data.name,
+                    self_id: data.id,
+                  });
+                } else if (data["master_type"] == "table_disease") {
+                  this.m_chronicDieseases.push({
+                    disease_id: data.id,
+                    name: data.name,
+                    self_id: data.id,
+                  });
+                } else if (data["master_type"] == "table_relation") {
+                  this.m_familyHistory.push({
+                    relation_id: data.id,
+                    name: data.name,
+                    self_id: data.id,
+                  });
+                }
+              });
+              this.loadgetAllergiesData();
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadgetMedicalHistoryMasters() function returned error." +
+                  JSON.stringify(error)
+              );
+              // this.loadMedicalHistoryData();
+            });
+          a.dismiss();
+        });
+      });
+  }
+
+  async loadgetAllergiesData() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getAllergiesData(
+              this.utilities.userId,
+              this.utilities.selectedRelativeId
+            )
+            .then((res: any[]) => {
+              console.log("Received AllergiesData details are below -> ");
+              console.log(res);
+              this.allergyData = res;
+              this.allergyData = this.allergyData.map((obj) => {
+                return { ...obj, self_id: obj["allergy_id"] };
+              });
+              console.log("this.allergyData is below");
+              console.log(this.allergyData);
+
+              if (this.allergyData.length > 0) {
+                this.allergies = "Comma separation";
+                let names = this.allergyData.map((item) => {
+                  return item["name"];
+                });
+                console.log("allergies names below -> ");
+                console.log(names);
+                this.allergies = names.join(", ");
+              }
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadgetAllergiesData() function returned error." +
+                  JSON.stringify(error)
+              );
+              // this.loadMedicalHistoryData();
+            });
+        });
+      });
   }
 
   setMedicalHistories() {

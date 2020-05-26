@@ -516,4 +516,61 @@ export class DatabaseService {
       return files;
     });
   }
+
+  getMedicalHistoryMasters() {
+    let medicalHistoryMasterData = [];
+    let sql = `SELECT allergy_id as id, name, 'table_allergy' as master_type FROM m_allergy where is_active = 1 
+    UNION ALL
+  SELECT current_medication_id as id, name, 'table_current_medication' as master_type FROM m_current_medication where is_active =1
+    UNION ALL
+  SELECT post_medication_id as id, name, 'table_post_medication' as master_type FROM m_post_medication where is_active =1
+    UNION ALL
+  SELECT surgery_id as id, name, 'table_surgery' as master_type FROM m_surgery where is_active =1
+    UNION ALL
+  SELECT injury_id as id, name, 'table_injury' as master_type FROM m_injury where is_active =1
+    UNION ALL
+  SELECT disease_id as id, name, 'table_disease' as master_type FROM m_disease where is_active =1
+    UNION ALL
+  SELECT relation_id as id, name, 'table_relation' as master_type FROM m_relation where is_active =1`;
+    return this.dbObject
+      .executeSql(sql, [])
+      .then((data) => {
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
+            medicalHistoryMasterData.push({
+              id: data.rows.item(i).id,
+              name: data.rows.item(i).name,
+              master_type: data.rows.item(i).master_type,
+            });
+          }
+        }
+        return medicalHistoryMasterData;
+      })
+      .catch((err) => {
+        console.error(
+          "Error -> getMedicalHistoryMasters() function returned error." +
+            JSON.stringify(err)
+        );
+      });
+  }
+
+  getAllergiesData(IN_user_id, IN_relative_id) {
+    let sql = `SELECT ea.allergy_id, ma.name FROM homeotel.ehr_allergy ea
+    LEFT JOIN m_allergy ma ON ea.allergy_id = ma.allergy_id
+    WHERE user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let allergiesData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          allergiesData.push({
+            allergy_id: res.rows.item(i).allergy_id,
+            name: res.rows.item(i).name,
+          });
+        }
+      }
+      return allergiesData;
+    });
+  }
 }
