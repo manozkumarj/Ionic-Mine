@@ -4,6 +4,7 @@ import { CommonService } from "src/app/services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Router } from "@angular/router";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-previous-consultations",
@@ -16,6 +17,7 @@ export class PreviousConsultationsPage implements OnInit {
   constructor(
     private apiService: ApiService,
     private commonService: CommonService,
+    private db: DatabaseService,
     public utilities: UtilitiesService,
     private loadingController: LoadingController,
     private router: Router
@@ -24,7 +26,41 @@ export class PreviousConsultationsPage implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {
-    this.getAppointments();
+    // this.getAppointments();
+    this.loadAppointments();
+  }
+
+  async loadAppointments() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getUserAppointments(this.utilities.userId)
+            .then((res: any[]) => {
+              this.allAppointments = res[0];
+              console.log("Appointments found");
+
+              this.previousAppointments = this.allAppointments.filter(
+                (appointment) => appointment["appointment_status"] == 1
+              );
+
+              console.log("this.previousAppointments showing below");
+              console.log(this.previousAppointments);
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadAppointments() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+          a.dismiss();
+        });
+      });
   }
 
   async getAppointments() {
