@@ -698,4 +698,45 @@ export class DatabaseService {
       return relationsMedicalHistoryData;
     });
   }
+
+  getUserAppointments(IN_user_id) {
+    let sql = `SELECT a.appointment_id,a.user_id,a.relative_id,a.doctor_id, a.mode_id, a.appointment_at,a.amount_paid,a.appointment_status,
+    u.username,d.name AS doctorName,d.username AS doctorUserame, c.is_recurring, c.recurring_freq, c.severity_id, c.complaint_description, dp.photo, ms.name as specialisation
+    FROM d_appointment a
+    LEFT JOIN d_user u ON a.user_id = u.user_id
+    LEFT JOIN d_doctor d ON a.doctor_id = d.id
+    LEFT JOIN da_complaint_detail c ON a.appointment_id = c.appointment_id
+   LEFT JOIN dd_photo dp ON dp.doctor_id = a.doctor_id
+   LEFT JOIN m_specialisation ms ON ms.id = a.doctor_id
+     where a.user_id = ${IN_user_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let appointmentsData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          appointmentsData.push({
+            appointment_id: res.rows.item(i).appointment_id,
+            user_id: res.rows.item(i).user_id,
+            relative_id: res.rows.item(i).relative_id,
+            doctor_id: res.rows.item(i).doctor_id,
+            mode_id: res.rows.item(i).mode_id,
+            appointment_at: res.rows.item(i).appointment_at,
+            amount_paid: res.rows.item(i).amount_paid,
+            appointment_status: res.rows.item(i).appointment_status,
+            username: res.rows.item(i).username,
+            doctorName: res.rows.item(i).doctorName,
+            doctorUserame: res.rows.item(i).doctorUserame,
+            is_recurring: res.rows.item(i).is_recurring,
+            recurring_freq: res.rows.item(i).recurring_freq,
+            severity_id: res.rows.item(i).severity_id,
+            complaint_description: res.rows.item(i).complaint_description,
+            photo: res.rows.item(i).photo,
+            specialisation: res.rows.item(i).specialisation,
+          });
+        }
+      }
+      return appointmentsData;
+    });
+  }
 }
