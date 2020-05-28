@@ -823,4 +823,22 @@ export class DatabaseService {
       return relativesData;
     });
   }
+
+  getIssues() {
+    let sql = `SELECT * FROM homeotel.m_issue where is_active =1`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let issuesData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          issuesData.push({
+            id: res.rows.item(i).id,
+            name: res.rows.item(i).name,
+          });
+        }
+      }
+      return issuesData;
+    });
+  }
 }

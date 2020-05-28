@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
+import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-help-center",
@@ -12,12 +14,40 @@ export class HelpCenterPage implements OnInit {
 
   constructor(
     private utilities: UtilitiesService,
+    private loadingController: LoadingController,
+    private db: DatabaseService,
     private apiService: ApiService
   ) {
-    this.getIssues();
+    // this.getIssues();
+    this.loadIssues();
   }
 
   ngOnInit() {}
+
+  async loadIssues() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getIssues()
+            .then((res: any[]) => {
+              this.issues = res[0];
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadIssues() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+          a.dismiss();
+        });
+      });
+  }
 
   getIssues() {
     this.apiService.getIssues().subscribe((data) => {
