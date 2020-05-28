@@ -573,4 +573,104 @@ export class DatabaseService {
       return allergiesData;
     });
   }
+
+  getCurrentMedicationsData(IN_user_id, IN_relative_id) {
+    let sql = `SELECT em.medication_id, m.name FROM homeotel.ehr_current_medication em
+    LEFT JOIN m_current_medication m ON em.medication_id = m.current_medication_id
+    where user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let currentMedicationsData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          currentMedicationsData.push({
+            medication_id: res.rows.item(i).medication_id,
+            name: res.rows.item(i).name,
+          });
+        }
+      }
+      return currentMedicationsData;
+    });
+  }
+
+  getPostMedicationsData(IN_user_id, IN_relative_id) {
+    let sql = `SELECT em.medication_id, m.name FROM homeotel.ehr_post_medication em
+    LEFT JOIN m_post_medication m ON em.medication_id = m.post_medication_id
+    where user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let postMedicationsData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          postMedicationsData.push({
+            medication_id: res.rows.item(i).medication_id,
+            name: res.rows.item(i).name,
+          });
+        }
+      }
+      return postMedicationsData;
+    });
+  }
+
+  getSurgeriesData(IN_user_id, IN_relative_id) {
+    let sql = `SELECT es.surgery_id, m.name FROM homeotel.ehr_surgery es
+    LEFT JOIN m_surgery m ON es.surgery_id = m.surgery_id
+    WHERE user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let surgeriesData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          surgeriesData.push({
+            surgery_id: res.rows.item(i).surgery_id,
+            name: res.rows.item(i).name,
+          });
+        }
+      }
+      return surgeriesData;
+    });
+  }
+
+  getInjuriesData(IN_user_id, IN_relative_id) {
+    let sql = `SELECT ei.injury_id, m.name FROM homeotel.ehr_injury ei
+    LEFT JOIN m_injury m ON ei.injury_id = m.injury_id
+    WHERE user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let injuriesData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          injuriesData.push({
+            injury_id: res.rows.item(i).injury_id,
+            name: res.rows.item(i).name,
+          });
+        }
+      }
+      return injuriesData;
+    });
+  }
+
+  getDiseasesData(IN_user_id, IN_relative_id) {
+    let sql = `SELECT ec.disease_id, m.name FROM homeotel.ehr_chronic ec
+    LEFT JOIN m_disease m ON ec.disease_id = m.disease_id
+    WHERE user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let diseasesData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          diseasesData.push({
+            disease_id: res.rows.item(i).disease_id,
+            name: res.rows.item(i).name,
+          });
+        }
+      }
+      return diseasesData;
+    });
+  }
 }

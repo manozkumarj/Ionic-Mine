@@ -127,7 +127,40 @@ export class MedicalHistoryPage {
                   });
                 }
               });
+
+              this.utilities.medicalHistoryPageState[
+                "m_allergies"
+              ] = this.m_allergies;
+
+              this.utilities.medicalHistoryPageState[
+                "m_currentMedication"
+              ] = this.m_currentMedication;
+
+              this.utilities.medicalHistoryPageState[
+                "m_postMedication"
+              ] = this.m_postMedication;
+
+              this.utilities.medicalHistoryPageState[
+                "m_surgeries"
+              ] = this.m_surgeries;
+              this.utilities.medicalHistoryPageState[
+                "m_injuries"
+              ] = this.m_injuries;
+              this.utilities.medicalHistoryPageState[
+                "m_chronicDieseases"
+              ] = this.m_chronicDieseases;
+              this.utilities.medicalHistoryPageState[
+                "m_familyHistory"
+              ] = this.m_familyHistory;
+
               this.loadgetAllergiesData();
+              this.loadgetCurrentMedicationsData();
+              this.loadgetPostMedicationsData();
+              this.loadgetSurgeriesData();
+              this.loadgetInjuriesData();
+              this.loadgetDiseasesData();
+
+              this.setMedicalHistories();
             })
             .catch((error) => {
               this.utilities.presentToastWarning("Something went wrong");
@@ -181,7 +214,230 @@ export class MedicalHistoryPage {
                 "Error -> loadgetAllergiesData() function returned error." +
                   JSON.stringify(error)
               );
-              // this.loadMedicalHistoryData();
+            });
+        });
+      });
+  }
+
+  async loadgetCurrentMedicationsData() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getCurrentMedicationsData(
+              this.utilities.userId,
+              this.utilities.selectedRelativeId
+            )
+            .then((res: any[]) => {
+              console.log(
+                "Received CurrentMedicationsData details are below -> "
+              );
+              console.log(res);
+              this.currentMedicationData = res;
+              this.currentMedicationData = this.currentMedicationData.map(
+                (obj) => {
+                  return { ...obj, self_id: obj["medication_id"] };
+                }
+              );
+              console.log("this.currentMedicationData is below");
+              console.log(this.currentMedicationData);
+
+              if (this.currentMedicationData.length > 0) {
+                this.currentMedications = "Comma separation";
+                let names = this.currentMedicationData.map((item) => {
+                  return item["name"];
+                });
+                console.log("currentMedications names below -> ");
+                console.log(names);
+                this.currentMedications = names.join(", ");
+              }
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadgetCurrentMedicationsData() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+        });
+      });
+  }
+
+  async loadgetPostMedicationsData() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getPostMedicationsData(
+              this.utilities.userId,
+              this.utilities.selectedRelativeId
+            )
+            .then((res: any[]) => {
+              console.log("Received PostMedicationsData details are below -> ");
+              console.log(res);
+              this.postMedicationData = res;
+              this.postMedicationData = this.postMedicationData.map((obj) => {
+                return { ...obj, self_id: obj["medication_id"] };
+              });
+              console.log("this.postMedicationData is below");
+              console.log(this.postMedicationData);
+
+              if (this.postMedicationData.length > 0) {
+                this.postMedications = "Comma separation";
+                let names = this.postMedicationData.map((item) => {
+                  return item["name"];
+                });
+                console.log("postMedications names below -> ");
+                console.log(names);
+                this.postMedications = names.join(", ");
+              }
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadgetpostMedicationsData() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+        });
+      });
+  }
+
+  async loadgetSurgeriesData() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getSurgeriesData(
+              this.utilities.userId,
+              this.utilities.selectedRelativeId
+            )
+            .then((res: any[]) => {
+              console.log("Received SurgeriesData details are below -> ");
+              console.log(res);
+              this.surgeryData = res;
+              this.surgeryData = this.surgeryData.map((obj) => {
+                return { ...obj, self_id: obj["allergy_id"] };
+              });
+              console.log("this.SurgeriesData is below");
+              console.log(this.surgeryData);
+
+              if (this.surgeryData.length > 0) {
+                this.surgeries = "Comma separation";
+                let names = this.surgeryData.map((item) => {
+                  return item["name"];
+                });
+                console.log("surgeries names below -> ");
+                console.log(names);
+                this.surgeries = names.join(", ");
+              }
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadgetSurgeriesData() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+        });
+      });
+  }
+
+  async loadgetInjuriesData() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getInjuriesData(
+              this.utilities.userId,
+              this.utilities.selectedRelativeId
+            )
+            .then((res: any[]) => {
+              console.log("Received injuriesData details are below -> ");
+              console.log(res);
+              this.injuryData = res;
+              this.injuryData = this.injuryData.map((obj) => {
+                return { ...obj, self_id: obj["injury_id"] };
+              });
+              console.log("this.injuriesData is below");
+              console.log(this.injuryData);
+
+              if (this.injuryData.length > 0) {
+                this.injuries = "Comma separation";
+                let names = this.injuryData.map((item) => {
+                  return item["name"];
+                });
+                console.log("injuries names below -> ");
+                console.log(names);
+                this.injuries = names.join(", ");
+              }
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadgetSurgeriesData() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+        });
+      });
+  }
+
+  async loadgetDiseasesData() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDiseasesData(
+              this.utilities.userId,
+              this.utilities.selectedRelativeId
+            )
+            .then((res: any[]) => {
+              console.log("Received injuriesData details are below -> ");
+              console.log(res);
+              this.chronicData = res;
+              this.chronicData = this.chronicData.map((obj) => {
+                return { ...obj, self_id: obj["disease_id"] };
+              });
+              console.log("this.injuriesData is below");
+              console.log(this.chronicData);
+
+              if (this.chronicData.length > 0) {
+                this.chronics = "Comma separation";
+                let names = this.chronicData.map((item) => {
+                  return item["name"];
+                });
+                console.log("chronics names below -> ");
+                console.log(names);
+                this.chronics = names.join(", ");
+              }
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadgetDiseasesData() function returned error." +
+                  JSON.stringify(error)
+              );
             });
         });
       });
