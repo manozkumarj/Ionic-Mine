@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
+import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-consultation-details",
@@ -26,6 +28,8 @@ export class ConsultationDetailsPage implements OnInit {
   constructor(
     private router: Router,
     public utilities: UtilitiesService,
+    private loadingController: LoadingController,
+    private db: DatabaseService,
     private apiService: ApiService
   ) {
     this.doctorId = this.utilities.bookAppointmentDoctorDetails["id"];
@@ -52,10 +56,36 @@ export class ConsultationDetailsPage implements OnInit {
       this.utilities.bookAppointmentDetails["timestamp"] +
       " : " +
       this.utilities.bookAppointmentDetails["timeNSession"];
-    this.getUserRelatives();
+    // this.getUserRelatives();
+    this.loadUserRelatives();
   }
 
   ngOnInit() {}
+
+  async loadUserRelatives() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getUserRelatives(this.utilities.userId)
+            .then((res: any[]) => {
+              this.userRelatives = res[0];
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadAppointments() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+          a.dismiss();
+        });
+      });
+  }
 
   getUserRelatives() {
     this.apiService.getUserRelatives().subscribe((data) => {

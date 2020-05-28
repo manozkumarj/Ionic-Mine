@@ -803,4 +803,24 @@ export class DatabaseService {
       return orderedKitsData;
     });
   }
+
+  getUserRelatives(IN_user_id) {
+    let sql = `SELECT * FROM du_relative WHERE user_id = ${IN_user_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let relativesData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          relativesData.push({
+            user_id: res.rows.item(i).user_id,
+            relative_id: res.rows.item(i).relative_id,
+            relative_name: res.rows.item(i).relative_name,
+            photo: res.rows.item(i).photo,
+          });
+        }
+      }
+      return relativesData;
+    });
+  }
 }
