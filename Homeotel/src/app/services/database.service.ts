@@ -555,7 +555,7 @@ export class DatabaseService {
   }
 
   getAllergiesData(IN_user_id, IN_relative_id) {
-    let sql = `SELECT ea.allergy_id, ma.name FROM homeotel.ehr_allergy ea
+    let sql = `SELECT ea.allergy_id, ma.name FROM ehr_allergy ea
     LEFT JOIN m_allergy ma ON ea.allergy_id = ma.allergy_id
     WHERE user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
 
@@ -575,7 +575,7 @@ export class DatabaseService {
   }
 
   getCurrentMedicationsData(IN_user_id, IN_relative_id) {
-    let sql = `SELECT em.medication_id, m.name FROM homeotel.ehr_current_medication em
+    let sql = `SELECT em.medication_id, m.name FROM ehr_current_medication em
     LEFT JOIN m_current_medication m ON em.medication_id = m.current_medication_id
     where user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
 
@@ -595,7 +595,7 @@ export class DatabaseService {
   }
 
   getPostMedicationsData(IN_user_id, IN_relative_id) {
-    let sql = `SELECT em.medication_id, m.name FROM homeotel.ehr_post_medication em
+    let sql = `SELECT em.medication_id, m.name FROM ehr_post_medication em
     LEFT JOIN m_post_medication m ON em.medication_id = m.post_medication_id
     where user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
 
@@ -615,7 +615,7 @@ export class DatabaseService {
   }
 
   getSurgeriesData(IN_user_id, IN_relative_id) {
-    let sql = `SELECT es.surgery_id, m.name FROM homeotel.ehr_surgery es
+    let sql = `SELECT es.surgery_id, m.name FROM ehr_surgery es
     LEFT JOIN m_surgery m ON es.surgery_id = m.surgery_id
     WHERE user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
 
@@ -635,7 +635,7 @@ export class DatabaseService {
   }
 
   getInjuriesData(IN_user_id, IN_relative_id) {
-    let sql = `SELECT ei.injury_id, m.name FROM homeotel.ehr_injury ei
+    let sql = `SELECT ei.injury_id, m.name FROM ehr_injury ei
     LEFT JOIN m_injury m ON ei.injury_id = m.injury_id
     WHERE user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
 
@@ -655,7 +655,7 @@ export class DatabaseService {
   }
 
   getDiseasesData(IN_user_id, IN_relative_id) {
-    let sql = `SELECT ec.disease_id, m.name FROM homeotel.ehr_chronic ec
+    let sql = `SELECT ec.disease_id, m.name FROM ehr_chronic ec
     LEFT JOIN m_disease m ON ec.disease_id = m.disease_id
     WHERE user_id = ${IN_user_id} AND relative_id = ${IN_relative_id}`;
 
@@ -671,6 +671,31 @@ export class DatabaseService {
         }
       }
       return diseasesData;
+    });
+  }
+
+  getRelationsMedicalHistoryData(IN_user_id, IN_relative_id) {
+    let sql = `SELECT efh.relative_id, efh.relation_id, efh.disease_id, md.name as diseaseName, mr.name as relationName
+    FROM ehr_family_history efh
+    LEFT JOIN m_disease md ON efh.disease_id = md.disease_id
+    LEFT JOIN m_relation mr ON efh.relation_id = mr.relation_id
+    WHERE efh.user_id = ${IN_user_id} AND efh.relative_id = ${IN_relative_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let relationsMedicalHistoryData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          relationsMedicalHistoryData.push({
+            relative_id: res.rows.item(i).relative_id,
+            relation_id: res.rows.item(i).relation_id,
+            disease_id: res.rows.item(i).disease_id,
+            diseaseName: res.rows.item(i).diseaseName,
+            relationName: res.rows.item(i).relationName,
+          });
+        }
+      }
+      return relationsMedicalHistoryData;
     });
   }
 }
