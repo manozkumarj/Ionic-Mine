@@ -2,7 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { CommonService } from "./../../services/common.service";
 import { ApiService } from "src/app/services/api.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
-import { Platform } from "@ionic/angular";
+import { Platform, LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-home",
@@ -17,9 +18,38 @@ export class HomePage implements OnInit {
     private commonService: CommonService,
     private apiService: ApiService,
     private utilities: UtilitiesService,
+    private loadingController: LoadingController,
+    private db: DatabaseService,
     private platform: Platform
   ) {
-    this.getAppointments();
+    // this.getAppointments();
+    this.loadAppointments();
+  }
+
+  async loadAppointments() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getUserAppointments(this.utilities.userId)
+            .then((res: any[]) => {
+              this.allAppointments = res[0];
+              console.log("Appointments found");
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadAppointments() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+          a.dismiss();
+        });
+      });
   }
 
   getAppointments() {

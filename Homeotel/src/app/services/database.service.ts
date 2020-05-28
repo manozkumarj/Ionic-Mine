@@ -841,4 +841,32 @@ export class DatabaseService {
       return issuesData;
     });
   }
+
+  getUserDoctors(IN_user_id) {
+    let sql = `SELECT d.id, d.name as doctorName, d.uuid, d.username, dp.photo, p.experience, ms.name as specialisation FROM du_doctor du
+    LEFT JOIN d_doctor d ON du.doctor_id = d.id
+    LEFT JOIN dd_photo dp ON dp.doctor_id = d.id
+    LEFT JOIN dd_professional p ON p.doctor_id = d.id
+    LEFT JOIN m_specialisation ms ON ms.id = d.id
+    where du.user_id=${IN_user_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let userDoctorsData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          userDoctorsData.push({
+            id: res.rows.item(i).id,
+            doctorName: res.rows.item(i).doctorName,
+            uuid: res.rows.item(i).uuid,
+            username: res.rows.item(i).username,
+            photo: res.rows.item(i).photo,
+            experience: res.rows.item(i).experience,
+            specialisation: res.rows.item(i).specialisation,
+          });
+        }
+      }
+      return userDoctorsData;
+    });
+  }
 }
