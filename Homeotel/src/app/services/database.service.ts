@@ -739,4 +739,68 @@ export class DatabaseService {
       return appointmentsData;
     });
   }
+
+  getDoctorsKits(IN_userId, IN_doctorId) {
+    let sql;
+    if (IN_doctorId == 0) {
+      sql = `SELECT d.kit_id, d.doctor_id, d.description, d.name, d.price, p.photo FROM dd_kit d
+      LEFT JOIN dk_photo p ON d.kit_id = p.kit_id
+      where d.doctor_id IN (SELECT concat(doctor_id) FROM du_doctor where user_id=${IN_userId})`;
+    } else {
+      sql = `SELECT d.kit_id, d.doctor_id, d.description, d.name, d.price, p.photo FROM dd_kit d
+      LEFT JOIN dk_photo p ON d.kit_id = p.kit_id
+      where d.doctor_id = ${IN_doctorId}`;
+    }
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let kitsData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          kitsData.push({
+            kit_id: res.rows.item(i).kit_id,
+            doctor_id: res.rows.item(i).doctor_id,
+            description: res.rows.item(i).description,
+            name: res.rows.item(i).name,
+            price: res.rows.item(i).price,
+            photo: res.rows.item(i).photo,
+          });
+        }
+      }
+      return kitsData;
+    });
+  }
+
+  getOrderedKits(IN_userId, IN_doctorId) {
+    let sql;
+    if (IN_doctorId == 0) {
+      sql = `SELECT o.kit_id, o.created_at, k.name, k.description, k.price, p.photo FROM dk_order o
+      LEFT JOIN dd_kit k ON o.kit_id = k.kit_id
+      LEFT JOIN dk_photo p ON o.kit_id = p.kit_id
+      WHERE user_id=${IN_userId}`;
+    } else {
+      sql = `SELECT o.kit_id, o.created_at, k.name, k.description, k.price, p.photo FROM dk_order o
+      LEFT JOIN dd_kit k ON o.kit_id = k.kit_id
+      LEFT JOIN dk_photo p ON o.kit_id = p.kit_id
+      WHERE o.doctor_id = ${IN_doctorId} AND o.user_id=${IN_userId}`;
+    }
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let orderedKitsData = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          orderedKitsData.push({
+            kit_id: res.rows.item(i).kit_id,
+            created_at: res.rows.item(i).created_at,
+            description: res.rows.item(i).description,
+            name: res.rows.item(i).name,
+            price: res.rows.item(i).price,
+            photo: res.rows.item(i).photo,
+          });
+        }
+      }
+      return orderedKitsData;
+    });
+  }
 }

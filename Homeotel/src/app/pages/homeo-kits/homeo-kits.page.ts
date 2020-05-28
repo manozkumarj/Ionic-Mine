@@ -4,6 +4,7 @@ import { CommonService } from "../../services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-homeo-kits",
@@ -21,6 +22,7 @@ export class HomeoKitsPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private commonService: CommonService,
     private apiService: ApiService,
+    private db: DatabaseService,
     private loadingController: LoadingController,
     public utilities: UtilitiesService
   ) {
@@ -31,11 +33,15 @@ export class HomeoKitsPage implements OnInit {
       console.log("Need to show specific doctor's Homeokits");
       console.log("this.doctorId -> " + this.doctorId);
       if (this.doctorId) {
-        this.getCurrentDoctorsHomeokits(this.doctorId);
+        // this.getCurrentDoctorsHomeokits(this.doctorId);
+        this.loadCurrentDoctorsHomeokits(this.utilities.userId, this.doctorId);
+        this.loadOrderedKits(this.utilities.userId, this.doctorId);
       }
     } else {
       console.log("Need to show all Homeokits");
-      this.getCurrentDoctorsHomeokits(0);
+      // this.getCurrentDoctorsHomeokits(0);
+      this.loadCurrentDoctorsHomeokits(this.utilities.userId, 0);
+      this.loadOrderedKits(this.utilities.userId, 0);
     }
   }
 
@@ -43,6 +49,56 @@ export class HomeoKitsPage implements OnInit {
 
   togglingTabs(tab) {
     this.selectedTab = tab;
+  }
+
+  async loadCurrentDoctorsHomeokits(userId, doctorId) {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorsKits(userId, doctorId)
+            .then((res: any[]) => {
+              this.homeokits = res[0];
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadCurrentDoctorsHomeokits() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+          a.dismiss();
+        });
+      });
+  }
+
+  async loadOrderedKits(userId, doctorId) {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getOrderedKits(userId, doctorId)
+            .then((res: any[]) => {
+              this.orderedHomeokits = res[0];
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadOrderedKits() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+          a.dismiss();
+        });
+      });
   }
 
   async getCurrentDoctorsHomeokits(doctorId) {
