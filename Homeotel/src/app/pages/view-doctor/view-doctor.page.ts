@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-view-doctor",
@@ -45,6 +46,7 @@ export class ViewDoctorPage implements OnInit {
     public activatedRoute: ActivatedRoute,
     private router: Router,
     private apiService: ApiService,
+    private db: DatabaseService,
     private loadingController: LoadingController,
     public utilities: UtilitiesService
   ) {}
@@ -108,7 +110,11 @@ export class ViewDoctorPage implements OnInit {
                   });
                 }
               });
-              this.loadProfile();
+              // this.loadProfile();
+              this.loadDoctorProfileDetails();
+              this.loadDoctorProfessionalDetails();
+              this.loadDoctorClinicsDetails();
+              this.loadDoctorModesDetails();
               this.utilities.presentToastSuccess("data loaded successfully");
             }
           });
@@ -126,6 +132,110 @@ export class ViewDoctorPage implements OnInit {
     this.audioConsultations = [];
     this.chatConsultations = [];
     this.physicalVisits = [];
+  }
+
+  async loadDoctorProfileDetails() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorProfileDetails(this.selectedDoctorId)
+            .then((res: any[]) => {
+              this.doctorPhoto = res[0]["photo"];
+              this.doctorName = res[0]["name"];
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadDoctorProfileDetails() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+          a.dismiss();
+        });
+      });
+  }
+
+  async loadDoctorProfessionalDetails() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorProfessionalDetails(this.selectedDoctorId)
+            .then((res: any[]) => {
+              this.loadSpecialisation(res[0]["specialisation"]);
+              this.loadExperience(res[0]["experience"]);
+              this.loadQualifications(res[0]["qualifications"]);
+              this.loadCertifications(res[0]["certifications"]);
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadDoctorProfessionalDetails() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+          a.dismiss();
+        });
+      });
+  }
+
+  async loadDoctorClinicsDetails() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorClinicsDetails(this.selectedDoctorId)
+            .then((res: any[]) => {
+              this.loadClinics(res[0]);
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadDoctorClinicsDetails() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+          a.dismiss();
+        });
+      });
+  }
+
+  async loadDoctorModesDetails() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorModesDetails(this.selectedDoctorId)
+            .then((res: any[]) => {
+              this.loadModes(res[0]);
+            })
+            .catch((error) => {
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadDoctorModesDetails() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+          a.dismiss();
+        });
+      });
   }
 
   async loadProfile() {

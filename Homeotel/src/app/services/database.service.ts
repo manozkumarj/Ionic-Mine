@@ -869,4 +869,93 @@ export class DatabaseService {
       return userDoctorsData;
     });
   }
+
+  getDoctorProfileDetails(IN_doctor_id) {
+    let sql = `SELECT * FROM d_doctor where id = ${IN_doctor_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let doctorProfileDetails = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          doctorProfileDetails.push({
+            id: res.rows.item(i).id,
+            name: res.rows.item(i).name,
+            uuid: res.rows.item(i).uuid,
+            username: res.rows.item(i).username,
+            email: res.rows.item(i).email,
+            gender_id: res.rows.item(i).gender_id,
+            phone: res.rows.item(i).phone,
+            dob: res.rows.item(i).dob,
+          });
+        }
+      }
+      return doctorProfileDetails;
+    });
+  }
+
+  getDoctorProfessionalDetails(IN_doctor_id) {
+    let sql = `SELECT * FROM dd_professional where doctor_id = ${IN_doctor_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let doctorProfessionalDetails = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          doctorProfessionalDetails.push({
+            specialisation: res.rows.item(i).specialisation,
+            experience: res.rows.item(i).experience,
+            qualifications: res.rows.item(i).qualifications,
+            certifications: res.rows.item(i).certifications,
+          });
+        }
+      }
+      return doctorProfessionalDetails;
+    });
+  }
+
+  getDoctorClinicsDetails(IN_doctor_id) {
+    let sql = `SELECT * FROM dd_clinic c left join ddc_timing t on
+    t.clinic_id = c.clinic_id and t.doctor_id = c.doctor_id where c.doctor_id = ${IN_doctor_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let doctorClinicsDetails = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          doctorClinicsDetails.push({
+            clinic_id: res.rows.item(i).clinic_id,
+            doctor_id: res.rows.item(i).doctor_id,
+            clinic_name: res.rows.item(i).clinic_name,
+            clinic_address: res.rows.item(i).clinic_address,
+            walkin_fee: res.rows.item(i).walkin_fee,
+            created_at: res.rows.item(i).created_at,
+          });
+        }
+      }
+      return doctorClinicsDetails;
+    });
+  }
+
+  getDoctorModesDetails(IN_doctor_id) {
+    let sql = `SELECT * FROM dd_mode d left join
+    m_mode m on m.mode_id = d.mode_id where d.doctor_id = ${IN_doctor_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let doctorModesDetails = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          doctorModesDetails.push({
+            id: res.rows.item(i).id,
+            doctor_id: res.rows.item(i).doctor_id,
+            mode_id: res.rows.item(i).mode_id,
+            minimum_min: res.rows.item(i).minimum_min,
+            price_per_min: res.rows.item(i).price_per_min,
+          });
+        }
+      }
+      return doctorModesDetails;
+    });
+  }
 }
