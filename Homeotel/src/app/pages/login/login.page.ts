@@ -7,6 +7,7 @@ import { ApiService } from "./../../services/api.service";
 import { UtilitiesService } from "./../../services/utilities.service";
 import { Platform } from "@ionic/angular";
 import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-login",
@@ -31,6 +32,7 @@ export class LoginPage implements OnInit {
   constructor(
     private router: Router,
     public auth: AuthService,
+    private db: DatabaseService,
     private apiService: ApiService,
     public utilities: UtilitiesService,
     private toastController: ToastController,
@@ -150,7 +152,7 @@ export class LoginPage implements OnInit {
               .subscribe((data) => {
                 a.dismiss();
                 console.log("Returned from Backend");
-                // console.log(JSON.stringify(data));
+                console.log(data);
                 if (this.utilities.isInvalidApiResponseData(data)) {
                   console.log("Returned Error");
                   // console.log(data[0][0]);
@@ -169,6 +171,31 @@ export class LoginPage implements OnInit {
                   this.loginTab();
                   this.resetRegisterFormValues();
                   this.resetLoginFormValues();
+
+                  let res = data[0];
+                  if (data[0]["query"]) {
+                    let receivedQuery = res["query"];
+                    console.log(receivedQuery);
+
+                    this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        a.dismiss();
+                        console.log("Profile photo updated successfully");
+                      })
+                      .catch((error) => {
+                        a.dismiss();
+                        console.error(
+                          "Error -> updateProfilePhoto function returned error." +
+                            JSON.stringify(error)
+                        );
+                      });
+                  } else {
+                    a.dismiss();
+                    console.log(
+                      "Query property is not received from backend SP"
+                    );
+                  }
                 }
               });
           });

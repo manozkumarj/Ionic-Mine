@@ -37,8 +37,9 @@ export class HomePage implements OnInit {
           this.db
             .getUserAppointments(this.utilities.userId)
             .then((res: any[]) => {
-              this.allAppointments = res[0];
-              console.log("Appointments found");
+              this.allAppointments = res;
+              console.log("Appointments found - below they are");
+              console.log(this.allAppointments);
             })
             .catch((error) => {
               this.utilities.presentToastWarning("Something went wrong");

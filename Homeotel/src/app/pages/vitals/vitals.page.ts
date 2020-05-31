@@ -44,7 +44,7 @@ export class VitalsPage implements OnInit {
               console.log("Received vital details are below -> ");
               console.log(res);
               a.dismiss();
-              this.vitals = res[0];
+              this.vitals = res;
             })
             .catch((error) => {
               a.dismiss();

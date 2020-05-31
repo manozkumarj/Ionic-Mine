@@ -82,10 +82,11 @@ export class ProfilePage implements OnInit {
           this.db
             .getProfileDetails(this.utilities.userId)
             .then((res: any[]) => {
+              a.dismiss();
               console.log("Received getProfileDetails details are below -> ");
               // console.log(JSON.stringify(lifestyleDetails));
-              // console.log(res);
-              this.utilities.profilePageDetails = res[0];
+              console.log(res);
+              this.utilities.profilePageDetails = res;
               console.log("this.utilities.profilePageDetails is below");
               console.log(this.utilities.profilePageDetails);
               if (this.utilities.profilePageDetails) {
@@ -120,7 +121,7 @@ export class ProfilePage implements OnInit {
                   .getProfileRelatedMasters()
                   .then((res: any[]) => {
                     console.log(res);
-                    let masterData = res[0];
+                    let masterData = res;
                     masterData.forEach((masterRow) => {
                       if (masterRow.master_type == "blood_group") {
                         this.m_bloodGroup.push({
