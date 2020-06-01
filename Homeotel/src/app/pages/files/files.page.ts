@@ -60,7 +60,7 @@ export class FilesPage implements OnInit {
             .then((res: any[]) => {
               console.log("Received files details are below -> ");
               console.log(res);
-              this.files = res[0];
+              this.files = res;
               console.log("this.files are showing below");
               console.log(this.files);
 
@@ -70,7 +70,7 @@ export class FilesPage implements OnInit {
                   a.dismiss();
                   console.log("Received filesMasters are below -> ");
                   console.log(res);
-                  let fileTypesMasters = res[0];
+                  let fileTypesMasters = res;
                   this.utilities.filesPageState[
                     "fileTypesMasters"
                   ] = fileTypesMasters;

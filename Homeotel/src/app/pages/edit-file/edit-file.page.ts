@@ -65,7 +65,7 @@ export class EditFilePage implements OnInit {
     let photo = this.photo;
     console.log(fileId + " --- " + relativeId + " --- " + fileTypeId);
 
-    if (relativeId && fileTypeId && photo) {
+    if (fileTypeId && photo) {
       console.log("Submit");
 
       const loading = await this.loadingController

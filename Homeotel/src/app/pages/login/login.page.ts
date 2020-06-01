@@ -172,8 +172,8 @@ export class LoginPage implements OnInit {
                   this.resetRegisterFormValues();
                   this.resetLoginFormValues();
 
-                  let res = data[0];
-                  if (data[0]["query"]) {
+                  let res = data[0][0];
+                  if (res["query"]) {
                     let receivedQuery = res["query"];
                     console.log(receivedQuery);
 
@@ -181,12 +181,12 @@ export class LoginPage implements OnInit {
                       .crudOperations(receivedQuery)
                       .then((res) => {
                         a.dismiss();
-                        console.log("Profile photo updated successfully");
+                        console.log("signup details saved successfully");
                       })
                       .catch((error) => {
                         a.dismiss();
                         console.error(
-                          "Error -> updateProfilePhoto function returned error." +
+                          "Error -> signup crudOperations function returned error." +
                             JSON.stringify(error)
                         );
                       });

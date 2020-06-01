@@ -69,15 +69,12 @@ export class AddRelativePage implements OnInit {
       .then((a) => {
         a.present().then(async (res) => {
           this.db
-            .getVitalDetails(
-              this.utilities.userId,
-              this.utilities.selectedRelativeId
-            )
+            .getRelationsMasters()
             .then((res: any[]) => {
               console.log("Received RelationsMasters are below -> ");
               console.log(res);
               a.dismiss();
-              this.relationsMaster = res[0];
+              this.relationsMaster = res;
             })
             .catch((error) => {
               a.dismiss();

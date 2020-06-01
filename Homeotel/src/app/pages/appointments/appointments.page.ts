@@ -48,7 +48,7 @@ export class AppointmentsPage implements OnInit {
           this.db
             .getUserAppointments(this.utilities.userId)
             .then((res: any[]) => {
-              this.allAppointments = res[0];
+              this.allAppointments = res;
               console.log("Appointments found");
               this.upcomingAppointments = this.allAppointments.filter(
                 (appointment) => appointment["appointment_status"] == 0

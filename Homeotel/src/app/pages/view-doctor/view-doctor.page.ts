@@ -145,8 +145,8 @@ export class ViewDoctorPage implements OnInit {
           this.db
             .getDoctorProfileDetails(this.selectedDoctorId)
             .then((res: any[]) => {
-              this.doctorPhoto = res[0]["photo"];
-              this.doctorName = res[0]["name"];
+              this.doctorPhoto = res["photo"];
+              this.doctorName = res["name"];
             })
             .catch((error) => {
               this.utilities.presentToastWarning("Something went wrong");
@@ -171,10 +171,10 @@ export class ViewDoctorPage implements OnInit {
           this.db
             .getDoctorProfessionalDetails(this.selectedDoctorId)
             .then((res: any[]) => {
-              this.loadSpecialisation(res[0]["specialisation"]);
-              this.loadExperience(res[0]["experience"]);
-              this.loadQualifications(res[0]["qualifications"]);
-              this.loadCertifications(res[0]["certifications"]);
+              this.loadSpecialisation(res["specialisation"]);
+              this.loadExperience(res["experience"]);
+              this.loadQualifications(res["qualifications"]);
+              this.loadCertifications(res["certifications"]);
             })
             .catch((error) => {
               this.utilities.presentToastWarning("Something went wrong");
@@ -199,7 +199,7 @@ export class ViewDoctorPage implements OnInit {
           this.db
             .getDoctorClinicsDetails(this.selectedDoctorId)
             .then((res: any[]) => {
-              this.loadClinics(res[0]);
+              this.loadClinics(res);
             })
             .catch((error) => {
               this.utilities.presentToastWarning("Something went wrong");
@@ -224,7 +224,7 @@ export class ViewDoctorPage implements OnInit {
           this.db
             .getDoctorModesDetails(this.selectedDoctorId)
             .then((res: any[]) => {
-              this.loadModes(res[0]);
+              this.loadModes(res);
             })
             .catch((error) => {
               this.utilities.presentToastWarning("Something went wrong");

@@ -62,7 +62,7 @@ export class HomeoKitsPage implements OnInit {
           this.db
             .getDoctorsKits(userId, doctorId)
             .then((res: any[]) => {
-              this.homeokits = res[0];
+              this.homeokits = res;
             })
             .catch((error) => {
               this.utilities.presentToastWarning("Something went wrong");
@@ -87,7 +87,7 @@ export class HomeoKitsPage implements OnInit {
           this.db
             .getOrderedKits(userId, doctorId)
             .then((res: any[]) => {
-              this.orderedHomeokits = res[0];
+              this.orderedHomeokits = res;
             })
             .catch((error) => {
               this.utilities.presentToastWarning("Something went wrong");
