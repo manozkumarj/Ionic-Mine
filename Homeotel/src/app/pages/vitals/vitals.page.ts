@@ -48,43 +48,16 @@ export class VitalsPage implements OnInit {
             })
             .catch((error) => {
               a.dismiss();
+              this.utilities.sqliteErrorDisplayer(
+                "vital * getLocalVitals",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> getLocalVitals() function returned error." +
                   JSON.stringify(error)
               );
             });
-        });
-      });
-  }
-
-  async getVitals() {
-    const loading = await this.loadingController
-      .create({
-        message: "Loading...",
-        translucent: true,
-      })
-      .then((a) => {
-        a.present().then(async (res) => {
-          this.apiService.getVitals().subscribe((data) => {
-            a.dismiss();
-            console.log("Returned from Backend");
-            console.log(data);
-            if (this.utilities.isInvalidApiResponseData(data)) {
-              console.log("Returned Error");
-            } else {
-              if (
-                typeof data != "undefined" &&
-                typeof data[0] != "undefined" &&
-                typeof data[0][0] != "undefined"
-              ) {
-                console.log("Data returned from backend");
-                this.vitals = data[0];
-              } else {
-                console.log("Something went wrong in backend");
-              }
-            }
-          });
         });
       });
   }
@@ -141,6 +114,10 @@ export class VitalsPage implements OnInit {
                                 console.log("vitals is deleted successfully");
                               })
                               .catch((error) => {
+                                this.utilities.sqliteErrorDisplayer(
+                                  "vital * deleteVital",
+                                  error
+                                );
                                 this.utilities.presentToastWarning(
                                   "Something went wrong."
                                 );
@@ -152,6 +129,10 @@ export class VitalsPage implements OnInit {
                               });
                           } else {
                             a.dismiss();
+                            this.utilities.sqliteErrorDisplayer(
+                              "vital * deleteVital",
+                              "Query property is not received from backend SP"
+                            );
                             console.log(
                               "Query property is not received from backend SP"
                             );

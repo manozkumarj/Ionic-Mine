@@ -410,6 +410,10 @@ export class VitalQuestionsPage implements OnInit {
                       this.router.navigate([this.forwardLink]);
                     })
                     .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "vital-questions * save",
+                        error
+                      );
                       this.utilities.presentToastWarning(
                         "Something went wrong."
                       );
@@ -421,6 +425,10 @@ export class VitalQuestionsPage implements OnInit {
                     });
                 } else {
                   a.dismiss();
+                  this.utilities.sqliteErrorDisplayer(
+                    "vital-questions * save",
+                    "Query property is not received from backend SP"
+                  );
                   console.log("Query property is not received from backend SP");
                 }
               }

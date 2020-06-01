@@ -423,6 +423,10 @@ export class EditProfilePage implements OnInit {
                       })
                       .catch((error) => {
                         a.dismiss();
+                        this.utilities.sqliteErrorDisplayer(
+                          "edit-profile * answered",
+                          error
+                        );
                         console.error(
                           "Error -> Edit Profile save function returned error." +
                             JSON.stringify(error)
@@ -430,6 +434,10 @@ export class EditProfilePage implements OnInit {
                       });
                   } else {
                     a.dismiss();
+                    this.utilities.sqliteErrorDisplayer(
+                      "edit-profile * answered",
+                      "Query property is not received from backend SP"
+                    );
                     console.log(
                       "Query property is not received from backend SP"
                     );

@@ -38,6 +38,10 @@ export class HelpCenterPage implements OnInit {
               this.issues = res;
             })
             .catch((error) => {
+              this.utilities.sqliteErrorDisplayer(
+                "help-center * loadIssues",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> loadIssues() function returned error." +
@@ -47,28 +51,5 @@ export class HelpCenterPage implements OnInit {
           a.dismiss();
         });
       });
-  }
-
-  getIssues() {
-    this.apiService.getIssues().subscribe((data) => {
-      console.log("Returned from Backend");
-      console.log(data);
-      if (this.utilities.isInvalidApiResponseData(data)) {
-        console.log("Returned Error");
-      } else {
-        if (
-          typeof data != "undefined" &&
-          typeof data[0] != "undefined" &&
-          typeof data[0][0] != "undefined"
-        ) {
-          console.log("Data returned from backend");
-          this.issues = data[0];
-          console.log("this.issues are showing below");
-          console.log(this.issues);
-        } else {
-          console.log("Something went wrong in backend");
-        }
-      }
-    });
   }
 }

@@ -190,6 +190,10 @@ export class ProfilePage implements OnInit {
                       })
                       .catch((error) => {
                         a.dismiss();
+                        this.utilities.sqliteErrorDisplayer(
+                          "profile * getProfilePhoto",
+                          error
+                        );
                         this.utilities.presentToastWarning(
                           "Something went wrong"
                         );
@@ -201,9 +205,13 @@ export class ProfilePage implements OnInit {
                   })
                   .catch((error) => {
                     a.dismiss();
+                    this.utilities.sqliteErrorDisplayer(
+                      "profile * getProfileRelatedMasters",
+                      error
+                    );
                     this.utilities.presentToastWarning("Something went wrong");
                     console.error(
-                      "Error -> loadlifestyleData() function returned error." +
+                      "Error -> getProfileRelatedMasters() function returned error." +
                         JSON.stringify(error)
                     );
                   });
@@ -212,174 +220,17 @@ export class ProfilePage implements OnInit {
               }
             })
             .catch((error) => {
+              this.utilities.sqliteErrorDisplayer(
+                "profile * getProfileDetails",
+                error
+              );
               a.dismiss();
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
-                "Error -> loadlifestyleData() function returned error." +
+                "Error -> getProfileDetails() function returned error." +
                   JSON.stringify(error)
               );
             });
-        });
-      });
-  }
-
-  async getProfileDetails() {
-    const loading = await this.loadingController
-      .create({
-        message: "Loading...",
-        translucent: true,
-      })
-      .then((a) => {
-        a.present().then(async (res) => {
-          this.apiService.getProfileDetails().subscribe((data) => {
-            a.dismiss();
-            console.log("Returned from Backend");
-            console.log(data);
-            if (this.utilities.isInvalidApiResponseData(data)) {
-              console.log("Returned Error");
-            } else {
-              if (
-                typeof data != "undefined" &&
-                typeof data[0] != "undefined" &&
-                typeof data[0][0] != "undefined"
-              ) {
-                this.utilities.profilePageDetails = data[0][0];
-                // console.log("Has profile details - below");
-                // console.log(this.utilities.profilePageDetails);
-
-                this.name = this.utilities.profilePageDetails["name"];
-                this.name = this.name ? this.name : "Enter";
-                this.phone = this.utilities.profilePageDetails["phone"];
-                this.phone = this.phone ? this.phone : "Enter";
-
-                this.email = this.utilities.profilePageDetails["email"];
-                this.email = this.email ? this.email : "Enter";
-
-                this.gender = this.utilities.profilePageDetails["gender_id"];
-
-                this.dob = this.utilities.profilePageDetails["dob"];
-                this.dob = this.dob ? this.dob : "Enter";
-
-                this.bloodGroup = this.utilities.profilePageDetails[
-                  "blood_group_id"
-                ];
-
-                // this.bloodGroup = this.bloodGroup ? this.bloodGroup : "Select";
-
-                this.maritalStatus = this.utilities.profilePageDetails[
-                  "marital_status_id"
-                ];
-
-                // this.maritalStatus = this.maritalStatus
-                //   ? this.maritalStatus
-                //   : "Select";
-
-                this.height = this.utilities.profilePageDetails["height"];
-                this.height = this.height ? this.height + " Feet" : "Select";
-
-                this.weight = this.utilities.profilePageDetails["weight"];
-                this.weight = this.weight ? this.weight + " Kgs" : "Select";
-
-                // Master data
-                let masterData = data[1];
-                // console.log("***************************");
-                // console.log("Profile related master details showing below");
-                // console.log(masterData);
-                masterData.forEach((masterRow) => {
-                  if (masterRow.master_type == "blood_group") {
-                    this.m_bloodGroup.push({
-                      id: masterRow.id,
-                      name: masterRow.name,
-                    });
-                    this.utilities.bookAppointmentDoctorDetails[
-                      "m_bloodGroup"
-                    ] = this.m_bloodGroup;
-                  } else if (masterRow.master_type == "marital_status") {
-                    this.m_maritaStatus.push({
-                      id: masterRow.id,
-                      name: masterRow.name,
-                    });
-                    this.utilities.bookAppointmentDoctorDetails[
-                      "m_maritaStatus"
-                    ] = this.m_maritaStatus;
-                  } else if (masterRow.master_type == "gender") {
-                    this.m_gender.push({
-                      id: masterRow.id,
-                      name: masterRow.name,
-                    });
-                    this.utilities.bookAppointmentDoctorDetails[
-                      "m_gender"
-                    ] = this.m_gender;
-                  }
-                });
-
-                // if (this.gender) {
-                //   this.gender = this.m_gender[this.gender - 1]["name"];
-                // } else {
-                //   this.gender = "Select";
-                // }
-
-                // console.log("***************************");
-                // console.log("blood_group related master details showing below");
-                // console.log(
-                //   this.utilities.bookAppointmentDoctorDetails["m_bloodGroup"]
-                // );
-                // console.log("***************************");
-                // console.log("maritaStatus related master details showing below");
-                // console.log(
-                //   this.utilities.bookAppointmentDoctorDetails["m_maritaStatus"]
-                // );
-                console.log("***************************");
-                console.log("m_gender related master details showing below");
-                console.log(
-                  this.utilities.bookAppointmentDoctorDetails["m_gender"]
-                );
-
-                if (this.gender) {
-                  this.gender = this.m_gender[this.gender - 1]["name"];
-                } else {
-                  this.gender = "Select";
-                }
-
-                console.log("***************************");
-                console.log(
-                  "m_bloodGroup related master details showing below"
-                );
-                console.log(
-                  this.utilities.bookAppointmentDoctorDetails["m_bloodGroup"]
-                );
-                if (this.bloodGroup) {
-                  this.bloodGroup = this.m_bloodGroup[this.bloodGroup - 1][
-                    "name"
-                  ];
-                } else {
-                  this.bloodGroup = "Select";
-                }
-
-                if (this.maritalStatus) {
-                  this.maritalStatus = this.m_maritaStatus[
-                    this.maritalStatus - 1
-                  ]["name"];
-                } else {
-                  this.maritalStatus = "Select";
-                }
-
-                // Master data
-                let photoData = data[2];
-                if (photoData.length > 0) {
-                  // console.log("photoData -> ");
-                  // console.log(photoData[0]["photo"]);
-                  this.profilePhoto = this.utilities.getPhotoDataUrl(
-                    photoData[0]["photo"]
-                  );
-                } else {
-                  this.utilities.getPhotoDataUrl(null);
-                }
-              } else {
-                console.log("No user found with provided user ID");
-              }
-            }
-          });
         });
       });
   }
@@ -478,6 +329,10 @@ export class ProfilePage implements OnInit {
                     console.log("Profile photo updated successfully");
                   })
                   .catch((error) => {
+                    this.utilities.sqliteErrorDisplayer(
+                      "profile * updateProfilePhoto",
+                      error
+                    );
                     a.dismiss();
                     console.error(
                       "Error -> updateProfilePhoto function returned error." +
@@ -486,6 +341,10 @@ export class ProfilePage implements OnInit {
                   });
               } else {
                 a.dismiss();
+                this.utilities.sqliteErrorDisplayer(
+                  "profile * updateProfilePhoto",
+                  "Query property is not received from backend SP"
+                );
                 console.log("Query property is not received from backend SP");
               }
             }

@@ -121,6 +121,10 @@ export class ModalPage implements OnInit {
                         console.log("Homeokit purchased successfully");
                       })
                       .catch((error) => {
+                        this.utilities.sqliteErrorDisplayer(
+                          "modal * purchaseHomeokit",
+                          error
+                        );
                         this.utilities.presentToastWarning(
                           "Something went wrong."
                         );
@@ -132,6 +136,10 @@ export class ModalPage implements OnInit {
                       });
                   } else {
                     a.dismiss();
+                    this.utilities.sqliteErrorDisplayer(
+                      "modal * purchaseHomeokit",
+                      "Query property is not received from backend SP"
+                    );
                     console.log(
                       "Query property is not received from backend SP"
                     );
@@ -194,6 +202,10 @@ export class ModalPage implements OnInit {
                       console.log("Appointment booked successfully");
                     })
                     .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "modal * bookAppointment",
+                        error
+                      );
                       this.utilities.presentToastWarning(
                         "Something went wrong."
                       );
@@ -205,6 +217,10 @@ export class ModalPage implements OnInit {
                     });
                 } else {
                   a.dismiss();
+                  this.utilities.sqliteErrorDisplayer(
+                    "modal * bookAppointment",
+                    "Query property is not received from backend SP"
+                  );
                   console.log("Query property is not received from backend SP");
                 }
               }
@@ -366,6 +382,10 @@ export class ModalPage implements OnInit {
                       console.log("Doctor Added successfully");
                     })
                     .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "modal * AddDoctor",
+                        error
+                      );
                       this.utilities.presentToastWarning(
                         "Something went wrong."
                       );
@@ -377,6 +397,10 @@ export class ModalPage implements OnInit {
                     });
                 } else {
                   a.dismiss();
+                  this.utilities.sqliteErrorDisplayer(
+                    "modal * AddDoctor",
+                    "Query property is not received from backend SP"
+                  );
                   console.log("Query property is not received from backend SP");
                 }
               }

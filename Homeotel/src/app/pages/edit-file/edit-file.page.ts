@@ -111,6 +111,10 @@ export class EditFilePage implements OnInit {
                         this.router.navigate(["/health-records"]);
                       })
                       .catch((error) => {
+                        this.utilities.sqliteErrorDisplayer(
+                          "edit-file * save",
+                          error
+                        );
                         this.utilities.presentToastWarning(
                           "Something went wrong."
                         );
@@ -122,6 +126,10 @@ export class EditFilePage implements OnInit {
                       });
                   } else {
                     a.dismiss();
+                    this.utilities.sqliteErrorDisplayer(
+                      "edit-file * save",
+                      "Query property is not received from backend SP"
+                    );
                     this.utilities.presentToastWarning("Something went wrong.");
                     console.log(
                       "Query property is not received from backend SP"

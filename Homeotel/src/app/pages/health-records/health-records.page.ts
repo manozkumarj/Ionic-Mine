@@ -71,6 +71,10 @@ export class HealthRecordsPage implements OnInit {
               this.userRelatives = res;
             })
             .catch((error) => {
+              this.utilities.sqliteErrorDisplayer(
+                "health-records * loadUserRelatives",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> loadAppointments() function returned error." +
@@ -78,30 +82,6 @@ export class HealthRecordsPage implements OnInit {
               );
             });
           a.dismiss();
-        });
-      });
-  }
-
-  async getUserRelatives() {
-    const loading = await this.loadingController
-      .create({
-        message: "Loading...",
-        translucent: true,
-      })
-      .then((a) => {
-        a.present().then(async (res) => {
-          this.apiService.getUserRelatives().subscribe((data) => {
-            a.dismiss();
-            console.log("Returned from Backend");
-            console.log(data);
-            if (this.utilities.isInvalidApiResponseData(data)) {
-              console.log("Returned Error");
-            } else {
-              if (typeof data != "undefined" && typeof data[0] != "undefined") {
-                this.userRelatives = data[0];
-              }
-            }
-          });
         });
       });
   }

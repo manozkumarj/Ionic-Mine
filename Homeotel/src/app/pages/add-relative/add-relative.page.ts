@@ -78,36 +78,16 @@ export class AddRelativePage implements OnInit {
             })
             .catch((error) => {
               a.dismiss();
+              this.utilities.sqliteErrorDisplayer(
+                "add-relative * getLocalRelationsMasters",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> relationsMaster() function returned error." +
                   JSON.stringify(error)
               );
             });
-        });
-      });
-  }
-
-  async getRelationsMasters() {
-    const loading = await this.loadingController
-      .create({
-        message: "Loading...",
-        translucent: true,
-      })
-      .then((a) => {
-        a.present().then(async (res) => {
-          this.apiService.getRelationsMasters().subscribe((data) => {
-            a.dismiss();
-            console.log("Returned from Backend");
-            console.log(data);
-            if (this.utilities.isInvalidApiResponseData(data)) {
-              console.log("Returned Error");
-            } else {
-              if (typeof data != "undefined" && typeof data[0] != "undefined") {
-                this.relationsMaster = data[0];
-              }
-            }
-          });
         });
       });
   }
@@ -227,6 +207,10 @@ export class AddRelativePage implements OnInit {
                       console.log("Relative added successfully");
                     })
                     .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "add-relative * submit",
+                        error
+                      );
                       this.utilities.presentToastWarning(
                         "Something went wrong."
                       );
@@ -237,6 +221,10 @@ export class AddRelativePage implements OnInit {
                       );
                     });
                 } else {
+                  this.utilities.sqliteErrorDisplayer(
+                    "add-relative * submit",
+                    "Query property is not received from backend SP"
+                  );
                   a.dismiss();
                   console.log("Query property is not received from backend SP");
                 }

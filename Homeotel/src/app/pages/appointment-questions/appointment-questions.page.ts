@@ -175,6 +175,10 @@ export class AppointmentQuestionsPage implements OnInit {
                       this.router.navigate([this.forwardLink]);
                     })
                     .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "appointment-questions * answered",
+                        error
+                      );
                       this.utilities.presentToastWarning(
                         "Something went wrong."
                       );
@@ -185,6 +189,10 @@ export class AppointmentQuestionsPage implements OnInit {
                       );
                     });
                 } else {
+                  this.utilities.sqliteErrorDisplayer(
+                    "appointment-questions * answered",
+                    "Query property is not received from backend SP"
+                  );
                   a.dismiss();
                   console.log("Query property is not received from backend SP");
                 }

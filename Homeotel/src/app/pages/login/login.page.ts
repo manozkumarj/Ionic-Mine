@@ -184,6 +184,10 @@ export class LoginPage implements OnInit {
                         console.log("signup details saved successfully");
                       })
                       .catch((error) => {
+                        this.utilities.sqliteErrorDisplayer(
+                          "login * register",
+                          error
+                        );
                         a.dismiss();
                         console.error(
                           "Error -> signup crudOperations function returned error." +
@@ -192,6 +196,10 @@ export class LoginPage implements OnInit {
                       });
                   } else {
                     a.dismiss();
+                    this.utilities.sqliteErrorDisplayer(
+                      "login * register",
+                      "Query property is not received from backend SP"
+                    );
                     console.log(
                       "Query property is not received from backend SP"
                     );

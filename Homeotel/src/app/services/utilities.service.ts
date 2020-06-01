@@ -54,6 +54,10 @@ export class UtilitiesService {
     toast.present();
   }
 
+  sqliteErrorDisplayer(funcName, error) {
+    alert(funcName + " <->" + JSON.stringify(error));
+  }
+
   formatDate(date) {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),

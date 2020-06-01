@@ -85,6 +85,10 @@ export class IssueDetailsPage implements OnInit {
                         this.router.navigate(["/help-center"]);
                       })
                       .catch((error) => {
+                        this.utilities.sqliteErrorDisplayer(
+                          "issue-details * submit",
+                          error
+                        );
                         this.utilities.presentToastWarning(
                           "Something went wrong."
                         );
@@ -96,6 +100,10 @@ export class IssueDetailsPage implements OnInit {
                       });
                   } else {
                     a.dismiss();
+                    this.utilities.sqliteErrorDisplayer(
+                      "issue-details * submit",
+                      "Query property is not received from backend SP"
+                    );
                     this.utilities.presentToastWarning("Something went wrong.");
                     console.log(
                       "Query property is not received from backend SP"

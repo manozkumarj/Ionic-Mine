@@ -177,6 +177,10 @@ export class EditRelationMedicalHistoryPage implements OnInit {
                         "Something went wrong."
                       );
                       a.dismiss();
+                      this.utilities.sqliteErrorDisplayer(
+                        "edit-relation-medical-history * save",
+                        "Query property is not received from backend SP"
+                      );
                       console.error(
                         "Error -> saveRelationMedicalHistory function returned error." +
                           JSON.stringify(error)
@@ -184,6 +188,10 @@ export class EditRelationMedicalHistoryPage implements OnInit {
                     });
                 } else {
                   a.dismiss();
+                  this.utilities.sqliteErrorDisplayer(
+                    "edit-relation-medical-history * save",
+                    "Query property is not received from backend SP"
+                  );
                   this.utilities.presentToastWarning("Something went wrong.");
                   console.log("Query property is not received from backend SP");
                 }

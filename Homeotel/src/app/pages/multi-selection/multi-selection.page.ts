@@ -215,6 +215,10 @@ export class MultiSelectionPage implements OnInit {
                         "Something went wrong."
                       );
                       a.dismiss();
+                      this.utilities.sqliteErrorDisplayer(
+                        "multi-selection * saveMedicalHistory",
+                        error
+                      );
                       console.error(
                         "Error -> saveMedicalHistory function returned error." +
                           JSON.stringify(error)
@@ -222,6 +226,10 @@ export class MultiSelectionPage implements OnInit {
                     });
                 } else {
                   a.dismiss();
+                  this.utilities.sqliteErrorDisplayer(
+                    "multi-selection * saveMedicalHistory",
+                    "Query property is not received from backend SP"
+                  );
                   this.utilities.presentToastWarning("Something went wrong.");
                   console.log("Query property is not received from backend SP");
                 }

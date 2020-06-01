@@ -192,6 +192,10 @@ export class LifestylePage implements OnInit {
               this.loadLifestyleData();
             })
             .catch((error) => {
+              this.utilities.sqliteErrorDisplayer(
+                "lifestyle * loadLifestyleMasters",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> loadLifestyleMasters() function returned error." +
@@ -279,6 +283,10 @@ export class LifestylePage implements OnInit {
         console.log(this.utilities.lifestylePageState);
       })
       .catch((error) => {
+        this.utilities.sqliteErrorDisplayer(
+          "lifestyle * loadlifestyleData",
+          error
+        );
         console.error(
           "Error -> loadlifestyleData() function returned error." +
             JSON.stringify(error)

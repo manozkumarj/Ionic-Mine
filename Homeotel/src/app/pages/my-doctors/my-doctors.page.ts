@@ -49,6 +49,10 @@ export class MyDoctorsPage implements OnInit {
               this.myDoctors = res;
             })
             .catch((error) => {
+              this.utilities.sqliteErrorDisplayer(
+                "my-doctors * loadCurrentUserDoctors",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> loadCurrentUserDoctors() function returned error." +
@@ -56,37 +60,6 @@ export class MyDoctorsPage implements OnInit {
               );
             });
           a.dismiss();
-        });
-      });
-  }
-
-  async getCurrentUserDoctors() {
-    const loading = await this.loadingController
-      .create({
-        message: "Loading...",
-        translucent: true,
-      })
-      .then((a) => {
-        a.present().then(async (res) => {
-          this.apiService.getCurrentUserDoctors().subscribe((data) => {
-            a.dismiss();
-            console.log("Returned from Backend");
-            console.log(data);
-            if (this.utilities.isInvalidApiResponseData(data)) {
-              console.log("Returned Error");
-            } else {
-              if (
-                typeof data != "undefined" &&
-                typeof data[0] != "undefined" &&
-                typeof data[0][0] != "undefined"
-              ) {
-                console.log("Has my doctors");
-                this.myDoctors = data[0];
-              } else {
-                console.log("No my doctors");
-              }
-            }
-          });
         });
       });
   }
@@ -196,46 +169,4 @@ export class MyDoctorsPage implements OnInit {
     });
     return await modal.present();
   }
-
-  // showPromptAlert() {
-  //   let alert = this.alertCtrl
-  //     .create({
-  //       header: 'Login',
-  //       inputs: [
-  //         {
-  //           name: 'username',
-  //           placeholder: 'Enter Username'
-  //         },
-  //         {
-  //           name: 'password',
-  //           placeholder: 'Enter Password',
-  //           type: 'password'
-  //         }
-  //       ],
-  //       buttons: [
-  //         {
-  //           text: 'Cancel',
-  //           role: 'cancel',
-  //           handler: data => {
-  //             console.log('You Clicked on Cancel');
-  //           }
-  //         },
-  //         {
-  //           text: 'Login',
-  //           handler: data => {
-  //             if (data.username, data.password) {
-  //               console.log('Form is valid');
-  //               console.log(`
-  //               username -> ${data.username}
-  //               password -> ${data.password}
-  //               `);
-  //             } else {
-  //               console.log('Form is invalid');
-  //               return false;
-  //             }
-  //           }
-  //         }
-  //       ]
-  //     }).then(alert1 => alert1.present());
-  // }
 }

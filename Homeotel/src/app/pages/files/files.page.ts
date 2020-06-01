@@ -79,6 +79,10 @@ export class FilesPage implements OnInit {
                 })
                 .catch((error) => {
                   a.dismiss();
+                  this.utilities.sqliteErrorDisplayer(
+                    "files * getLocalFiles",
+                    error
+                  );
                   this.utilities.presentToastWarning("Something went wrong");
                   console.error(
                     "Error -> getFilesMasters() function returned error." +
@@ -88,48 +92,16 @@ export class FilesPage implements OnInit {
             })
             .catch((error) => {
               a.dismiss();
+              this.utilities.sqliteErrorDisplayer(
+                "files * getLocalFiles",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> getLocalFiles() function returned error." +
                   JSON.stringify(error)
               );
             });
-        });
-      });
-  }
-
-  async getFiles() {
-    const loading = await this.loadingController
-      .create({
-        message: "Loading...",
-        translucent: true,
-      })
-      .then((a) => {
-        a.present().then(async (res) => {
-          this.apiService.getFiles().subscribe((data) => {
-            a.dismiss();
-            console.log("Returned from Backend");
-            console.log(data);
-            if (this.utilities.isInvalidApiResponseData(data)) {
-              console.log("Returned Error");
-            } else {
-              if (typeof data != "undefined" && typeof data[0] != "undefined") {
-                console.log("Data returned from backend");
-                this.files = data[0];
-                console.log("this.files are showing below");
-                console.log(this.files);
-
-                let fileTypesMasters = data[1];
-                this.utilities.filesPageState[
-                  "fileTypesMasters"
-                ] = fileTypesMasters;
-                console.log("this.fileTypesMasters are showing below");
-                console.log(fileTypesMasters);
-              } else {
-                console.log("Something went wrong in backend");
-              }
-            }
-          });
         });
       });
   }

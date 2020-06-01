@@ -65,6 +65,10 @@ export class MedicalHistoryRelationsPage {
               this.loadRelationsMedicalHistoryData();
             })
             .catch((error) => {
+              this.utilities.sqliteErrorDisplayer(
+                "medical-history-relations * loadRelationsMedicalHistoryMasters",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> loadRelationsMedicalHistoryMasters() function returned error." +
@@ -119,72 +123,15 @@ export class MedicalHistoryRelationsPage {
         });
       })
       .catch((error) => {
+        this.utilities.sqliteErrorDisplayer(
+          "medical-history-relations * loadRelationsMedicalHistoryData",
+          error
+        );
         this.utilities.presentToastWarning("Something went wrong");
         console.error(
           "Error -> loadRelationsMedicalHistoryData() function returned error." +
             JSON.stringify(error)
         );
-      });
-  }
-
-  async getRelationsMedicalHistories() {
-    const loading = await this.loadingController
-      .create({
-        message: "Loading...",
-        translucent: true,
-      })
-      .then((a) => {
-        a.present().then(async (res) => {
-          this.apiService.getRelationsMedicalHistories().subscribe((data) => {
-            a.dismiss();
-            console.log("Returned from Backend");
-            console.log(data);
-            if (this.utilities.isInvalidApiResponseData(data)) {
-              console.log("Returned Error");
-            } else {
-              if (
-                typeof data != "undefined" &&
-                typeof data[0] != "undefined" &&
-                typeof data[0][0] != "undefined"
-              ) {
-                this.diseases = data[0];
-                let relations = data[1];
-                this.existingData = data[2];
-                let i = 0;
-                relations.forEach((relation) => {
-                  let tempObj = {};
-                  let selectedDiseaseIds = [];
-
-                  let list = "Select";
-                  let getCurrentDiseaseData = this.existingData.filter(
-                    (item) => item.relation_id == relation.relation_id
-                  );
-                  if (getCurrentDiseaseData.length > 0) {
-                    let diseasesNames = getCurrentDiseaseData.map(
-                      (disease) => disease.diseaseName
-                    );
-
-                    selectedDiseaseIds = getCurrentDiseaseData.map(
-                      (disease) => disease.disease_id
-                    );
-
-                    list = diseasesNames.join(", ");
-                  }
-
-                  tempObj["id"] = i++;
-                  tempObj["relation_id"] = relation["relation_id"];
-                  tempObj["relation_name"] = relation["name"];
-                  tempObj["list"] = list;
-                  tempObj["selectedDiseaseIds"] = selectedDiseaseIds;
-
-                  this.relationsWithData.push(tempObj);
-                });
-
-                console.log("Data returned from backend");
-              }
-            }
-          });
-        });
       });
   }
 

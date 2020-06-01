@@ -228,6 +228,10 @@ export class EditLifestylePage implements OnInit {
                     })
                     .catch((error) => {
                       a.dismiss();
+                      this.utilities.sqliteErrorDisplayer(
+                        "edit-lifestyle * answered",
+                        error
+                      );
                       console.error(
                         "Error -> Edit lifestype save function returned error." +
                           JSON.stringify(error)
@@ -235,6 +239,10 @@ export class EditLifestylePage implements OnInit {
                     });
                 } else {
                   a.dismiss();
+                  this.utilities.sqliteErrorDisplayer(
+                    "edit-lifestyle * answered",
+                    "Query property is not received from backend SP"
+                  );
                   console.log("Query property is not received from backend SP");
                 }
                 if (this.currentQuestion == "seven") {

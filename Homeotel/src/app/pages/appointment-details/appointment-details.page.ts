@@ -164,6 +164,10 @@ export class AppointmentDetailsPage implements OnInit {
                                 this.router.navigate(["/home"]);
                               })
                               .catch((error) => {
+                                this.utilities.sqliteErrorDisplayer(
+                                  "appointment-details * cancelSlot",
+                                  error
+                                );
                                 this.utilities.presentToastWarning(
                                   "Something went wrong."
                                 );
@@ -175,6 +179,10 @@ export class AppointmentDetailsPage implements OnInit {
                               });
                           } else {
                             a.dismiss();
+                            this.utilities.sqliteErrorDisplayer(
+                              "appointment-details * cancelSlot",
+                              "Query property is not received from backend SP"
+                            );
                             this.utilities.presentToastWarning(
                               "Something went wrong."
                             );
