@@ -68,7 +68,7 @@ export class HealthRecordsPage implements OnInit {
           this.db
             .getUserRelatives(this.utilities.userId)
             .then((res: any[]) => {
-              this.userRelatives = res[0];
+              this.userRelatives = res;
             })
             .catch((error) => {
               this.utilities.presentToastWarning("Something went wrong");

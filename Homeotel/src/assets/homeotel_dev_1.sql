@@ -271,6 +271,7 @@ CREATE TABLE IF NOT EXISTS "du_relative" (
   "user_id" int NOT NULL,
   "relative_id" int NOT NULL,
   "relative_name" varchar(100) NOT NULL,
+  "photo" mediumtext NOT NULL,
   "created_by" int NOT NULL,
   "created_at" varchar(45) NOT NULL,
   "updated_by" int DEFAULT NULL,
