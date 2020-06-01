@@ -69,10 +69,11 @@ export class IssueDetailsPage implements OnInit {
                   a.dismiss();
                   console.log(data);
                 } else {
+                  a.dismiss();
                   console.log(data);
 
-                  let res = data[0][0];
-                  if (data[0][0]["query"]) {
+                  let res = data[0];
+                  if (data[0]["query"]) {
                     let receivedQuery = res["query"];
                     console.log(receivedQuery);
 

@@ -745,7 +745,7 @@ export class DatabaseService {
     if (IN_doctorId == 0) {
       sql = `SELECT d.kit_id, d.doctor_id, d.description, d.name, d.price, p.photo FROM dd_kit d
       LEFT JOIN dk_photo p ON d.kit_id = p.kit_id
-      where d.doctor_id IN (SELECT concat(doctor_id) FROM du_doctor where user_id=${IN_userId})`;
+      where d.doctor_id IN (SELECT GROUP_CONCAT(doctor_id) FROM du_doctor where user_id=${IN_userId})`;
     } else {
       sql = `SELECT d.kit_id, d.doctor_id, d.description, d.name, d.price, p.photo FROM dd_kit d
       LEFT JOIN dk_photo p ON d.kit_id = p.kit_id
@@ -825,7 +825,7 @@ export class DatabaseService {
   }
 
   getIssues() {
-    let sql = `SELECT * FROM homeotel.m_issue where is_active =1`;
+    let sql = `SELECT * FROM m_issue where is_active =1`;
 
     return this.dbObject.executeSql(sql, []).then((res) => {
       let issuesData = [];

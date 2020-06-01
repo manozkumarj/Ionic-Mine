@@ -46,7 +46,7 @@ export class MyDoctorsPage implements OnInit {
           this.db
             .getUserDoctors(this.utilities.userId)
             .then((res: any[]) => {
-              this.myDoctors = res[0];
+              this.myDoctors = res;
             })
             .catch((error) => {
               this.utilities.presentToastWarning("Something went wrong");

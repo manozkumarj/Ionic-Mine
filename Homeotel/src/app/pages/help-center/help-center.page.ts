@@ -35,7 +35,7 @@ export class HelpCenterPage implements OnInit {
           this.db
             .getIssues()
             .then((res: any[]) => {
-              this.issues = res[0];
+              this.issues = res;
             })
             .catch((error) => {
               this.utilities.presentToastWarning("Something went wrong");
