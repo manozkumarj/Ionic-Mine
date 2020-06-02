@@ -184,7 +184,9 @@ export class MultiSelectionPage implements OnInit {
             .subscribe((data) => {
               a.dismiss();
               console.log("Returned from Backend");
-              console.log(JSON.stringify(data));
+              console.log(data);
+              console.log(data[0][0]["query1"]);
+              console.log(data[0][0]["query2"]);
               if (this.utilities.isInvalidApiResponseData(data)) {
                 console.log("Returned Error");
                 console.log(data);
@@ -196,19 +198,59 @@ export class MultiSelectionPage implements OnInit {
                 console.log("Returned Success");
 
                 let res = data[0][0];
-                if (data[0][0]["query"]) {
-                  let receivedQuery = res["query"];
+                if (data[0][0]["query1"]) {
+                  let receivedQuery = res["query1"];
                   console.log(receivedQuery);
 
                   this.db
                     .crudOperations(receivedQuery)
                     .then((res) => {
-                      a.dismiss();
+                      if (data[0][0]["query2"]) {
+                        let receivedQuery = data[0][0]["query2"];
+                        console.log(receivedQuery);
+
+                        this.db
+                          .crudOperations(receivedQuery)
+                          .then((res) => {
+                            a.dismiss();
+                            console.log("Medical history saved successfully");
+                            this.utilities.presentToastSuccess(
+                              "Updated successfully"
+                            );
+                            this.router.navigate(["/medical-history"]);
+                          })
+                          .catch((error) => {
+                            this.utilities.presentToastWarning(
+                              "Something went wrong."
+                            );
+                            a.dismiss();
+                            this.utilities.sqliteErrorDisplayer(
+                              "multi-selection * saveMedicalHistory",
+                              error
+                            );
+                            console.error(
+                              "Error -> saveMedicalHistory function returned error." +
+                                JSON.stringify(error)
+                            );
+                          });
+                      } else {
+                        a.dismiss();
+                        this.utilities.sqliteErrorDisplayer(
+                          "multi-selection * saveMedicalHistory",
+                          "Query2 property is not received from backend SP"
+                        );
+                        this.utilities.presentToastWarning(
+                          "Something went wrong."
+                        );
+                        console.log(
+                          "Query2 property is not received from backend SP"
+                        );
+                      }
+
                       console.log("Medical history saved successfully");
                       this.utilities.presentToastSuccess(
                         "Updated successfully"
                       );
-                      this.router.navigate(["/medical-history"]);
                     })
                     .catch((error) => {
                       this.utilities.presentToastWarning(
@@ -228,10 +270,12 @@ export class MultiSelectionPage implements OnInit {
                   a.dismiss();
                   this.utilities.sqliteErrorDisplayer(
                     "multi-selection * saveMedicalHistory",
-                    "Query property is not received from backend SP"
+                    "Query1 property is not received from backend SP"
                   );
                   this.utilities.presentToastWarning("Something went wrong.");
-                  console.log("Query property is not received from backend SP");
+                  console.log(
+                    "Query1 property is not received from backend SP"
+                  );
                 }
               }
             });

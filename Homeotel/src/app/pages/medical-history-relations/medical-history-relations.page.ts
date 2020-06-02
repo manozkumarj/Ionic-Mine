@@ -91,36 +91,38 @@ export class MedicalHistoryRelationsPage {
           "Received RelationsMedicalHistoryData details are below -> "
         );
         console.log(res);
-        this.existingData = res[0];
-        let i = 0;
-        this.relations.forEach((relation) => {
-          let tempObj = {};
-          let selectedDiseaseIds = [];
+        if (res) {
+          this.existingData = res;
+          let i = 0;
+          this.relations.forEach((relation) => {
+            let tempObj = {};
+            let selectedDiseaseIds = [];
 
-          let list = "Select";
-          let getCurrentDiseaseData = this.existingData.filter(
-            (item) => item.relation_id == relation.relation_id
-          );
-          if (getCurrentDiseaseData.length > 0) {
-            let diseasesNames = getCurrentDiseaseData.map(
-              (disease) => disease.diseaseName
+            let list = "Select";
+            let getCurrentDiseaseData = this.existingData.filter(
+              (item) => item.relation_id == relation.relation_id
             );
+            if (getCurrentDiseaseData.length > 0) {
+              let diseasesNames = getCurrentDiseaseData.map(
+                (disease) => disease.diseaseName
+              );
 
-            selectedDiseaseIds = getCurrentDiseaseData.map(
-              (disease) => disease.disease_id
-            );
+              selectedDiseaseIds = getCurrentDiseaseData.map(
+                (disease) => disease.disease_id
+              );
 
-            list = diseasesNames.join(", ");
-          }
+              list = diseasesNames.join(", ");
+            }
 
-          tempObj["id"] = i++;
-          tempObj["relation_id"] = relation["relation_id"];
-          tempObj["relation_name"] = relation["name"];
-          tempObj["list"] = list;
-          tempObj["selectedDiseaseIds"] = selectedDiseaseIds;
+            tempObj["id"] = i++;
+            tempObj["relation_id"] = relation["relation_id"];
+            tempObj["relation_name"] = relation["name"];
+            tempObj["list"] = list;
+            tempObj["selectedDiseaseIds"] = selectedDiseaseIds;
 
-          this.relationsWithData.push(tempObj);
-        });
+            this.relationsWithData.push(tempObj);
+          });
+        }
       })
       .catch((error) => {
         this.utilities.sqliteErrorDisplayer(
