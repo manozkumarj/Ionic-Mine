@@ -149,6 +149,10 @@ export class ViewDoctorPage implements OnInit {
               this.doctorName = res["name"];
             })
             .catch((error) => {
+              this.utilities.sqliteErrorDisplayer(
+                "view-doctor * loadDoctorProfileDetails",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> loadDoctorProfileDetails() function returned error." +
@@ -177,6 +181,10 @@ export class ViewDoctorPage implements OnInit {
               this.loadCertifications(res["certifications"]);
             })
             .catch((error) => {
+              this.utilities.sqliteErrorDisplayer(
+                "view-doctor * loadDoctorProfessionalDetails",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> loadDoctorProfessionalDetails() function returned error." +
@@ -202,6 +210,10 @@ export class ViewDoctorPage implements OnInit {
               this.loadClinics(res);
             })
             .catch((error) => {
+              this.utilities.sqliteErrorDisplayer(
+                "view-doctor * loadDoctorClinicsDetails",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> loadDoctorClinicsDetails() function returned error." +
@@ -227,6 +239,10 @@ export class ViewDoctorPage implements OnInit {
               this.loadModes(res);
             })
             .catch((error) => {
+              this.utilities.sqliteErrorDisplayer(
+                "view-doctor * loadDoctorModesDetails",
+                error
+              );
               this.utilities.presentToastWarning("Something went wrong");
               console.error(
                 "Error -> loadDoctorModesDetails() function returned error." +

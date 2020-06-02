@@ -420,7 +420,7 @@ export class DatabaseService {
   }
 
   getProfilePhoto(IN_user_id) {
-    let sql = `SELECT photo FROM du_photo WHERE user_id = ${IN_user_id} AND relative_id = 1`;
+    let sql = `SELECT photo FROM du_photo WHERE user_id = ${IN_user_id} AND relative_id = 0`;
 
     return this.dbObject.executeSql(sql, []).then((res) => {
       let profilePhoto = [];

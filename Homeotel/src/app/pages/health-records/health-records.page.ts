@@ -55,7 +55,9 @@ export class HealthRecordsPage implements OnInit {
     this.loadUserRelatives();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadUserRelatives();
+  }
 
   async loadUserRelatives() {
     const loading = await this.loadingController
@@ -68,6 +70,7 @@ export class HealthRecordsPage implements OnInit {
           this.db
             .getUserRelatives(this.utilities.userId)
             .then((res: any[]) => {
+              console.log(res);
               this.userRelatives = res;
             })
             .catch((error) => {

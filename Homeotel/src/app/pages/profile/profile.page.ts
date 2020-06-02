@@ -86,7 +86,7 @@ export class ProfilePage implements OnInit {
               console.log("Received getProfileDetails details are below -> ");
               // console.log(JSON.stringify(lifestyleDetails));
               console.log(res);
-              this.utilities.profilePageDetails = res;
+              this.utilities.profilePageDetails = res[0];
               console.log("this.utilities.profilePageDetails is below");
               console.log(this.utilities.profilePageDetails);
               if (this.utilities.profilePageDetails) {
@@ -182,7 +182,7 @@ export class ProfilePage implements OnInit {
                         let photoData = res[0];
                         if (photoData) {
                           this.profilePhoto = this.utilities.getPhotoDataUrl(
-                            photoData[0]["photo"]
+                            photoData["photo"]
                           );
                         } else {
                           this.utilities.getPhotoDataUrl(null);
