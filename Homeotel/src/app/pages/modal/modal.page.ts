@@ -190,16 +190,19 @@ export class ModalPage implements OnInit {
               } else {
                 console.log("Returned Success");
 
+                // d_appointment related
                 let res = data[0][0];
-                if (data[0][0]["query"]) {
-                  let receivedQuery = res["query"];
+                if (data[0][0] && data[0][0]["query1"]) {
+                  let receivedQuery = res["query1"];
                   console.log(receivedQuery);
 
                   this.db
                     .crudOperations(receivedQuery)
                     .then((res) => {
                       a.dismiss();
-                      console.log("Appointment booked successfully");
+                      console.log(
+                        "data inserted into d_appointment table successfully"
+                      );
                     })
                     .catch((error) => {
                       this.utilities.sqliteErrorDisplayer(
@@ -211,7 +214,7 @@ export class ModalPage implements OnInit {
                       );
                       a.dismiss();
                       console.error(
-                        "Error -> bookAppointment function returned error." +
+                        "Error -> d_appointment function returned error." +
                           JSON.stringify(error)
                       );
                     });
@@ -219,9 +222,87 @@ export class ModalPage implements OnInit {
                   a.dismiss();
                   this.utilities.sqliteErrorDisplayer(
                     "modal * bookAppointment",
-                    "Query property is not received from backend SP"
+                    "Query1 property is not received from backend SP"
                   );
-                  console.log("Query property is not received from backend SP");
+                  console.log(
+                    "Query1 property is not received from backend SP"
+                  );
+                }
+
+                // da_log related
+                if (data[0][0] && data[0][0]["query2"]) {
+                  let receivedQuery = res["query2"];
+                  console.log(receivedQuery);
+
+                  this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      console.log(
+                        "data inserted into da_log table successfully"
+                      );
+                    })
+                    .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "modal * bookAppointment",
+                        error
+                      );
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      a.dismiss();
+                      console.error(
+                        "Error -> da_log function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                } else {
+                  a.dismiss();
+                  this.utilities.sqliteErrorDisplayer(
+                    "modal * bookAppointment",
+                    "Query2 property is not received from backend SP"
+                  );
+                  console.log(
+                    "Query2 property is not received from backend SP"
+                  );
+                }
+
+                // da_log related
+                if (data[0][0] && data[0][0]["query3"]) {
+                  let receivedQuery = res["query3"];
+                  console.log(receivedQuery);
+
+                  this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      console.log(
+                        "data inserted into d_transaction table successfully"
+                      );
+                    })
+                    .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "modal * bookAppointment",
+                        error
+                      );
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      a.dismiss();
+                      console.error(
+                        "Error -> d_transaction function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                } else {
+                  a.dismiss();
+                  this.utilities.sqliteErrorDisplayer(
+                    "modal * bookAppointment",
+                    "Query3 property is not received from backend SP"
+                  );
+                  console.log(
+                    "Query3 property is not received from backend SP"
+                  );
                 }
               }
             });
@@ -294,11 +375,22 @@ export class ModalPage implements OnInit {
                       "bookedAppointments"
                     ] = data[1];
                   });
-                  this.utilities.bookAppointmentDoctorDetails["doctorPhoto"] =
-                    data[2][0]["photo"];
-                  this.doctorDetails.push({
-                    doctorPhoto: data[2][0]["photo"],
-                  });
+
+                  if (data[2] && data[2][0] && data[2][0]["photo"]) {
+                    this.utilities.bookAppointmentDoctorDetails["doctorPhoto"] =
+                      data[2][0]["photo"];
+                    this.doctorDetails.push({
+                      doctorPhoto: data[2][0]["photo"],
+                    });
+                  } else {
+                    this.utilities.bookAppointmentDoctorDetails[
+                      "doctorPhoto"
+                    ] = null;
+                    this.doctorDetails.push({
+                      doctorPhoto: null,
+                    });
+                  }
+
                   console.log(this.doctorDetails);
                   // console.log(this.doctorSlotDetails);
                   console.log(this.utilities.bookAppointmentDoctorDetails);
@@ -371,7 +463,9 @@ export class ModalPage implements OnInit {
                 this.utilities.presentToastSuccess("Success, Doctor added");
 
                 let res = data[0][0];
-                if (data[0][0]["query"]) {
+
+                // du_doctor related
+                if (data[0] && data[0][0] && data[0][0]["query"]) {
                   let receivedQuery = res["query"];
                   console.log(receivedQuery);
 
@@ -391,7 +485,7 @@ export class ModalPage implements OnInit {
                       );
                       a.dismiss();
                       console.error(
-                        "Error -> AddDoctor function returned error." +
+                        "Error -> du_doctor function returned error." +
                           JSON.stringify(error)
                       );
                     });
@@ -403,6 +497,136 @@ export class ModalPage implements OnInit {
                   );
                   console.log("Query property is not received from backend SP");
                 }
+              }
+
+              // d_doctor
+              if (data[1] && data[1][0] && data[1][0]["doctor"]) {
+                let receivedQuery = data[1][0]["doctor"];
+                console.log(receivedQuery);
+
+                this.db
+                  .crudOperations(receivedQuery)
+                  .then((res) => {
+                    a.dismiss();
+                    console.log("Doctor Added successfully");
+                  })
+                  .catch((error) => {
+                    this.utilities.sqliteErrorDisplayer(
+                      "modal * AddDoctor",
+                      error
+                    );
+                    this.utilities.presentToastWarning("Something went wrong.");
+                    a.dismiss();
+                    console.error(
+                      "Error -> doctor function returned error." +
+                        JSON.stringify(error)
+                    );
+                  });
+              } else {
+                a.dismiss();
+                this.utilities.sqliteErrorDisplayer(
+                  "modal * AddDoctor",
+                  "doctor property is not received from backend SP"
+                );
+                console.log("doctor property is not received from backend SP");
+              }
+
+              // dd_clinic
+              if (data[2] && data[2][0] && data[2][0]["clinic"]) {
+                let receivedQuery = data[2][0]["clinic"];
+                console.log(receivedQuery);
+
+                this.db
+                  .crudOperations(receivedQuery)
+                  .then((res) => {
+                    a.dismiss();
+                    console.log("clinic Added successfully");
+                  })
+                  .catch((error) => {
+                    this.utilities.sqliteErrorDisplayer(
+                      "modal * AddDoctor",
+                      error
+                    );
+                    this.utilities.presentToastWarning("Something went wrong.");
+                    a.dismiss();
+                    console.error(
+                      "Error -> clinic function returned error." +
+                        JSON.stringify(error)
+                    );
+                  });
+              } else {
+                a.dismiss();
+                this.utilities.sqliteErrorDisplayer(
+                  "modal * AddDoctor",
+                  "clinic property is not received from backend SP"
+                );
+                console.log("clinic property is not received from backend SP");
+              }
+
+              // dd_timing
+              if (data[3] && data[3][0] && data[3][0]["timings"]) {
+                let receivedQuery = data[3][0]["timings"];
+                console.log(receivedQuery);
+
+                this.db
+                  .crudOperations(receivedQuery)
+                  .then((res) => {
+                    a.dismiss();
+                    console.log("timing Added successfully");
+                  })
+                  .catch((error) => {
+                    this.utilities.sqliteErrorDisplayer(
+                      "modal * AddDoctor",
+                      error
+                    );
+                    this.utilities.presentToastWarning("Something went wrong.");
+                    a.dismiss();
+                    console.error(
+                      "Error -> timing function returned error." +
+                        JSON.stringify(error)
+                    );
+                  });
+              } else {
+                a.dismiss();
+                this.utilities.sqliteErrorDisplayer(
+                  "modal * AddDoctor",
+                  "timings property is not received from backend SP"
+                );
+                console.log("timings property is not received from backend SP");
+              }
+
+              // dd_professional
+              if (data[4] && data[4][0] && data[4][0]["professional"]) {
+                let receivedQuery = data[4][0]["professional"];
+                console.log(receivedQuery);
+
+                this.db
+                  .crudOperations(receivedQuery)
+                  .then((res) => {
+                    a.dismiss();
+                    console.log("professional Added successfully");
+                  })
+                  .catch((error) => {
+                    this.utilities.sqliteErrorDisplayer(
+                      "modal * AddDoctor",
+                      error
+                    );
+                    this.utilities.presentToastWarning("Something went wrong.");
+                    a.dismiss();
+                    console.error(
+                      "Error -> professional function returned error." +
+                        JSON.stringify(error)
+                    );
+                  });
+              } else {
+                a.dismiss();
+                this.utilities.sqliteErrorDisplayer(
+                  "modal * AddDoctor",
+                  "professional property is not received from backend SP"
+                );
+                console.log(
+                  "professional property is not received from backend SP"
+                );
               }
             }
             this.router.navigate(["/home"]);
