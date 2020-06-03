@@ -145,8 +145,9 @@ export class ViewDoctorPage implements OnInit {
           this.db
             .getDoctorProfileDetails(this.selectedDoctorId)
             .then((res: any[]) => {
-              this.doctorPhoto = res["photo"];
-              this.doctorName = res["name"];
+              console.log(res);
+              this.doctorPhoto = res[0]["photo"];
+              this.doctorName = res[0]["name"];
             })
             .catch((error) => {
               this.utilities.sqliteErrorDisplayer(
@@ -175,10 +176,13 @@ export class ViewDoctorPage implements OnInit {
           this.db
             .getDoctorProfessionalDetails(this.selectedDoctorId)
             .then((res: any[]) => {
-              this.loadSpecialisation(res["specialisation"]);
-              this.loadExperience(res["experience"]);
-              this.loadQualifications(res["qualifications"]);
-              this.loadCertifications(res["certifications"]);
+              console.log(res);
+              if (res) {
+                this.loadSpecialisation(res["specialisation"]);
+                this.loadExperience(res["experience"]);
+                this.loadQualifications(res["qualifications"]);
+                this.loadCertifications(res["certifications"]);
+              }
             })
             .catch((error) => {
               this.utilities.sqliteErrorDisplayer(
@@ -207,7 +211,10 @@ export class ViewDoctorPage implements OnInit {
           this.db
             .getDoctorClinicsDetails(this.selectedDoctorId)
             .then((res: any[]) => {
-              this.loadClinics(res);
+              console.log(res);
+              if (res) {
+                this.loadClinics(res);
+              }
             })
             .catch((error) => {
               this.utilities.sqliteErrorDisplayer(
@@ -236,7 +243,10 @@ export class ViewDoctorPage implements OnInit {
           this.db
             .getDoctorModesDetails(this.selectedDoctorId)
             .then((res: any[]) => {
-              this.loadModes(res);
+              console.log(res);
+              if (res) {
+                this.loadModes(res);
+              }
             })
             .catch((error) => {
               this.utilities.sqliteErrorDisplayer(
@@ -266,15 +276,17 @@ export class ViewDoctorPage implements OnInit {
             .getDoctorProfile(this.selectedDoctorId)
             .subscribe((data) => {
               a.dismiss();
+              console.log(data);
               if (this.utilities.isInvalidApiResponseData(data)) {
-                console.log(data);
                 this.utilities.presentToastWarning("Something went wrong");
               } else {
-                if (data[0].length > 0) {
+                console.log(data[0][0]);
+                console.log(data[0][0]["name"]);
+                if (data[0][0]) {
                   this.doctorPhoto = data[0][0]["photo"];
                   this.doctorName = data[0][0]["name"];
                 }
-                if (data[1].length > 0) {
+                if (data[1][0]) {
                   this.loadSpecialisation(data[1][0]["specialisation"]);
                   this.loadExperience(data[1][0]["experience"]);
                   this.loadQualifications(data[1][0]["qualifications"]);

@@ -287,7 +287,7 @@ CREATE TABLE IF NOT EXISTS "ehr_allergy" (
   "created_at" varchar(45) NOT NULL,
   "updated_by" int DEFAULT NULL,
   "updated_at" varchar(45) DEFAULT NULL,
-  PRIMARY KEY ("id","user_id","relative_id"),
+  PRIMARY KEY ("id","user_id","relative_id","allergy_id"),
   CONSTRAINT "FK_ehr_allergy_id" FOREIGN KEY ("allergy_id") REFERENCES "m_allergy" ("allergy_id")
 );
 CREATE TABLE IF NOT EXISTS "ehr_chronic" (
