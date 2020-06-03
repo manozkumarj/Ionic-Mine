@@ -929,6 +929,9 @@ export class DatabaseService {
             clinic_name: res.rows.item(i).clinic_name,
             clinic_address: res.rows.item(i).clinic_address,
             walkin_fee: res.rows.item(i).walkin_fee,
+            week_days: res.rows.item(i).week_days,
+            from_time: res.rows.item(i).from_time,
+            to_time: res.rows.item(i).to_time,
             created_at: res.rows.item(i).created_at,
           });
         }

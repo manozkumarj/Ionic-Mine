@@ -178,10 +178,10 @@ export class ViewDoctorPage implements OnInit {
             .then((res: any[]) => {
               console.log(res);
               if (res) {
-                this.loadSpecialisation(res["specialisation"]);
-                this.loadExperience(res["experience"]);
-                this.loadQualifications(res["qualifications"]);
-                this.loadCertifications(res["certifications"]);
+                this.loadSpecialisation(res[0]["specialisation"]);
+                this.loadExperience(res[0]["experience"]);
+                this.loadQualifications(res[0]["qualifications"]);
+                this.loadCertifications(res[0]["certifications"]);
               }
             })
             .catch((error) => {
