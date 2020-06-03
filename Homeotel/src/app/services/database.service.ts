@@ -445,7 +445,7 @@ export class DatabaseService {
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
           vitalDetails.push({
-            vitalId: res.rows.item(i).vitalId,
+            vital_id: res.rows.item(i).vital_id,
             temperature: res.rows.item(i).temperature,
             pulse: res.rows.item(i).pulse,
             resp_rate: res.rows.item(i).resp_rate,

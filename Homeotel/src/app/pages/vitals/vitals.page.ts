@@ -22,10 +22,13 @@ export class VitalsPage implements OnInit {
     private utilities: UtilitiesService
   ) {
     // this.getVitals();
-    this.getLocalVitals();
   }
 
   ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.getLocalVitals();
+  }
 
   async getLocalVitals() {
     const loading = await this.loadingController
@@ -78,7 +81,7 @@ export class VitalsPage implements OnInit {
           {
             text: "Delete",
             handler: async () => {
-              console.log("Delte clicked");
+              console.log("Delete clicked");
 
               const loading = await this.loadingController
                 .create({
@@ -91,9 +94,17 @@ export class VitalsPage implements OnInit {
                       console.log("Returned from Backend");
                       console.log(data);
                       if (this.utilities.isInvalidApiResponseData(data)) {
+                        a.dismiss();
                         console.log("Returned Error");
+                        this.utilities.presentToastWarning(
+                          "Something went wrong."
+                        );
                       } else {
+                        a.dismiss();
                         if (typeof data != "undefined") {
+                          this.utilities.presentToastWarning(
+                            "Something went wrong."
+                          );
                           console.log("Returned from backend");
                           this.vitals = this.vitals.filter(
                             (vital) => vital.vital_id !== id

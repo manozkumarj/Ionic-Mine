@@ -413,7 +413,7 @@ CREATE TABLE IF NOT EXISTS "ehr_vital" (
   "vital_id" int NOT NULL,
   "user_id" int NOT NULL,
   "relative_id" int NOT NULL,
-  "temperature" decimal(4,1) DEFAULT NULL,
+  "temperature" varchar(45) DEFAULT NULL,
   "pulse" int DEFAULT NULL,
   "resp_rate" int DEFAULT NULL,
   "bp_systolic" int DEFAULT NULL,
