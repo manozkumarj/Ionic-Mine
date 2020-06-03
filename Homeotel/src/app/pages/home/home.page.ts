@@ -23,6 +23,9 @@ export class HomePage implements OnInit {
     private platform: Platform
   ) {
     // this.getAppointments();
+  }
+
+  ionViewWillEnter() {
     this.loadAppointments();
   }
 

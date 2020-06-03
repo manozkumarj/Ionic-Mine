@@ -149,9 +149,10 @@ export class AppointmentDetailsPage implements OnInit {
                             "Appointment cancelled successfully"
                           );
 
+                          // delete_appointment related
                           let res = data[0][0];
-                          if (data[0][0]["query"]) {
-                            let receivedQuery = res["query"];
+                          if (data[0][0] && data[0][0]["query1"]) {
+                            let receivedQuery = res["query1"];
                             console.log(receivedQuery);
 
                             this.db
@@ -159,7 +160,7 @@ export class AppointmentDetailsPage implements OnInit {
                               .then((res) => {
                                 a.dismiss();
                                 console.log(
-                                  "Appointment cancelled successfully"
+                                  "delete_appointment query executed successfully"
                                 );
                                 this.router.navigate(["/home"]);
                               })
@@ -181,13 +182,55 @@ export class AppointmentDetailsPage implements OnInit {
                             a.dismiss();
                             this.utilities.sqliteErrorDisplayer(
                               "appointment-details * cancelSlot",
-                              "Query property is not received from backend SP"
+                              "Query1 property is not received from backend SP"
                             );
                             this.utilities.presentToastWarning(
                               "Something went wrong."
                             );
                             console.log(
-                              "Query property is not received from backend SP"
+                              "Query1 property is not received from backend SP"
+                            );
+                          }
+
+                          // update_transaction
+                          if (data[0][0] && data[0][0]["query2"]) {
+                            let receivedQuery = res["query2"];
+                            console.log(receivedQuery);
+
+                            this.db
+                              .crudOperations(receivedQuery)
+                              .then((res) => {
+                                a.dismiss();
+                                console.log(
+                                  "update_transaction query executed successfully"
+                                );
+                                this.router.navigate(["/home"]);
+                              })
+                              .catch((error) => {
+                                this.utilities.sqliteErrorDisplayer(
+                                  "appointment-details * cancelSlot",
+                                  error
+                                );
+                                this.utilities.presentToastWarning(
+                                  "Something went wrong."
+                                );
+                                a.dismiss();
+                                console.error(
+                                  "Error -> cancelSlot function returned error." +
+                                    JSON.stringify(error)
+                                );
+                              });
+                          } else {
+                            a.dismiss();
+                            this.utilities.sqliteErrorDisplayer(
+                              "appointment-details * cancelSlot",
+                              "Query2 property is not received from backend SP"
+                            );
+                            this.utilities.presentToastWarning(
+                              "Something went wrong."
+                            );
+                            console.log(
+                              "Query2 property is not received from backend SP"
                             );
                           }
                         }

@@ -113,6 +113,7 @@ export class EditRelationMedicalHistoryPage implements OnInit {
 
     this.selectedObjects.forEach((diseaseId) => {
       commaSeparated += "(";
+      commaSeparated += "id,";
       commaSeparated += userId + ",";
       commaSeparated += relativeId + ",";
       commaSeparated += relationId + ",";

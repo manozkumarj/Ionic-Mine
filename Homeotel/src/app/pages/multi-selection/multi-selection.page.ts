@@ -148,6 +148,7 @@ export class MultiSelectionPage implements OnInit {
 
     this.selectedObjects.forEach((element) => {
       commaSeparated += "(";
+      commaSeparated += "id,";
       commaSeparated += userId + ",";
       commaSeparated += relativeId + ",";
       commaSeparated += element + ",";
