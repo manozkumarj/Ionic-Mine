@@ -78,47 +78,61 @@ export class ViewDoctorPage implements OnInit {
         translucent: true,
       })
       .then((a) => {
-        a.present().then(async (res) => {
-          this.apiService.getDoctorMasters().subscribe((data) => {
+        a.present()
+          .then(async (res) => {
+            this.apiService.getDoctorMasters().subscribe((data) => {
+              if (this.utilities.isInvalidApiResponseData(data)) {
+                a.dismiss();
+                console.log(data);
+                this.utilities.presentToastWarning("Something went wrong");
+              } else {
+                console.log(data);
+                this.resetMasters();
+                data[0].forEach((data) => {
+                  if (data.master_type == "specialisation") {
+                    this.specialisationMasters.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data.master_type == "qualification") {
+                    this.qualificationMasters.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data.master_type == "certification") {
+                    this.certificationMasters.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data.master_type == "award") {
+                    this.awardMasters.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  }
+                });
+                // this.loadProfile();
+                this.loadDoctorProfileDetails();
+                this.loadDoctorProfessionalDetails();
+                this.loadDoctorClinicsDetails();
+                this.loadDoctorModesDetails();
+                // this.utilities.presentToastSuccess("data loaded successfully");
+                a.dismiss();
+              }
+            });
+          })
+          .catch((error) => {
             a.dismiss();
-            if (this.utilities.isInvalidApiResponseData(data)) {
-              console.log(data);
-              this.utilities.presentToastWarning("Something went wrong");
-            } else {
-              console.log(data);
-              this.resetMasters();
-              data[0].forEach((data) => {
-                if (data.master_type == "specialisation") {
-                  this.specialisationMasters.push({
-                    id: data.id,
-                    name: data.name,
-                  });
-                } else if (data.master_type == "qualification") {
-                  this.qualificationMasters.push({
-                    id: data.id,
-                    name: data.name,
-                  });
-                } else if (data.master_type == "certification") {
-                  this.certificationMasters.push({
-                    id: data.id,
-                    name: data.name,
-                  });
-                } else if (data.master_type == "award") {
-                  this.awardMasters.push({
-                    id: data.id,
-                    name: data.name,
-                  });
-                }
-              });
-              // this.loadProfile();
-              this.loadDoctorProfileDetails();
-              this.loadDoctorProfessionalDetails();
-              this.loadDoctorClinicsDetails();
-              this.loadDoctorModesDetails();
-              this.utilities.presentToastSuccess("data loaded successfully");
-            }
+            this.utilities.sqliteErrorDisplayer(
+              "view-doctor * loadMasters",
+              error
+            );
+            this.utilities.presentToastWarning("Something went wrong");
+            console.error(
+              "Error -> loadMasters() function returned error." +
+                JSON.stringify(error)
+            );
           });
-        });
       });
   }
 

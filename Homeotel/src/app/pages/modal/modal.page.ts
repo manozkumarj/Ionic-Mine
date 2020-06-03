@@ -701,6 +701,43 @@ export class ModalPage implements OnInit {
                 );
                 console.log("kit property is not received from backend SP");
               }
+
+              // dd_mode related
+              if (data[6] && data[6][0] && data[6][0]["mode"]) {
+                let receivedQuery = data[6];
+                console.log(receivedQuery);
+                receivedQuery.forEach((query) => {
+                  let modeQuery = query["mode"];
+                  this.db
+                    .crudOperations(modeQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      console.log("mode Added successfully");
+                    })
+                    .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "modal * AddDoctor",
+                        error
+                      );
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      a.dismiss();
+                      console.error(
+                        "Error -> mode insertion function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                });
+              } else {
+                a.dismiss();
+                this.utilities.sqliteErrorDisplayer(
+                  "modal * AddDoctor",
+                  "mode property is not received from backend SP"
+                );
+                console.log("mode property is not received from backend SP");
+              }
+
             }
             this.router.navigate(["/home"]);
           });

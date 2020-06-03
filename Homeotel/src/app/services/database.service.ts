@@ -951,6 +951,8 @@ export class DatabaseService {
         for (var i = 0; i < res.rows.length; i++) {
           doctorModesDetails.push({
             id: res.rows.item(i).id,
+            name: res.rows.item(i).name,
+            icon: res.rows.item(i).icon,
             doctor_id: res.rows.item(i).doctor_id,
             mode_id: res.rows.item(i).mode_id,
             minimum_min: res.rows.item(i).minimum_min,
