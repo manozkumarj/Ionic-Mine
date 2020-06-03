@@ -62,6 +62,8 @@ export class HomeoKitsPage implements OnInit {
           this.db
             .getDoctorsKits(userId, doctorId)
             .then((res: any[]) => {
+              console.log("loadCurrentDoctorsHomeokits are below");
+              console.log(res);
               this.homeokits = res;
             })
             .catch((error) => {
@@ -91,6 +93,8 @@ export class HomeoKitsPage implements OnInit {
           this.db
             .getOrderedKits(userId, doctorId)
             .then((res: any[]) => {
+              console.log("loadOrderedKits are below");
+              console.log(res);
               this.orderedHomeokits = res;
             })
             .catch((error) => {

@@ -109,16 +109,17 @@ export class ModalPage implements OnInit {
                 } else {
                   console.log("Homeokit purchase payment success");
 
+                  // insert_kit related
                   let res = data[0][0];
-                  if (data[0][0]["query"]) {
-                    let receivedQuery = res["query"];
+                  if (data[0][0]["query1"]) {
+                    let receivedQuery = res["query1"];
                     console.log(receivedQuery);
 
                     this.db
                       .crudOperations(receivedQuery)
                       .then((res) => {
                         a.dismiss();
-                        console.log("Homeokit purchased successfully");
+                        console.log("insert_kit executed successfully");
                       })
                       .catch((error) => {
                         this.utilities.sqliteErrorDisplayer(
@@ -138,10 +139,46 @@ export class ModalPage implements OnInit {
                     a.dismiss();
                     this.utilities.sqliteErrorDisplayer(
                       "modal * purchaseHomeokit",
-                      "Query property is not received from backend SP"
+                      "Query1 property is not received from backend SP"
                     );
                     console.log(
-                      "Query property is not received from backend SP"
+                      "Query1 property is not received from backend SP"
+                    );
+                  }
+
+                  // insert_transaction  related
+                  if (data[0][0]["query2"]) {
+                    let receivedQuery = data[0][0]["query2"];
+                    console.log(receivedQuery);
+
+                    this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        a.dismiss();
+                        console.log("insert_transaction executed successfully");
+                      })
+                      .catch((error) => {
+                        this.utilities.sqliteErrorDisplayer(
+                          "modal * purchaseHomeokit",
+                          error
+                        );
+                        this.utilities.presentToastWarning(
+                          "Something went wrong."
+                        );
+                        a.dismiss();
+                        console.error(
+                          "Error -> insert_transaction function returned error." +
+                            JSON.stringify(error)
+                        );
+                      });
+                  } else {
+                    a.dismiss();
+                    this.utilities.sqliteErrorDisplayer(
+                      "modal * purchaseHomeokit",
+                      "Query2 property is not received from backend SP"
+                    );
+                    console.log(
+                      "Query2 property is not received from backend SP"
                     );
                   }
                 }
@@ -627,6 +664,42 @@ export class ModalPage implements OnInit {
                 console.log(
                   "professional property is not received from backend SP"
                 );
+              }
+
+              // dd_kit related
+              if (data[5] && data[5][0] && data[5][0]["kit"]) {
+                let receivedQuery = data[5];
+                console.log(receivedQuery);
+                receivedQuery.forEach((query) => {
+                  let kitQuery = query["kit"];
+                  this.db
+                    .crudOperations(kitQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      console.log("kit Added successfully");
+                    })
+                    .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "modal * AddDoctor",
+                        error
+                      );
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      a.dismiss();
+                      console.error(
+                        "Error -> kit insertion function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                });
+              } else {
+                a.dismiss();
+                this.utilities.sqliteErrorDisplayer(
+                  "modal * AddDoctor",
+                  "kit property is not received from backend SP"
+                );
+                console.log("kit property is not received from backend SP");
               }
             }
             this.router.navigate(["/home"]);
