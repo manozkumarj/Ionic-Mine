@@ -108,25 +108,25 @@ appointmentDoctorDetails = {};
       id: 1,
       icon: "videocam",
       type: "Video Consultation",
-      fees: "Min session 10 mins ₹ 30 per minute",
+      fees: "Min session 10 mins $ 30 per minute",
     },
     {
       id: 2,
       icon: "logo-whatsapp",
       type: "Audio Consultation",
-      fees: "Min session 10 mins ₹ 20 per minute",
+      fees: "Min session 10 mins $ 20 per minute",
     },
     {
       id: 3,
       icon: "chatbubbles",
       type: "Chat Consultation",
-      fees: "Valid for 24 hours ₹ 50 ",
+      fees: "Valid for 24 hours $ 50 ",
     },
     {
       id: 4,
       icon: "calendar",
       type: "Physical Visit",
-      fees: "Regular Consulatation ₹ 500",
+      fees: "Regular Consulatation $ 500",
     },
   ];
 

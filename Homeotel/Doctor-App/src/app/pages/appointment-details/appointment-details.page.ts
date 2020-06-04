@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, LoadingController } from '@ionic/angular';
 import { ModalPage } from '../modal/modal.page';
+import { DatabaseService } from 'src/app/services/database.service';
 
 
 @Component({
@@ -33,13 +34,16 @@ export class AppointmentDetailsPage implements OnInit {
     private utilities: UtilitiesService,
     private router : Router,
     private alertController: AlertController,
-  ) {}
+    private loadingController : LoadingController,
+    private db : DatabaseService  ) {}
   ngOnInit() {
    
   }
 
   ionViewWillEnter(){
-    this.loadData()
+    //this.loadData()
+    this.loadAppointmentDetailsFromSqlLite();
+    this.loadComplaintDetailsFromSqlLite();
   }
 
   loadData() {
@@ -88,19 +92,26 @@ export class AppointmentDetailsPage implements OnInit {
           "toastSuccess"
         );
       }
-    });
+    });23
   }
 
-  changeSlot() {
+   async changeSlot() {
 
-    
-    this.apiService.getDoctorConsultantDetailsMasters( this.commonService.currentDoctorId).subscribe(data => {
-      if (this.utilities.isInvalidApiResponseData(data)) {
-        console.log(data);
-        this.commonService.presentToast("Something went wrong", "toastError");
-      } else {
-        
-let masterData = data[0];
+    const loading = await this.loadingController
+    .create({
+      message: "Loading...",
+      translucent: true,
+    })
+    .then((a) => {
+      a.present().then(async (res) => {
+        this.db
+          .getSlotConsultantMasters(this.commonService.currentDoctorId)
+          .then((res: any[]) => {
+            
+            console.log(res);
+            if(res.length >0){
+                     
+let masterData = res;
 
 this.commonService.appointmentDoctorDetails ={};
 this.doctorSlotDetails =[];
@@ -132,16 +143,57 @@ masterData.forEach((masterRow) => {
   
 });
 this.commonService.appointmentDoctorDetails["doctorSlotDetails"] = this.doctorSlotDetails;
-this.commonService.appointmentDoctorDetails[ "bookedAppointments"] = data[1];
-        console.log(this.commonService.appointmentDoctorDetails);
-        
-        this.commonService.presentToast(
-          "data loaded successfully",
-          "toastSuccess"
-        );
-        this.router.navigate(['/slot-selection'])
-      }
+            
+           }
+          })
+          
+          .catch((error) => {
+            this.utilities.sqlLiteErrorTrigger( "changeSlot" , error);
+            this.commonService.presentToast("Something went wrong", "toastError");
+            console.error(
+              
+                JSON.stringify(error)
+            );
+            
+          });
+        a.dismiss();
+      });
     });
+
+    const loading1 = await this.loadingController
+    .create({
+      message: "Loading...",
+      translucent: true,
+    })
+    .then((a) => {
+      a.present().then(async (res) => {
+        this.db
+          .getSlotAppointmentAt(this.commonService.currentDoctorId)
+          .then((res: any[]) => {
+            
+            console.log(res);
+            if(res.length >0){
+              this.commonService.appointmentDoctorDetails[ "bookedAppointments"] = res;
+            
+           }
+          })
+          .catch((error) => {
+            this.utilities.sqlLiteErrorTrigger( "changeSlot" , error);
+            this.commonService.presentToast("Something went wrong", "toastError");
+            console.error(
+              
+                JSON.stringify(error)
+            );
+            
+          });
+        a.dismiss();
+      });
+    });
+    
+    
+        this.router.navigate(['/slot-selection'])
+      
+   
   }
   resetData(){
    this.consultantDetails =[];
@@ -151,8 +203,15 @@ this.commonService.appointmentDoctorDetails[ "bookedAppointments"] = data[1];
    this.prescriptions =[];
   }
 
-  cancelAppointment(){
+  async cancelAppointment(){
     console.log(this.commonService.currentAppointmentId);
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
     this.apiService
         .cancelAppointment(
           this.commonService.currentAppointmentId
@@ -166,13 +225,45 @@ this.commonService.appointmentDoctorDetails[ "bookedAppointments"] = data[1];
             );
           } else {
             console.log(data);
+            let res = data[0][0];
+          if (data[0][0]["query"]) {
+            let receivedQuery = res["query"];
+            console.log(receivedQuery);
+            this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      
             this.commonService.presentToast(
               "appointment cancelled successfully",
               "toastSuccess"
             );
             this.router.navigate(["/scheduled-appointments"]);
+                    })
+                    .catch((error) => {
+                      this.utilities.sqlLiteErrorTrigger( "cancelAppointment" , error);
+                      this.commonService.presentToast(
+                        "Something went wrong",
+                        "toastError"
+                      );
+                      a.dismiss();
+                      console.error(
+                          JSON.stringify(error)
+                      );
+                    });
            
           }
+            else{
+              this.commonService.presentToast(
+                "Something went wrong",
+                "toastError"
+              );
+            }
+            
+           
+          }
+        });
+        });
         });
     }
 
@@ -197,6 +288,66 @@ this.commonService.appointmentDoctorDetails[ "bookedAppointments"] = data[1];
       })
       .then((alertEl) => {
         alertEl.present();
+      });
+  }
+
+  async loadAppointmentDetailsFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getAppointmentDetails(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.consultantDetails =[];
+              this.consultantDetails= res;
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadAppointmentDetailsFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+
+  async loadComplaintDetailsFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getAppointmentComplaintDetails(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.complaintDetails =[];
+              this.complaintDetails= res;
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadComplaintDetailsFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
       });
   }
   

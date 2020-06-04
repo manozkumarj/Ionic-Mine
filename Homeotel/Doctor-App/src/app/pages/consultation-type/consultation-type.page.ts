@@ -4,6 +4,8 @@ import { CommonService } from 'src/app/services/common.service';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { LoadingController } from '@ionic/angular';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-consultation-type',
@@ -22,7 +24,9 @@ export class ConsultationTypePage implements OnInit {
     public commonService: CommonService,
     private apiService: ApiService,
     private utilities: UtilitiesService,
-    private router : Router) { }
+    private router : Router,
+    private loadingController : LoadingController,
+    private db : DatabaseService) { }
 
   ngOnInit() {
 
@@ -30,7 +34,8 @@ export class ConsultationTypePage implements OnInit {
     this.createForm()
     this.activatedRoute.params.subscribe(params=>{
       this.fetchConsultationTypeData(params["id"]);
-      this.loadConsultationData(params["id"]);
+     // this.loadConsultationData(params["id"]);
+      this.loadModeDetailsFromSqlLite(params["id"]);
     });
    
   }
@@ -88,8 +93,15 @@ setData(data){
     })
 
   }
-  save(){
+ async save(){
     console.log(this.modeForm.value);
+    const loading = await this.loadingController
+    .create({
+      message: "Loading...",
+      translucent: true,
+    })
+    .then((a) => {
+      a.present().then(async (res) => {
     this.apiService
     .saveMode(
       this.commonService.currentDoctorId,
@@ -106,13 +118,78 @@ setData(data){
         );
       } else {
         console.log(data);
-        this.router.navigate(["doctor-consultation-modes"]);
+        let res = data[0][0];
+          if (data[0][0]["query"]) {
+            let receivedQuery = res["query"];
+            console.log(receivedQuery);
+            this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      this.router.navigate(["doctor-consultation-modes"]);
         this.commonService.presentToast(
           "clinic Details saved successfully",
           "toastSuccess"
         );
+                    })
+                    .catch((error) => {
+                      this.utilities.sqlLiteErrorTrigger( "save" , error);
+                      this.commonService.presentToast(
+                        "Something went wrong",
+                        "toastError"
+                      );
+                      a.dismiss();
+                      console.error(
+                          JSON.stringify(error)
+                      );
+                    });
+           
+          }
+            else{
+              this.commonService.presentToast(
+                "Something went wrong",
+                "toastError"
+              );
+            }
+        
       }
     });
+    });
+    });
 
+  }
+
+  async loadModeDetailsFromSqlLite(modeId) {
+    this.modeId = modeId;
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getModeDetails(this.commonService.currentDoctorId , this.modeId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              if(res.length >0){
+                this.setData(res)
+                 
+              
+             }
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "save" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
   }
 }

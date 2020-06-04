@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, LoadingController } from '@ionic/angular';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-prescription',
@@ -21,16 +22,49 @@ export class PrescriptionPage implements OnInit {
     private apiService: ApiService,
     private utilities: UtilitiesService,
     private router : Router,
-    public actionSheetController: ActionSheetController,) { }
+    public actionSheetController: ActionSheetController,
+    private loadingController : LoadingController,
+    private db : DatabaseService) { }
 
   ngOnInit() {
   }
 
   ionViewWillEnter(){
-     this.loadPrecription();
+     //this.loadPrecription();
+     this.loadPrescriptionFromSqlLite();
   }
 
-
+  async loadPrescriptionFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getPrescriptionData(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.prescriptions =[];
+              this.prescriptions= res;
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadPrescriptionFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+  
+  
   loadPrecription() {
     this.apiService
       .getPrecription(

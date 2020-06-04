@@ -7,7 +7,7 @@ import { HttpClient } from "@angular/common/http";
 })
 export class ApiService {
   //@ts-checkapiUrl = "http://175.101.1.227:8123";
-  //apiUrl = "http://localhost:3000";
+ // apiUrl = "http://localhost:3000";
   apiUrl = "http://175.101.1.227:8123";
 
   constructor(private http: HttpClient) {}

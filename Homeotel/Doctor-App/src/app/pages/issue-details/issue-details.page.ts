@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: 'app-issue-details',
@@ -22,7 +23,8 @@ export class IssueDetailsPage implements OnInit {
     private apiService: ApiService,
     public commonService: CommonService,
     private utilities: UtilitiesService,
-    private router: Router
+    private router: Router,
+    private loadingController : LoadingController
   ) {}
 
   ngOnInit() {
@@ -33,12 +35,19 @@ export class IssueDetailsPage implements OnInit {
     })
   }
 
-  submit() {
+  async submit() {
     console.log("Form is submitted, values are below");
     console.log("email address -> " + this.email);
     console.log("phoneNumber -> " + this.phoneNumber);
     console.log("description -> " + this.description);
 
+    const loading = await this.loadingController
+        .create({
+          message: "saving...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
     this.apiService
     .saveIssue(
       this.commonService.currentDoctorId,
@@ -48,6 +57,7 @@ export class IssueDetailsPage implements OnInit {
       this.description
     )
     .subscribe(data => {
+      a.dismiss()
       if (this.utilities.isInvalidApiResponseData(data)) {
         console.log(data);
         this.commonService.presentToast(
@@ -63,6 +73,8 @@ export class IssueDetailsPage implements OnInit {
         
         this.router.navigate(['/help-center']);
       }
+    });
+    });
     });
     
 

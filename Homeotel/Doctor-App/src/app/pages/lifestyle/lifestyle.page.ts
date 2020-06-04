@@ -3,6 +3,8 @@ import { ActivatedRoute } from "@angular/router";
 import { ApiService } from "src/app/services/api.service";
 import { CommonService } from "src/app/services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: "app-lifestyle",
@@ -21,19 +23,33 @@ export class LifestylePage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
     public commonService: CommonService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private loadingController : LoadingController,
+    private db : DatabaseService
   ) {}
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       console.log(params);
-      this.loadLifeStyle(params["userId"], params["relativeId"]);
+     // this.loadLifeStyle(params["userId"], params["relativeId"]);
+      this.commonService.currentUserId = params["userId"];
+      this.commonService.currentRelativeId =   params["relativeId"];
     });
+    this.loadLifeStylesFromSqlLite()
   }
 
-  loadLifeStyle(userId, relativeId) {
+ async  loadLifeStyle(userId, relativeId) {
     console.log(userId, relativeId);
+    
+    const loading = await this.loadingController
+        .create({
+          message: "loading...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
     this.apiService.getLifeStyle(userId, relativeId).subscribe(data => {
+      a.dismiss()
       if (this.utilities.isInvalidApiResponseData(data)) {
         console.log(data);
         this.commonService.presentToast("Something went wrong", "toastError");
@@ -61,5 +77,38 @@ export class LifestylePage implements OnInit {
         );
       }
     });
+    });
+    });
+  }
+
+
+  async loadLifeStylesFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getUserLifeStyles(this.commonService.currentUserId , this.commonService.currentRelativeId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.lifeStyles =[];
+              this.lifeStyles= res;
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadLifeStylesFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
   }
 }

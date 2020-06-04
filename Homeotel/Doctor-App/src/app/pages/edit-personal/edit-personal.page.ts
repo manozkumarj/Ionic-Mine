@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "src/app/services/api.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { CommonService } from "src/app/services/common.service";
-import { WheelSelector } from '@ionic-native/wheel-selector/ngx';
-
+import { WheelSelector } from "@ionic-native/wheel-selector/ngx";
+import { DatabaseService } from "src/app/services/database.service";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: "app-edit-personal",
@@ -20,20 +21,19 @@ export class EditPersonalPage implements OnInit {
   inputField = "";
   columnName;
   genderField;
-  years =[];
-  months =[];
-  dates =[];
-  selectedYear ;
+  years = [];
+  months = [];
+  dates = [];
+  selectedYear;
   selectedMonth;
   selectedDate;
   date = new Date();
   currentYear = this.date.getFullYear();
-  
 
   dobYearValue: number = 0;
   dobMonthValue: number = 0;
   dobDateValue: number = 0;
-  
+
   dobDateOptions: any[] = [];
   dobMonthOptions: any[] = [];
   dobYearOptions: any[] = [];
@@ -46,11 +46,13 @@ export class EditPersonalPage implements OnInit {
     private router: Router,
     private apiService: ApiService,
     public commonService: CommonService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private db: DatabaseService,
+    private loadingController: LoadingController
   ) {}
 
   ngOnInit() {
-  //this.loadDates();
+    //this.loadDates();
   }
 
   ionViewWillEnter() {
@@ -58,7 +60,8 @@ export class EditPersonalPage implements OnInit {
       this.CurrentUrl(params["questionNumber"]);
       this.title = `${params["questionNumber"]} of 5`;
     });
-    this.updateData();
+    // this.updateData();
+    this.updateDataFromSqlLite();
   }
 
   CurrentUrl(questionNumber) {
@@ -100,7 +103,6 @@ export class EditPersonalPage implements OnInit {
         this.question = "please select Gender";
         this.columnName = "gender_id";
         this.inputField = this.commonService.doctorPersonal["gender_id"];
-       
 
         break;
       case 5:
@@ -111,10 +113,14 @@ export class EditPersonalPage implements OnInit {
         this.forwardLink = `/doctor-personal`;
         this.columnName = "dob";
         var tempDate;
-        tempDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`;
+        tempDate = `${new Date().getFullYear()}-${
+          new Date().getMonth() + 1
+        }-${new Date().getDate()}`;
         console.log(tempDate);
-        var date= this.commonService.doctorPersonal["dob"] ? this.commonService.doctorPersonal["dob"] : tempDate;
-  
+        var date = this.commonService.doctorPersonal["dob"]
+          ? this.commonService.doctorPersonal["dob"]
+          : tempDate;
+
         // Generating DOB date options
         for (let i = 1; i <= 30; i++) {
           this.dobDateOptions.push({ description: i.toString() });
@@ -133,46 +139,49 @@ export class EditPersonalPage implements OnInit {
         let yearValue = +splitDobValue[0];
         let monthValue = +splitDobValue[1];
         let dateValue = +splitDobValue[2];
-        
-      this.dobYearValue = this.dobYearOptions.findIndex(
-        (year) => year["description"] == yearValue
-      );
-      console.log("yearIndex -> " + this.dobYearValue);
 
-      this.dobMonthValue = this.dobMonthOptions.findIndex(
-        (year) => year["description"] == monthValue
-      );
-      console.log("monthIndex -> " + this.dobMonthValue);
+        this.dobYearValue = this.dobYearOptions.findIndex(
+          (year) => year["description"] == yearValue
+        );
+        console.log("yearIndex -> " + this.dobYearValue);
 
-      this.dobDateValue = this.dobDateOptions.findIndex(
-        (year) => year["description"] == dateValue
-      );
-      console.log("dateIndex -> " + this.dobDateValue);
+        this.dobMonthValue = this.dobMonthOptions.findIndex(
+          (year) => year["description"] == monthValue
+        );
+        console.log("monthIndex -> " + this.dobMonthValue);
 
-      console.log("dobDateOptions are below");
-      console.log(this.dobDateOptions);
-      console.log("dobMonthOptions are below");
-      console.log(this.dobMonthOptions);
-      console.log("dobYearOptions are below");
-      console.log(this.dobYearOptions);
+        this.dobDateValue = this.dobDateOptions.findIndex(
+          (year) => year["description"] == dateValue
+        );
+        console.log("dateIndex -> " + this.dobDateValue);
 
-      this.selectedDob = this.inputField =
-        this.dobYearValue + "-" + this.dobMonthValue + "-" + this.dobDateValue;
-        
+        console.log("dobDateOptions are below");
+        console.log(this.dobDateOptions);
+        console.log("dobMonthOptions are below");
+        console.log(this.dobMonthOptions);
+        console.log("dobYearOptions are below");
+        console.log(this.dobYearOptions);
+
+        this.selectedDob = this.inputField =
+          this.dobYearValue +
+          "-" +
+          this.dobMonthValue +
+          "-" +
+          this.dobDateValue;
+
         this.selectedDob = this.commonService.doctorPersonal["dob"];
 
-      this.selectDob();
+        this.selectDob();
 
-      console.log(
-        this.dobYearValue +
-          " - " +
-          this.dobMonthValue +
-          " - " +
-          this.dobDateValue
-      );
+        console.log(
+          this.dobYearValue +
+            " - " +
+            this.dobMonthValue +
+            " - " +
+            this.dobDateValue
+        );
 
-
-       // this.setDates(date);
+        // this.setDates(date);
         break;
     }
   }
@@ -187,9 +196,6 @@ export class EditPersonalPage implements OnInit {
   //     console.log(this.selectedDate)
   //   }
   // }
-
-
-  
 
   selectDob() {
     this.selector
@@ -241,7 +247,6 @@ export class EditPersonalPage implements OnInit {
       );
   }
 
-
   // loadDates(){
   //     this.years =[];
   //     this.months =[];
@@ -265,32 +270,70 @@ export class EditPersonalPage implements OnInit {
     this.router.navigate([this.forwardLink]);
   }
 
-  submit() {
-    var columnValue
-  
+  async submit() {
+    var columnValue;
+
     columnValue = this.inputField;
-    console.log(columnValue)
+    console.log(columnValue);
     if (columnValue) {
-      this.apiService
-        .updateProfileDetails(
-          this.commonService.currentDoctorId,
-          this.columnName,
-          columnValue
-        )
-        .subscribe((data) => {
-          console.log("Returned from Backend");
-          console.log(JSON.stringify(data));
-          if (this.utilities.isInvalidApiResponseData(data)) {
-            console.log("Returned Error");
-            console.log(data[0][0]);
-            if (data[0][0]["error"]) {
-              console.log("Something went wrong");
-            }
-          } else {
-            console.log("Returned Success");
-            this.updateData();
-            this.router.navigate([this.forwardLink]);
-          }
+      const loading = await this.loadingController
+        .create({
+          message: "Loading...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
+            this.apiService
+              .updateProfileDetails(
+                this.commonService.currentDoctorId,
+                this.columnName,
+                columnValue
+              )
+              .subscribe((data) => {
+                console.log("Returned from Backend");
+                console.log(JSON.stringify(data));
+                if (this.utilities.isInvalidApiResponseData(data)) {
+                  a.dismiss();
+                  console.log("Returned Error");
+                  console.log(data[0][0]);
+                  if (data[0][0]["error"]) {
+                    console.log("Something went wrong");
+                  }
+                } else {
+                  console.log("Returned Success");
+                  let res = data[0][0];
+                  if (data[0][0]["query"]) {
+                    let receivedQuery = res["query"];
+                    console.log(receivedQuery);
+                    this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        a.dismiss();
+                        this.updateDataFromSqlLite();
+                        this.router.navigate([this.forwardLink]);
+                        this.commonService.presentToast(
+                          "data Updated successfully",
+                          "toastSuccess"
+                        );
+                      })
+                      .catch((error) => {
+                        this.utilities.sqlLiteErrorTrigger("submit", error);
+                        this.commonService.presentToast(
+                          "Something went wrong",
+                          "toastError"
+                        );
+                        a.dismiss();
+                        console.error(JSON.stringify(error));
+                      });
+                  } else {
+                    this.commonService.presentToast(
+                      "Something went wrong",
+                      "toastError"
+                    );
+                  }
+                }
+              });
+          });
         });
     } else {
       alert("Please provide value");
@@ -306,11 +349,47 @@ export class EditPersonalPage implements OnInit {
           this.commonService.presentToast("Something went wrong", "toastError");
         } else {
           console.log(data);
-        
+
           this.commonService.doctorPersonal = data[0][0];
           this.commonService.currentDoctorName = data[0][0]["name"];
           console.log(this.commonService.currentDoctorName);
         }
+      });
+  }
+
+  async updateDataFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorPersonalDetails(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              console.log(res);
+              if (res) {
+                this.commonService.currentDoctorPhoto = res["photo"];
+
+                this.commonService.doctorPersonal = res;
+
+                this.commonService.currentDoctorName = res[0][0]["name"];
+              }
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger(
+                "updateDataFromSqlLite",
+                error
+              );
+              this.commonService.presentToast(
+                "Something went wrong",
+                "toastError"
+              );
+              console.error(JSON.stringify(error));
+            });
+          a.dismiss();
+        });
       });
   }
 }

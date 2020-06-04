@@ -7,6 +7,8 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { ApiService } from "src/app/services/api.service";
 import { CommonService } from "src/app/services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: "app-kit-details",
@@ -35,7 +37,9 @@ export class KitDetailsPage implements OnInit {
     private camera: Camera,
     private apiService: ApiService,
     public commonService: CommonService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private loadingController : LoadingController,
+    private db : DatabaseService
   ) {}
 
   ngOnInit() {
@@ -44,7 +48,8 @@ export class KitDetailsPage implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.kitDetailTypeCheck(params["type"]);
       if (params["id"] && params["id"] != undefined) {
-        this.loadKitDetail(params["id"]);
+       // this.loadKitDetail(params["id"]);
+       this.loadKitDetailFromSqlLite((params["id"]));
       }
     });
   }
@@ -61,11 +66,20 @@ export class KitDetailsPage implements OnInit {
       kitPrice: this.kitPrice
     });
   }
-  loadKitDetail(kitId) {
+  async loadKitDetail(kitId) {
     this.kitId = kitId;
+    
+    const loading = await this.loadingController
+        .create({
+          message: "loading...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
     this.apiService
       .getHomeoKitDetail(this.commonService.currentDoctorId, kitId)
       .subscribe(data => {
+        a.dismiss()
         if (this.utilities.isInvalidApiResponseData(data)) {
           console.log(data);
           this.commonService.presentToast("Something went wrong", "toastError");
@@ -77,6 +91,8 @@ export class KitDetailsPage implements OnInit {
             "toastSuccess"
           );
         }
+      });
+      });
       });
   }
 
@@ -96,8 +112,16 @@ export class KitDetailsPage implements OnInit {
     }
   }
 
-  saveKit() {
+  async saveKit() {
     if (this.kitId) {
+      
+    const loading = await this.loadingController
+    .create({
+      message: "saving...",
+      translucent: true,
+    })
+    .then((a) => {
+      a.present().then(async (res) => {
       this.apiService
         .updateHomeoKit(
           this.commonService.currentDoctorId,
@@ -108,6 +132,7 @@ export class KitDetailsPage implements OnInit {
           this.kitImage
         )
         .subscribe(data => {
+          a.dismiss();
           if (this.utilities.isInvalidApiResponseData(data)) {
             console.log(data);
             this.commonService.presentToast(
@@ -116,14 +141,53 @@ export class KitDetailsPage implements OnInit {
             );
           } else {
             console.log(data);
-            this.router.navigate(["/homeo-kits"]);
-            this.commonService.presentToast(
-              "kit Details Updated successfully",
-              "toastSuccess"
-            );
+            let res = data[0][0];
+            if (data[0][0]["query"]) {
+              let receivedQuery = res["query"];
+              console.log(receivedQuery);
+              this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        a.dismiss();
+                        this.router.navigate(["/homeo-kits"]);
+                        this.commonService.presentToast(
+                          "kit Details Updated successfully",
+                          "toastSuccess"
+                        );
+                      })
+                      .catch((error) => {
+                        this.utilities.sqlLiteErrorTrigger( "saveKit" , error);
+                        this.commonService.presentToast(
+                          "Something went wrong",
+                          "toastError"
+                        );
+                        a.dismiss();
+                        console.error(
+                            JSON.stringify(error)
+                        );
+                      });
+             
+            }
+              else{
+                this.commonService.presentToast(
+                  "Something went wrong",
+                  "toastError"
+                );
+              }
+            
           }
         });
+        });
+        });
     } else {
+      
+    const loading = await this.loadingController
+    .create({
+      message: "saving...",
+      translucent: true,
+    })
+    .then((a) => {
+      a.present().then(async (res) => {
       this.apiService
         .saveHomeoKits(
           this.commonService.currentDoctorId,
@@ -133,6 +197,7 @@ export class KitDetailsPage implements OnInit {
           this.kitImage
         )
         .subscribe(data => {
+          a.dismiss()
           if (this.utilities.isInvalidApiResponseData(data)) {
             console.log(data);
             this.commonService.presentToast(
@@ -141,12 +206,43 @@ export class KitDetailsPage implements OnInit {
             );
           } else {
             console.log(data);
-            this.router.navigate(["/homeo-kits"]);
-            this.commonService.presentToast(
-              "kit Details saved successfully",
-              "toastSuccess"
-            );
+            let res = data[0][0];
+            if (data[0][0]["query"]) {
+              let receivedQuery = res["query"];
+              console.log(receivedQuery);
+              this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        a.dismiss();
+                        
+                        this.router.navigate(["/homeo-kits"]);
+                        this.commonService.presentToast(
+                          "kit Details saved successfully",
+                          "toastSuccess"
+                        );
+                      })
+                      .catch((error) => {
+                        this.utilities.sqlLiteErrorTrigger( "saveKit" , error);
+                        this.commonService.presentToast(
+                          "Something went wrong",
+                          "toastError"
+                        );
+                        a.dismiss();
+                        console.error(
+                            JSON.stringify(error)
+                        );
+                      });
+             
+            }
+              else{
+                this.commonService.presentToast(
+                  "Something went wrong",
+                  "toastError"
+                );
+              }
           }
+        });
+        });
         });
     }
     
@@ -210,4 +306,36 @@ export class KitDetailsPage implements OnInit {
       }
     );
   }
+
+
+  async loadKitDetailFromSqlLite(kitId) {
+    this.kitId = kitId
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getKitDetail(this.commonService.currentDoctorId , this.kitId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.setKitDetail(res);
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadKitDetailFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+
 }

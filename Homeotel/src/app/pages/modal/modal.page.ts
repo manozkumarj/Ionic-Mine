@@ -657,10 +657,10 @@ export class ModalPage implements OnInit {
                   });
               } else {
                 a.dismiss();
-                this.utilities.sqliteErrorDisplayer(
-                  "modal * AddDoctor",
-                  "professional property is not received from backend SP"
-                );
+                // this.utilities.sqliteErrorDisplayer(
+                //   "modal * AddDoctor",
+                //   "professional property is not received from backend SP"
+                // );
                 console.log(
                   "professional property is not received from backend SP"
                 );
@@ -737,7 +737,6 @@ export class ModalPage implements OnInit {
                 );
                 console.log("mode property is not received from backend SP");
               }
-
             }
             this.router.navigate(["/home"]);
           });

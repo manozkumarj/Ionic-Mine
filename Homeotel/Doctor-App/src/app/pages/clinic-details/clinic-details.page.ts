@@ -4,6 +4,8 @@ import { ApiService } from "src/app/services/api.service";
 import { CommonService } from "src/app/services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { FormGroup, FormControl } from "@angular/forms";
+import { DatabaseService } from 'src/app/services/database.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: "app-clinic-details",
@@ -26,7 +28,9 @@ export class ClinicDetailsPage implements OnInit {
     private router: Router,
     private apiService: ApiService,
     public commonService: CommonService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private db : DatabaseService , 
+    private loadingController : LoadingController
   ) {}
 
   ngOnInit() {
@@ -35,7 +39,8 @@ export class ClinicDetailsPage implements OnInit {
     this.activatedRoute.params.subscribe(params => {
      
       if (params["id"] && params["id"] != undefined) {
-        this.loadClinicDetail(params["id"]);
+        //this.loadClinicDetail(params["id"]);
+        this.loadClinicDetailFromSqlLite(params["id"])
       }
     });
   }
@@ -127,7 +132,7 @@ export class ClinicDetailsPage implements OnInit {
     this.weekDays = tempDates.join();
     console.log(this.weekDays)
   }
-  save() {
+  async save() {
   
     this.formatingDates()
     
@@ -138,6 +143,13 @@ export class ClinicDetailsPage implements OnInit {
       this.formatingDates();
     }
     if (this.clinicId) {
+      const loading = await this.loadingController
+      .create({
+        message: "loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
       this.apiService
         .updateClinic(
           this.commonService.currentDoctorId,
@@ -158,15 +170,57 @@ export class ClinicDetailsPage implements OnInit {
             );
           } else {
             console.log(data);
-            this.router.navigate(["/doctor-clinics"]);
-            this.commonService.presentToast(
-              "clinic Details Updated successfully",
-              "toastSuccess"
-            );
+            let res = data[0][0];
+          if (data[0][0]["query"]) {
+            let receivedQuery = res["query"];
+            console.log(receivedQuery);
+            this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      this.router.navigate(["/doctor-clinics"]);
+                      this.commonService.presentToast(
+                        "clinic Details Updated successfully",
+                        "toastSuccess"
+                      );
+                      this.commonService.presentToast(
+                        "data Updated successfully",
+                        "toastSuccess"
+                      );
+                    })
+                    .catch((error) => {
+                      this.utilities.sqlLiteErrorTrigger( "save" , error);
+                      this.commonService.presentToast(
+                        "Something went wrong",
+                        "toastError"
+                      );
+                      a.dismiss();
+                      console.error(
+                          JSON.stringify(error)
+                      );
+                    });
+           
           }
+            else{
+              this.commonService.presentToast(
+                "Something went wrong",
+                "toastError"
+              );
+            }
+           
+          }
+        });
+        });
         });
     } else {
       console.log(this.clinicForm.value ,"save")
+      const loading = await this.loadingController
+      .create({
+        message: "loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
       this.apiService
         .saveClinic(
           this.commonService.currentDoctorId,
@@ -186,13 +240,80 @@ export class ClinicDetailsPage implements OnInit {
             );
           } else {
             console.log(data);
-            this.router.navigate(["/doctor-clinics"]);
+            
+            
+            let res = data[0][0];
+          if (data[0][0]["query"]) {
+            let receivedQuery = res["query"];
+            console.log(receivedQuery);
+            this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      this.router.navigate(["/doctor-clinics"]);
             this.commonService.presentToast(
               "clinic Details saved successfully",
               "toastSuccess"
             );
+                    })
+                    .catch((error) => {
+                      this.utilities.sqlLiteErrorTrigger( "save" , error);
+                      this.commonService.presentToast(
+                        "Something went wrong",
+                        "toastError"
+                      );
+                      a.dismiss();
+                      console.error(
+                          JSON.stringify(error)
+                      );
+                    });
+           
           }
+            else{
+              this.commonService.presentToast(
+                "Something went wrong",
+                "toastError"
+              );
+            }
+          }
+        });
+        });
         });
     }
   }
+
+  
+  async loadClinicDetailFromSqlLite(clinicId) {
+    this.clinicId = clinicId;
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getClinicDetails(this.commonService.currentDoctorId , this.clinicId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              if(res.length >0){
+                this.setClinicDetail(res);
+              
+             }
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadClinicDetailFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+
 }

@@ -3,6 +3,8 @@ import { ApiService } from 'src/app/services/api.service';
 import { CommonService } from 'src/app/services/common.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
 import { ActivatedRoute } from '@angular/router';
+import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-user-consultation-details',
@@ -15,21 +17,35 @@ export class UserConsultationDetailsPage implements OnInit {
     private apiService: ApiService,
     public commonService: CommonService,
     private utilities: UtilitiesService,
-    private activatedRoute : ActivatedRoute
+    private activatedRoute : ActivatedRoute,
+    private loadingController : LoadingController,
+    private db : DatabaseService
   ) {}
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       console.log(params);
-      this.loaduserConsultations(params["userId"], params["relativeId"]);
+      //this.loaduserConsultations(params["userId"], params["relativeId"]);
+      this.commonService.currentUserId = params["userId"];
+      this.commonService.currentRelativeId =  params["relativeId"];
     });
+    this.loadUserPreviousConsltationsFromSqlLite()
     
   }
 
-  loaduserConsultations(userId , relativeId) {
+  async loaduserConsultations(userId , relativeId) {
+    
+    const loading = await this.loadingController
+        .create({
+          message: "loading...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
     this.apiService
       .getUserPreviousConsultations(this.commonService.currentDoctorId , userId , relativeId)
       .subscribe(data => {
+        a.dismiss();
         if (this.utilities.isInvalidApiResponseData(data)) {
           console.log(data);
           this.commonService.presentToast("Something went wrong", "toastError");
@@ -65,6 +81,40 @@ export class UserConsultationDetailsPage implements OnInit {
           );
         }
       });
+      });
+      });
+  }
+
+
+  async loadUserPreviousConsltationsFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getUserPreviousConsultations(this.commonService.currentDoctorId , this.commonService.currentUserId , this.commonService.currentRelativeId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.userPreviousConsultations =[];
+              this.userPreviousConsultations= res;
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadUserPreviousConsltationsFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
   }
 }
+
 

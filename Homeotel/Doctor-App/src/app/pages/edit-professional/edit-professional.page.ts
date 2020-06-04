@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "src/app/services/api.service";
 import { CommonService } from "src/app/services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { DatabaseService } from 'src/app/services/database.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: "app-edit-professional",
@@ -26,7 +28,9 @@ export class EditProfessionalPage implements OnInit {
     private router: Router,
     private apiService: ApiService,
     public commonService: CommonService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private db : DatabaseService,
+    private loadingController : LoadingController
   ) {}
 
   ngOnInit() {}
@@ -57,7 +61,8 @@ export class EditProfessionalPage implements OnInit {
         this.filteredList = [];
         this.filteredList = this.unSelectedList;
 
-        this.updateData(this.columnName);
+       // this.updateData(this.columnName);
+        this.updateDataFromSqlLite(this.columnName);
 
         break;
       case 2:
@@ -67,7 +72,8 @@ export class EditProfessionalPage implements OnInit {
         this.forwardLink = "/edit-professional/1/2/3";
         this.backwardLink = "/edit-professional/1";
         this.columnName = "experience";
-        this.updateData(this.columnName);
+       // this.updateData(this.columnName);
+        this.updateDataFromSqlLite(this.columnName);
         break;
       case 3:
         console.log("3");
@@ -86,7 +92,8 @@ export class EditProfessionalPage implements OnInit {
         this.filteredList = [];
         this.filteredList = this.unSelectedList;
 
-        this.updateData(this.columnName);
+       // this.updateData(this.columnName);
+        this.updateDataFromSqlLite(this.columnName);
 
 
         break;
@@ -108,7 +115,8 @@ export class EditProfessionalPage implements OnInit {
         this.filteredList = [];
         this.filteredList = this.unSelectedList;
 
-        this.updateData(this.columnName);
+       // this.updateData(this.columnName);
+        this.updateDataFromSqlLite(this.columnName);
 
         break;
       case 5:
@@ -129,7 +137,8 @@ export class EditProfessionalPage implements OnInit {
         this.filteredList = [];
         this.filteredList = this.unSelectedList;
 
-        this.updateData(this.columnName);
+       // this.updateData(this.columnName);
+        this.updateDataFromSqlLite(this.columnName);
 
         break;
     }
@@ -178,7 +187,7 @@ export class EditProfessionalPage implements OnInit {
     this.router.navigate([this.forwardLink]);
   }
 
-  submit() {
+  async submit() {
    var columnValue
     if(this.isTextField){
       columnValue = this.inputField;
@@ -193,7 +202,13 @@ export class EditProfessionalPage implements OnInit {
          columnValue = selectedIds.join();
       }
     
-   
+      const loading = await this.loadingController
+      .create({
+        message: "loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
       this.apiService
       .saveProfessional(
         this.commonService.currentDoctorId,
@@ -205,9 +220,43 @@ export class EditProfessionalPage implements OnInit {
           console.log(data);
           this.commonService.presentToast("Something went wrong", "toastError");
         } else {
-        
-          this.router.navigate([this.forwardLink]);
+          let res = data[0][0];
+          if (data[0][0]["query"]) {
+            let receivedQuery = res["query"];
+            console.log(receivedQuery);
+            this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      this.router.navigate([this.forwardLink]);
+                      this.commonService.presentToast(
+                        "data Updated successfully",
+                        "toastSuccess"
+                      );
+                    })
+                    .catch((error) => {
+                      this.utilities.sqlLiteErrorTrigger( "submit" , error);
+                      this.commonService.presentToast(
+                        "Something went wrong",
+                        "toastError"
+                      );
+                      a.dismiss();
+                      console.error(
+                          JSON.stringify(error)
+                      );
+                    });
+           
+          }
+            else{
+              this.commonService.presentToast(
+                "Something went wrong",
+                "toastError"
+              );
+            }
+          
         }
+      });
+      });
       });
   }
 
@@ -257,4 +306,65 @@ export class EditProfessionalPage implements OnInit {
     
       });
   }
+  async updateDataFromSqlLite(id) {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorProfessional(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              if(res.length >0){
+                if(this.isTextField){
+                  this.inputField = res[id];
+               }
+               if(res[id]){
+                var dataBaseIds = res[id].split(",");
+                console.log(dataBaseIds)
+                this.unSelectedList.forEach(data =>
+                {
+                  dataBaseIds.forEach(id => {
+                    if (data.id == +id) {
+                      data.isSelected = true;
+                    }
+                  });
+                });
+                console.log(this.unSelectedList);
+                console.log(this.selectedList);
+                this.selectedList= [];
+                this.unSelectedList.forEach(data=>{
+                  if(data.isSelected== true){
+                    this.selectedList.push(data)
+                  }
+                });
+                console.log(this.selectedList);
+              }
+             
+              
+             
+              
+                
+              
+             }
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "updateDataFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+ 
+
 }

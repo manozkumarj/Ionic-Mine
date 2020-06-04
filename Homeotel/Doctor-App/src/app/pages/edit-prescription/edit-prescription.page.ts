@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "src/app/services/api.service";
 import { CommonService } from "src/app/services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingController } from '@ionic/angular';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: "app-edit-prescription",
@@ -38,7 +40,9 @@ export class EditPrescriptionPage implements OnInit {
     private router: Router,
     private apiService: ApiService,
     public commonService: CommonService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private loadingController : LoadingController,
+    private db : DatabaseService
   ) {}
 
   ngOnInit() {}
@@ -46,8 +50,12 @@ export class EditPrescriptionPage implements OnInit {
   ionViewWillEnter() {
     this.activatedRoute.params.subscribe((params) => {
       this.currentUrl(params["type"]);   
-    this.loadMasters();
-    this.updateData();
+    //this.loadMasters();
+    this.loadMastersFromSqlLite();
+    this.loadPotenciesMasters();
+    this.loadDrugs();
+   // this.updateData();
+    this.updateDataFromSqlLite()
     });
     
   }
@@ -102,6 +110,7 @@ export class EditPrescriptionPage implements OnInit {
         this.dateOptions.push({ description: i.toString() });
       }
       this.updateData()
+      this.updateDataFromSqlLite();
       this.dateValue = this.daysFromDatabase? this.daysFromDatabase:1;
       this.selectDays();
       console.log("dateOptions are below");
@@ -159,6 +168,93 @@ export class EditPrescriptionPage implements OnInit {
     })
 
   }
+  async loadMastersFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getPrecriptionMasters()
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.resetMasters();
+              res.forEach((data) => {
+                if (data.master_type == "drugs") {
+                  this.unSelectedList.push({
+                    id: data.id,
+                    name: data.name,
+                    isCurrentDrug : false
+                  });
+                } else if (data.master_type == "scale") {
+                  this.scales.push({
+                    id: data.id,
+                    name: data.name,
+                  });
+                } else if (data.master_type == "instruction") {
+                  this.instructions.push({
+                    id: data.id,
+                    name: data.name,
+                    isSelected: false,
+                  });
+                }
+              });
+             
+            
+           
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadMastersFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+  
+  
+  async loadPotenciesMasters() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getPotenciesMasters()
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.potencies = [];
+              this.potencies = res;
+             
+            
+           
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadPotenciesMasters" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+  
+  
 
   loadMasters() {
     this.apiService.getMasters().subscribe((data) => {
@@ -223,7 +319,7 @@ export class EditPrescriptionPage implements OnInit {
     this.submit();
   }
 
-  submit() {
+ async submit() {
     if (this.currentTitle == "Instructions") {
       var instructionIds = [];
       this.instructions.forEach((data) => {
@@ -237,6 +333,14 @@ export class EditPrescriptionPage implements OnInit {
      if(this.currentTitle =="No of days"){
        this.columnValue = this.selectedDate
      }
+     const loading = await this.loadingController
+     .create({
+       message: "saving...",
+       translucent: true,
+     })
+     .then((a) => {
+       a.present().then(async (res) => {
+    
     this.apiService
       .savePrescription(
         this.commonService.currentAppointmentId,
@@ -248,11 +352,41 @@ export class EditPrescriptionPage implements OnInit {
         this.columnValue
       )
       .subscribe((data) => {
+        a.dismiss();
         if (this.utilities.isInvalidApiResponseData(data)) {
           console.log(data);
         } else {
-          this.router.navigate([this.forwardLink]);
+          
+          let res = data[0][0];
+          if (data[0][0]["query"]) {
+            let receivedQuery = res["query"];
+            console.log(receivedQuery);
+            this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      this.router.navigate([this.forwardLink]);
+                      this.commonService.presentToast(
+                        "data Updated successfully",
+                        "toastSuccess"
+                      );
+                    })
+                    .catch((error) => {
+                      this.utilities.sqlLiteErrorTrigger( "submit" , error);
+                      this.commonService.presentToast(
+                        "Something went wrong",
+                        "toastError"
+                      );
+                      a.dismiss();
+                      console.error(
+                          JSON.stringify(error)
+                      );
+                    });
+           
+          }
         }
+      });
+      });
       });
   }
 
@@ -289,7 +423,63 @@ export class EditPrescriptionPage implements OnInit {
     this.columnValue = potencyId;
     this.submit();
   }
+  async updateDataFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDrugDetail(
+              this.commonService.currentAppointmentId,
+              this.commonService.currentDoctorId,
+              this.commonService.currentUserId,
+              this.commonService.currentRelativeId,
+              this.commonService.currentDrugId
+            )
+            .then((res: any[]) => {
+              
+              console.log(res);
+              if (res.length > 0 )
+           {
+            this.inputField = res[this.columnName];
+            console.log(this.columnName);
+            if (res["scale_id"]) {
+              this.filterPotency(res["scale_id"]);
+              
+            this.inputField = res[this.columnName];
+            }
 
+            if(res["no_of_days"]){
+              this.daysFromDatabase = res["no_of_days"]
+            }
+            if (res["instruction_id"]) {
+              var dataBaseIds = res["instruction_id"].split(",");
+              this.instructions.forEach((data) => {
+                dataBaseIds.forEach((id) => {
+                  if (data.id == +id) {
+                    data.isSelected = true;
+                  }
+                });
+              });
+            }
+          }
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "updateDataFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
   updateData() {
     console.log("hi");
     this.apiService
@@ -305,7 +495,8 @@ export class EditPrescriptionPage implements OnInit {
           console.log(data);
           this.commonService.presentToast("Something went wrong", "toastError");
         } else {
-          if (data[0].length > 0 ) {
+          if (data[0].length > 0 )
+           {
             this.inputField = data[0][0][this.columnName];
             console.log(this.columnName);
             if (data[0][0]["scale_id"]) {

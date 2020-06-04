@@ -73,4 +73,8 @@ export class UtilitiesService {
       ? "invalid_error_msg"
       : "";
   }
+
+  sqlLiteErrorTrigger( functionName , error){
+   alert(functionName + " - " + JSON.stringify(error));
+  }
 }

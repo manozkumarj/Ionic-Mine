@@ -5,6 +5,9 @@ import { CommonService } from "src/app/services/common.service";
 import { ApiService } from "src/app/services/api.service";
 import { ToastController } from "@ionic/angular";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-login",
@@ -19,7 +22,7 @@ export class LoginPage implements OnInit {
   regUserName;
   regEmail;
   regPassword;
-  flag =0;
+  flag = 0;
 
   formsDivHeight = "215px";
 
@@ -32,8 +35,11 @@ export class LoginPage implements OnInit {
   constructor(
     private router: Router,
     public commonService: CommonService,
+    public auth: AuthService,
     private apiService: ApiService,
     private toastController: ToastController,
+    private loadingController: LoadingController,
+    private db: DatabaseService,
     private utilities: UtilitiesService
   ) {}
 
@@ -91,7 +97,7 @@ export class LoginPage implements OnInit {
     console.log("login() triggered");
   }
 
-  submit() {
+  async submit() {
     console.log(this.registrationForm.value);
     let focused;
 
@@ -101,40 +107,53 @@ export class LoginPage implements OnInit {
         this.commonService.presentToast("Please enter details", "toastError");
         return;
       }
-      this.apiService
-        .login(this.userName.value, this.password.value)
-        .subscribe((data) => {
-          if (this.utilities.isInvalidApiResponseData(data)) {
-            this.commonService.presentToast(
-              "Something went wrong",
-              "toastError"
-            );
-          } else {
-            let userData = data[0];
-            console.log(userData);
-            if (userData.length == 0) {
-              this.commonService.presentToast(
-                "Invalid username or password.please try again",
-                "toastError"
-              );
-            } else {
-              console.log(userData);
-              this.commonService.currentDoctorId = userData[0]["id"];
-              this.commonService.currentDoctorName = userData[0]["name"];
 
-              if (userData[0]["photo"]) {
-                this.commonService.currentDoctorPhoto = userData[0]["photo"];
-              }
+      const loading = await this.loadingController
+        .create({
+          message: "Please wait...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
+            this.apiService
+              .login(this.userName.value, this.password.value)
+              .subscribe((data) => {
+                a.dismiss();
+                if (this.utilities.isInvalidApiResponseData(data)) {
+                  this.commonService.presentToast(
+                    "Something went wrong",
+                    "toastError"
+                  );
+                } else {
+                  let userData = data[0];
+                  console.log(userData);
+                  if (userData.length == 0) {
+                    this.commonService.presentToast(
+                      "Invalid username or password.please try again",
+                      "toastError"
+                    );
+                  } else {
+                    console.log(userData);
+                    this.auth.isLoggedIn = true;
+                    this.commonService.currentDoctorId = userData[0]["id"];
+                    this.commonService.currentDoctorName = userData[0]["name"];
 
-              console.log(this.commonService.currentDoctorId);
-              this.commonService.presentToast(
-                "logged succesfully",
-                "toastSuccess"
-              );
-              this.router.navigate(["/home"]);
-              this.loginForm.reset();
-            }
-          }
+                    if (userData[0]["photo"]) {
+                      this.commonService.currentDoctorPhoto =
+                        userData[0]["photo"];
+                    }
+
+                    console.log(this.commonService.currentDoctorId);
+                    this.commonService.presentToast(
+                      "logged succesfully",
+                      "toastSuccess"
+                    );
+                    this.router.navigate(["/home"]);
+                    this.loginForm.reset();
+                  }
+                }
+              });
+          });
         });
     } else {
       focused = "register";
@@ -146,35 +165,114 @@ export class LoginPage implements OnInit {
         this.commonService.presentToast("Please enter details", "toastError");
         return;
       }
-      this.apiService
-        .register(
-          this.regUserName.value,
-          this.regEmail.value,
-          this.regPassword.value
-        )
-        .subscribe((data) => {
-          if (this.utilities.isInvalidApiResponseData(data)) {
-            if (data[0][0]["error"].toString().includes("username")) {
-              this.commonService.presentToast(
-                "user name already exits .please login",
-                "toastError"
-              );
-              this.login();
-            } else {
-              console.log(data);
-              this.commonService.presentToast(
-                "Something went wrong",
-                "toastError"
-              );
-            }
-          } else {
-            this.commonService.presentToast(
-              "registered successfully.please login",
-              "toastSuccess"
-            );
-            this.login();
-            this.registrationForm.reset();
-          }
+      const loading = await this.loadingController
+        .create({
+          message: "Please wait...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
+            this.apiService
+              .register(
+                this.regUserName.value,
+                this.regEmail.value,
+                this.regPassword.value
+              )
+              .subscribe((data) => {
+                console.log("Returned from Backend");
+                console.log(data);
+                a.dismiss();
+                if (this.utilities.isInvalidApiResponseData(data)) {
+                  if (data[0][0]["error"].toString().includes("username")) {
+                    this.commonService.presentToast(
+                      "user name already exits .please login",
+                      "toastError"
+                    );
+                    this.login();
+                  } else {
+                    console.log(data);
+                    this.commonService.presentToast(
+                      "Something went wrong",
+                      "toastError"
+                    );
+                  }
+                } else {
+                  // d_doctor related
+                  let res = data[0][0];
+                  if (res["query"]) {
+                    let receivedQuery = res["query"];
+                    console.log(receivedQuery);
+
+                    this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        a.dismiss();
+                        console.log("signup details saved successfully");
+                      })
+                      .catch((error) => {
+                        this.utilities.sqlLiteErrorTrigger(
+                          "login * register",
+                          error
+                        );
+                        a.dismiss();
+                        console.error(
+                          "Error -> signup crudOperations function returned error." +
+                            JSON.stringify(error)
+                        );
+                      });
+                  } else {
+                    a.dismiss();
+                    this.utilities.sqlLiteErrorTrigger(
+                      "login * register",
+                      "Query property is not received from backend SP"
+                    );
+                    console.log(
+                      "Query property is not received from backend SP"
+                    );
+                  }
+
+                  // dd_mode related
+                  if (data[0][0]["query1"]) {
+                    let receivedQuery1 = data[0][0]["query1"];
+                    console.log(receivedQuery1);
+
+                    this.db
+                      .crudOperations(receivedQuery1)
+                      .then((res) => {
+                        a.dismiss();
+                        console.log("signup details saved successfully");
+                      })
+                      .catch((error) => {
+                        this.utilities.sqlLiteErrorTrigger(
+                          "login * register",
+                          error
+                        );
+                        a.dismiss();
+                        console.error(
+                          "Error -> signup crudOperations function returned error." +
+                            JSON.stringify(error)
+                        );
+                      });
+                  } else {
+                    a.dismiss();
+                    this.utilities.sqlLiteErrorTrigger(
+                      "login * register",
+                      "Query1 property is not received from backend SP"
+                    );
+                    console.log(
+                      "Query1 property is not received from backend SP"
+                    );
+                  }
+
+                  this.commonService.presentToast(
+                    "registered successfully.please login",
+                    "toastSuccess"
+                  );
+                  this.login();
+                  this.registrationForm.reset();
+                }
+              });
+          });
         });
     }
     console.log("submit() triggered - focused form is -> " + focused);

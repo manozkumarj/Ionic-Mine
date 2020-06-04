@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
+import { DatabaseService } from 'src/app/services/database.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-doctor-clinics',
@@ -19,7 +21,9 @@ export class DoctorClinicsPage implements OnInit {
   constructor(
     public commonService: CommonService,
     private apiService: ApiService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private db : DatabaseService,
+    private loadingController : LoadingController
   ) {}
 
 
@@ -28,7 +32,8 @@ export class DoctorClinicsPage implements OnInit {
   }
 
   ionViewWillEnter(){
-  this.loadClinics()
+ // this.loadClinics()
+ this.loadClinicsFromSqlLite();
   }
 
 
@@ -55,6 +60,39 @@ export class DoctorClinicsPage implements OnInit {
             "toastSuccess"
           );
         }
+      });
+  }
+ 
+  async loadClinicsFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorClinics(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              if(res.length >0){
+                this.clinics = []  ;
+                this.clinics = res;
+              
+             }
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadClinicsFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
       });
   }
 

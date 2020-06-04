@@ -7,6 +7,8 @@ import { DatePipe } from "@angular/common";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ActionSheetController } from "@ionic/angular";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
+import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: "app-doctor-personal",
@@ -27,13 +29,17 @@ export class DoctorPersonalPage implements OnInit {
     private camera: Camera,
     private apiService: ApiService,
     public commonService: CommonService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private loadingController : LoadingController,
+    private db : DatabaseService
   ) {}
 
   ngOnInit() {}
 
   ionViewWillEnter() {
-    this.loadMasters();
+    //this.loadMasters();
+    this.loadMastersFromSqlLite()
+    
   }
 
   uploadPhoto() {
@@ -123,10 +129,19 @@ export class DoctorPersonalPage implements OnInit {
   }
 
 
-  loadProfile(){
+  async loadProfile(){
+    
+    const loading = await this.loadingController
+        .create({
+          message: "loading...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
     this.apiService
     .getProfile(this.commonService.currentDoctorId)
     .subscribe((data) => {
+      a.dismiss();
       if (this.utilities.isInvalidApiResponseData(data)) {
         console.log(data);
         this.commonService.presentToast("Something went wrong", "toastError");
@@ -164,10 +179,19 @@ export class DoctorPersonalPage implements OnInit {
         );
       }
     });
+    });
+    });
 
   }
 
-  saveDoctorImage(photo){
+ async  saveDoctorImage(photo){
+  const loading = await this.loadingController
+  .create({
+    message: "Loading...",
+    translucent: true,
+  })
+  .then((a) => {
+    a.present().then(async (res) => {
     
     this.apiService
     .saveDoctorImage(
@@ -183,14 +207,143 @@ export class DoctorPersonalPage implements OnInit {
         );
       } else {
         console.log(data);
-        this.commonService.presentToast(
-          "issue Details saved successfully",
-          "toastSuccess"
-        );
-        this.loadProfile()
+        let res = data[0][0];
+          if (data[0][0]["query"]) {
+            let receivedQuery = res["query"];
+            console.log(receivedQuery);
+            this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      this.loadProfile()
+                      this.commonService.presentToast(
+                        "data Updated successfully",
+                        "toastSuccess"
+                      );
+                    })
+                    .catch((error) => {
+                      this.utilities.sqlLiteErrorTrigger( "saveDoctorImage" , error);
+                      this.commonService.presentToast(
+                        "Something went wrong",
+                        "toastError"
+                      );
+                      a.dismiss();
+                      console.error(
+                          JSON.stringify(error)
+                      );
+                    });
+           
+          }
+            else{
+              this.commonService.presentToast(
+                "Something went wrong",
+                "toastError"
+              );
+            }
+          
+      
+        
         
       }
     });
+    });
+    });
 
   }
+
+  
+  async loadPersonalDetailsFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorPersonalDetails(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.commonService.currentDoctorPhoto = res["photo"];
+        
+        this.commonService.doctorPersonal = res;
+        console.log(this.commonService.doctorPersonal["name"]);
+        this.name = this.commonService.doctorPersonal["name"]
+          ? this.commonService.doctorPersonal["name"]
+          : "Enter";
+        this.phone = this.commonService.doctorPersonal["phone"]
+          ? this.commonService.doctorPersonal["phone"]
+          : "Enter";
+        this.email = this.commonService.doctorPersonal["email"]
+          ? this.commonService.doctorPersonal["email"]
+          : "Enter";
+        this.gender = this.commonService.doctorPersonal["gender_id"];
+        if (this.gender) {
+          this.gender = this.commonService.genders.find(
+            (data) => data.id == this.gender
+          )["name"];
+        } else {
+          this.gender = "Select";
+        }
+
+        this.dob = this.commonService.doctorPersonal["dob"]
+          ? this.commonService.doctorPersonal["dob"]
+          : "Select";
+
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadPersonalDetailsFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+
+  
+  async loadMastersFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getGenderMasters()
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.commonService.genders = [];
+          res.forEach((data) => {
+         
+              this.commonService.genders.push({
+                id: data.id,
+                name: data.name,
+              });
+            
+          });
+              this.loadPersonalDetailsFromSqlLite()
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadMastersFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+
+
 }

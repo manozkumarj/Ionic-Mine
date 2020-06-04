@@ -1,8 +1,10 @@
 import { Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 import { UtilitiesService } from "src/app/services/utilities.service";
-import { CommonService } from 'src/app/services/common.service';
-import { ApiService } from 'src/app/services/api.service';
+import { CommonService } from "src/app/services/common.service";
+import { ApiService } from "src/app/services/api.service";
+import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from "src/app/services/database.service";
 
 @Component({
   selector: "app-slot-selection",
@@ -80,11 +82,22 @@ export class SlotSelectionPage implements OnInit {
   threeDigitMonth = this.monthNames[this.d.getMonth()].slice(0, 3);
   threeDigitDayName = this.days[this.d.getDay()].slice(0, 3);
 
-  constructor(private router: Router, private utilities: UtilitiesService , public commonService: CommonService,private apiService: ApiService) {
-    console.log("this.commonService.selectedAppointmentComplaintDetails is below");
+  constructor(
+    private router: Router,
+    private utilities: UtilitiesService,
+    private loadingController: LoadingController,
+    public commonService: CommonService,
+    private apiService: ApiService,
+    private db: DatabaseService
+  ) {
+    console.log(
+      "this.commonService.selectedAppointmentComplaintDetails is below"
+    );
     console.log(this.commonService.selectedAppointmentComplaintDetails);
 
-    if (this.commonService.selectedAppointmentComplaintDetails["appointment_at"]) {
+    if (
+      this.commonService.selectedAppointmentComplaintDetails["appointment_at"]
+    ) {
       this.isEditSlot = true;
       this.editableSlotDateAndTime = this.commonService.selectedAppointmentComplaintDetails[
         "appointment_at"
@@ -619,9 +632,12 @@ export class SlotSelectionPage implements OnInit {
     return this.editableSlotDateAndTime == modifyDateNtime ? true : false;
   }
 
-  selectSlot = (time, timeNSession, isSlotBooked, isEditingSlot) => {
+  selectSlot = async (time, timeNSession, isSlotBooked, isEditingSlot) => {
     if (!isEditingSlot && isSlotBooked) {
-      this.commonService.presentToast("This slot is already booked" , "toastError" );
+      this.commonService.presentToast(
+        "This slot is already booked",
+        "toastError"
+      );
       return false;
     }
     this.commonService.appointmentDetails["time"] = time;
@@ -653,31 +669,64 @@ export class SlotSelectionPage implements OnInit {
     console.log("*********************");
     console.log("this.commonService.appointmentDetails are below");
     console.log(this.commonService.appointmentDetails["dateNtime"]);
-    this.apiService
-    .updateAppointmentTime(
-      this.commonService.currentAppointmentId,
-      this.commonService.appointmentDetails["dateNtime"]
-    )
-    .subscribe(data => {
-      if (this.utilities.isInvalidApiResponseData(data)) {
-        console.log(data);
-        this.commonService.presentToast(
-          "Something went wrong",
-          "toastError"
-        );
-      } else {
-        console.log(data);
-        this.commonService.presentToast(
-          "appointment time updated successfully",
-          "toastSuccess"
-        );
-        this.router.navigate(["/scheduled-appointments"]);
-       
-      }
-    });
+    console.log(this.commonService.currentAppointmentId);
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService
+            .updateAppointmentTime(
+              this.commonService.currentAppointmentId,
+              this.commonService.appointmentDetails["dateNtime"]
+            )
+            .subscribe((data) => {
+              if (this.utilities.isInvalidApiResponseData(data)) {
+                console.log(data);
+                this.commonService.presentToast(
+                  "Something went wrong",
+                  "toastError"
+                );
+              } else {
+                console.log(data);
+                let res = data[0][0];
+                if (data[0][0]["query"]) {
+                  let receivedQuery = res["query"];
+                  console.log(receivedQuery);
+                  this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
 
+                      this.commonService.presentToast(
+                        "appointment time updated successfully",
+                        "toastSuccess"
+                      );
+                      this.router.navigate(["/scheduled-appointments"]);
+                    })
+                    .catch((error) => {
+                      this.utilities.sqlLiteErrorTrigger( "selectslot" , error);
+                      this.commonService.presentToast(
+                        "Something went wrong",
+                        "toastError"
+                      );
+                      a.dismiss();
+                      console.error(JSON.stringify(error));
+                    });
+                } else {
+                  this.commonService.presentToast(
+                    "Something went wrong",
+                    "toastError"
+                  );
+                }
+              }
+            });
+        });
+      });
 
-   // this.router.navigate(["/home"]);
+    // this.router.navigate(["/home"]);
   };
 
   selectSlotDate(id) {

@@ -3,6 +3,8 @@ import { Router } from "@angular/router";
 import { CommonService } from "../../services/common.service";
 import { ApiService } from "src/app/services/api.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: "app-homeo-kits",
@@ -17,7 +19,9 @@ export class HomeoKitsPage implements OnInit   {
   constructor(
     public commonService: CommonService,
     private apiService: ApiService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private loadingController : LoadingController,
+    private db : DatabaseService
   ) {}
 
   ngOnInit() {
@@ -26,15 +30,26 @@ export class HomeoKitsPage implements OnInit   {
   }
 
   ionViewWillEnter(){
-  this.loadHomeoKits();
+ // this.loadHomeoKits();
  // this.loadOrders();
+ this.loadHomeoKitsFromSqlLite();
+ this.loadHomeoOrdersFromSqlLite();
 
   }
 
-  loadHomeoKits() {
+  async loadHomeoKits() {
+    
+    const loading = await this.loadingController
+        .create({
+          message: "loading...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
     this.apiService
       .getHomeoKits(this.commonService.currentDoctorId)
       .subscribe(data => {
+        a.dismiss();
         if (this.utilities.isInvalidApiResponseData(data)) {
           console.log(data);
           this.commonService.presentToast("Something went wrong", "toastError");
@@ -68,8 +83,70 @@ export class HomeoKitsPage implements OnInit   {
           );
         }
       });
+      });
+      });
   }
   togglingTabs(tab) {
     this.selectedTab = tab;
   }
+
+  async loadHomeoKitsFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorHomeoKits(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.homeoKits =[];
+              this.homeoKits= res;
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadHomeoKitsFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+  async loadHomeoOrdersFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorHomeoOrders(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.homeoOrders =[];
+              this.homeoOrders= res;
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadHomeoOrdersFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+
 }

@@ -3,6 +3,8 @@ import { CommonService } from "src/app/services/common.service";
 import { ApiService } from "src/app/services/api.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Router } from '@angular/router';
+import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: "app-scheduled-appointments",
@@ -18,7 +20,9 @@ export class ScheduledAppointmentsPage implements OnInit {
     public commonService: CommonService,
     private router : Router,
     private apiService: ApiService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private loadingController : LoadingController,
+    private db : DatabaseService
   ) {}
 
   ngOnInit() {
@@ -26,17 +30,27 @@ export class ScheduledAppointmentsPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.loadAppointments();
+    //this.loadAppointments();
+    this.loadUpcomingConsultationsFromSqlLite();
+    this.loadPreviousConsultationsFromSqlLite();
     
   }
 
   togglingTabs(tab) {
     this.selectedTab = tab;
   }
-  loadAppointments() {
+ async loadAppointments() {
+    const loading = await this.loadingController
+        .create({
+          message: "loading...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
     this.apiService
       .getAppointments(this.commonService.currentDoctorId)
       .subscribe(data => {
+        a.dismiss();
         if (this.utilities.isInvalidApiResponseData(data)) {
           console.log(data);
           this.commonService.presentToast("Something went wrong", "toastError");
@@ -92,6 +106,8 @@ export class ScheduledAppointmentsPage implements OnInit {
           );
         }
       });
+    });
+  });
   }
 
   navigateToAppointmentDetailsPage(currentAppointmentId ,appointmentAt){
@@ -99,4 +115,67 @@ export class ScheduledAppointmentsPage implements OnInit {
     this.commonService.selectedAppointmentComplaintDetails["appointment_at"] = appointmentAt;
     this.router.navigate([`/appointment-details/${this.commonService.currentAppointmentId}`])
   }
+
+
+  
+  async loadUpcomingConsultationsFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getScheduledUpcomingAppointments(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.upComingConsultations =[];
+              this.upComingConsultations= res;
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadUpcomingConsultationsFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+  
+  async loadPreviousConsultationsFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getScheduledPreviousAppointments(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.previousConsultations =[];
+              this.previousConsultations= res;
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadPreviousConsultationsFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+
 }

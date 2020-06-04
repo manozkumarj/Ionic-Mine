@@ -3,36 +3,42 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title><span *ngIf ="commonService.isAttender">Profile</span>
-      <span *ngIf ="!commonService.isAttender">Dr. {{commonService.currentDoctorName}}</span>
+    <ion-title
+      ><span *ngIf="commonService.isAttender">Profile</span>
+      <span *ngIf="!commonService.isAttender"
+        >Dr. {{commonService.currentDoctorName}}</span
+      >
     </ion-title>
-   
   </ion-toolbar>
 </ion-header>
 
- <ion-content>
+<ion-content>
   <!-- attenders Profile-->
 
-  <ion-grid *ngIf ="commonService.isAttender">
+  <ion-grid *ngIf="commonService.isAttender">
     <ion-row style="border-bottom: 1px solid #999;">
       <ion-col size="4" style="margin-top: 13px;">
         <ion-label>Name</ion-label>
         <p>Karthik</p>
       </ion-col>
 
-      <ion-col size="4" offset="4" >
-        <p style="margin: 0;padding: 6px; text-align: center;">
-          <img src="assets/images/milinda.jpg" height="80px" style="border-radius: 100%;" /></p>
+      <ion-col size="4" offset="4">
+        <p style="margin: 0; padding: 6px; text-align: center;">
+          <img
+            [src]="assets/images/milinda.jpg"
+            height="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
       </ion-col>
     </ion-row>
 
     <ion-row style="border-bottom: 1px solid #999;">
       <ion-col size="4" style="margin-top: 13px;">
         <ion-label>Phone</ion-label>
-        
       </ion-col>
 
-      <ion-col size="4" offset="4" >
+      <ion-col size="4" offset="4">
         <p>7780132977</p>
       </ion-col>
     </ion-row>
@@ -40,7 +46,6 @@
     <ion-row style="border-bottom: 1px solid #999;">
       <ion-col size="2" style="margin-top: 13px;">
         <ion-label>Email</ion-label>
-        
       </ion-col>
 
       <ion-col size="8" offset="2">
@@ -48,15 +53,16 @@
       </ion-col>
     </ion-row>
 
-    
     <ion-row style="border-bottom: 1px solid #999;">
       <ion-col size="4" style="margin-top: 13px;">
         <ion-label>Gender</ion-label>
-        
       </ion-col>
 
-      <ion-col size ="4" offset="4">
-        <ion-select style="color: #000; font-weight: bold;" placeholder="Select" >
+      <ion-col size="4" offset="4">
+        <ion-select
+          style="color: #000; font-weight: bold;"
+          placeholder="Select"
+        >
           <ion-select-option value="1">Male</ion-select-option>
           <ion-select-option value="2">Female</ion-select-option>
           <ion-select-option value="3">Others</ion-select-option>
@@ -66,159 +72,212 @@
     <ion-row style="border-bottom: 1px solid #999;">
       <ion-col size="4" style="margin-top: 13px;">
         <ion-label>Date Of Birth</ion-label>
-        
       </ion-col>
 
       <ion-col size="4" offset="4">
-        <ion-datetime  placeholder="Select" displayFormat="YYYY-MM-DD" value="">
+        <ion-datetime placeholder="Select" displayFormat="YYYY-MM-DD" value="">
         </ion-datetime>
       </ion-col>
     </ion-row>
-    
 
     <ion-row>
       <ion-col offset="4">
-        <ion-button >Save</ion-button>
+        <ion-button>Save</ion-button>
       </ion-col>
-      
     </ion-row>
-    
   </ion-grid>
-
-
 
   <!--Doctors Profile-->
 
-  <ion-grid *ngIf ="!commonService.isAttender">
-  <ion-row >
-<ion-col size="4">
-  
-  <p style="margin: 0;padding: 6px; text-align: center;">
-    <img [src]="commonService.currentDoctorPhoto ? commonService.currentDoctorPhoto :'assets/images/emptypic.png'" height="80px" style="border-radius: 100%;" /></p>
-</ion-col>
-
-<ion-col size="5"style="font-size: 12px;margin-top :25px">
-  <p style="font-weight: bold; margin-top: -10px;" *ngFor ="let specialisation of specialisation "> {{specialisation}}</p>
-  <p>{{experience}}</p>
-</ion-col>
-
-<ion-col size="3">
-  <p style="height: 100%; vertical-align: center;">
-    <ion-button  routerLink="/edit-doctor-profile">Edit</ion-button>
-  </p>
-  
-</ion-col>
-
-
-  </ion-row>
-
-  <ion-row style="border-bottom: 1.8px dotted grey; margin-top: -20px;">
-    <ion-col>
-
-      <p *ngIf ="qualification"> <ion-icon name="school"></ion-icon> &nbsp;&nbsp;&nbsp;{{qualification}}</p>
-      <p *ngIf ="certification">  <ion-icon name="medal"></ion-icon> &nbsp;&nbsp;&nbsp;{{certification}}
+  <ion-grid *ngIf="!commonService.isAttender">
+    <ion-row>
+      <ion-col size="4">
+        <p style="margin: 0; padding: 6px; text-align: center;">
+          <img
+            [src]="commonService.currentDoctorPhoto ? commonService.currentDoctorPhoto :'assets/images/emptypic.png'"
+            height="80px"
+            style="border-radius: 100%;"
+          />
         </p>
-    </ion-col>
-  </ion-row>
+      </ion-col>
 
+      <ion-col size="5" style="font-size: 12px; margin-top: 25px;">
+        <p
+          style="font-weight: bold; margin-top: -10px;"
+          *ngFor="let specialisation of specialisation "
+        >
+          {{specialisation}}
+        </p>
+        <p>{{experience}}</p>
+      </ion-col>
 
-  <ion-grid style="border-bottom: 1.8px dotted grey; margin-top: -20px;" *ngIf ="clinics.length >0 ; else noClinics">
-  <ion-row>
-    <ion-col>
-      <p style="font-weight: bold; font-size: 20px;">Clinic Details</p>
-    </ion-col>
-  </ion-row>
+      <ion-col size="3">
+        <p style="height: 100%; vertical-align: center;">
+          <ion-button routerLink="/edit-doctor-profile">Edit</ion-button>
+        </p>
+      </ion-col>
+    </ion-row>
 
+    <ion-row style="border-bottom: 1.8px dotted grey; margin-top: -20px;">
+      <ion-col>
+        <p *ngIf="qualification">
+          <ion-icon name="school"></ion-icon>
+          &nbsp;&nbsp;&nbsp;{{qualification}}
+        </p>
+        <p *ngIf="certification">
+          <ion-icon name="medal"></ion-icon> &nbsp;&nbsp;&nbsp;{{certification}}
+        </p>
+      </ion-col>
+    </ion-row>
 
-  <ion-row style="margin-top: -25px !important;font-size: 14px;" *ngFor ="let clinic of clinics">
-    <ion-col size="1">
-      <p><ion-icon name="locate"></ion-icon></p>
-    </ion-col>
+    <ion-grid
+      style="border-bottom: 1.8px dotted grey; margin-top: -20px;"
+      *ngIf="clinics.length >0 ; else noClinics"
+    >
+      <ion-row>
+        <ion-col>
+          <p style="font-weight: bold; font-size: 20px;">Clinic Details</p>
+        </ion-col>
+      </ion-row>
 
-    <ion-col size="auto">
-      <p>{{clinic.name}}</p>
-    </ion-col>
+      <ion-row
+        style="margin-top: -25px !important; font-size: 14px;"
+        *ngFor="let clinic of clinics"
+      >
+        <ion-col size="1">
+          <p><ion-icon name="locate"></ion-icon></p>
+        </ion-col>
 
-    <ion-col size="auto" >
-      <p><span>{{clinic.timings}}</span><br>
-      <span>{{clinic.fees}}</span></p>
-    </ion-col>
-  </ion-row>
+        <ion-col size="auto">
+          <p>{{clinic.name}}</p>
+        </ion-col>
 
-</ion-grid>
+        <ion-col size="auto">
+          <p>
+            <span>{{clinic.timings}}</span><br />
+            <span>{{clinic.fees}}</span>
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
-<ng-template #noClinics>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title style="color: red;"> There are no clinics.please update </ion-card-title>
-    </ion-card-header>
-  </ion-card>
-</ng-template>
-  
-<ion-grid>
-  <ion-row>
-    <ion-col>
-      <p style="font-weight: bold; font-size: 20px;">Consultation Modes</p>
-    </ion-col>
-  </ion-row>
+    <ng-template #noClinics>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title style="color: red;">
+            There are no clinics.please update
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
+    </ng-template>
 
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <p style="font-weight: bold; font-size: 20px;">Consultation Modes</p>
+        </ion-col>
+      </ion-row>
 
-  <ion-row style="margin-top: -25px !important;font-size: 14px;" *ngFor =" let video of videoConsultations">
-    <ion-col size="1" offset="1">
-      <p ><ion-icon [name]="video.icon" style="color: #0a9f28;font-size: 23px;"></ion-icon></p>
-    </ion-col>
+      <ion-row
+        style="margin-top: -25px !important; font-size: 14px;"
+        *ngFor=" let video of videoConsultations"
+      >
+        <ion-col size="1" offset="1">
+          <p>
+            <ion-icon
+              [name]="video.icon"
+              style="color: #0a9f28; font-size: 23px;"
+            ></ion-icon>
+          </p>
+        </ion-col>
 
-    <ion-col offset="0.5">
-      <p> <span style="font-weight: bold; font-size: 20px;">{{video.name}}</span><br>
-        <span>Min session {{video.minimum_min}} mins ₹ {{video.price_per_min}} per minute</span>
-       </p>    
-    </ion-col>
-  </ion-row>
+        <ion-col offset="0.5">
+          <p>
+            <span style="font-weight: bold; font-size: 20px;"
+              >{{video.name}}</span
+            ><br />
+            <span
+              >Min session {{video.minimum_min}} mins $ {{video.price_per_min}}
+              per minute</span
+            >
+          </p>
+        </ion-col>
+      </ion-row>
 
+      <ion-row
+        style="margin-top: -25px !important; font-size: 14px;"
+        *ngFor=" let audio of audioConsultations"
+      >
+        <ion-col size="1" offset="1">
+          <p>
+            <ion-icon
+              [name]="audio.icon"
+              style="color: #0a9f28; font-size: 23px;"
+            ></ion-icon>
+          </p>
+        </ion-col>
 
-  <ion-row style="margin-top: -25px !important;font-size: 14px;" *ngFor =" let audio of audioConsultations">
-    <ion-col size="1" offset="1">
-      <p ><ion-icon [name]="audio.icon" style="color: #0a9f28;font-size: 23px;"></ion-icon></p>
-    </ion-col>
+        <ion-col offset="0.5">
+          <p>
+            <span style="font-weight: bold; font-size: 20px;"
+              >{{audio.name}}</span
+            ><br />
+            <span
+              >Min session {{audio.minimum_min}} mins $ {{audio.price_per_min}}
+              per minute</span
+            >
+          </p>
+        </ion-col>
+      </ion-row>
 
-    <ion-col offset="0.5">
-      <p> <span style="font-weight: bold; font-size: 20px;">{{audio.name}}</span><br>
-        <span>Min session {{audio.minimum_min}} mins ₹ {{audio.price_per_min}} per minute</span>
-       </p>    
-    </ion-col>
-  </ion-row>
+      <ion-row
+        style="margin-top: -25px !important; font-size: 14px;"
+        *ngFor=" let chat of chatConsultations"
+      >
+        <ion-col size="1" offset="1">
+          <p>
+            <ion-icon
+              [name]="chat.icon"
+              style="color: #0a9f28; font-size: 23px;"
+            ></ion-icon>
+          </p>
+        </ion-col>
 
-  <ion-row style="margin-top: -25px !important;font-size: 14px;" *ngFor =" let chat of chatConsultations">
-    <ion-col size="1" offset="1">
-      <p ><ion-icon [name]="chat.icon" style="color: #0a9f28;font-size: 23px;"></ion-icon></p>
-    </ion-col>
+        <ion-col offset="0.5">
+          <p>
+            <span style="font-weight: bold; font-size: 20px;"
+              >{{chat.name}}</span
+            ><br />
+            <span
+              >Valid for {{chat.minimum_min}}hours $
+              {{chat.price_per_min}}</span
+            >
+          </p>
+        </ion-col>
+      </ion-row>
 
-    <ion-col offset="0.5">
-      <p> <span style="font-weight: bold; font-size: 20px;">{{chat.name}}</span><br>
-        <span>Valid for {{chat.minimum_min}}hours ₹ {{chat.price_per_min}}</span> 
-       </p>    
-    </ion-col>
-  </ion-row>
+      <ion-row
+        style="margin-top: -25px !important; font-size: 14px;"
+        *ngFor=" let visit of physicalVisits"
+      >
+        <ion-col size="1" offset="1">
+          <p>
+            <ion-icon
+              [name]="visit.icon"
+              style="color: #0a9f28; font-size: 23px;"
+            ></ion-icon>
+          </p>
+        </ion-col>
 
-  <ion-row style="margin-top: -25px !important;font-size: 14px;" *ngFor =" let visit of physicalVisits">
-    <ion-col size="1" offset="1">
-      <p ><ion-icon [name]="visit.icon" style="color: #0a9f28;font-size: 23px;"></ion-icon></p>
-    </ion-col>
-
-    <ion-col offset="0.5">
-      <p> <span style="font-weight: bold; font-size: 20px;">{{visit.name}}</span><br>
-        <span>Regular Consulatation ₹ {{visit.price_per_min}}</span> 
-       </p>    
-    </ion-col>
-  </ion-row>
+        <ion-col offset="0.5">
+          <p>
+            <span style="font-weight: bold; font-size: 20px;"
+              >{{visit.name}}</span
+            ><br />
+            <span>Regular Consulatation $ {{visit.price_per_min}}</span>
+          </p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-grid>
-
-
-
-
-
-
-  
-
-</ion-grid>
 </ion-content>

@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "src/app/services/api.service";
 import { CommonService } from "src/app/services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingController } from '@ionic/angular';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: "app-edit-diagnosis",
@@ -46,7 +48,9 @@ export class EditDiagnosisPage implements OnInit {
     private router: Router,
     private apiService: ApiService,
     public commonService: CommonService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private loadingController : LoadingController,
+    private db : DatabaseService
   ) {}
 
   ngOnInit() {}
@@ -61,13 +65,15 @@ export class EditDiagnosisPage implements OnInit {
     switch (+type) {
       case 1:
         console.log(+type);
-        this.loadMasters();
+        //this.loadMasters();
+        this.loadDiagnosisMastersFromSqlLite()
         this.backwardLink = `/diagnosis/${this.commonService.currentAppointmentId}`;
         this.currentTitle = "Diagnosis";
         this.forwardLink = "/edit-diagnosis/1/2";
         this.currentSubTitle = "Please select diagnosis";
         this.columnName = "diagnosis_id";
-        this.updateData(this.columnName);
+        //this.updateData(this.columnName);
+        this.updateDataFromSqlLite(this.columnName);
         break;
 
       case 2:
@@ -77,7 +83,8 @@ export class EditDiagnosisPage implements OnInit {
         this.backwardLink = "/edit-diagnosis/1";
         this.forwardLink = "/edit-diagnosis/1/2/3";
         this.columnName = "advice";
-        this.updateData(this.columnName);
+        //this.updateData(this.columnName);
+        this.updateDataFromSqlLite(this.columnName);
 
         break;
 
@@ -108,7 +115,8 @@ export class EditDiagnosisPage implements OnInit {
         tempDate = `${new Date().getFullYear()}-${
           new Date().getMonth() + 1
         }-${new Date().getDate()}`;
-        this.updateData(this.columnName);
+       // this.updateData(this.columnName);
+        this.updateDataFromSqlLite(this.columnName);
         var date = this.reviewDateFromDataBase
           ? this.reviewDateFromDataBase
           : tempDate;
@@ -258,7 +266,7 @@ export class EditDiagnosisPage implements OnInit {
     this.columnValue = this.selectedList["id"];
     this.submit();
   }
-  submit() {
+ async submit() {
     if (this.columnName == "advice") {
       this.columnValue = this.inputField;
     }
@@ -267,6 +275,13 @@ export class EditDiagnosisPage implements OnInit {
       this.columnValue = this.selectedReviewDate;
     }
     console.log(this.columnValue);
+    const loading = await this.loadingController
+    .create({
+      message: "saving...",
+      translucent: true,
+    })
+    .then((a) => {
+      a.present().then(async (res) => {
     this.apiService
       .saveDiagnosis(
         this.commonService.currentAppointmentId,
@@ -277,11 +292,48 @@ export class EditDiagnosisPage implements OnInit {
         this.columnValue
       )
       .subscribe((data) => {
+        a.dismiss();
         if (this.utilities.isInvalidApiResponseData(data)) {
           console.log(data);
         } else {
-          this.router.navigate([this.forwardLink]);
+          
+          let res = data[0][0];
+          if (data[0][0]["query"]) {
+            let receivedQuery = res["query"];
+            console.log(receivedQuery);
+            this.db
+                    .crudOperations(receivedQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      this.router.navigate([this.forwardLink]);
+                      this.commonService.presentToast(
+                        "data Updated successfully",
+                        "toastSuccess"
+                      );
+                    })
+                    .catch((error) => {
+                      this.utilities.sqlLiteErrorTrigger( "submit" , error);
+                      this.commonService.presentToast(
+                        "Something went wrong",
+                        "toastError"
+                      );
+                      a.dismiss();
+                      console.error(
+                          JSON.stringify(error)
+                      );
+                    });
+           
+          }
+            else{
+              this.commonService.presentToast(
+                "Something went wrong",
+                "toastError"
+              );
+            }
+          
         }
+      });
+      });
       });
   }
 
@@ -295,7 +347,8 @@ export class EditDiagnosisPage implements OnInit {
           this.commonService.presentToast("Something went wrong", "toastError");
         } else {
           console.log(data[1][0][id]);
-          if (data[1].length > 0 && data[1][0][id]) {
+          if (data[1].length > 0 && data[1][0][id]) 
+          {
             if (id == "diagnosis_id") {
               var databaseId = data[1][0][id];
               var index = this.unSelectedList.findIndex((data) => {
@@ -325,4 +378,83 @@ export class EditDiagnosisPage implements OnInit {
       console.log(this.selectedDate);
     }
   }
+
+  async loadDiagnosisMastersFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDiagnosisMasters()
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.unSelectedList =[];
+              this.filteredList =[];
+              this.unSelectedList= res;
+              this.filteredList = this.unSelectedList;
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadDiagnosisMastersFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+
+  async updateDataFromSqlLite(id) {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDiagnosisData(this.commonService.currentAppointmentId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+            
+              if (res.length > 0 && res[id]) 
+              {
+                if (id == "diagnosis_id") {
+                  var databaseId = res[id];
+                  var index = this.unSelectedList.findIndex((data) => {
+                    return data.id === databaseId;
+                  });
+                  this.selectedList = [];
+                  this.diagnosisSelected = true;
+                  this.selectedList = this.unSelectedList[index];
+                  console.log(this.selectedList);
+                } else if (id == "advice") {
+                  this.inputField = res[id];
+                } else if (id == "review_date") {
+                  this.reviewDateFromDataBase = res[id];
+                }
+              }
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "updateDataFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+ 
 }

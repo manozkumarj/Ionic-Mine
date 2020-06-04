@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/services/common.service';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilitiesService } from 'src/app/services/utilities.service';
+import { LoadingController } from '@ionic/angular';
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: 'app-doctor-consultation-modes',
@@ -18,16 +20,64 @@ export class DoctorConsultationModesPage implements OnInit {
   constructor(
     public commonService: CommonService,
     private apiService: ApiService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private loadingController : LoadingController,
+    private db : DatabaseService
   ) {}
 
   ngOnInit() {
   }
 
   ionViewWillEnter(){
-    this.loadModes()
+   // this.loadModes()
+    this.loadModesFromSqlLite()
   }
 
+  async loadModesFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorModes(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              if(res.length >0){
+                res.forEach(data => {
+                  // this.modes.push({data})
+                  if(data.mode_id ==1){
+                    this.videoConsultations.push(data);
+                  }
+                  else if(data.mode_id ==2){
+                   this.audioConsultations.push(data);
+                 }
+                  else if(data.mode_id ==3){
+                   this.chatConsultations.push(data);
+                 }
+                  else if(data.mode_id ==4){
+                   this.physicalVisits.push(data);
+                 }
+                 });
+              
+             }
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadModesFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
   loadModes() {
     this.apiService
       .getProfile(this.commonService.currentDoctorId)

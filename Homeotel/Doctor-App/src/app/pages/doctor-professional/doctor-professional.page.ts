@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ApiService } from "src/app/services/api.service";
 import { CommonService } from "src/app/services/common.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
+import { LoadingController } from "@ionic/angular";
+import { DatabaseService } from 'src/app/services/database.service';
 
 @Component({
   selector: "app-doctor-professional",
@@ -21,14 +23,78 @@ export class DoctorProfessionalPage implements OnInit {
     private router: Router,
     private apiService: ApiService,
     public commonService: CommonService,
-    private utilities: UtilitiesService
+    private utilities: UtilitiesService,
+    private loadingController : LoadingController,
+    private db : DatabaseService
   ) {}
 
   ngOnInit() {}
 
   ionViewWillEnter() {
-    this.loadMasters();
+   // this.loadMasters();
+   this.loadMastersFromSqlLite();
+   this.loadProfessionalFromSqlLite();
   }
+
+  async loadMastersFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getPrecriptionMasters()
+            .then((res: any[]) => {
+              
+              console.log(res);
+              this.resetMasters();
+              res.forEach((data) => {
+                if (data.master_type == "specialisation") {
+                  this.commonService.specialisations.push({
+                    id: data.id,
+                    name: data.name,
+                  });
+                }
+                else if(data.master_type=="qualification"){
+                  this.commonService.qualifications.push({
+                    id: data.id,
+                    name: data.name,
+                  });       
+                }
+            
+                else if(data.master_type=="certification"){
+                  this.commonService.certifications.push({
+                    id: data.id,
+                    name: data.name,
+                  });       
+                }
+                else if(data.master_type=="award"){
+                  this.commonService.awards.push({
+                    id: data.id,
+                    name: data.name,
+                  });       
+                }
+              });
+             
+            
+           
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadMastersFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+ 
 
   loadMasters() {
     this.apiService.getMasters().subscribe((data) => {
@@ -82,10 +148,19 @@ export class DoctorProfessionalPage implements OnInit {
     this.commonService.certifications = [];
     this.commonService.awards = [];
   }
-  loadProfile() {
+  async loadProfile() {
+    
+    const loading = await this.loadingController
+        .create({
+          message: "loading...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
     this.apiService
       .getProfile(this.commonService.currentDoctorId)
       .subscribe((data) => {
+        a.dismiss();
         if (this.utilities.isInvalidApiResponseData(data)) {
           console.log(data);
           this.commonService.presentToast("Something went wrong", "toastError");
@@ -108,6 +183,8 @@ export class DoctorProfessionalPage implements OnInit {
             "toastSuccess"
           );
         }
+      });
+      });
       });
   }
 
@@ -217,5 +294,44 @@ export class DoctorProfessionalPage implements OnInit {
     }
   }
 
+
+  async loadProfessionalFromSqlLite() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getDoctorProfessional(this.commonService.currentDoctorId)
+            .then((res: any[]) => {
+              
+              console.log(res);
+              if(res.length >0){
+                this.loadSpecialisation(res["specialisation"]);
+                this.loadExperience(res["experience"]);
+                this.loadQualifications(res["qualifications"]);
+                this.loadCertifications(res["certifications"]);
+               
+              
+                
+              
+             }
+            })
+            .catch((error) => {
+              this.utilities.sqlLiteErrorTrigger( "loadProfessionalFromSqlLite" , error);
+              this.commonService.presentToast("Something went wrong", "toastError");
+              console.error(
+                
+                  JSON.stringify(error)
+              );
+              
+            });
+          a.dismiss();
+        });
+      });
+  }
+ 
 
 }
