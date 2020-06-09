@@ -404,14 +404,14 @@ export class EditProfilePage implements OnInit {
                 if (this.utilities.isInvalidApiResponseData(data)) {
                   a.dismiss();
                   console.log("Returned Error");
-                  console.log(data[0][0]);
-                  if (data[0][0]["error"]) {
+                  console.log(data[0]);
+                  if (data[0]["error"]) {
                     console.log("Something went wrong");
                   }
                 } else {
                   console.log("Returned Success");
-                  let res = data[0][0];
-                  if (data[0][0]["query"]) {
+                  let res = data[0];
+                  if (data[0]["query"]) {
                     let receivedQuery = res["query"];
                     console.log(receivedQuery);
 

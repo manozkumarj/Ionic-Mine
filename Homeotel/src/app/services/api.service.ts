@@ -194,6 +194,7 @@ export class ApiService {
 
   // Update user photo
   upsertUserPhoto(relativeId, photo) {
+    console.log("this.utilities.userId --> " + this.utilities.userId);
     var body = {
       access_token: "tele-homeo",
       request_type: "USER_PHOTO_SAVE",

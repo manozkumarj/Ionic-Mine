@@ -91,7 +91,7 @@ export class HealthRecordsPage {
   person(id) {
     console.log("Selected person ID -> " + id);
     if (id == -1) {
-      this.router.navigate(["/add-relative/home"]);
+      this.router.navigate(["/add-relative/health-records"]);
     } else {
       this.selectedPerson = id;
     }

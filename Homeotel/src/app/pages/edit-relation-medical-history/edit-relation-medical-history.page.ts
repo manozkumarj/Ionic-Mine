@@ -159,16 +159,16 @@ export class EditRelationMedicalHistoryPage implements OnInit {
               } else {
                 console.log("Returned Success");
 
-                let res = data[0][0];
-                if (data[0][0]["query1"]) {
+                let res = data[0];
+                if (data[0]["query1"]) {
                   let receivedQuery = res["query1"];
                   console.log(receivedQuery);
 
                   this.db
                     .crudOperations(receivedQuery)
                     .then((res) => {
-                      if (data[0][0]["query2"]) {
-                        let receivedQuery = data[0][0]["query2"];
+                      if (data[0]["query2"]) {
+                        let receivedQuery = data[0]["query2"];
                         console.log(receivedQuery);
 
                         this.db

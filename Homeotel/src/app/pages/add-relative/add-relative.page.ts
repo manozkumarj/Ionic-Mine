@@ -195,8 +195,8 @@ export class AddRelativePage implements OnInit {
                   "Relative added successfully."
                 );
 
-                let res = data[0][0];
-                if (data[0][0]["query"]) {
+                let res = data[0];
+                if (data[0]["query"]) {
                   let receivedQuery = res["query"];
                   console.log(receivedQuery);
 

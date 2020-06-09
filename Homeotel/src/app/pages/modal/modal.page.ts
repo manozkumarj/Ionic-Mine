@@ -110,8 +110,8 @@ export class ModalPage implements OnInit {
                   console.log("Homeokit purchase payment success");
 
                   // insert_kit related
-                  let res = data[0][0];
-                  if (data[0][0]["query1"]) {
+                  let res = data[0];
+                  if (data[0]["query1"]) {
                     let receivedQuery = res["query1"];
                     console.log(receivedQuery);
 
@@ -147,8 +147,8 @@ export class ModalPage implements OnInit {
                   }
 
                   // insert_transaction  related
-                  if (data[0][0]["query2"]) {
-                    let receivedQuery = data[0][0]["query2"];
+                  if (data[0]["query2"]) {
+                    let receivedQuery = data[0]["query2"];
                     console.log(receivedQuery);
 
                     this.db
@@ -220,16 +220,16 @@ export class ModalPage implements OnInit {
               if (this.utilities.isInvalidApiResponseData(data)) {
                 a.dismiss();
                 console.log("Returned Error");
-                console.log(data[0][0]);
-                if (data[0][0]["error"]) {
+                console.log(data[0]);
+                if (data[0]["error"]) {
                   console.log("Something went wrong");
                 }
               } else {
                 console.log("Returned Success");
 
                 // d_appointment related
-                let res = data[0][0];
-                if (data[0][0] && data[0][0]["query1"]) {
+                let res = data[0];
+                if (data[0] && data[0]["query1"]) {
                   let receivedQuery = res["query1"];
                   console.log(receivedQuery);
 
@@ -267,7 +267,7 @@ export class ModalPage implements OnInit {
                 }
 
                 // da_log related
-                if (data[0][0] && data[0][0]["query2"]) {
+                if (data[0] && data[0]["query2"]) {
                   let receivedQuery = res["query2"];
                   console.log(receivedQuery);
 
@@ -305,7 +305,7 @@ export class ModalPage implements OnInit {
                 }
 
                 // da_log related
-                if (data[0][0] && data[0][0]["query3"]) {
+                if (data[0] && data[0]["query3"]) {
                   let receivedQuery = res["query3"];
                   console.log(receivedQuery);
 
@@ -366,8 +366,7 @@ export class ModalPage implements OnInit {
               } else {
                 if (
                   typeof data != "undefined" &&
-                  typeof data[0] != "undefined" &&
-                  typeof data[0][0] != "undefined"
+                  typeof data[0] != "undefined"
                 ) {
                   console.log("Received master data");
                   let masterData = data[0];
@@ -455,11 +454,7 @@ export class ModalPage implements OnInit {
             if (this.utilities.isInvalidApiResponseData(data)) {
               console.log("Returned Error");
             } else {
-              if (
-                typeof data != "undefined" &&
-                typeof data[0] != "undefined" &&
-                typeof data[0][0] != "undefined"
-              ) {
+              if (typeof data != "undefined" && typeof data[0] != "undefined") {
                 console.log("Doctor found");
                 this.doctorDetails = data[0];
                 console.log(this.doctorDetails);
@@ -499,10 +494,10 @@ export class ModalPage implements OnInit {
                 console.log("Doctor added");
                 this.utilities.presentToastSuccess("Success, Doctor added");
 
-                let res = data[0][0];
+                let res = data[0];
 
                 // du_doctor related
-                if (data[0] && data[0][0] && data[0][0]["query"]) {
+                if (data[0] && data[0]["query"]) {
                   let receivedQuery = res["query"];
                   console.log(receivedQuery);
 
@@ -537,8 +532,8 @@ export class ModalPage implements OnInit {
               }
 
               // d_doctor
-              if (data[1] && data[1][0] && data[1][0]["doctor"]) {
-                let receivedQuery = data[1][0]["doctor"];
+              if (data[1] && data[1] && data[1]["doctor"]) {
+                let receivedQuery = data[1]["doctor"];
                 console.log(receivedQuery);
 
                 this.db
@@ -569,8 +564,8 @@ export class ModalPage implements OnInit {
               }
 
               // dd_clinic
-              if (data[2] && data[2][0] && data[2][0]["clinic"]) {
-                let receivedQuery = data[2][0]["clinic"];
+              if (data[2] && data[2]["clinic"]) {
+                let receivedQuery = data[2]["clinic"];
                 console.log(receivedQuery);
 
                 this.db
@@ -601,8 +596,8 @@ export class ModalPage implements OnInit {
               }
 
               // dd_timing
-              if (data[3] && data[3][0] && data[3][0]["timings"]) {
-                let receivedQuery = data[3][0]["timings"];
+              if (data[3] && data[3]["timings"]) {
+                let receivedQuery = data[3]["timings"];
                 console.log(receivedQuery);
 
                 this.db
@@ -633,8 +628,8 @@ export class ModalPage implements OnInit {
               }
 
               // dd_professional
-              if (data[4] && data[4][0] && data[4][0]["professional"]) {
-                let receivedQuery = data[4][0]["professional"];
+              if (data[4] && data[4]["professional"]) {
+                let receivedQuery = data[4]["professional"];
                 console.log(receivedQuery);
 
                 this.db
@@ -667,7 +662,7 @@ export class ModalPage implements OnInit {
               }
 
               // dd_kit related
-              if (data[5] && data[5][0] && data[5][0]["kit"]) {
+              if (data[5] && data[5]["kit"]) {
                 let receivedQuery = data[5];
                 console.log(receivedQuery);
                 receivedQuery.forEach((query) => {
@@ -703,7 +698,7 @@ export class ModalPage implements OnInit {
               }
 
               // dd_mode related
-              if (data[6] && data[6][0] && data[6][0]["mode"]) {
+              if (data[6] && data[6]["mode"]) {
                 let receivedQuery = data[6];
                 console.log(receivedQuery);
                 receivedQuery.forEach((query) => {

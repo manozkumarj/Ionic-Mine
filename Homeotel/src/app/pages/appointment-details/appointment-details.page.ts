@@ -150,8 +150,8 @@ export class AppointmentDetailsPage implements OnInit {
                           );
 
                           // delete_appointment related
-                          let res = data[0][0];
-                          if (data[0][0] && data[0][0]["query1"]) {
+                          let res = data[0];
+                          if (data[0] && data[0]["query1"]) {
                             let receivedQuery = res["query1"];
                             console.log(receivedQuery);
 
@@ -193,7 +193,7 @@ export class AppointmentDetailsPage implements OnInit {
                           }
 
                           // update_transaction
-                          if (data[0][0] && data[0][0]["query2"]) {
+                          if (data[0] && data[0]["query2"]) {
                             let receivedQuery = res["query2"];
                             console.log(receivedQuery);
 

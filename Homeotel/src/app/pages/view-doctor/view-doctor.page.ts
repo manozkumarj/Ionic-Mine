@@ -294,17 +294,17 @@ export class ViewDoctorPage implements OnInit {
               if (this.utilities.isInvalidApiResponseData(data)) {
                 this.utilities.presentToastWarning("Something went wrong");
               } else {
-                console.log(data[0][0]);
-                console.log(data[0][0]["name"]);
-                if (data[0][0]) {
-                  this.doctorPhoto = data[0][0]["photo"];
-                  this.doctorName = data[0][0]["name"];
+                console.log(data[0]);
+                console.log(data[0]["name"]);
+                if (data[0]) {
+                  this.doctorPhoto = data[0]["photo"];
+                  this.doctorName = data[0]["name"];
                 }
-                if (data[1][0]) {
-                  this.loadSpecialisation(data[1][0]["specialisation"]);
-                  this.loadExperience(data[1][0]["experience"]);
-                  this.loadQualifications(data[1][0]["qualifications"]);
-                  this.loadCertifications(data[1][0]["certifications"]);
+                if (data[1]) {
+                  this.loadSpecialisation(data[1]["specialisation"]);
+                  this.loadExperience(data[1]["experience"]);
+                  this.loadQualifications(data[1]["qualifications"]);
+                  this.loadCertifications(data[1]["certifications"]);
                 }
                 if (data[2]) {
                   this.loadClinics(data[2]);
