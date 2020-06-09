@@ -28,6 +28,7 @@ export class MedicalHistoryRelationsPage {
 
   ionViewWillEnter() {
     this.loadRelationsMedicalHistoryMasters();
+    this.loadRelationsMedicalHistoryData();
     // this.getRelationsMedicalHistories();
   }
 
@@ -62,7 +63,7 @@ export class MedicalHistoryRelationsPage {
                   });
                 }
               });
-              this.loadRelationsMedicalHistoryData();
+              // this.loadRelationsMedicalHistoryData();
             })
             .catch((error) => {
               this.utilities.sqliteErrorDisplayer(

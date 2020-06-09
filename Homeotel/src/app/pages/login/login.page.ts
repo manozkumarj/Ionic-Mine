@@ -172,7 +172,7 @@ export class LoginPage implements OnInit {
                   this.resetRegisterFormValues();
                   this.resetLoginFormValues();
 
-                  let res = data[0][0];
+                  let res = data[0];
                   if (res["query"]) {
                     let receivedQuery = res["query"];
                     console.log(receivedQuery);
@@ -237,17 +237,13 @@ export class LoginPage implements OnInit {
             this.apiService.loginUser(username, password).subscribe((data) => {
               a.dismiss();
               console.log("Returned from Backend");
-              // console.log(JSON.stringify(data));
-              if (
-                typeof data != "undefined" &&
-                typeof data[0] != "undefined" &&
-                typeof data[0][0] != "undefined"
-              ) {
+              console.log(data);
+              if (typeof data != "undefined" && typeof data[0] != "undefined") {
                 if (this.utilities.isInvalidApiResponseData(data)) {
                   console.log("Returned Error");
                   this.presentToastWarning();
                 } else {
-                  let res = data[0][0];
+                  let res = data[0];
                   this.auth.isLoggedIn = true;
                   console.log("Returned Success");
                   this.toastSuccessMsg = "Login Success.";

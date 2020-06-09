@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { Router } from "@angular/router";
@@ -10,7 +10,7 @@ import { DatabaseService } from "src/app/services/database.service";
   templateUrl: "./lifestyle.page.html",
   styleUrls: ["./lifestyle.page.scss"],
 })
-export class LifestylePage implements OnInit {
+export class LifestylePage {
   lifestyles;
 
   smoking = "Select";
@@ -45,10 +45,11 @@ export class LifestylePage implements OnInit {
     private router: Router
   ) {
     this.loadLifestyles();
+    this.loadLifestyleMasters();
   }
 
-  ngOnInit() {
-    this.loadLifestyleMasters();
+  ionViewWillEnter() {
+    this.loadLifestyleData();
   }
 
   loadLifestyles() {

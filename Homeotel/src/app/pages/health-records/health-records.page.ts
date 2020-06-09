@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Router } from "@angular/router";
 import { ApiService } from "src/app/services/api.service";
@@ -10,7 +10,7 @@ import { DatabaseService } from "src/app/services/database.service";
   templateUrl: "./health-records.page.html",
   styleUrls: ["./health-records.page.scss"],
 })
-export class HealthRecordsPage implements OnInit {
+export class HealthRecordsPage {
   healthRecords;
 
   selectedPerson = this.utilities.selectedRelativeId;
@@ -52,10 +52,9 @@ export class HealthRecordsPage implements OnInit {
       },
     ];
     // this.getUserRelatives();
-    this.loadUserRelatives();
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.loadUserRelatives();
   }
 

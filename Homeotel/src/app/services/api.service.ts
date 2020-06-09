@@ -1,20 +1,16 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { UtilitiesService } from "./utilities.service";
-import { DatabaseService } from "./database.service";
 
 @Injectable()
 export class ApiService {
   // apiUrl = "http://192.168.0.4:8123";
   // apiUrl = "http://192.168.43.22:8123";
   // apiUrl = "http://localhost:8123";
-  apiUrl = "http://175.101.1.227:8123";
+  // apiUrl = "http://175.101.1.227:8123";
+  apiUrl = "https://f8uqreqtkf.execute-api.ap-south-1.amazonaws.com/beta/user";
 
-  constructor(
-    private http: HttpClient,
-    private db: DatabaseService,
-    private utilities: UtilitiesService
-  ) {}
+  constructor(private http: HttpClient, private utilities: UtilitiesService) {}
 
   // get node id from APi
   getNodeDetails() {
@@ -25,82 +21,113 @@ export class ApiService {
   // Register user
   registerUser(username, email, password) {
     console.log("username -> " + username);
-    var path = "/user/register";
+
     var body = {
-      username,
+      access_token: "tele-homeo",
+      request_type: "USER_REGISTER",
+      userName: username,
       email,
       password,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Login user
   loginUser(username, password) {
-    var path = "/user/login";
     var body = {
-      username: username,
+      access_token: "tele-homeo",
+      request_type: "USER_LOGIN",
+      userName: username,
       password: password,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Fetching current user related doctors
   getProfileDetails() {
-    var path = "/user/user-details/" + this.utilities.userId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_DETAILS_GET",
+      userId: this.utilities.userId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // Fetching current user related doctors
   getCurrentUserDoctors() {
-    var path = "/user/my-doctors/" + this.utilities.userId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_DOCTORS_GET",
+      userId: this.utilities.userId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // Searching doctor with UUID
   findDoctor(uuid) {
-    var path = "/user/find-doctor/" + this.utilities.userId + "/" + uuid;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_DOCTOR_SEARCH",
+      userId: this.utilities.userId,
+      uuid: uuid,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // getting doctor's homeokits
   getCurrentDoctorsHomeokits(doctorId) {
-    var path =
-      "/user/doctor-homeokits/" + doctorId + "/" + this.utilities.userId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_DOCTOR_KITS_GET",
+      userId: this.utilities.userId,
+      doctorId: doctorId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // getting user's appointments
   getAppointments() {
-    var path = "/user/appointments/" + this.utilities.userId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_APPOINTMENTS_GET",
+      userId: this.utilities.userId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // adding doctor to user
   addDoctor(doctorId) {
-    var path = "/user/add-doctor";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_DOCTORS_ADD",
       userId: this.utilities.userId,
       doctorId,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Purchasing homeokit
   purchaseHomeokit(doctorId, kitId, price) {
-    var path = "/user/purchase-homeokit";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_PURCHASE_KIT",
       userId: this.utilities.userId,
       doctorId,
       kitId,
       price,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Fetch doctor consultant details masters
   getDoctorConsultantDetailsMasters(doctorId) {
-    var path = "/user/doctor-consultant-details-masters/" + doctorId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "DOCTOR_CONSULTANT_MASTERS_GET",
+      userId: this.utilities.userId,
+      doctorId: doctorId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // Booking an appointment
@@ -113,8 +140,9 @@ export class ApiService {
     modeId,
     mainComplaint
   ) {
-    var path = "/user/book-appointment";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_APPOINTMENT_BOOK",
       appointmentId,
       userId: this.utilities.userId,
       doctorId,
@@ -124,7 +152,7 @@ export class ApiService {
       modeId,
       mainComplaint,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Upserting complaint details
@@ -137,8 +165,9 @@ export class ApiService {
     severityId,
     complaintDescription
   ) {
-    var path = "/user/upsert-complaint-details";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_UPSERT_COMPLAINT_DETAILS",
       appointmentId,
       userId: this.utilities.userId,
       doctorId,
@@ -148,29 +177,31 @@ export class ApiService {
       severityId,
       complaintDescription,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Update user profile details
   updateUserProfileDetails(columnName, value) {
-    var path = "/user/update-profile";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_PROFILE_UPDATE",
       userId: this.utilities.userId,
       columnName,
       value,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Update user photo
   upsertUserPhoto(relativeId, photo) {
-    var path = "/user/photo-save";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_PHOTO_SAVE",
       userId: this.utilities.userId,
       relativeId,
       photo,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Upserting vital details
@@ -183,8 +214,9 @@ export class ApiService {
     bpSystolic,
     bpDiastolic
   ) {
-    var path = "/user/upsert-vital";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_UPSERT_VITALS",
       userId: this.utilities.userId,
       vitalId,
       relativeId,
@@ -194,68 +226,75 @@ export class ApiService {
       bpSystolic,
       bpDiastolic,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Fetching vitals
   getVitals() {
-    var path =
-      "/user/get-vitals/" +
-      this.utilities.userId +
-      "/" +
-      this.utilities.selectedRelativeId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_VITALS_GET",
+      userId: this.utilities.userId,
+      relativeId: this.utilities.selectedRelativeId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // Fetching Files
   getFiles() {
-    var path =
-      "/user/get-files/" +
-      this.utilities.userId +
-      "/" +
-      this.utilities.selectedRelativeId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_FILES_GET",
+      userId: this.utilities.userId,
+      relativeId: this.utilities.selectedRelativeId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // Upserting File details
   upsertFileDetails(fileId, relativeId, fileTypeId, photo) {
-    var path = "/user/upsert-file";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_FILE_UPSERT",
       userId: this.utilities.userId,
       relativeId,
       fileId,
       fileTypeId,
       photo,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   getIssues() {
-    var path = "/user/master/issue";
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "ISSUE_MASTER_GET",
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   saveIssue(issueTypeId, email, phone, issueDescrption) {
-    var path = "/user/issue";
-
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_ISSUE_SAVE",
       userId: this.utilities.userId,
       issueTypeId: issueTypeId,
       email: email,
       phone: phone,
       issueDescrption: issueDescrption,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Getting medical history details & masters
   getMedicalHistories() {
-    var path =
-      "/user/medical-history-masters-and-data/" +
-      this.utilities.userId +
-      "/" +
-      this.utilities.selectedRelativeId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_ISSUE_SAVE",
+      userId: this.utilities.userId,
+      relativeId: this.utilities.selectedRelativeId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // Upserting allergies
@@ -265,29 +304,27 @@ export class ApiService {
     commaSeparatedAllergies,
     insertableAlleryObject
   ) {
-    var path = "/user/upsert-medical-history";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_UPSERT_MEDICAL_HISTORY",
       selectedMedicalHistoryTag,
       userId: this.utilities.userId,
       relativeId,
       commaSeparatedAllergies,
       insertableAlleryObject,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Getting Lifestyle details & masters
   getLifestyles() {
-    var path =
-      "/user/lifestyle-masters-and-data/" +
-      this.utilities.userId +
-      "/" +
-      this.utilities.selectedRelativeId;
-    return this.http.get(this.apiUrl + path);
-    // return this.db.getLifestyles(
-    //   this.utilities.userId,
-    //   this.utilities.selectedRelativeId
-    // );
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "LIFESTYLE_MASTERS_AND_DATA_GET",
+      userId: this.utilities.userId,
+      relativeId: this.utilities.selectedRelativeId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // Upserting lifestyle
@@ -300,8 +337,9 @@ export class ApiService {
     foodId,
     heatId
   ) {
-    var path = "/user/upsert-lifestyle";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_UPSERT_LIFESTYLE",
       userId: this.utilities.userId,
       relativeId: this.utilities.selectedRelativeId,
       smokingId,
@@ -312,82 +350,108 @@ export class ApiService {
       foodId,
       heatId,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Deleting vital
   deleteVital(vitalId) {
-    var path = "/user/delete-vital/" + vitalId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_VITALS_DELETE",
+      vitalId: vitalId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // Deleting file
   deleteFile(fileId) {
-    var path = "/user/delete-file/" + fileId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_FILE_DELETE",
+      fileId: fileId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // Getting relations medical history details & masters
   getRelationsMedicalHistories() {
-    var path =
-      "/user/relations-medical-history-masters-and-data/" +
-      this.utilities.userId +
-      "/" +
-      this.utilities.selectedRelativeId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "RELATIONS_MEDICAL_HISTORY_MASTERS_AND_DATA_GET",
+      userId: this.utilities.userId,
+      relativeId: this.utilities.selectedRelativeId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // Getting relations masters
   getRelationsMasters() {
-    var path = "/user/relations-masters-get";
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "RELATION_MASTERS_GET",
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   // Upserting upsertRelationMedicalHistory
   upsertRelationMedicalHistory(userId, relativeId, relationId, commaSeparated) {
-    var path = "/user/upsert-relation-medical-history";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_UPSERT_RELATION_MEDICAL_HISTORY",
       userId,
       relativeId,
       relationId,
       commaSeparated,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Update user photo
   addUserRelative(relativeName, relationId, photo) {
-    var path = "/user/add-relative";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_RELATIVE_ADD",
       userId: this.utilities.userId,
       relativeName,
       relationId,
       photo,
     };
-    return this.http.post(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   // Getting user's relatives
   getUserRelatives() {
-    var path = "/user/relatives-get/" + this.utilities.userId;
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_RELATIVES_GET",
+      userId: this.utilities.userId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   cancelAppointment(appointmentId) {
-    var path = "/user/cancel-appointment";
     var body = {
+      access_token: "tele-homeo",
+      request_type: "USER_APPOINTMENT_CANCEL",
       appointmentId: appointmentId,
     };
-    return this.http.put(this.apiUrl + path, body);
+    return this.http.post(this.apiUrl, body);
   }
 
   getDoctorMasters() {
-    var path = "/doctor/masters";
-    return this.http.get(this.apiUrl + path);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "DOCTOR_MASTERS_GET",
+    };
+    return this.http.post(this.apiUrl, body);
   }
 
   getDoctorProfile(doctorId) {
-    var path = "/doctor/profile";
-    return this.http.get(this.apiUrl + path + "/" + doctorId);
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "DOCTOR_PROFILE_GET",
+      doctorId,
+    };
+    return this.http.post(this.apiUrl, body);
   }
 }
