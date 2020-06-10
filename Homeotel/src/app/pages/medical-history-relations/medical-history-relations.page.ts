@@ -24,10 +24,11 @@ export class MedicalHistoryRelationsPage {
     private router: Router
   ) {
     // this.getRelationsMedicalHistories();
+    this.loadRelationsMedicalHistoryMasters();
+    // this.loadRelationsMedicalHistoryData();
   }
 
   ionViewWillEnter() {
-    this.loadRelationsMedicalHistoryMasters();
     this.loadRelationsMedicalHistoryData();
     // this.getRelationsMedicalHistories();
   }
@@ -63,7 +64,7 @@ export class MedicalHistoryRelationsPage {
                   });
                 }
               });
-              // this.loadRelationsMedicalHistoryData();
+              this.loadRelationsMedicalHistoryData();
             })
             .catch((error) => {
               this.utilities.sqliteErrorDisplayer(
@@ -123,6 +124,7 @@ export class MedicalHistoryRelationsPage {
 
             this.relationsWithData.push(tempObj);
           });
+          // if (status) this.loadRelationsMedicalHistoryMasters();
         }
       })
       .catch((error) => {

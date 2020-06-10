@@ -108,7 +108,7 @@ export class EditFilePage implements OnInit {
                           this.utilities.presentToastSuccess(
                             "Updated successfully"
                           );
-                        this.router.navigate(["/health-records"]);
+                        this.router.navigate(["/files"]);
                       })
                       .catch((error) => {
                         this.utilities.sqliteErrorDisplayer(

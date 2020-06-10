@@ -247,7 +247,7 @@ export class EditLifestylePage implements OnInit {
                 }
                 if (this.currentQuestion == "seven") {
                   this.utilities.presentToastSuccess("Updated successfully");
-                  this.router.navigate(["/health-records"]);
+                  this.router.navigate(["/lifestyle"]);
                 } else {
                   this.router.navigate([this.forwardLink]);
                 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { ActionSheetController } from "@ionic/angular";
 import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 import { File } from "@ionic-native/file/ngx";
@@ -13,7 +13,7 @@ import { DatabaseService } from "src/app/services/database.service";
   templateUrl: "./files.page.html",
   styleUrls: ["./files.page.scss"],
 })
-export class FilesPage implements OnInit {
+export class FilesPage {
   files: any[] = [];
   capturedSnapURL: string;
   croppedImagepath = "";
@@ -42,10 +42,11 @@ export class FilesPage implements OnInit {
     private db: DatabaseService
   ) {
     // this.getFiles();
-    this.getLocalFiles();
   }
 
-  ngOnInit() {}
+  ionViewWillEnter() {
+    this.getLocalFiles();
+  }
 
   async getLocalFiles() {
     const loading = await this.loadingController
@@ -126,7 +127,7 @@ export class FilesPage implements OnInit {
 
               const loading = await this.loadingController
                 .create({
-                  message: "Cancelling...",
+                  message: "Deleting...",
                   translucent: true,
                 })
                 .then((a) => {
@@ -292,9 +293,7 @@ export class FilesPage implements OnInit {
       let fileIndex = this.files.findIndex((file) => file["file_id"] == id);
       console.log("fileIndex -> " + fileIndex);
       console.log(this.files[fileIndex]);
-      this.utilities.filesPageState["photo"] = this.files[fileIndex][
-        "file_blob"
-      ];
+      this.utilities.filesPageState["photo"] = this.files[fileIndex]["photo"];
       this.utilities.filesPageState["fileTypeId"] = this.files[fileIndex][
         "file_type_id"
       ];

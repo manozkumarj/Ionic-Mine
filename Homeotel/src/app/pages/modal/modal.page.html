@@ -1,6 +1,6 @@
 <ion-content class="signInModal">
   <ion-grid *ngIf="(action == 'findDoctor')" class="grid appointmentsGrid">
-    <div *ngIf="(doctorDetails.length > 0); else noDoctorFound">
+    <div *ngIf="(doctorDetails); else noDoctorFound">
       <ion-row>
         <ion-col class="card-heading">
           <ion-icon name="checkmark-outline"></ion-icon> Doctor Found
@@ -20,7 +20,7 @@
                   "
                 >
                   <img
-                    [src]="utilities.getPhotoDataUrl(doctorDetails[0].photo)"
+                    [src]="utilities.getPhotoDataUrl(doctorDetails.photo)"
                     height="80px"
                     width="80px"
                     style="border-radius: 100%;"
@@ -29,11 +29,11 @@
               </ion-col>
               <ion-col>
                 <p class="docName">
-                  {{doctorDetails[0].doctorName ? doctorDetails[0].doctorName :
-                  doctorDetails[0].username}}
+                  {{doctorDetails.doctorName ? doctorDetails.doctorName :
+                  doctorDetails.username}}
                 </p>
-                <p>{{doctorDetails[0].specialisation}}</p>
-                <p>{{doctorDetails[0].experience}} years experience</p>
+                <p>{{doctorDetails.specialisation}}</p>
+                <p>{{doctorDetails.experience}} years experience</p>
               </ion-col>
             </ion-row>
             <ion-row>
@@ -45,7 +45,7 @@
               <ion-col>
                 <button
                   class="okayButton"
-                  (click)="addDoctor(doctorDetails[0].id)"
+                  (click)="addDoctor(doctorDetails.id)"
                 >
                   Add
                 </button>
