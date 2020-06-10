@@ -68,73 +68,7 @@ export class ViewDoctorPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    // this.loadMasters();
     this.loadDoctorMasters();
-  }
-
-  async loadMasters() {
-    const loading = await this.loadingController
-      .create({
-        message: "Loading...",
-        translucent: true,
-      })
-      .then((a) => {
-        a.present()
-          .then(async (res) => {
-            this.apiService.getDoctorMasters().subscribe((data) => {
-              if (this.utilities.isInvalidApiResponseData(data)) {
-                a.dismiss();
-                console.log(data);
-                this.utilities.presentToastWarning("Something went wrong");
-              } else {
-                console.log(data);
-                this.resetMasters();
-                data[0].forEach((data) => {
-                  if (data.master_type == "table_specialisation") {
-                    this.specialisationMasters.push({
-                      id: data.id,
-                      name: data.name,
-                    });
-                  } else if (data.master_type == "table_qualification") {
-                    this.qualificationMasters.push({
-                      id: data.id,
-                      name: data.name,
-                    });
-                  } else if (data.master_type == "table_certification") {
-                    this.certificationMasters.push({
-                      id: data.id,
-                      name: data.name,
-                    });
-                  } else if (data.master_type == "table_award") {
-                    this.awardMasters.push({
-                      id: data.id,
-                      name: data.name,
-                    });
-                  }
-                });
-                // this.loadProfile();
-                this.loadDoctorProfileDetails();
-                this.loadDoctorProfessionalDetails();
-                this.loadDoctorClinicsDetails();
-                this.loadDoctorModesDetails();
-                // this.utilities.presentToastSuccess("data loaded successfully");
-                a.dismiss();
-              }
-            });
-          })
-          .catch((error) => {
-            a.dismiss();
-            this.utilities.sqliteErrorDisplayer(
-              "view-doctor * loadMasters",
-              error
-            );
-            this.utilities.presentToastWarning("Something went wrong");
-            console.error(
-              "Error -> loadMasters() function returned error." +
-                JSON.stringify(error)
-            );
-          });
-      });
   }
 
   async loadDoctorMasters() {
@@ -152,22 +86,22 @@ export class ViewDoctorPage implements OnInit {
               let doctorMasters = res;
               this.resetMasters();
               doctorMasters.forEach((data) => {
-                if (data.master_type == "specialisation") {
+                if (data.master_type == "table_specialisation") {
                   this.specialisationMasters.push({
                     id: data.id,
                     name: data.name,
                   });
-                } else if (data.master_type == "qualification") {
+                } else if (data.master_type == "table_qualification") {
                   this.qualificationMasters.push({
                     id: data.id,
                     name: data.name,
                   });
-                } else if (data.master_type == "certification") {
+                } else if (data.master_type == "table_certification") {
                   this.certificationMasters.push({
                     id: data.id,
                     name: data.name,
                   });
-                } else if (data.master_type == "award") {
+                } else if (data.master_type == "table_award") {
                   this.awardMasters.push({
                     id: data.id,
                     name: data.name,
@@ -253,11 +187,10 @@ export class ViewDoctorPage implements OnInit {
             .getDoctorProfessionalDetails(this.selectedDoctorId)
             .then((res: any[]) => {
               console.log(res);
-              console.log(res[0]["specialisation"]);
               let receivedData = res[0];
               if (receivedData) {
-                this.loadSpecialisation(receivedData["specialisation"]);
                 this.loadExperience(receivedData["experience"]);
+                this.loadSpecialisation(receivedData["specialisation"]);
                 this.loadQualifications(receivedData["qualifications"]);
                 this.loadCertifications(receivedData["certifications"]);
               }
