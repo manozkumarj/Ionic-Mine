@@ -494,10 +494,10 @@ export class ModalPage implements OnInit {
                 console.log("Doctor added");
                 this.utilities.presentToastSuccess("Success, Doctor added");
 
-                let res = data[0];
+                let res = data[0][0];
 
                 // du_doctor related
-                if (data[0] && data[0]["query"]) {
+                if (data[0][0] && data[0][0]["query"]) {
                   let receivedQuery = res["query"];
                   console.log(receivedQuery);
 
@@ -532,8 +532,8 @@ export class ModalPage implements OnInit {
               }
 
               // d_doctor
-              if (data[1] && data[1] && data[1]["doctor"]) {
-                let receivedQuery = data[1]["doctor"];
+              if (data[1][0] && data[1][0] && data[1][0]["doctor"]) {
+                let receivedQuery = data[1][0]["doctor"];
                 console.log(receivedQuery);
 
                 this.db
@@ -564,28 +564,33 @@ export class ModalPage implements OnInit {
               }
 
               // dd_clinic
-              if (data[2] && data[2]["clinic"]) {
-                let receivedQuery = data[2]["clinic"];
+              if (data[2][0] && data[2][0]["clinic"]) {
+                let receivedQuery = data[2];
                 console.log(receivedQuery);
+                receivedQuery.forEach((query) => {
+                  let clinicQuery = query["clinic"];
 
-                this.db
-                  .crudOperations(receivedQuery)
-                  .then((res) => {
-                    a.dismiss();
-                    console.log("clinic Added successfully");
-                  })
-                  .catch((error) => {
-                    this.utilities.sqliteErrorDisplayer(
-                      "modal * AddDoctor",
-                      error
-                    );
-                    this.utilities.presentToastWarning("Something went wrong.");
-                    a.dismiss();
-                    console.error(
-                      "Error -> clinic function returned error." +
-                        JSON.stringify(error)
-                    );
-                  });
+                  this.db
+                    .crudOperations(clinicQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      console.log("clinic Added successfully");
+                    })
+                    .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "modal * AddDoctor",
+                        error
+                      );
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      a.dismiss();
+                      console.error(
+                        "Error -> clinic function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                });
               } else {
                 a.dismiss();
                 this.utilities.sqliteErrorDisplayer(
@@ -596,28 +601,34 @@ export class ModalPage implements OnInit {
               }
 
               // dd_timing
-              if (data[3] && data[3]["timings"]) {
-                let receivedQuery = data[3]["timings"];
-                console.log(receivedQuery);
+              if (data[3][0] && data[3][0]["timings"]) {
+                let receivedQuery = data[3];
 
-                this.db
-                  .crudOperations(receivedQuery)
-                  .then((res) => {
-                    a.dismiss();
-                    console.log("timing Added successfully");
-                  })
-                  .catch((error) => {
-                    this.utilities.sqliteErrorDisplayer(
-                      "modal * AddDoctor",
-                      error
-                    );
-                    this.utilities.presentToastWarning("Something went wrong.");
-                    a.dismiss();
-                    console.error(
-                      "Error -> timing function returned error." +
-                        JSON.stringify(error)
-                    );
-                  });
+                console.log(receivedQuery);
+                receivedQuery.forEach((query) => {
+                  let timingsQuery = query["timings"];
+
+                  this.db
+                    .crudOperations(timingsQuery)
+                    .then((res) => {
+                      a.dismiss();
+                      console.log("timing Added successfully");
+                    })
+                    .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "modal * AddDoctor",
+                        error
+                      );
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      a.dismiss();
+                      console.error(
+                        "Error -> timing function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                });
               } else {
                 a.dismiss();
                 this.utilities.sqliteErrorDisplayer(
@@ -628,8 +639,8 @@ export class ModalPage implements OnInit {
               }
 
               // dd_professional
-              if (data[4] && data[4]["professional"]) {
-                let receivedQuery = data[4]["professional"];
+              if (data[4][0] && data[4][0]["professional"]) {
+                let receivedQuery = data[4][0]["professional"];
                 console.log(receivedQuery);
 
                 this.db
@@ -662,7 +673,7 @@ export class ModalPage implements OnInit {
               }
 
               // dd_kit related
-              if (data[5] && data[5]["kit"]) {
+              if (data[5][0] && data[5][0]["kit"]) {
                 let receivedQuery = data[5];
                 console.log(receivedQuery);
                 receivedQuery.forEach((query) => {
@@ -698,7 +709,7 @@ export class ModalPage implements OnInit {
               }
 
               // dd_mode related
-              if (data[6] && data[6]["mode"]) {
+              if (data[6][0] && data[6][0]["mode"]) {
                 let receivedQuery = data[6];
                 console.log(receivedQuery);
                 receivedQuery.forEach((query) => {

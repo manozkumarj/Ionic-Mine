@@ -301,6 +301,37 @@ export class DatabaseService {
       });
   }
 
+  getDoctorMasters() {
+    let doctorMasterData = [];
+    let sql = `SELECT id, name, 'table_specialisation' as master_type FROM m_specialisation where is_active = 1 
+    UNION ALL
+  SELECT id, name, 'table_qualification' as master_type FROM m_qualification where is_active = 1
+    UNION ALL
+  SELECT id, name, 'table_certification' as master_type FROM m_certification where is_active = 1
+    UNION ALL
+  SELECT award_id as id, name, 'table_award' as master_type FROM m_award where is_active = 1`;
+    return this.dbObject
+      .executeSql(sql, [])
+      .then((data) => {
+        if (data.rows.length > 0) {
+          for (var i = 0; i < data.rows.length; i++) {
+            doctorMasterData.push({
+              id: data.rows.item(i).id,
+              name: data.rows.item(i).name,
+              master_type: data.rows.item(i).master_type,
+            });
+          }
+        }
+        return doctorMasterData;
+      })
+      .catch((err) => {
+        console.error(
+          "Error -> getDoctorMasters() function returned error." +
+            JSON.stringify(err)
+        );
+      });
+  }
+
   getLifestyleMasters() {
     let lifestyleMasterData = [];
     let sql = `SELECT smoking_id as id, name, 'table_smoking' as master_type FROM m_smoking where is_active = 1 

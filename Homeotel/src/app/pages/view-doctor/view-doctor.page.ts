@@ -68,7 +68,8 @@ export class ViewDoctorPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.loadMasters();
+    // this.loadMasters();
+    this.loadDoctorMasters();
   }
 
   async loadMasters() {
@@ -89,22 +90,22 @@ export class ViewDoctorPage implements OnInit {
                 console.log(data);
                 this.resetMasters();
                 data[0].forEach((data) => {
-                  if (data.master_type == "specialisation") {
+                  if (data.master_type == "table_specialisation") {
                     this.specialisationMasters.push({
                       id: data.id,
                       name: data.name,
                     });
-                  } else if (data.master_type == "qualification") {
+                  } else if (data.master_type == "table_qualification") {
                     this.qualificationMasters.push({
                       id: data.id,
                       name: data.name,
                     });
-                  } else if (data.master_type == "certification") {
+                  } else if (data.master_type == "table_certification") {
                     this.certificationMasters.push({
                       id: data.id,
                       name: data.name,
                     });
-                  } else if (data.master_type == "award") {
+                  } else if (data.master_type == "table_award") {
                     this.awardMasters.push({
                       id: data.id,
                       name: data.name,
@@ -130,6 +131,67 @@ export class ViewDoctorPage implements OnInit {
             this.utilities.presentToastWarning("Something went wrong");
             console.error(
               "Error -> loadMasters() function returned error." +
+                JSON.stringify(error)
+            );
+          });
+      });
+  }
+
+  async loadDoctorMasters() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present()
+          .then(async (res) => {
+            this.db.getDoctorMasters().then((res: any[]) => {
+              console.log("Received doctorMasters details are below -> ");
+              console.log(res);
+              let doctorMasters = res;
+              this.resetMasters();
+              doctorMasters.forEach((data) => {
+                if (data.master_type == "specialisation") {
+                  this.specialisationMasters.push({
+                    id: data.id,
+                    name: data.name,
+                  });
+                } else if (data.master_type == "qualification") {
+                  this.qualificationMasters.push({
+                    id: data.id,
+                    name: data.name,
+                  });
+                } else if (data.master_type == "certification") {
+                  this.certificationMasters.push({
+                    id: data.id,
+                    name: data.name,
+                  });
+                } else if (data.master_type == "award") {
+                  this.awardMasters.push({
+                    id: data.id,
+                    name: data.name,
+                  });
+                }
+              });
+              // this.loadProfile();
+              this.loadDoctorProfileDetails();
+              this.loadDoctorProfessionalDetails();
+              this.loadDoctorClinicsDetails();
+              this.loadDoctorModesDetails();
+              // this.utilities.presentToastSuccess("data loaded successfully");
+              a.dismiss();
+            });
+          })
+          .catch((error) => {
+            a.dismiss();
+            this.utilities.sqliteErrorDisplayer(
+              "view-doctor * loadDoctorMasters",
+              error
+            );
+            this.utilities.presentToastWarning("Something went wrong");
+            console.error(
+              "Error -> loadDoctorMasters() function returned error." +
                 JSON.stringify(error)
             );
           });
@@ -191,11 +253,13 @@ export class ViewDoctorPage implements OnInit {
             .getDoctorProfessionalDetails(this.selectedDoctorId)
             .then((res: any[]) => {
               console.log(res);
-              if (res) {
-                this.loadSpecialisation(res[0]["specialisation"]);
-                this.loadExperience(res[0]["experience"]);
-                this.loadQualifications(res[0]["qualifications"]);
-                this.loadCertifications(res[0]["certifications"]);
+              console.log(res[0]["specialisation"]);
+              let receivedData = res[0];
+              if (receivedData) {
+                this.loadSpecialisation(receivedData["specialisation"]);
+                this.loadExperience(receivedData["experience"]);
+                this.loadQualifications(receivedData["qualifications"]);
+                this.loadCertifications(receivedData["certifications"]);
               }
             })
             .catch((error) => {
