@@ -82,6 +82,13 @@ export class MedicalHistoryPage {
               );
               console.log(res);
               let lifestyleMasters = res;
+              this.m_allergies = [];
+              this.m_currentMedication = [];
+              this.m_postMedication = [];
+              this.m_surgeries = [];
+              this.m_injuries = [];
+              this.m_chronicDieseases = [];
+              this.m_familyHistory = [];
               lifestyleMasters.forEach((data) => {
                 if (data["master_type"] == "table_allergy") {
                   this.m_allergies.push({
@@ -128,6 +135,7 @@ export class MedicalHistoryPage {
                 }
               });
 
+              this.utilities.medicalHistoryPageState = [];
               this.utilities.medicalHistoryPageState[
                 "m_allergies"
               ] = this.m_allergies;
@@ -313,7 +321,7 @@ export class MedicalHistoryPage {
         if (res) {
           this.surgeryData = res;
           this.surgeryData = this.surgeryData.map((obj) => {
-            return { ...obj, self_id: obj["allergy_id"] };
+            return { ...obj, self_id: obj["surgery_id"] };
           });
           // console.log("this.SurgeriesData is below");
           // console.log(this.surgeryData);

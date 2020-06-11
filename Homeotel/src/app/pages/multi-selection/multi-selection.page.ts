@@ -76,6 +76,8 @@ export class MultiSelectionPage implements OnInit {
     // console.log(generated);
 
     let i = 0;
+    this.clonedArrayOfObjects = [];
+    this.arrayOfObjects = [];
     this.clonedArrayOfObjects = this.arrayOfObjects = currentMasters.map(
       (items) => {
         return {
