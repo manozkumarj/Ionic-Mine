@@ -11,7 +11,7 @@ import { DatabaseService } from "src/app/services/database.service";
   styleUrls: ["./consultation-details.page.scss"],
 })
 export class ConsultationDetailsPage implements OnInit {
-  selectedPerson = 1;
+  selectedPerson = 0;
   doctorId;
   doctorName;
   doctorUsername;
@@ -57,10 +57,14 @@ export class ConsultationDetailsPage implements OnInit {
       " : " +
       this.utilities.bookAppointmentDetails["timeNSession"];
     // this.getUserRelatives();
-    this.loadUserRelatives();
+    // this.loadUserRelatives();
   }
 
   ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.loadUserRelatives();
+  }
 
   async loadUserRelatives() {
     const loading = await this.loadingController
@@ -93,8 +97,8 @@ export class ConsultationDetailsPage implements OnInit {
 
   person(id) {
     console.log("Selected person ID -> " + id);
-    if (id == 0) {
-      this.router.navigate(["/add-relative/slot-selection"]);
+    if (id == -1) {
+      this.router.navigate(["/add-relative/consultation-details"]);
     } else {
       this.selectedPerson = id;
     }

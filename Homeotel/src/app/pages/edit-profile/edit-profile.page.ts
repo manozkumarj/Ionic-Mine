@@ -168,7 +168,7 @@ export class EditProfilePage implements OnInit {
         this.dobDateOptions.push({ description: i.toString() });
       }
       // Generating DOB month options
-      for (let i = 1; i <= 11; i++) {
+      for (let i = 1; i <= 12; i++) {
         this.dobMonthOptions.push({ description: i.toString() });
       }
       // Generating DOB year options

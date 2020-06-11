@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS "d_appointment" (
   "created_at" varchar(45) DEFAULT NULL,
   "updated_by" int DEFAULT NULL,
   "updated_at" varchar(45) DEFAULT NULL,
+  "is_downloaded" int(11) DEFAULT "0",
   PRIMARY KEY ("appointment_id")
 );
 CREATE TABLE IF NOT EXISTS "d_doctor" (

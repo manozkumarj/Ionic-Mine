@@ -70,6 +70,7 @@ export class IssueDetailsPage implements OnInit {
                   console.log(data);
                 } else {
                   console.log(data);
+                  a.dismiss();
 
                   let res = data[0];
                   if (data[0]["query"]) {
