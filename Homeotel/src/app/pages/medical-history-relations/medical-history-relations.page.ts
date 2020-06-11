@@ -94,6 +94,7 @@ export class MedicalHistoryRelationsPage {
         );
         console.log(res);
         if (res) {
+          this.relationsWithData = [];
           this.existingData = res;
           let i = 0;
           this.relations.forEach((relation) => {
@@ -104,6 +105,7 @@ export class MedicalHistoryRelationsPage {
             let getCurrentDiseaseData = this.existingData.filter(
               (item) => item.relation_id == relation.relation_id
             );
+            // console.log(getCurrentDiseaseData);
             if (getCurrentDiseaseData.length > 0) {
               let diseasesNames = getCurrentDiseaseData.map(
                 (disease) => disease.diseaseName
@@ -112,6 +114,8 @@ export class MedicalHistoryRelationsPage {
               selectedDiseaseIds = getCurrentDiseaseData.map(
                 (disease) => disease.disease_id
               );
+
+              // console.log(getCurrentDiseaseData);
 
               list = diseasesNames.join(", ");
             }
@@ -122,9 +126,13 @@ export class MedicalHistoryRelationsPage {
             tempObj["list"] = list;
             tempObj["selectedDiseaseIds"] = selectedDiseaseIds;
 
+            // console.log(tempObj);
+
             this.relationsWithData.push(tempObj);
+            // console.log(this.relationsWithData);
           });
           // if (status) this.loadRelationsMedicalHistoryMasters();
+          // console.log(this.relationsWithData);
         }
       })
       .catch((error) => {
