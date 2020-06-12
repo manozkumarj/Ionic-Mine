@@ -17,6 +17,9 @@ export class AppointmentsPage implements OnInit {
   upcomingAppointments: any[] = [];
   previousAppointments: any[] = [];
 
+  nextUpcomingAppointmentId = 0;
+  commonServiceUpcomingAppointment;
+
   constructor(
     private apiService: ApiService,
     private commonService: CommonService,
@@ -29,6 +32,12 @@ export class AppointmentsPage implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {
+    this.commonServiceUpcomingAppointment = this.commonService.upcomingAppointment;
+    if (this.commonServiceUpcomingAppointment) {
+      this.nextUpcomingAppointmentId = this.commonServiceUpcomingAppointment[
+        "appointment_id"
+      ];
+    }
     // this.getAppointments();
     this.loadAppointments();
   }
@@ -52,6 +61,19 @@ export class AppointmentsPage implements OnInit {
               console.log("Appointments found");
               this.upcomingAppointments = this.allAppointments.filter(
                 (appointment) => appointment["appointment_status"] == 0
+              );
+
+              this.upcomingAppointments = this.upcomingAppointments.map(
+                (appointment) => {
+                  let isItUpcomingAppointment = false;
+                  if (
+                    appointment["appointment_id"] ==
+                    this.nextUpcomingAppointmentId
+                  ) {
+                    isItUpcomingAppointment = true;
+                  }
+                  return { ...appointment, isItUpcomingAppointment };
+                }
               );
 
               console.log("this.upcomingAppointments showing below");

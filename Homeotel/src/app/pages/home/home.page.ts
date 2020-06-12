@@ -65,11 +65,11 @@ export class HomePage implements OnInit {
                   let getAppointmentMillisecondsPlus5 =
                     getAppointmentMilliseconds + 1000 * 60;
 
-                  console.log("*****************************************");
-                  console.log(getCurrentMilliseconds);
+                  // console.log("*****************************************");
+                  // console.log(getCurrentMilliseconds);
                   // console.log(getAppointmentMilliseconds);
-                  console.log(getAppointmentMillisecondsMinus5);
-                  console.log(getAppointmentMillisecondsPlus5);
+                  // console.log(getAppointmentMillisecondsMinus5);
+                  // console.log(getAppointmentMillisecondsPlus5);
 
                   if (
                     getCurrentMilliseconds >=
@@ -86,15 +86,15 @@ export class HomePage implements OnInit {
                 }
               );
 
-              console.log("getUpcomingAppointment is below");
-              console.log(getUpcomingAppointment[2]);
+              // console.log("getUpcomingAppointment is below");
+              // console.log(getUpcomingAppointment[2]);
 
-              this.utilities.upcomingAppointment = {
-                ...getUpcomingAppointment[2],
-              };
+              // this.utilities.upcomingAppointment = {
+              //   ...getUpcomingAppointment[2],
+              // };
 
-              console.log("this.utilities.upcomingAppointment is below");
-              console.log(this.utilities.upcomingAppointment);
+              // console.log("this.utilities.upcomingAppointment is below");
+              // console.log(this.utilities.upcomingAppointment);
             })
             .catch((error) => {
               this.utilities.sqliteErrorDisplayer(
