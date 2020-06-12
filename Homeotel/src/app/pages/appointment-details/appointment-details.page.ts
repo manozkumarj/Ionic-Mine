@@ -45,14 +45,24 @@ export class AppointmentDetailsPage implements OnInit {
       "doctorPhoto"
     ];
 
-    this.complaintDescription = this.utilities.selectedAppointmentComplaintDetails[
-      "complaint_description"
-    ];
+    if (
+      this.utilities.selectedAppointmentComplaintDetails[
+        "complaint_description"
+      ]
+    ) {
+      this.complaintDescription = this.utilities.selectedAppointmentComplaintDetails[
+        "complaint_description"
+      ];
+    } else {
+      this.complaintDescription = "-N/A-";
+    }
 
-    this.recurring =
-      this.utilities.selectedAppointmentComplaintDetails["is_recurring"] == 1
-        ? "Recurring"
-        : "No recurring";
+    if (this.utilities.selectedAppointmentComplaintDetails["is_recurring"]) {
+      this.recurring =
+        this.utilities.selectedAppointmentComplaintDetails["is_recurring"] == 1
+          ? "Recurring"
+          : "No recurring";
+    }
 
     let getFrequency = this.utilities.selectedAppointmentComplaintDetails[
       "recurring_freq"

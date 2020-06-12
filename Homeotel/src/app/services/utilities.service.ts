@@ -72,6 +72,35 @@ export class UtilitiesService {
     toast.present();
   }
 
+  logout() {
+    this.alertCtrl
+      .create({
+        header: "Are you sure?",
+        message: "Do you want to logout?",
+        buttons: [
+          {
+            text: "Cancel",
+            role: "cancel",
+          },
+          {
+            text: "Logout",
+            handler: () => {
+              // alert("User will be logged out");
+              // this.auth.logout();
+              // this.auth.signOut();
+              this.router.navigate(["/login"]);
+              clearInterval(this.alertShowableInterval);
+              clearInterval(this.loadAppointmentsInterval);
+              // this.storageService.clear();
+            },
+          },
+        ],
+      })
+      .then((alertEl) => {
+        alertEl.present();
+      });
+  }
+
   sqliteErrorDisplayer(funcName, error) {
     alert(funcName + " <->" + JSON.stringify(error));
   }

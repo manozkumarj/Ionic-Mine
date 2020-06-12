@@ -19,8 +19,9 @@ export class CommonService {
   alertShowableInterval;
 
   loadAppointmentsInterval;
+  initialInterval;
 
-  appointmentsLoadingInterval = 1 * 1000 * 60; // every minute
+  appointmentsLoadingInterval = 10 * 1000 * 60; // every minute
 
   constructor(
     private alertCtrl: AlertController,
@@ -101,6 +102,8 @@ export class CommonService {
       },
     ];
 
+    this.loadAppointmentsFromSqlite();
+
     this.loadAppointmentsInterval = setInterval(
       () => this.loadAppointmentsFromSqlite(),
       this.appointmentsLoadingInterval
@@ -137,10 +140,10 @@ export class CommonService {
       getCurrentMilliseconds <= appointmentEndTime
     ) {
       // alert("You have an appointment within  minutes");
-      this.utilities.presentToastWarning(
-        "You have an Appointment within few minutes" +
-          upcomingAppointment["appointment_id"]
-      );
+      // this.utilities.presentToastWarning(
+      //   "You have an Appointment within few minutes" +
+      //     upcomingAppointment["appointment_id"]
+      // );
 
       this.alertCtrl
         .create({
@@ -156,7 +159,68 @@ export class CommonService {
             },
             {
               text: "View Appointment",
-              handler: () => {},
+              handler: () => {
+                this.upcomingAppointment["showAlert"] = false;
+                this.upcomingAppointment["showCallNowButton"] = false;
+
+                this.utilities.selectedAppointmentComplaintDetails = {};
+                console.log(this.upcomingAppointment);
+
+                this.utilities.selectedAppointmentComplaintDetails[
+                  "user_id"
+                ] = this.upcomingAppointment["user_id"];
+                this.utilities.selectedAppointmentComplaintDetails[
+                  "relative_id"
+                ] = this.upcomingAppointment["relative_id"];
+                this.utilities.selectedAppointmentComplaintDetails[
+                  "appointment_id"
+                ] = this.upcomingAppointment["appointment_id"];
+
+                this.utilities.selectedAppointmentComplaintDetails[
+                  "appointment_at"
+                ] = this.upcomingAppointment["appointment_at"];
+
+                this.utilities.selectedAppointmentComplaintDetails[
+                  "doctor_id"
+                ] = this.upcomingAppointment["doctor_id"];
+                this.utilities.selectedAppointmentComplaintDetails[
+                  "doctorName"
+                ] = this.upcomingAppointment["doctorName"];
+                this.utilities.selectedAppointmentComplaintDetails[
+                  "doctorUserame"
+                ] = this.upcomingAppointment["doctorUserame"];
+
+                this.utilities.selectedAppointmentComplaintDetails[
+                  "is_recurring"
+                ] = this.upcomingAppointment["is_recurring"];
+                this.utilities.selectedAppointmentComplaintDetails[
+                  "recurring_freq"
+                ] = this.upcomingAppointment["recurring_freq"];
+                this.utilities.selectedAppointmentComplaintDetails[
+                  "severity_id"
+                ] = this.upcomingAppointment["severity_id"];
+                this.utilities.selectedAppointmentComplaintDetails[
+                  "complaint_description"
+                ] = this.upcomingAppointment["complaint_description"];
+
+                this.utilities.bookAppointmentDoctorDetails[
+                  "id"
+                ] = this.upcomingAppointment["doctor_id"];
+                this.utilities.bookAppointmentDoctorDetails[
+                  "name"
+                ] = this.upcomingAppointment["doctorName"];
+                this.utilities.bookAppointmentDoctorDetails[
+                  "username"
+                ] = this.upcomingAppointment["doctorUserame"];
+                this.utilities.bookAppointmentDoctorDetails[
+                  "specialisation"
+                ] = this.upcomingAppointment["specialisation"];
+                this.utilities.bookAppointmentDoctorDetails[
+                  "doctorPhoto"
+                ] = this.upcomingAppointment["photo"];
+
+                this.router.navigate(["/appointment-details"]);
+              },
             },
           ],
         })
