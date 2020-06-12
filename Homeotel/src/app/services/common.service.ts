@@ -2,9 +2,10 @@ import { Injectable } from "@angular/core";
 import { AlertController } from "@ionic/angular";
 import { Router } from "@angular/router";
 import { AuthService } from "./auth.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class CommonService {
   doctors;
@@ -16,39 +17,40 @@ export class CommonService {
   constructor(
     private alertCtrl: AlertController,
     private router: Router,
+    private utilities: UtilitiesService,
     public auth: AuthService
   ) {
     this.doctors = [
       {
         id: 1,
         name: "Uday Kumar",
-        img: "assets/images/bill.jpg"
+        img: "assets/images/bill.jpg",
       },
       {
         id: 2,
         name: "Bharat Raj",
-        img: "assets/images/larry.jpg"
+        img: "assets/images/larry.jpg",
       },
       {
         id: 3,
         name: "Manoj Kumar",
-        img: "assets/images/zuck.jpg"
+        img: "assets/images/zuck.jpg",
       },
       {
         id: 4,
         name: "Mallesh",
-        img: "assets/images/mark.jpg"
+        img: "assets/images/mark.jpg",
       },
       {
         id: 5,
         name: "Rohit Kumar",
-        img: "assets/images/sergey.jpg"
+        img: "assets/images/sergey.jpg",
       },
       {
         id: 6,
         name: "Maruthi",
-        img: "assets/images/warren.jpg"
-      }
+        img: "assets/images/warren.jpg",
+      },
     ];
 
     this.familyMembers = [
@@ -56,38 +58,38 @@ export class CommonService {
         id: 1,
         name: "Uday Kumar",
         img: "assets/images/bill.jpg",
-        relation: "Mother"
+        relation: "Mother",
       },
       {
         id: 2,
         name: "Bharat Raj",
         img: "assets/images/larry.jpg",
-        relation: "Father"
+        relation: "Father",
       },
       {
         id: 3,
         name: "Manoj Kumar",
         img: "assets/images/zuck.jpg",
-        relation: "Son"
+        relation: "Son",
       },
       {
         id: 4,
         name: "Mallesh",
         img: "assets/images/mark.jpg",
-        relation: "Daughter"
+        relation: "Daughter",
       },
       {
         id: 5,
         name: "Rohit Kumar",
         img: "assets/images/sergey.jpg",
-        relation: "Grand-son"
+        relation: "Grand-son",
       },
       {
         id: 6,
         name: "Maruthi",
         img: "assets/images/warren.jpg",
-        relation: "Grand-daughter"
-      }
+        relation: "Grand-daughter",
+      },
     ];
   }
 
@@ -99,7 +101,7 @@ export class CommonService {
         buttons: [
           {
             text: "Cancel",
-            role: "cancel"
+            role: "cancel",
           },
           {
             text: "Logout",
@@ -108,12 +110,13 @@ export class CommonService {
               // this.auth.logout();
               // this.auth.signOut();
               this.router.navigate(["/login"]);
+              clearInterval(this.utilities.interValid);
               // this.storageService.clear();
-            }
-          }
-        ]
+            },
+          },
+        ],
       })
-      .then(alertEl => {
+      .then((alertEl) => {
         alertEl.present();
       });
   }

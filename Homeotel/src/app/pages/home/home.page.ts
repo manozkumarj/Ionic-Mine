@@ -53,45 +53,48 @@ export class HomePage implements OnInit {
               let getUpcomingAppointment = this.allAppointments.map(
                 (appointment) => {
                   let date = new Date();
-                  let getCurrentMilliseconds = date.getMilliseconds();
+                  let getCurrentMilliseconds = date.getTime();
 
                   let getAppointmentDateTime = appointment["appointment_at"];
                   let convertAppointmentDateTimeToDate = new Date(
                     getAppointmentDateTime
                   );
-                  let getAppointmentMilliseconds = convertAppointmentDateTimeToDate.getMilliseconds();
+                  let getAppointmentMilliseconds = convertAppointmentDateTimeToDate.getTime();
                   let getAppointmentMillisecondsMinus5 =
-                    getAppointmentMilliseconds - 5 * 60 * 60;
+                    getAppointmentMilliseconds - 10 * 60 * 60 * 60;
                   let getAppointmentMillisecondsPlus5 =
-                    getAppointmentMilliseconds + 5 * 60 * 60;
+                    getAppointmentMilliseconds + 10 * 60 * 60 * 60;
+
+                  console.log("*****************************************");
+                  console.log(getCurrentMilliseconds);
+                  // console.log(getAppointmentMilliseconds);
+                  console.log(getAppointmentMillisecondsMinus5);
+                  console.log(getAppointmentMillisecondsPlus5);
 
                   if (
-                    getCurrentMilliseconds >= getAppointmentMillisecondsMinus5
+                    getCurrentMilliseconds >=
+                      getAppointmentMillisecondsMinus5 &&
+                    getCurrentMilliseconds <= getAppointmentMillisecondsPlus5
                   ) {
-                    return [
+                    return {
                       ...appointment,
-                      {
-                        getAppointmentMilliseconds,
-                        getAppointmentMillisecondsMinus5,
-                        getAppointmentMillisecondsPlus5,
-                      },
-                    ];
-                  } else {
-                    return;
+                      getAppointmentMilliseconds,
+                      getAppointmentMillisecondsMinus5,
+                      getAppointmentMillisecondsPlus5,
+                    };
                   }
-
-                  // let getMonth = convertAppointmentDateTimeToDate.getMonth()+1;
-                  // let getDate = convertAppointmentDateTimeToDate.getDate();
-                  // let splitDateTime = getDateTime.split(" ");
-                  // let storeDate = splitDateTime[0];
-                  // let storeTime = splitDateTime[1];
                 }
               );
 
               console.log("getUpcomingAppointment is below");
-              console.log(getUpcomingAppointment);
+              console.log(getUpcomingAppointment[2]);
 
-              this.utilities.upcomingAppointment = getUpcomingAppointment;
+              this.utilities.upcomingAppointment = {
+                ...getUpcomingAppointment[2],
+              };
+
+              console.log("this.utilities.upcomingAppointment is below");
+              console.log(this.utilities.upcomingAppointment);
             })
             .catch((error) => {
               this.utilities.sqliteErrorDisplayer(

@@ -34,39 +34,54 @@ export class UtilitiesService {
   currentMonth = this.date.getMonth() + 1;
   currentYear = this.date.getFullYear();
 
-  upcomingAppointment;
+  upcomingAppointment: any;
   interValid;
 
   constructor(
     private router: Router,
     private toastController: ToastController
   ) {
-    this.interValid = setInterval(this.checkUpcomingAppointment, 10000);
+    this.interValid = setInterval(
+      () => this.checkUpcomingAppointment(this.upcomingAppointment),
+      30000
+    );
   }
 
-  checkUpcomingAppointment() {
+  checkUpcomingAppointment(upcomingAppointment) {
     console.log("checkUpcomingAppointment triggered");
     console.log("upcomingAppointment array is below");
-    console.log(this.upcomingAppointment);
-    if (this.upcomingAppointment.length > 0) {
-      this.checkTimestamp();
+    console.log(upcomingAppointment);
+    if (upcomingAppointment) {
+      this.checkTimestamp(upcomingAppointment);
     }
   }
 
-  checkTimestamp() {
+  checkTimestamp(upcomingAppointment) {
     console.log("checkTimestamp triggered");
-    let exactAppointmentTime = this.upcomingAppointment
-      .getAppointmentMilliseconds;
-    let appointmentTimeMinus5 = this.upcomingAppointment
-      .getAppointmentMillisecondsMinus5;
-    let appointmentTimePlus5 = this.upcomingAppointment
-      .getAppointmentMillisecondsPlus5;
+    let exactAppointmentTime =
+      upcomingAppointment["getAppointmentMilliseconds"];
+    let appointmentTimeMinus5 =
+      upcomingAppointment["getAppointmentMillisecondsMinus5"];
+    let appointmentTimePlus5 =
+      upcomingAppointment["getAppointmentMillisecondsPlus5"];
 
     let date = new Date();
-    let getCurrentMilliseconds = date.getMilliseconds();
+    let getCurrentMilliseconds = date.getTime();
 
-    if (getCurrentMilliseconds >= appointmentTimeMinus5) {
-      alert("You have an appointment within  minutes");
+    console.log("*****************************************");
+    console.log(getCurrentMilliseconds);
+    console.log(appointmentTimeMinus5);
+    console.log(appointmentTimePlus5);
+
+    if (
+      getCurrentMilliseconds >= appointmentTimeMinus5 &&
+      getCurrentMilliseconds <= appointmentTimePlus5
+    ) {
+      // alert("You have an appointment within  minutes");
+      this.presentToastWarning(
+        "You have an Appointment within few minutes" +
+          upcomingAppointment["appointment_id"]
+      );
     }
   }
 

@@ -70,6 +70,8 @@ export class AppComponent {
 
     console.log("this.utilities.currentUserDetails below");
     console.log(this.utilities.currentUserDetails);
+
+    // clearInterval(this.utilities.interValid);
   }
 
   initializeApp() {
