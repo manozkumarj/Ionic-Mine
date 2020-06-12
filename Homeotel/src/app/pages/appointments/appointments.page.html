@@ -72,6 +72,16 @@
             </ion-col>
 
             <ion-col
+              *ngIf="!upcomingAppointment.is_recurring || !upcomingAppointment.recurring_freq || !upcomingAppointment.severity_id || !upcomingAppointment.complaint_description"
+              size="3"
+              (click)="addDetails(upcomingAppointment.appointment_id, false)"
+            >
+              <button class="btn appoinmentButton">
+                Add Details
+              </button>
+            </ion-col>
+
+            <ion-col
               *ngIf="upcomingAppointment.is_recurring && upcomingAppointment.recurring_freq && upcomingAppointment.severity_id && upcomingAppointment.complaint_description"
               size="3"
               (click)="addDetails(upcomingAppointment.appointment_id, true)"

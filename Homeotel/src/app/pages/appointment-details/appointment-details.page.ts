@@ -6,6 +6,7 @@ import { ModalPage } from "../modal/modal.page";
 import { AlertController } from "@ionic/angular";
 import { ApiService } from "src/app/services/api.service";
 import { DatabaseService } from "src/app/services/database.service";
+import { CommonService } from "src/app/services/common.service";
 
 @Component({
   selector: "app-appointment-details",
@@ -24,6 +25,8 @@ export class AppointmentDetailsPage implements OnInit {
   aggravatedBy;
   description;
   doctorId;
+  isThisUpcomingAppointment = false;
+  commonServiceUpcomingAppointment;
 
   constructor(
     private alertCtrl: AlertController,
@@ -31,9 +34,21 @@ export class AppointmentDetailsPage implements OnInit {
     public utilities: UtilitiesService,
     private apiService: ApiService,
     public modalCtrl: ModalController,
+    private commonService: CommonService,
     private loadingController: LoadingController,
     private db: DatabaseService
   ) {
+    this.commonServiceUpcomingAppointment = this.commonService.upcomingAppointment;
+    if (this.commonServiceUpcomingAppointment) {
+      let getId = this.commonServiceUpcomingAppointment["appointment_id"];
+      if (
+        getId ==
+        this.utilities.selectedAppointmentComplaintDetails["appointment_id"]
+      ) {
+        this.isThisUpcomingAppointment = true;
+      }
+    }
+
     this.doctorName = this.utilities.bookAppointmentDoctorDetails["name"];
     this.doctorUsername = this.utilities.bookAppointmentDoctorDetails[
       "username"
@@ -62,30 +77,50 @@ export class AppointmentDetailsPage implements OnInit {
         this.utilities.selectedAppointmentComplaintDetails["is_recurring"] == 1
           ? "Recurring"
           : "No recurring";
+    } else {
+      this.recurring = "-N/A-";
     }
 
-    let getFrequency = this.utilities.selectedAppointmentComplaintDetails[
-      "recurring_freq"
-    ];
-    this.recurringFrequency =
-      getFrequency == 0
-        ? "None"
-        : getFrequency == 1
-        ? "Weekly"
-        : getFrequency == 2
-        ? "Monthly"
-        : "Yearly";
+    if (this.utilities.selectedAppointmentComplaintDetails["recurring_freq"]) {
+      let getFrequency = this.utilities.selectedAppointmentComplaintDetails[
+        "recurring_freq"
+      ];
+      this.recurringFrequency =
+        getFrequency == 0
+          ? "None"
+          : getFrequency == 1
+          ? "Weekly"
+          : getFrequency == 2
+          ? "Monthly"
+          : "Yearly";
+    } else {
+      this.recurringFrequency = "-N/A-";
+    }
 
-    this.aggravatedBy =
-      this.utilities.selectedAppointmentComplaintDetails["severity_id"] == 1
-        ? "Food"
-        : this.utilities.selectedAppointmentComplaintDetails["severity_id"] == 2
-        ? "Heat"
-        : "Movement";
+    if (this.utilities.selectedAppointmentComplaintDetails["severity_id"]) {
+      this.aggravatedBy =
+        this.utilities.selectedAppointmentComplaintDetails["severity_id"] == 1
+          ? "Food"
+          : this.utilities.selectedAppointmentComplaintDetails["severity_id"] ==
+            2
+          ? "Heat"
+          : "Movement";
+    } else {
+      this.aggravatedBy = "-N/A-";
+    }
 
-    this.description = this.utilities.selectedAppointmentComplaintDetails[
-      "complaint_description"
-    ];
+    if (
+      this.utilities.selectedAppointmentComplaintDetails[
+        "complaint_description"
+      ]
+    ) {
+      this.description = this.utilities.selectedAppointmentComplaintDetails[
+        "complaint_description"
+      ];
+    } else {
+      this.description = "-N/A-";
+    }
+
     this.doctorId = this.utilities.selectedAppointmentComplaintDetails[
       "doctor_id"
     ];

@@ -30,6 +30,11 @@
         </p>
         <p class="designation">{{doctorSpecialisation}}</p>
       </ion-col>
+      <ion-col *ngIf="isThisUpcomingAppointment" style="padding-top: 25px;">
+        <button class="btn appoinmentButton">
+          Call Now
+        </button>
+      </ion-col>
     </ion-row>
     <ion-row class="solidBorderBottom" style="padding: 6px;">
       <ion-col>
@@ -59,7 +64,7 @@
               <ion-col>
                 Is it recurring?
               </ion-col>
-              <ion-col>
+              <ion-col size="auto">
                 {{recurring}}
               </ion-col>
             </ion-row>
@@ -71,7 +76,7 @@
               <ion-col>
                 Recurring Frequency?
               </ion-col>
-              <ion-col>
+              <ion-col size="auto">
                 {{recurringFrequency}}
               </ion-col>
             </ion-row>
@@ -83,7 +88,7 @@
               <ion-col>
                 Aggravated by?
               </ion-col>
-              <ion-col>
+              <ion-col size="auto">
                 {{aggravatedBy}}
               </ion-col>
             </ion-row>
@@ -95,7 +100,7 @@
               <ion-col>
                 Pain description?
               </ion-col>
-              <ion-col>
+              <ion-col size="auto">
                 {{description}}
               </ion-col>
             </ion-row>
