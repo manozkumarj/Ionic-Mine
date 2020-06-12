@@ -61,9 +61,9 @@ export class HomePage implements OnInit {
                   );
                   let getAppointmentMilliseconds = convertAppointmentDateTimeToDate.getTime();
                   let getAppointmentMillisecondsMinus5 =
-                    getAppointmentMilliseconds - 10 * 60 * 60 * 60;
+                    getAppointmentMilliseconds - 1000 * 60;
                   let getAppointmentMillisecondsPlus5 =
-                    getAppointmentMilliseconds + 10 * 60 * 60 * 60;
+                    getAppointmentMilliseconds + 1000 * 60;
 
                   console.log("*****************************************");
                   console.log(getCurrentMilliseconds);

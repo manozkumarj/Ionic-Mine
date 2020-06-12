@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastController } from "@ionic/angular";
+import { DatabaseService } from "./database.service";
 
 @Injectable()
 export class UtilitiesService {
@@ -37,13 +38,22 @@ export class UtilitiesService {
   upcomingAppointment: any;
   interValid;
 
+  loadAppointments;
+
+  appointmentsLoadingInterval = 1 * 1000 * 60; // every minute
+
   constructor(
     private router: Router,
+    private db: DatabaseService,
     private toastController: ToastController
   ) {
-    this.interValid = setInterval(
-      () => this.checkUpcomingAppointment(this.upcomingAppointment),
-      30000
+    // this.interValid = setInterval(
+    //   () => this.checkUpcomingAppointment(this.upcomingAppointment),
+    //   30000
+    // );
+    this.loadAppointments = setInterval(
+      () => this.loadAppointmentsFromSqlite(),
+      this.appointmentsLoadingInterval
     );
   }
 
@@ -83,6 +93,83 @@ export class UtilitiesService {
           upcomingAppointment["appointment_id"]
       );
     }
+  }
+
+  loadAppointmentsFromSqlite() {
+    this.db.getUserAppointments(this.userId).then((res: any[]) => {
+      let loadedAllAppointments = res;
+      console.log("Appointments found - below they are");
+      console.log(loadedAllAppointments);
+
+      let todayMidnight = new Date();
+      todayMidnight.setHours(0, 0, 0, 0);
+      let todayMidnightMs = todayMidnight.getTime();
+
+      let tomorrowMidnight = new Date();
+      tomorrowMidnight.setHours(24, 0, 0, 0);
+      let tomorrowMidnightMs = tomorrowMidnight.getTime();
+
+      let current = new Date();
+      let getCurrentMilliseconds = current.getTime();
+
+      let getTodayAppointments = loadedAllAppointments.filter((appointment) => {
+        let getAppointmentDateTime = appointment["appointment_at"];
+        let convertAppointmentDateTimeToDate = new Date(getAppointmentDateTime);
+        let getAppointmentMilliseconds = convertAppointmentDateTimeToDate.getTime();
+        if (
+          getAppointmentMilliseconds >= todayMidnightMs &&
+          getAppointmentMilliseconds <= tomorrowMidnightMs
+        ) {
+          return appointment;
+        }
+      });
+
+      console.log("getTodayAppointments are");
+      console.log(getTodayAppointments);
+
+      // Mapping today's appointments
+      if (getTodayAppointments.length > 0) {
+        let getUpcomingAppointments = getTodayAppointments.map(
+          (appointment) => {
+            let date = new Date();
+            let getCurrentMilliseconds = date.getTime();
+
+            let getAppointmentDateTime = appointment["appointment_at"];
+            let convertAppointmentDateTimeToDate = new Date(
+              getAppointmentDateTime
+            );
+            let getAppointmentStartMilliseconds = convertAppointmentDateTimeToDate.getTime();
+            let getAppointmentEndMilliseconds =
+              getAppointmentStartMilliseconds + 30 * 1000 * 60;
+
+            console.log("*****************************************");
+            console.log(getCurrentMilliseconds);
+            console.log(getAppointmentStartMilliseconds);
+            console.log(getAppointmentEndMilliseconds);
+
+            if (
+              getCurrentMilliseconds >= getAppointmentStartMilliseconds &&
+              getCurrentMilliseconds <= getAppointmentEndMilliseconds
+            ) {
+              return {
+                ...appointment,
+                getAppointmentStartMilliseconds,
+                getAppointmentEndMilliseconds,
+                showAlert: false,
+                showCallNowButton: true,
+              };
+            }
+          }
+        );
+
+        getUpcomingAppointments = getUpcomingAppointments.filter(
+          (appointment) => appointment
+        );
+
+        console.log("getUpcomingAppointments is below");
+        console.log(getUpcomingAppointments);
+      }
+    });
   }
 
   async presentToastSuccess(message) {
