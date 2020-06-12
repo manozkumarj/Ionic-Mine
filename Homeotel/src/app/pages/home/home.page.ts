@@ -43,6 +43,55 @@ export class HomePage implements OnInit {
               this.allAppointments = res;
               console.log("Appointments found - below they are");
               console.log(this.allAppointments);
+
+              // let getAllAppointmentsTimings = this.allAppointments.map(
+              //   (appointment) => appointment["appointment_at"]
+              // );
+              // console.log("getAllAppointmentsTimings are below");
+              // console.log(getAllAppointmentsTimings);
+
+              let getUpcomingAppointment = this.allAppointments.map(
+                (appointment) => {
+                  let date = new Date();
+                  let getCurrentMilliseconds = date.getMilliseconds();
+
+                  let getAppointmentDateTime = appointment["appointment_at"];
+                  let convertAppointmentDateTimeToDate = new Date(
+                    getAppointmentDateTime
+                  );
+                  let getAppointmentMilliseconds = convertAppointmentDateTimeToDate.getMilliseconds();
+                  let getAppointmentMillisecondsMinus5 =
+                    getAppointmentMilliseconds - 5 * 60 * 60;
+                  let getAppointmentMillisecondsPlus5 =
+                    getAppointmentMilliseconds + 5 * 60 * 60;
+
+                  if (
+                    getCurrentMilliseconds >= getAppointmentMillisecondsMinus5
+                  ) {
+                    return [
+                      ...appointment,
+                      {
+                        getAppointmentMilliseconds,
+                        getAppointmentMillisecondsMinus5,
+                        getAppointmentMillisecondsPlus5,
+                      },
+                    ];
+                  } else {
+                    return;
+                  }
+
+                  // let getMonth = convertAppointmentDateTimeToDate.getMonth()+1;
+                  // let getDate = convertAppointmentDateTimeToDate.getDate();
+                  // let splitDateTime = getDateTime.split(" ");
+                  // let storeDate = splitDateTime[0];
+                  // let storeTime = splitDateTime[1];
+                }
+              );
+
+              console.log("getUpcomingAppointment is below");
+              console.log(getUpcomingAppointment);
+
+              this.utilities.upcomingAppointment = getUpcomingAppointment;
             })
             .catch((error) => {
               this.utilities.sqliteErrorDisplayer(

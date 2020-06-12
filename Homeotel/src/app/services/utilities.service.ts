@@ -29,10 +29,46 @@ export class UtilitiesService {
   relationsMedicalHistoryPageState: any[] = [];
   lifestylePageState: any[] = [];
 
+  date = new Date();
+  todayDate = this.date.getDate();
+  currentMonth = this.date.getMonth() + 1;
+  currentYear = this.date.getFullYear();
+
+  upcomingAppointment;
+  interValid;
+
   constructor(
     private router: Router,
     private toastController: ToastController
-  ) {}
+  ) {
+    this.interValid = setInterval(this.checkUpcomingAppointment, 10000);
+  }
+
+  checkUpcomingAppointment() {
+    console.log("checkUpcomingAppointment triggered");
+    console.log("upcomingAppointment array is below");
+    console.log(this.upcomingAppointment);
+    if (this.upcomingAppointment.length > 0) {
+      this.checkTimestamp();
+    }
+  }
+
+  checkTimestamp() {
+    console.log("checkTimestamp triggered");
+    let exactAppointmentTime = this.upcomingAppointment
+      .getAppointmentMilliseconds;
+    let appointmentTimeMinus5 = this.upcomingAppointment
+      .getAppointmentMillisecondsMinus5;
+    let appointmentTimePlus5 = this.upcomingAppointment
+      .getAppointmentMillisecondsPlus5;
+
+    let date = new Date();
+    let getCurrentMilliseconds = date.getMilliseconds();
+
+    if (getCurrentMilliseconds >= appointmentTimeMinus5) {
+      alert("You have an appointment within  minutes");
+    }
+  }
 
   async presentToastSuccess(message) {
     const toast = await this.toastController.create({
