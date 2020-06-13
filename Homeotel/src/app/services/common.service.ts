@@ -332,8 +332,8 @@ export class CommonService {
               // this.auth.logout();
               // this.auth.signOut();
               this.router.navigate(["/login"]);
-              clearInterval(this.utilities.alertShowableInterval);
-              clearInterval(this.utilities.loadAppointmentsInterval);
+              clearInterval(this.alertShowableInterval);
+              clearInterval(this.loadAppointmentsInterval);
               // this.storageService.clear();
             },
           },

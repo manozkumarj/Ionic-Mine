@@ -34,4 +34,16 @@ export class VideoCallPage implements OnInit {
       this.router.navigate(["/home"]);
     }
   }
+
+  makeCall = async () => {
+    console.log("makeCall func triggered");
+    const loading = await this.loadingController.create({
+      message: "Please wait, <br/>Initiating video call...",
+      duration: 5000,
+    });
+    await loading.present();
+
+    const { role, data } = await loading.onDidDismiss();
+    console.log("Loading dismissed!");
+  };
 }

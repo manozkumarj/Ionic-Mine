@@ -69,9 +69,6 @@ export class AppComponent {
 
     console.log("this.utilities.currentUserDetails below");
     console.log(this.utilities.currentUserDetails);
-
-    // clearInterval(this.utilities.alertShowableInterval);
-    // clearInterval(this.utilities.loadAppointmentsInterval);
   }
 
   initializeApp() {

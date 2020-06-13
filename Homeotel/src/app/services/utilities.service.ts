@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastController, AlertController } from "@ionic/angular";
-import { DatabaseService } from "./database.service";
+import { CommonService } from "./common.service";
 
 @Injectable()
 export class UtilitiesService {
@@ -35,23 +35,12 @@ export class UtilitiesService {
   currentMonth = this.date.getMonth() + 1;
   currentYear = this.date.getFullYear();
 
-  upcomingAppointment: any;
-  alertShowableInterval;
-
-  loadAppointmentsInterval;
-
-  appointmentsLoadingInterval = 30 * 1000 * 60; // every minute
-
   constructor(
     private router: Router,
     private alertCtrl: AlertController,
+    private commonService: CommonService,
     private toastController: ToastController
-  ) {
-    // this.alertShowableInterval = setInterval(
-    //   () => this.checkUpcomingAppointment(this.upcomingAppointment),
-    //   30000
-    // );
-  }
+  ) {}
   async presentToastSuccess(message) {
     const toast = await this.toastController.create({
       message: message,
@@ -89,8 +78,8 @@ export class UtilitiesService {
               // this.auth.logout();
               // this.auth.signOut();
               this.router.navigate(["/login"]);
-              clearInterval(this.alertShowableInterval);
-              clearInterval(this.loadAppointmentsInterval);
+              clearInterval(this.commonService.loadAppointmentsInterval);
+              clearInterval(this.commonService.alertShowableInterval);
               // this.storageService.clear();
             },
           },

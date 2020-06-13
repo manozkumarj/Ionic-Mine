@@ -1,9 +1,18 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>video-call</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Video Call</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-grid class="btnsGrid">
+    <ion-row>
+      <ion-col (click)="makeCall()" class="btn-success">
+        Make Call Now
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

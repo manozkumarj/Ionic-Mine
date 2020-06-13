@@ -43,58 +43,6 @@ export class HomePage implements OnInit {
               this.allAppointments = res;
               console.log("Appointments found - below they are");
               console.log(this.allAppointments);
-
-              // let getAllAppointmentsTimings = this.allAppointments.map(
-              //   (appointment) => appointment["appointment_at"]
-              // );
-              // console.log("getAllAppointmentsTimings are below");
-              // console.log(getAllAppointmentsTimings);
-
-              let getUpcomingAppointment = this.allAppointments.map(
-                (appointment) => {
-                  let date = new Date();
-                  let getCurrentMilliseconds = date.getTime();
-
-                  let getAppointmentDateTime = appointment["appointment_at"];
-                  let convertAppointmentDateTimeToDate = new Date(
-                    getAppointmentDateTime
-                  );
-                  let getAppointmentMilliseconds = convertAppointmentDateTimeToDate.getTime();
-                  let getAppointmentMillisecondsMinus5 =
-                    getAppointmentMilliseconds - 1000 * 60;
-                  let getAppointmentMillisecondsPlus5 =
-                    getAppointmentMilliseconds + 1000 * 60;
-
-                  // console.log("*****************************************");
-                  // console.log(getCurrentMilliseconds);
-                  // console.log(getAppointmentMilliseconds);
-                  // console.log(getAppointmentMillisecondsMinus5);
-                  // console.log(getAppointmentMillisecondsPlus5);
-
-                  if (
-                    getCurrentMilliseconds >=
-                      getAppointmentMillisecondsMinus5 &&
-                    getCurrentMilliseconds <= getAppointmentMillisecondsPlus5
-                  ) {
-                    return {
-                      ...appointment,
-                      getAppointmentMilliseconds,
-                      getAppointmentMillisecondsMinus5,
-                      getAppointmentMillisecondsPlus5,
-                    };
-                  }
-                }
-              );
-
-              // console.log("getUpcomingAppointment is below");
-              // console.log(getUpcomingAppointment[2]);
-
-              // this.utilities.upcomingAppointment = {
-              //   ...getUpcomingAppointment[2],
-              // };
-
-              // console.log("this.utilities.upcomingAppointment is below");
-              // console.log(this.utilities.upcomingAppointment);
             })
             .catch((error) => {
               this.utilities.sqliteErrorDisplayer(
