@@ -466,6 +466,14 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
+  {
+    path: "video-call",
+    loadChildren: () =>
+      import("./pages/video-call/video-call.module").then(
+        (m) => m.VideoCallPageModule
+      ),
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
