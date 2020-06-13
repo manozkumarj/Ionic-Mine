@@ -3,7 +3,6 @@ import { SQLite, SQLiteObject } from "@ionic-native/sqlite/ngx";
 import { SQLitePorter } from "@ionic-native/sqlite-porter/ngx";
 import { Platform } from "@ionic/angular";
 import { HttpClient } from "@angular/common/http";
-import { UtilitiesService } from "./utilities.service";
 
 @Injectable({
   providedIn: "root",
@@ -21,8 +20,7 @@ export class DatabaseService {
     private plt: Platform,
     public sqlite: SQLite,
     private http: HttpClient,
-    private sqlitePorter: SQLitePorter,
-    private utilities: UtilitiesService
+    private sqlitePorter: SQLitePorter
   ) {
     this.createDb();
   }

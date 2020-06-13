@@ -8,6 +8,7 @@ import { UtilitiesService } from "./../../services/utilities.service";
 import { Platform } from "@ionic/angular";
 import { LoadingController } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
+import { CommonService } from "src/app/services/common.service";
 
 @Component({
   selector: "app-login",
@@ -35,6 +36,7 @@ export class LoginPage implements OnInit {
     private db: DatabaseService,
     private apiService: ApiService,
     public utilities: UtilitiesService,
+    private commonService: CommonService,
     private toastController: ToastController,
     private loadingController: LoadingController,
     private platform: Platform
@@ -59,6 +61,12 @@ export class LoginPage implements OnInit {
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
       navigator["app"].exitApp();
     });
+  }
+
+  ionViewWillEnter() {
+    this.auth.isLoggedIn = false;
+    clearInterval(this.commonService.loadAppointmentsInterval);
+    clearInterval(this.commonService.alertShowableInterval);
   }
 
   async presentToastSuccess() {

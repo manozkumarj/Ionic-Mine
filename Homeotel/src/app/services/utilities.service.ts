@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastController, AlertController } from "@ionic/angular";
-import { CommonService } from "./common.service";
 
 @Injectable()
 export class UtilitiesService {
@@ -38,7 +37,6 @@ export class UtilitiesService {
   constructor(
     private router: Router,
     private alertCtrl: AlertController,
-    private commonService: CommonService,
     private toastController: ToastController
   ) {}
   async presentToastSuccess(message) {
@@ -78,8 +76,6 @@ export class UtilitiesService {
               // this.auth.logout();
               // this.auth.signOut();
               this.router.navigate(["/login"]);
-              clearInterval(this.commonService.loadAppointmentsInterval);
-              clearInterval(this.commonService.alertShowableInterval);
               // this.storageService.clear();
             },
           },
