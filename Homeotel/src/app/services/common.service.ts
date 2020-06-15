@@ -20,8 +20,7 @@ export class CommonService {
 
   loadAppointmentsInterval;
   initialInterval;
-
-  appointmentsLoadingInterval = 10 * 1000 * 60; // every minute
+  appointmentsLoadingInterval = 2 * 1000 * 60; // every minute
 
   constructor(
     private alertCtrl: AlertController,
@@ -104,12 +103,12 @@ export class CommonService {
 
     console.log("From common service constructor");
 
-    this.loadAppointmentsFromSqlite();
+    // this.loadAppointmentsFromSqlite();
 
-    this.loadAppointmentsInterval = setInterval(
-      () => this.loadAppointmentsFromSqlite(),
-      this.appointmentsLoadingInterval
-    );
+    // this.loadAppointmentsInterval = setInterval(
+    //   () => this.loadAppointmentsFromSqlite(),
+    //   this.appointmentsLoadingInterval
+    // );
   }
 
   checkUpcomingAppointment() {

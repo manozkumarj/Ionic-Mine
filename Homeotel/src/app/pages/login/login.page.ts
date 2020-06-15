@@ -262,6 +262,13 @@ export class LoginPage implements OnInit {
                     ? res["name"]
                     : res["username"];
                   this.utilities.currentUserDetails["photo"] = res["photo"];
+                  this.commonService.loadAppointmentsFromSqlite();
+
+                  this.commonService.loadAppointmentsInterval = setInterval(
+                    () => this.commonService.loadAppointmentsFromSqlite(),
+                    this.commonService.appointmentsLoadingInterval
+                  );
+
                   this.router.navigate(["/home"]);
                   this.resetLoginFormValues();
                   this.resetRegisterFormValues();
