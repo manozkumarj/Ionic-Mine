@@ -15,6 +15,8 @@ export class CommonService {
 
   selectedHomeKitCost;
 
+  recentlyTriggeredAppointmentIds: any[] = [];
+
   upcomingAppointment: any;
   alertShowableInterval;
 
@@ -156,6 +158,9 @@ export class CommonService {
               handler: () => {
                 this.upcomingAppointment["showAlert"] = false;
                 this.upcomingAppointment["showCallNowButton"] = false;
+                this.recentlyTriggeredAppointmentIds.push(
+                  this.upcomingAppointment["appointment_id"]
+                );
               },
             },
             {
@@ -304,6 +309,28 @@ export class CommonService {
         );
 
         console.log("getUpcomingAppointments is below");
+        console.log(getUpcomingAppointments);
+
+        getUpcomingAppointments = getUpcomingAppointments.filter(
+          (appointment) => {
+            let apmtntId = appointment["appointment_id"];
+            let recentlyTriggeredAppointmentIds = this
+              .recentlyTriggeredAppointmentIds;
+            console.log("recentlyTriggeredAppointmentIds are below");
+            console.log(recentlyTriggeredAppointmentIds);
+
+            let isRecentlyTriggered = recentlyTriggeredAppointmentIds.findIndex(
+              (item) => item === apmtntId
+            );
+            if (isRecentlyTriggered === -1) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        );
+
+        console.log("non triggered getUpcomingAppointments is below");
         console.log(getUpcomingAppointments);
 
         this.upcomingAppointment = { ...getUpcomingAppointments[0] };
