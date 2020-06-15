@@ -27,6 +27,7 @@ export class HomePage implements OnInit {
 
   ionViewWillEnter() {
     this.loadAppointments();
+    this.commonService.loadAppointmentsFromSqlite();
   }
 
   async loadAppointments() {

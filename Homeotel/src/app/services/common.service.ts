@@ -102,6 +102,8 @@ export class CommonService {
       },
     ];
 
+    console.log("From common service constructor");
+
     this.loadAppointmentsFromSqlite();
 
     this.loadAppointmentsInterval = setInterval(
