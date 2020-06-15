@@ -9,6 +9,8 @@ export class ApiService {
   // apiUrl = "http://localhost:8123";
   // apiUrl = "http://175.101.1.227:8123";
   apiUrl = "https://f8uqreqtkf.execute-api.ap-south-1.amazonaws.com/beta/user";
+  doctorApiUrl =
+    "https://f8uqreqtkf.execute-api.ap-south-1.amazonaws.com/beta/doctor";
 
   constructor(private http: HttpClient, private utilities: UtilitiesService) {}
 
@@ -454,5 +456,14 @@ export class ApiService {
       doctorId,
     };
     return this.http.post(this.apiUrl, body);
+  }
+
+  initiateVideoCall(doctorId) {
+    var body = {
+      access_token: "tele-homeo",
+      request_type: "GET_VIDEO_SESSION",
+      doctor_id: doctorId,
+    };
+    return this.http.post(this.doctorApiUrl, body);
   }
 }
