@@ -168,6 +168,9 @@ export class CommonService {
               handler: () => {
                 this.upcomingAppointment["showAlert"] = false;
                 this.upcomingAppointment["showCallNowButton"] = false;
+                this.recentlyTriggeredAppointmentIds.push(
+                  this.upcomingAppointment["appointment_id"]
+                );
 
                 this.utilities.selectedAppointmentComplaintDetails = {};
                 console.log(this.upcomingAppointment);
@@ -293,11 +296,23 @@ export class CommonService {
               getCurrentMilliseconds >= getAppointmentStartMilliseconds &&
               getCurrentMilliseconds <= getAppointmentEndMilliseconds
             ) {
+              let apmtntId = appointment["appointment_id"];
+              let recentlyTriggeredAppointmentIds = this
+                .recentlyTriggeredAppointmentIds;
+
+              let isItShowable = true;
+              let isRecentlyTriggered = recentlyTriggeredAppointmentIds.findIndex(
+                (item) => item === apmtntId
+              );
+
+              if (isRecentlyTriggered > -1) {
+                isItShowable = false;
+              }
               return {
                 ...appointment,
                 getAppointmentStartMilliseconds,
                 getAppointmentEndMilliseconds,
-                showAlert: true,
+                showAlert: isItShowable,
                 showCallNowButton: true,
               };
             }
@@ -319,14 +334,16 @@ export class CommonService {
             console.log("recentlyTriggeredAppointmentIds are below");
             console.log(recentlyTriggeredAppointmentIds);
 
-            let isRecentlyTriggered = recentlyTriggeredAppointmentIds.findIndex(
-              (item) => item === apmtntId
-            );
-            if (isRecentlyTriggered === -1) {
-              return true;
-            } else {
-              return false;
-            }
+            // let isRecentlyTriggered = recentlyTriggeredAppointmentIds.findIndex(
+            //   (item) => item === apmtntId
+            // );
+            // if (isRecentlyTriggered === -1) {
+            //   return true;
+            // } else {
+            //   return false;
+            // }
+
+            return true;
           }
         );
 

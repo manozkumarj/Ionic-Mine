@@ -28,7 +28,7 @@ export class VideoCallPage implements OnInit {
       this.nextUpcomingAppointmentId = this.commonServiceUpcomingAppointment[
         "appointment_id"
       ];
-      this.commonService.upcomingAppointment = null;
+      // this.commonService.upcomingAppointment = null;
     } else {
       this.utilities.presentToastWarning("Something went wrong");
       this.router.navigate(["/home"]);
