@@ -22,7 +22,7 @@ export class CommonService {
 
   loadAppointmentsInterval;
   initialInterval;
-  appointmentsLoadingInterval = 2 * 1000 * 60; // every minute
+  appointmentsLoadingInterval = 5 * 1000 * 60; // every minute
 
   constructor(
     private alertCtrl: AlertController,
@@ -323,31 +323,11 @@ export class CommonService {
           (appointment) => appointment
         );
 
-        console.log("getUpcomingAppointments is below");
-        console.log(getUpcomingAppointments);
-
         getUpcomingAppointments = getUpcomingAppointments.filter(
-          (appointment) => {
-            let apmtntId = appointment["appointment_id"];
-            let recentlyTriggeredAppointmentIds = this
-              .recentlyTriggeredAppointmentIds;
-            console.log("recentlyTriggeredAppointmentIds are below");
-            console.log(recentlyTriggeredAppointmentIds);
-
-            // let isRecentlyTriggered = recentlyTriggeredAppointmentIds.findIndex(
-            //   (item) => item === apmtntId
-            // );
-            // if (isRecentlyTriggered === -1) {
-            //   return true;
-            // } else {
-            //   return false;
-            // }
-
-            return true;
-          }
+          (appointment) => appointment
         );
 
-        console.log("non triggered getUpcomingAppointments is below");
+        console.log("getUpcomingAppointments is below");
         console.log(getUpcomingAppointments);
 
         this.upcomingAppointment = { ...getUpcomingAppointments[0] };
