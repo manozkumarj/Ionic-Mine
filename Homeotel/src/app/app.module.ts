@@ -20,6 +20,7 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { GooglePlus } from "@ionic-native/google-plus/ngx";
 import { SQLitePorter } from "@ionic-native/sqlite-porter/ngx";
+import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
 import { SQLite } from "@ionic-native/sqlite/ngx";
 import { HttpClientModule } from "@angular/common/http";
 import { ApiService } from "./services/api.service";
@@ -55,6 +56,7 @@ import { IonicStorageModule } from "@ionic/storage";
     DatabaseService,
     SQLite,
     SQLitePorter,
+    AndroidPermissions,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent],

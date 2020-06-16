@@ -15,6 +15,10 @@ Links which helped to solve the errors I faced:
 * https://stackoverflow.com/questions/59447679/an-unhandled-exception-occurred-job-name-getprojectmetadata-does-not-exist
 * npm i @angular-devkit/build-angular@0.803.24
 
+* https://forums.meteor.com/t/solved-video-recording-on-device-android-ios/8120
+
+* https://stackoverflow.com/questions/55656531/ionic-diagnostic-plugin-always-returns-denie-always-on-android
+* https://stackoverflow.com/questions/47648849/how-to-use-cordova-plugin-android-permissions-in-ionic-3
 
 Useful commands:
 ------------------------------------------------------------------------------
@@ -81,3 +85,16 @@ Please consider moving ModalPage in D:/My-Practice-things/
 Ionic/Ionic-Mine/Homeotel/src/app/pages/modal/modal.page.ts to a higher module that imports AppModule in D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/app.module.ts and ModalPageModule in D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/pages/modal/modal.module.ts.
 
 You can also create a new NgModule that exports and includes ModalPage in D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/pages/modal/modal.page.ts then import that NgModule in AppModule in  D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/app.module.ts and Modal PageModule in D:/My-Practice-things/Ionic/Ionic-Mine/Homeotel/src/app/pages/modal/modal.module.ts.
+
+
+
+
+* In AndroidManifest.xml file
+---------------------------------------------------------------------------------------
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+<uses-permission android:name="android.permission.USE_CREDENTIALS" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.VIDEO" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.RECORD_VIDEO" />

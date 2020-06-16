@@ -6,6 +6,7 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { MenuController } from "@ionic/angular";
 import { CommonService } from "./services/common.service";
 import { UtilitiesService } from "./services/utilities.service";
+import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
 
 @Component({
   selector: "app-root",
@@ -19,9 +20,23 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
+    private androidPermissions: AndroidPermissions,
     public menuCtrl: MenuController,
     public utilities: UtilitiesService
   ) {
+    platform.ready().then(() => {
+      this.androidPermissions.requestPermissions([
+        this.androidPermissions.PERMISSION.CAMERA,
+        this.androidPermissions.PERMISSION.CALL_PHONE,
+        this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE,
+        this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE,
+        this.androidPermissions.PERMISSION.ACCEPT_HANDOVER,
+        this.androidPermissions.PERMISSION.CAPTURE_AUDIO_OUTPUT,
+        this.androidPermissions.PERMISSION.RECORD_AUDIO,
+        this.androidPermissions.PERMISSION.RECORD_VIDEO,
+      ]);
+    });
+
     this.initializeApp();
     this.appPages = [
       {
