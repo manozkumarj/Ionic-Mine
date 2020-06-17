@@ -4,18 +4,15 @@
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Video Call</ion-title>
+    <ion-buttons slot="primary" (click)="makeCall()">
+      <ion-button>
+        Call Now
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div id="subscriber"></div>
   <div id="publisher"></div>
-
-  <!-- <ion-grid class="btnsGrid">
-    <ion-row>
-      <ion-col (click)="makeCall()" class="btn-success">
-        Make Call Now
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
 </ion-content>

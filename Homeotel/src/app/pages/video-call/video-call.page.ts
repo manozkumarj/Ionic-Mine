@@ -4,6 +4,8 @@ import { Router } from "@angular/router";
 import { LoadingController } from "@ionic/angular";
 import { UtilitiesService } from "./../../services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
+import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
+// import { NavController } from "@ionic/angular";
 
 declare var OT: any;
 
@@ -17,6 +19,8 @@ export class VideoCallPage implements OnInit {
   commonServiceUpcomingAppointment;
 
   session;
+  sessionId;
+  token;
   publisher;
 
   constructor(
@@ -24,19 +28,58 @@ export class VideoCallPage implements OnInit {
     private loadingController: LoadingController,
     private apiService: ApiService,
     private utilities: UtilitiesService,
+    private androidPermissions: AndroidPermissions,
     private router: Router
   ) {}
 
   ngOnInit() {}
 
   async ionViewWillEnter() {
-    this.commonServiceUpcomingAppointment = this.commonService.upcomingAppointment;
-    if (this.commonServiceUpcomingAppointment) {
-      this.nextUpcomingAppointmentId = this.commonServiceUpcomingAppointment[
-        "appointment_id"
-      ];
+    this.androidPermissions
+      .checkPermission(this.androidPermissions.PERMISSION.CAMERA)
+      .then((data) => {
+        console.log("Permission for Camera is granted");
+      })
+      .catch((e) => {
+        console.warn("Permission for Camera is not granted");
+      });
+
+    this.androidPermissions
+      .checkPermission(this.androidPermissions.PERMISSION.RECORD_AUDIO)
+      .then((data) => {
+        console.log("Permission for RECORD_AUDIO is granted");
+      })
+      .catch((e) => {
+        console.warn("Permission for RECORD_AUDIO is not granted");
+      });
+
+    this.androidPermissions
+      .checkPermission(this.androidPermissions.PERMISSION.RECORD_VIDEO)
+      .then((data) => {
+        console.log("Permission for RECORD_VIDEO is granted");
+      })
+      .catch((e) => {
+        console.warn("Permission for RECORD_VIDEO is not granted");
+      });
+
+    this.androidPermissions
+      .checkPermission(this.androidPermissions.PERMISSION.RECORD_VIDEO)
+      .then((data) => {
+        console.log("Permission for RECORD_VIDEO is granted");
+      })
+      .catch((e) => {
+        console.warn("Permission for RECORD_VIDEO is not granted");
+      });
+
+    let doctorId = 6;
+
+    // this.commonServiceUpcomingAppointment = this.commonService.upcomingAppointment;
+    if (doctorId) {
+      // this.nextUpcomingAppointmentId = this.commonServiceUpcomingAppointment[
+      //   "appointment_id"
+      // ];
       // this.commonService.upcomingAppointment = null;
-      let doctorId = this.commonServiceUpcomingAppointment["doctor_id"];
+      // let doctorId = this.commonServiceUpcomingAppointment["doctor_id"];
 
       const loading = await this.loadingController
         .create({
@@ -53,7 +96,10 @@ export class VideoCallPage implements OnInit {
                 if (this.utilities.isInvalidApiResponseData(data)) {
                   this.utilities.presentToastWarning("Something went wrong");
                 } else {
-                  this.makeCall(data["sessionId"], data["token"]);
+                  this.sessionId = data["sessionId"];
+                  this.token = data["token"];
+
+                  // this.makeCall(data["sessionId"], data["token"]);
                   // console.log("success, we can continue to make call");
                 }
               });
@@ -77,21 +123,22 @@ export class VideoCallPage implements OnInit {
     }
   }
 
-  makeCall_old = async () => {
+  // makeCall_old = async () => {
+  //   console.log("makeCall func triggered");
+  //   const loading = await this.loadingController.create({
+  //     message: "Please wait, <br/>Initiating video call...",
+  //     duration: 5000,
+  //   });
+  //   await loading.present();
+
+  //   const { role, data } = await loading.onDidDismiss();
+  //   console.log("Loading dismissed!");
+  // };
+
+  makeCall() {
     console.log("makeCall func triggered");
-    const loading = await this.loadingController.create({
-      message: "Please wait, <br/>Initiating video call...",
-      duration: 5000,
-    });
-    await loading.present();
-
-    const { role, data } = await loading.onDidDismiss();
-    console.log("Loading dismissed!");
-  };
-
-  makeCall(sessionId, token) {
     // Initialize Session Object
-    this.session = OT.initSession("46720142", sessionId);
+    this.session = OT.initSession("46720142", this.sessionId);
     this.publisher = OT.initPublisher("publisher");
 
     this.session.on({
@@ -111,7 +158,7 @@ export class VideoCallPage implements OnInit {
       },
     });
 
-    this.session.connect(token, (error: any) => {
+    this.session.connect(this.token, (error: any) => {
       if (error) {
         console.log(`There was an error connecting to the session ${error}`);
       }

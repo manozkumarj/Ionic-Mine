@@ -4,7 +4,6 @@ import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { MenuController } from "@ionic/angular";
-import { CommonService } from "./services/common.service";
 import { UtilitiesService } from "./services/utilities.service";
 import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
 
