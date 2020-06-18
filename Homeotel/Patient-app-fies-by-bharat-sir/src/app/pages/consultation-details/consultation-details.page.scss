@@ -1,0 +1,108 @@
+.grid {
+  height: 140px;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 0;
+  border-radius: 0 10px 10px;
+}
+
+.docName {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.designation {
+  font-size: 20px;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+.dashedBorderBottom {
+  border-bottom: 2px dashed #000;
+}
+
+.heading {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 5px;
+  padding: 13px 0 8px 12px;
+}
+
+.person {
+  font-weight: bold;
+  color: #000;
+  text-align: center;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.add {
+  font-size: 68px;
+  border-radius: 100%;
+}
+
+.plusIcon {
+  border: 1px solid #0a9f28;
+  border-radius: 100%;
+  color: #0a9f28;
+}
+
+.chosen {
+  border: 2px solid #0a9f28;
+  color: #0a9f28;
+}
+
+.complaintDescription {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.continue {
+  text-align: center;
+  background-color: #0a9f28;
+  color: #fff;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+}
+.continue button {
+  background-color: #0a9f28;
+  color: #fff;
+  border: none;
+  outline: none;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  .scroll {
+    display: flex;
+    overflow: auto;
+  }
+  .scroll .individ {
+    width: 100px;
+    height: 130px;
+    float: left;
+    margin: 0px 5px;
+    border-radius: 3px;
+  }
+}
+
+.add img {
+  width: 75px !important;
+  height: 75px !important;
+  min-width: 75px;
+}
+.name-holder {
+  width: 100%;
+}

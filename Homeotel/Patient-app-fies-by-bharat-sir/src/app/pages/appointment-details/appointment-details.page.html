@@ -1,0 +1,127 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Appointment details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="padding: 0px;" align-items-center justify-content-center>
+    <ion-row
+      class="solidBorderBottom"
+      style="color: #000; background: #fff; padding: 8px 0px;"
+    >
+      <ion-col size="3.5" align-items-center justify-content-center>
+        <p style="margin: 0;">
+          <img
+            [src]="utilities.getPhotoDataUrl(doctorPhoto)"
+            height="80px"
+            width="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+      <ion-col style="padding-top: 25px;">
+        <p class="docName">
+          {{doctorName ? (doctorName | uppercase) : (doctorUsername |
+          uppercase)}}
+        </p>
+        <p class="designation">{{doctorSpecialisation}}</p>
+      </ion-col>
+      <ion-col *ngIf="isThisUpcomingAppointment" style="padding-top: 25px;">
+        <button class="btn callNowButton" [routerLink]="['/video-call']">
+          Call Now
+        </button>
+      </ion-col>
+    </ion-row>
+    <ion-row class="solidBorderBottom" style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Complaint </span>
+        </p>
+        <p style="margin: 10px 0px;">
+          <span style="padding: 13px 0 8px 12px;"
+            >{{complaintDescription}}</span
+          >
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Complaint details</span>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="solidBorderBottom">
+      <ion-col>
+        <ion-item detail [routerLink]="['/appointment-questions', 1]">
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Is it recurring?
+              </ion-col>
+              <ion-col size="auto">
+                {{recurring}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item detail [routerLink]="['/appointment-questions', 1,2]">
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Recurring Frequency?
+              </ion-col>
+              <ion-col size="auto">
+                {{recurringFrequency}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item detail [routerLink]="['/appointment-questions', 1,2,3]">
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Aggravated by?
+              </ion-col>
+              <ion-col size="auto">
+                {{aggravatedBy}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item detail [routerLink]="['/appointment-questions', 1,2,3,4]">
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Pain description?
+              </ion-col>
+              <ion-col size="auto">
+                {{description}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row class="continue">
+      <ion-col>
+        <button (click)="cancelSlot()" class="btn buyButton">
+          Cancel
+        </button>
+      </ion-col>
+      <ion-col>
+        <button
+          (click)="presentDoctorContactModal(doctorId)"
+          class="btn appoinmentButton"
+        >
+          Change Slot
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

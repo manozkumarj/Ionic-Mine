@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Previous Consultations</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div
+    *ngIf="previousAppointments.length > 0; else noPreviousAppointments"
+    style="margin-bottom: 150px;"
+  >
+    <ion-grid
+      class="grid doctorGrid"
+      *ngFor="let previousAppointment of previousAppointments"
+      (click)="redirect(previousAppointment.appointment_id)"
+    >
+      <ion-row style="color: #000; background: #fff;">
+        <ion-col size="3">
+          <p style="margin: 0; padding: 6px; text-align: center;">
+            <img
+              [src]="utilities.getPhotoDataUrl(previousAppointment.photo)"
+              height="50px"
+              style="border-radius: 100%;"
+            />
+          </p>
+        </ion-col>
+        <ion-col>
+          <p class="docName">{{previousAppointment.doctorName}}</p>
+          <p>{{previousAppointment.doctorUserame}}</p>
+          <p>{{previousAppointment.appointment_at}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ng-template #noPreviousAppointments>
+    <ion-grid class="noResultsGrid">
+      <ion-row style="border: none;">
+        <ion-col>
+          There are no appointments
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
+</ion-content>

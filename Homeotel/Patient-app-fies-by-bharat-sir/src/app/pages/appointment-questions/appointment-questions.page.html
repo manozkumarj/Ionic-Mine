@@ -1,0 +1,133 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="['home']"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons *ngIf="currentQuestion == 'four'" slot="primary">
+      <ion-button (click)="answered(null)">
+        Done
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid
+    style="
+      height: 30%;
+      background-color: #eab841;
+      color: #fff;
+      font-size: 18px;
+    "
+  >
+    <ion-row
+      style="height: 100%;"
+      class="ion-justify-content-center ion-align-items-center"
+    >
+      {{question}}
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramOne -->
+  <ion-grid *ngIf="currentQuestion == 'one'" class="btnsGrid">
+    <ion-row>
+      <ion-col
+        [ngClass]="{'btn-success' : isRecurring == 1 }"
+        (click)="answered(1)"
+      >
+        Yes
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col
+        [ngClass]="{'btn-success' : isRecurring == 2 }"
+        (click)="answered(2)"
+      >
+        No
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramTwo -->
+  <ion-grid *ngIf="currentQuestion == 'two'" class="btnsGrid">
+    <ion-row>
+      <ion-col
+        [ngClass]="{'btn-success' : recurringFreq == 0 }"
+        class="btn-success"
+        (click)="answered(0)"
+      >
+        None
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col
+        [ngClass]="{'btn-success' : recurringFreq == 1 }"
+        class="btn-success"
+        (click)="answered(1)"
+      >
+        Week
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col
+        [ngClass]="{'btn-success' : recurringFreq == 2 }"
+        (click)="answered(2)"
+      >
+        Month
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col
+        [ngClass]="{'btn-success' : recurringFreq == 3 }"
+        (click)="answered(3)"
+      >
+        Year
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramThree -->
+  <ion-grid *ngIf="currentQuestion == 'three'" class="btnsGrid">
+    <ion-row>
+      <ion-col
+        [ngClass]="{'btn-success' : severity == 1 }"
+        class="btn-success"
+        (click)="answered(1)"
+      >
+        Food
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col
+        [ngClass]="{'btn-success' : severity == 2 }"
+        (click)="answered(2)"
+      >
+        Heat
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col
+        [ngClass]="{'btn-success' : severity == 3 }"
+        (click)="answered(3)"
+      >
+        Movement
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramFour -->
+  <ion-grid *ngIf="currentQuestion == 'four'">
+    <ion-row>
+      <ion-col>
+        <ion-textarea
+          class="complaintDescription"
+          [(ngModel)]="description"
+          value=""
+          placeholder="Write description..."
+        >
+        </ion-textarea>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

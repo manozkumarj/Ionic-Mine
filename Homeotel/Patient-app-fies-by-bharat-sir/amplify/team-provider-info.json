@@ -1,0 +1,20 @@
+{
+    "prod": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-patientappfies-prod-151710-authRole",
+            "UnauthRoleArn": "arn:aws:iam::402280577928:role/amplify-patientappfies-prod-151710-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::402280577928:role/amplify-patientappfies-prod-151710-authRole",
+            "Region": "ap-south-1",
+            "DeploymentBucketName": "amplify-patientappfies-prod-151710-deployment",
+            "UnauthRoleName": "amplify-patientappfies-prod-151710-unauthRole",
+            "StackName": "amplify-patientappfies-prod-151710",
+            "StackId": "arn:aws:cloudformation:ap-south-1:402280577928:stack/amplify-patientappfies-prod-151710/b211bcd0-b148-11ea-9f46-06ee49008466",
+            "AmplifyAppId": "d1c4ldpzhs673f"
+        },
+        "categories": {
+            "auth": {
+                "patientappfies14f992e4": {}
+            }
+        }
+    }
+}

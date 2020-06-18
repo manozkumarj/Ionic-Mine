@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button [routerLink]="['/lifestyle']">
+        None
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list style="margin: 0px; padding: 5px; background: #999;">
+    <ion-input
+      placeholder="Type to Search..."
+      style="background: #999; color: #fff; padding: 5px;"
+      (keyup)="onChange(search.value)"
+      #search
+    >
+    </ion-input>
+  </ion-list>
+
+  <ion-list *ngIf="clonedOptions.length > 0; else noOptions">
+    <div *ngFor="let option of clonedOptions">
+      <ion-item (click)="chooser(option.id)">
+        <div style="font-size: 18px;">{{option.name}}</div>
+      </ion-item>
+    </div>
+  </ion-list>
+
+  <ng-template #noOptions>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> There are no Options </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+</ion-content>

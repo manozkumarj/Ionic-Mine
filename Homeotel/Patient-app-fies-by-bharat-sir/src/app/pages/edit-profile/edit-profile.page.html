@@ -1,0 +1,190 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="['profile']"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="primary" [routerLink]="['/profile']">
+      <ion-button>
+        Exit
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid
+    style="
+      height: 30%;
+      background-color: #eab841;
+      color: #fff;
+      font-size: 18px;
+    "
+  >
+    <ion-row
+      style="height: 100%;"
+      class="ion-justify-content-center ion-align-items-center"
+    >
+      {{question}}
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid
+    *ngIf="currentQuestion == 'one' || currentQuestion == 'two' || currentQuestion == 'three'"
+  >
+    <ion-row>
+      <ion-col>
+        <ion-input
+          class="inputField"
+          [(ngModel)]="inputField"
+          [value]="inputField"
+          placeholder="Please enter..."
+        >
+        </ion-input>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramFour - Gender -->
+  <ion-grid *ngIf="currentQuestion == 'four'" class="btnsGrid">
+    <ion-row *ngFor="let gender of m_gender">
+      <ion-col
+        (click)="answered(gender.id)"
+        [ngClass]="{'btn-success' : gender.id == inputField }"
+      >
+        {{gender.name}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramFive - five -->
+  <ion-grid *ngIf="currentQuestion == 'five'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              Date of birth (YYYY-MM-DD)
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col class="showValue">{{selectedDob}} </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col (click)="selectDob()" class="btn-success">
+              Select Date of birth
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramSix - bloodGroups -->
+  <ion-grid *ngIf="currentQuestion == 'six'" class="btnsGrid">
+    <ion-row>
+      <ion-col
+        *ngFor="let bloodGroup of m_bloodGroup"
+        (click)="answered(bloodGroup.id)"
+        size="4.5"
+        style="margin: 20px;"
+        [ngClass]="{'btn-success' : bloodGroup.id == inputField }"
+      >
+        {{bloodGroup.name}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramSeven - marital statuses -->
+  <ion-grid *ngIf="currentQuestion == 'seven'" class="btnsGrid">
+    <ion-row *ngFor="let maritaStatus of m_maritaStatus">
+      <ion-col
+        (click)="answered(maritaStatus.id)"
+        [ngClass]="{'btn-success' : maritaStatus.id == inputField }"
+      >
+        {{maritaStatus.name}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramEight - height -->
+  <ion-grid *ngIf="currentQuestion == 'eight'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col style="margin: 20px;">
+              Feet
+            </ion-col>
+            <ion-col style="margin: 20px;">
+              Inches
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col size="6" class="showValue">{{selectedFeet}} Feet </ion-col>
+            <ion-col size="6" class="showValue"
+              >{{selectedInches}} Inches
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col (click)="selectHeight()" class="btn-success">
+              Select Feet & Inches
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramNine - nine -->
+  <ion-grid *ngIf="currentQuestion == 'nine'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              Weight
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col class="showValue">{{selectedWeight}} (KGs) </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col (click)="selectWeight()" class="btn-success">
+              Select weight
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid
+    class="btnsGrid"
+    *ngIf="currentQuestion == 'one' || currentQuestion == 'two' || currentQuestion == 'three' || currentQuestion == 'five' || currentQuestion == 'eight' || currentQuestion == 'nine'"
+  >
+    <ion-row>
+      <ion-col (click)="answered()" class="btn-success">
+        Save & Continue
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

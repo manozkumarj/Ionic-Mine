@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-grid>
+      <ion-row style="text-align: center; font-size: 25px;">
+        <ion-col>
+          <div>
+            Homeotel
+          </div>
+        </ion-col>
+        <ion-col size="2" (click)="search()">
+          <div>
+            <ion-icon name="search-outline"></ion-icon>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid class="secondHeader" style="padding: 0px;">
+    <ion-row style="height: 40px; text-align: center; background-color: #0a9f28;
+    color: #FFF;">
+      <ion-col [routerLink]="['/home']">
+        <div>Home</div>
+      </ion-col>
+      <ion-col [routerLink]="['/doctors']">
+        <div>Doctors</div>
+      </ion-col>
+      <ion-col [routerLink]="['/records']">
+        <div>Records</div>
+      </ion-col>
+      <ion-col class="active">
+        <div>Family</div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+  <ion-grid class="childGrid">
+    <ion-row>
+      <ion-col class="card-heading">
+        <div>Family</div>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col class="card-col">
+        <ion-row>
+          <ion-col size="auto">
+            <img src="assets/images/milinda.jpg" height="50px" class="roundBorder" />
+          </ion-col>
+          <ion-col style="line-height: 50px; font-weight: bold;">
+            <span>Wife</span>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col class="card-col">
+        <ion-row>
+          <ion-col size="auto">
+            <img src="assets/images/sergey.jpg" height="50px" class="roundBorder" />
+          </ion-col>
+          <ion-col style="line-height: 50px; font-weight: bold;">
+            <span>Son</span>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

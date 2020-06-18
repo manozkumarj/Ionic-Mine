@@ -1,0 +1,116 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Profile</ion-title>
+    <!-- <ion-buttons slot="primary">
+      <ion-button (click)="moreOptions()">
+        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+      </ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="mainGrid">
+    <ion-row class="borderBottom">
+      <ion-col [routerLink]="['/edit-profile', 1]">
+        <p class="label">Name</p>
+        <p>{{name}}</p>
+      </ion-col>
+
+      <ion-col size="auto" (click)="openMenu()">
+        <p style="margin: 0; padding: 6px; text-align: center;">
+          <img
+            [src]="utilities.getPhotoDataUrl(profilePhoto)"
+            height="80px"
+            width="80px"
+            style="border-radius: 100%; border: 2px solid #999;"
+          />
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row [routerLink]="['/edit-profile', 1,2]" class="borderBottom">
+      <ion-col>
+        <p class="label">Phone</p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{phone}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="borderBottom" [routerLink]="['/edit-profile', 1,2,3]">
+      <ion-col>
+        <p class="label">Email</p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{email}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="borderBottom" [routerLink]="['/edit-profile', 1,2,3,4]">
+      <ion-col>
+        <p class="label">Gender</p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{gender}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="borderBottom" [routerLink]="['/edit-profile', 1,2,3,4,5]">
+      <ion-col>
+        <p class="label">Date of birth</p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{dob}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="borderBottom" [routerLink]="['/edit-profile', 1,2,3,4,5,6]">
+      <ion-col>
+        <p class="label">Blood group</p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{bloodGroup}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row
+      class="borderBottom"
+      [routerLink]="['/edit-profile', 1,2,3,4,5,6,7]"
+    >
+      <ion-col>
+        <p class="label">Marital status</p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{maritalStatus}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row
+      class="borderBottom"
+      [routerLink]="['/edit-profile', 1,2,3,4,5,6,7,8]"
+    >
+      <ion-col>
+        <p class="label">Height</p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{height}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row
+      class="borderBottom"
+      [routerLink]="['/edit-profile', 1,2,3,4,5,6,7,8,9]"
+    >
+      <ion-col>
+        <p class="label">Weight</p>
+      </ion-col>
+      <ion-col size="auto">
+        <p>{{weight}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

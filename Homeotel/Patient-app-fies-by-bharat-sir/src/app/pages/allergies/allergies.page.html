@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Allergies</ion-title>
+    <ion-buttons slot="primary" [routerLink]="['/single-selection']">
+      <ion-button>
+        Next
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="selectedObjects.length > 0">
+    <ion-row>
+      <ion-col
+        size="auto"
+        class="optionsList"
+        *ngFor="let option of selectedObjects"
+        (click)="remover(option)"
+      >
+        <span class="selectedOption">
+          {{arrayOfObjects[option]['name']}}
+          <!-- <span class="remover"> X </span> -->
+        </span>
+      </ion-col>
+    </ion-row>
+    <!-- <ng-template #nothingSelected>
+      <ion-row>
+        Nothing selected yet
+      </ion-row>
+    </ng-template> -->
+  </ion-grid>
+
+  <ion-list style="margin: 0px; padding: 5px; background: #999;">
+    <ion-input
+      placeholder="Type to Search..."
+      style="background: #999; color: #fff; padding: 5px;"
+      (keyup)="onChange(search.value)"
+      #search
+    >
+    </ion-input>
+  </ion-list>
+  <ion-list *ngIf="clonedArrayOfObjects.length > 0; else noarrayOfObjects">
+    <div *ngFor="let object of clonedArrayOfObjects">
+      <div *ngIf="object.isSelected == false">
+        <ion-item (click)="chooser(object.id)">
+          <div style="font-size: 18px;">{{object.name}}</div>
+        </ion-item>
+      </div>
+    </div>
+  </ion-list>
+
+  <ng-template #noarrayOfObjects>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> There are no items </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+</ion-content>
