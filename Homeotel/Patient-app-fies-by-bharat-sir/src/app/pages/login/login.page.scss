@@ -142,13 +142,15 @@
 .tcs {
   text-align: center;
   color: #777;
-  font-size: 12px;
+  font-size: 15px;
   bottom: 68px;
   margin: 14px 10px 0 0;
 }
 
-.tcs a {
+.tcs a,
+.tcs span {
   color: #0a9f28;
+  text-decoration: underline;
 }
 
 #login {
@@ -172,11 +174,11 @@
   font-size: 18px;
 }
 
-#backBtn {
-  background: #fff;
-  color: #0a9f28;
-  border: 2px solid #0a9f28;
-}
+// #backBtn {
+//   background: #fff;
+//   color: #0a9f28;
+//   border: 2px solid #0a9f28;
+// }
 
 #verifyBtn {
   background: #0a9f28;

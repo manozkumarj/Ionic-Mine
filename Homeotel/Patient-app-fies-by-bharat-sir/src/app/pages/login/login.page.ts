@@ -32,7 +32,8 @@ export class LoginPage implements OnInit {
   toastErrorMsg;
   toastSuccessMsg;
 
-  showVerificationForm = true;
+  verifiableEmail = null;
+  showVerificationForm = false;
 
   constructor(
     private router: Router,
@@ -69,6 +70,10 @@ export class LoginPage implements OnInit {
     this.backButtonSubscription = this.platform.backButton.subscribe(() => {
       navigator["app"].exitApp();
     });
+  }
+
+  showLoginForm() {
+    this.showVerificationForm = false;
   }
 
   ionViewWillEnter() {
@@ -151,22 +156,46 @@ export class LoginPage implements OnInit {
 
   async register() {
     let username = this.registerForm.get("username").value.trim();
-    let email = this.registerForm.get("email").value.trim();
+    let email = username;
     let password = this.registerForm.get("password").value.trim();
 
-    try {
-      const user = await Auth.signUp({
-        username,
-        password,
-        // attributes: {
-        //   username, // == email          // optional
-        //   //phone_number,   // optional - E.164 number convention
-        //   // other custom attributes
-        // },
-      });
-      console.log({ user });
-    } catch (error) {
-      console.log("error signing up:", error);
+    if (username && email && password) {
+      this.verifiableEmail = email;
+      const loading = await this.loadingController
+        .create({
+          message: "Please wait...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
+            try {
+              const user = await Auth.signUp({
+                username,
+                password,
+                // attributes: {
+                //   username, // == email          // optional
+                //   //phone_number,   // optional - E.164 number convention
+                //   // other custom attributes
+                // },
+              });
+              console.log({ user });
+              if (user) {
+                // let userRes = user.user.userConfirmed;
+                this.showVerificationForm = true;
+                this.utilities.presentToastSuccess(
+                  "Registration successful, Please verify your email with the code which was sent to your email Id."
+                );
+              }
+              a.dismiss();
+            } catch (error) {
+              console.log("error signing up:", error);
+              this.showVerificationForm = false;
+            }
+            a.dismiss();
+          });
+        });
+    } else {
+      this.utilities.presentToastWarning("Please enter Email and Password.");
     }
     /*
     console.log("About register");
@@ -249,25 +278,56 @@ export class LoginPage implements OnInit {
       this.presentToastWarning();
     }
     */
+    this.resetRegisterFormValues();
   }
 
   async login() {
-    try {
-      let username = this.registerForm.get("username").value.trim();
-      let password = this.registerForm.get("password").value.trim();
-      console.log(username);
-      console.log("test");
-      console.log(password);
-      const user = await Auth.signIn(
-        "bharatraj_s@zoltglobal.com",
-        "Password123$"
-      );
-      console.log({ user });
-      let userRes = user;
-      if (userRes.signInUserSession.accessToken.jwtToken) {
-      }
-    } catch (error) {
-      console.log("error signing in", error);
+    let username = this.loginForm.get("username").value.trim();
+    let password = this.loginForm.get("password").value.trim();
+    console.log(username);
+    console.log(password);
+
+    if (username && password) {
+      this.verifiableEmail = username;
+      const loading = await this.loadingController
+        .create({
+          message: "Please wait...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
+            try {
+              const user = await Auth.signIn(username, password);
+              console.log({ user });
+              let userRes = user;
+              if (userRes.signInUserSession.accessToken.jwtToken) {
+                this.utilities.presentToastSuccess("Login successful");
+                this.utilities.jwt =
+                  userRes.signInUserSession.accessToken.jwtToken;
+              }
+              a.dismiss();
+            } catch (error) {
+              console.log("error signing in", error);
+              if (error.code == "UserNotConfirmedException") {
+                this.utilities.presentToastWarning(
+                  "Please verify your email with the code which was sent to your email Id."
+                );
+                this.showVerificationForm = true;
+              } else if (error.code == "NotAuthorizedException") {
+                this.utilities.presentToastWarning(
+                  "Incorrect Username or Password."
+                );
+              } else {
+                this.utilities.presentToastWarning(
+                  "Something went wrong, please contact Admin."
+                );
+              }
+              a.dismiss();
+            }
+          });
+        });
+    } else {
+      this.utilities.presentToastWarning("Please enter Email and Password.");
     }
     /*
     console.log("About Login");
@@ -335,15 +395,32 @@ export class LoginPage implements OnInit {
       this.presentToastWarning();
     }
     */
+    this.resetLoginFormValues();
   }
 
   //aws code
   async confirm() {
-    try {
-      let res = await Auth.confirmSignUp("manojmani517@gmail.com", "012036");
-      console.log(res);
-    } catch (error) {
-      console.log("error confirming sign up", error);
+    let email = this.verifiableEmail;
+    let enteredCode = this.verificationForm.get("verificationCode").value;
+
+    if (email && enteredCode) {
+      const loading = await this.loadingController
+        .create({
+          message: "Please wait...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
+            try {
+              let res = await Auth.confirmSignUp(email, enteredCode);
+              console.log(res);
+            } catch (error) {
+              console.log("error confirming sign up", error);
+            }
+          });
+        });
+    } else {
+      this.utilities.presentToastWarning("Please enter Verification code.");
     }
   }
 

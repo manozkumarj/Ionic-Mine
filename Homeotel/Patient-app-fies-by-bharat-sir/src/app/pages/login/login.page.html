@@ -72,12 +72,11 @@
         </form>
       </div>
 
-      <div class="form-box" style="height: 180px;" *ngIf="showVerificationForm">
+      <div class="form-box" style="height: 200px;" *ngIf="showVerificationForm">
         <form
           id="login"
           action="#"
           class="input-group"
-          [ngStyle]="{'left': loginLeftValue }"
           [formGroup]="verificationForm"
         >
           <div style="margin: 20px 0px;">
@@ -89,8 +88,10 @@
             />
           </div>
           <div id="verifyButtonsDiv">
-            <button id="backBtn">Back</button>
-            <button id="verifyBtn">Verify</button>
+            <button id="verifyBtn" type="button">Verify</button>
+          </div>
+          <div class="tcs">
+            <span (click)="showLoginForm()">Go back</span>
           </div>
         </form>
       </div>
