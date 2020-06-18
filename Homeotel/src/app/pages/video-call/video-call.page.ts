@@ -62,24 +62,14 @@ export class VideoCallPage implements OnInit {
         console.warn("Permission for RECORD_VIDEO is not granted");
       });
 
-    this.androidPermissions
-      .checkPermission(this.androidPermissions.PERMISSION.RECORD_VIDEO)
-      .then((data) => {
-        console.log("Permission for RECORD_VIDEO is granted");
-      })
-      .catch((e) => {
-        console.warn("Permission for RECORD_VIDEO is not granted");
-      });
-
-    let doctorId = 6;
-
-    // this.commonServiceUpcomingAppointment = this.commonService.upcomingAppointment;
-    if (doctorId) {
-      // this.nextUpcomingAppointmentId = this.commonServiceUpcomingAppointment[
-      //   "appointment_id"
-      // ];
+    // let doctorId = 6;
+    this.commonServiceUpcomingAppointment = this.commonService.upcomingAppointment;
+    if (this.commonServiceUpcomingAppointment) {
+      this.nextUpcomingAppointmentId = this.commonServiceUpcomingAppointment[
+        "appointment_id"
+      ];
       // this.commonService.upcomingAppointment = null;
-      // let doctorId = this.commonServiceUpcomingAppointment["doctor_id"];
+      let doctorId = this.commonServiceUpcomingAppointment["doctor_id"];
 
       const loading = await this.loadingController
         .create({

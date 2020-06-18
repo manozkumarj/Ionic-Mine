@@ -148,10 +148,12 @@ export class CommonService {
       //     upcomingAppointment["appointment_id"]
       // );
 
+      this.alertCtrl.dismiss();
+
       this.alertCtrl
         .create({
           header: "Upcoming Appointment Info",
-          message: "You have an appointment withing few minutes",
+          message: "You have an appointment now.",
           buttons: [
             {
               text: "Ignore",

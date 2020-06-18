@@ -66,7 +66,7 @@ export class InitializationPage implements OnInit {
           if (data) {
             a.dismiss();
             // this.redirector();
-            this.router.navigate(["/video-call"]);
+            this.router.navigate(["/login"]);
           }
         });
       });

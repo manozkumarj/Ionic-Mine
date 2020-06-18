@@ -3,9 +3,13 @@
 
 * https://stackoverflow.com/questions/8062496/how-to-change-max-allowed-packet-size
 
+* https://stackoverflow.com/questions/44709702/how-to-not-dismiss-the-alert-box-when-clicking-outside-of-it-on-ionic
+
 Links which helped to solve the errors I faced:
 ----------------------------------------------------------------------------
 * https://forum.ionicframework.com/t/how-to-resolve-babel-error-when-installing-geolocation-in-ionic-app/185542/2
+
+* https://forum.ionicframework.com/t/could-not-find-plugin-proposal-numeric-separator/185556/7
 
 * https://stackoverflow.com/questions/55556201/how-to-make-use-of-android-app-bundle-in-ionic-applications
 
