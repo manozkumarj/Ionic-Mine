@@ -88,7 +88,9 @@
             />
           </div>
           <div id="verifyButtonsDiv">
-            <button id="verifyBtn" type="button">Verify</button>
+            <button id="verifyBtn" (click)="confirm()" type="button">
+              Verify
+            </button>
           </div>
           <div class="tcs">
             <span (click)="showLoginForm()">Go back</span>

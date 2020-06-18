@@ -32,7 +32,7 @@ export class LoginPage implements OnInit {
   toastErrorMsg;
   toastSuccessMsg;
 
-  verifiableEmail = null;
+  verifiableEmail = null; // "manojkumarzoltglobal@gmail.com"; // 550103
   showVerificationForm = false;
 
   constructor(
@@ -187,8 +187,10 @@ export class LoginPage implements OnInit {
                 );
               }
               a.dismiss();
+              this.resetRegisterFormValues();
             } catch (error) {
               console.log("error signing up:", error);
+              this.utilities.presentToastWarning(error.message);
               this.showVerificationForm = false;
             }
             a.dismiss();
@@ -278,7 +280,6 @@ export class LoginPage implements OnInit {
       this.presentToastWarning();
     }
     */
-    this.resetRegisterFormValues();
   }
 
   async login() {
@@ -306,6 +307,7 @@ export class LoginPage implements OnInit {
                   userRes.signInUserSession.accessToken.jwtToken;
               }
               a.dismiss();
+              this.resetLoginFormValues();
             } catch (error) {
               console.log("error signing in", error);
               if (error.code == "UserNotConfirmedException") {
@@ -395,13 +397,17 @@ export class LoginPage implements OnInit {
       this.presentToastWarning();
     }
     */
-    this.resetLoginFormValues();
   }
 
   //aws code
   async confirm() {
-    let email = this.verifiableEmail;
-    let enteredCode = this.verificationForm.get("verificationCode").value;
+    console.clear();
+    let email = this.verifiableEmail.toString();
+    let enteredCode = this.verificationForm
+      .get("verificationCode")
+      .value.toString();
+
+    console.log(email + " -- " + enteredCode);
 
     if (email && enteredCode) {
       const loading = await this.loadingController
@@ -414,9 +420,20 @@ export class LoginPage implements OnInit {
             try {
               let res = await Auth.confirmSignUp(email, enteredCode);
               console.log(res);
+              if (res) {
+                this.utilities.presentToastSuccess(
+                  "Email verification successful, please login now."
+                );
+                this.showVerificationForm = false;
+                this.verificationForm.patchValue({
+                  verificationCode: "",
+                });
+              }
             } catch (error) {
               console.log("error confirming sign up", error);
+              this.utilities.presentToastWarning(error.message);
             }
+            a.dismiss();
           });
         });
     } else {
