@@ -20,6 +20,7 @@ export class LoginPage implements OnInit {
   backButtonSubscription;
   registerForm: FormGroup;
   loginForm: FormGroup;
+  verificationForm: FormGroup;
 
   formsDivHeight = "215px";
 
@@ -30,6 +31,8 @@ export class LoginPage implements OnInit {
   focusedForm = "login";
   toastErrorMsg;
   toastSuccessMsg;
+
+  showVerificationForm = true;
 
   constructor(
     private router: Router,
@@ -52,6 +55,10 @@ export class LoginPage implements OnInit {
       username: new FormControl("", Validators.required),
       password: new FormControl("", Validators.required),
     });
+
+    this.verificationForm = new FormGroup({
+      verificationCode: new FormControl("", Validators.required),
+    });
   }
 
   ngOnInit() {
@@ -68,7 +75,7 @@ export class LoginPage implements OnInit {
     this.auth.isLoggedIn = false;
     clearInterval(this.commonService.loadAppointmentsInterval);
     clearInterval(this.commonService.alertShowableInterval);
-    this.confirm();
+    // this.confirm();
   }
 
   async presentToastSuccess() {
@@ -92,7 +99,7 @@ export class LoginPage implements OnInit {
   }
 
   registerTab() {
-    this.formsDivHeight = "315px";
+    this.formsDivHeight = "280px";
     this.loginLeftValue = "-400px";
     this.registerLeftValue = "25px";
     this.btnLeftValue = "110px";

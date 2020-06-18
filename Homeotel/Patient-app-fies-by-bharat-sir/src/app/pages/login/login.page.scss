@@ -158,3 +158,27 @@
 #register {
   left: 450px;
 }
+
+#verifyButtonsDiv {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px 0px;
+}
+
+#verifyButtonsDiv button {
+  padding: 15px 25px;
+  border-radius: 30px;
+  font-size: 18px;
+}
+
+#backBtn {
+  background: #fff;
+  color: #0a9f28;
+  border: 2px solid #0a9f28;
+}
+
+#verifyBtn {
+  background: #0a9f28;
+  color: #fff;
+}

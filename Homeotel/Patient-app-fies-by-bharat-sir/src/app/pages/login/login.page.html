@@ -6,7 +6,11 @@
       door step.
     </p>
     <div class="hero">
-      <div class="form-box" [ngStyle]="{'height': formsDivHeight }">
+      <div
+        class="form-box"
+        [ngStyle]="{'height': formsDivHeight }"
+        *ngIf="!showVerificationForm"
+      >
         <div class="button-box">
           <div id="btn" [ngStyle]="{'left': btnLeftValue }"></div>
           <button type="button" class="toggle-btn" (click)="loginTab()">
@@ -27,7 +31,7 @@
             type="text"
             formControlName="username"
             class="input-field"
-            placeholder="Username*"
+            placeholder="Email*"
           />
           <input
             type="password"
@@ -47,14 +51,14 @@
             type="text"
             formControlName="username"
             class="input-field"
-            placeholder="Username*"
+            placeholder="Email*"
           />
-          <input
+          <!-- <input
             type="email"
             formControlName="email"
             class="input-field"
             placeholder="Email*"
-          />
+          /> -->
           <input
             type="password"
             formControlName="password"
@@ -67,7 +71,36 @@
           </div>
         </form>
       </div>
-      <button type="submit" class="submit-btn" (click)="submit()">
+
+      <div class="form-box" style="height: 180px;" *ngIf="showVerificationForm">
+        <form
+          id="login"
+          action="#"
+          class="input-group"
+          [ngStyle]="{'left': loginLeftValue }"
+          [formGroup]="verificationForm"
+        >
+          <div style="margin: 20px 0px;">
+            <input
+              type="number"
+              formControlName="verificationCode"
+              class="input-field"
+              placeholder="Enter verification code*"
+            />
+          </div>
+          <div id="verifyButtonsDiv">
+            <button id="backBtn">Back</button>
+            <button id="verifyBtn">Verify</button>
+          </div>
+        </form>
+      </div>
+
+      <button
+        type="submit"
+        class="submit-btn"
+        (click)="submit()"
+        *ngIf="!showVerificationForm"
+      >
         <ion-icon name="arrow-forward-outline"></ion-icon>
       </button>
       <div class="social-icons-holder">
