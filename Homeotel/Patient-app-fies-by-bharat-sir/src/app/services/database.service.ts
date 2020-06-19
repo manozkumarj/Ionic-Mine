@@ -395,7 +395,7 @@ export class DatabaseService {
   }
 
   getUserByEmail(email) {
-    let sql = `SELECT * FROM d_user WHERE email = ${email} LIMIT 1`;
+    let sql = `SELECT * FROM d_user WHERE email = '${email}' LIMIT 1`;
 
     return this.dbObject.executeSql(sql, []).then((res) => {
       let profileDetails = [];

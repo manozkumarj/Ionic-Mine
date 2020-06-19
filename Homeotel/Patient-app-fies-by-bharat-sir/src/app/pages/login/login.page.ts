@@ -224,7 +224,9 @@ export class LoginPage implements OnInit {
                 // this.utilities.presentToastSuccess("Login successful");
                 // let userRes = user;
                 if (userRes.signInUserSession.accessToken.jwtToken) {
-                  this.utilities.presentToastSuccess("Login successful");
+                  // this.utilities.presentToastSuccess("Login successful");
+                  console.log("receivedToken -> " + receivedToken);
+                  this.utilities.jwt = receivedToken;
 
                   this.db
                     .getUserByEmail(username)
@@ -234,11 +236,11 @@ export class LoginPage implements OnInit {
                       );
                       console.log(res);
                       let userDetails = res;
-                      if (userDetails) {
+                      if (userDetails.length > 0) {
                         let userId = userDetails[0]["user_id"];
                       } else {
                         let letSignup = await this.apiService
-                          .registerUser(username, password)
+                          .registerUser(username, username, password)
                           .subscribe((data) => {
                             console.log("Returned from Backend");
                             console.log(data);
@@ -246,7 +248,7 @@ export class LoginPage implements OnInit {
                               a.dismiss();
                               console.log("Returned Error");
                               // console.log(data[0][0]);
-                              if (data[0][0]["error"].includes(username)) {
+                              if (data[0]["error"].includes(username)) {
                                 this.toastErrorMsg = "Username already exist";
                               } else if (
                                 data[0][0]["error"].includes(username)
@@ -326,7 +328,6 @@ export class LoginPage implements OnInit {
                               this.presentToastSuccess();
                               this.utilities.isLoggedId = true;
                               this.utilities.userId = res["user_id"];
-                              this.utilities.jwt = receivedToken;
                               this.utilities.currentUserDetails[
                                 "userName"
                               ] = res["name"] ? res["name"] : res["username"];

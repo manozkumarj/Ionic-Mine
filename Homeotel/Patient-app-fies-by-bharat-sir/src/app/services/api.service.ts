@@ -26,7 +26,7 @@ export class ApiService {
   }
 
   // Register user
-  registerUser(username, email) {
+  registerUser(username, email, password) {
     console.log("username -> " + username);
 
     var body = {
@@ -34,6 +34,7 @@ export class ApiService {
       request_type: "USER_REGISTER",
       userName: username,
       email,
+      password,
     };
     return this.http.post(this.apiUrl, body);
   }

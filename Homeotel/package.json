@@ -32,7 +32,7 @@
     "@ionic-native/wheel-selector": "^5.22.0",
     "@ionic/angular": "^5.0.0",
     "@ionic/storage": "^2.2.0",
-    "cordova-android": "^8.1.0",
+    "cordova-android": "8.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-android-permissions": "^1.0.2",
     "cordova-plugin-camera": "^4.1.0",
@@ -101,8 +101,7 @@
       "cordova-plugin-android-permissions": {}
     },
     "platforms": [
-      "browser",
-      "android"
+      "browser"
     ]
   },
   "resolutions": {

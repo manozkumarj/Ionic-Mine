@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Location } from "@angular/common";
 import { CommonService } from "src/app/services/common.service";
 import { Router } from "@angular/router";
 import { LoadingController } from "@ionic/angular";
@@ -28,6 +29,7 @@ export class VideoCallPage implements OnInit {
     private loadingController: LoadingController,
     private apiService: ApiService,
     private utilities: UtilitiesService,
+    private _location: Location,
     private androidPermissions: AndroidPermissions,
     private router: Router
   ) {}
@@ -88,6 +90,7 @@ export class VideoCallPage implements OnInit {
                 } else {
                   this.sessionId = data["sessionId"];
                   this.token = data["token"];
+                  this.makeCall();
 
                   // this.makeCall(data["sessionId"], data["token"]);
                   // console.log("success, we can continue to make call");
@@ -153,5 +156,10 @@ export class VideoCallPage implements OnInit {
         console.log(`There was an error connecting to the session ${error}`);
       }
     });
+  }
+
+  disconnectCall() {
+    this.session.disconnect();
+    this._location.back();
   }
 }
