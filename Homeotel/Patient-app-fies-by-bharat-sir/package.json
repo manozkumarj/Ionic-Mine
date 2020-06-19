@@ -33,6 +33,7 @@
     "@ionic/angular": "^5.0.0",
     "@ionic/storage": "^2.2.0",
     "aws-amplify": "^3.0.17",
+    "aws-amplify-angular": "^5.0.18",
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-android-permissions": "^1.0.2",

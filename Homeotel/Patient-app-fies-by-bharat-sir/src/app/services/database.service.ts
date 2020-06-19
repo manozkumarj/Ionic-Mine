@@ -394,6 +394,23 @@ export class DatabaseService {
     });
   }
 
+  getUserByEmail(email) {
+    let sql = `SELECT * FROM d_user WHERE email = ${email} LIMIT 1`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let profileDetails = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          profileDetails.push({
+            user_id: res.rows.item(i).user_id,
+          });
+        }
+      }
+      return profileDetails;
+    });
+  }
+
   getProfileDetails(IN_user_id) {
     let sql = `SELECT * FROM d_user WHERE user_id = ${IN_user_id}`;
 

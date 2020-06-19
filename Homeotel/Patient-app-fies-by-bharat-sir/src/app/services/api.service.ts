@@ -8,9 +8,14 @@ export class ApiService {
   // apiUrl = "http://192.168.43.22:8123";
   // apiUrl = "http://localhost:8123";
   // apiUrl = "http://175.101.1.227:8123";
-  apiUrl = "https://f8uqreqtkf.execute-api.ap-south-1.amazonaws.com/beta/user";
+  // apiUrl = "https://f8uqreqtkf.execute-api.ap-south-1.amazonaws.com/beta/user";
+  // doctorApiUrl =
+  //   "https://f8uqreqtkf.execute-api.ap-south-1.amazonaws.com/beta/doctor";
+
+  apiUrl =
+    "https://2jcmdv97a5.execute-api.ap-south-1.amazonaws.com/beta-cognito/user";
   doctorApiUrl =
-    "https://f8uqreqtkf.execute-api.ap-south-1.amazonaws.com/beta/doctor";
+    "https://2jcmdv97a5.execute-api.ap-south-1.amazonaws.com/beta-cognito/doctor";
 
   constructor(private http: HttpClient, private utilities: UtilitiesService) {}
 
@@ -21,7 +26,7 @@ export class ApiService {
   }
 
   // Register user
-  registerUser(username, email, password) {
+  registerUser(username, email) {
     console.log("username -> " + username);
 
     var body = {
@@ -29,7 +34,6 @@ export class ApiService {
       request_type: "USER_REGISTER",
       userName: username,
       email,
-      password,
     };
     return this.http.post(this.apiUrl, body);
   }

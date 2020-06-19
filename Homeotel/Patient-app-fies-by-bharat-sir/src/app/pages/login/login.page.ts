@@ -7,7 +7,7 @@ import { ApiService } from "./../../services/api.service";
 import { UtilitiesService } from "./../../services/utilities.service";
 import { Platform } from "@ionic/angular";
 import { LoadingController } from "@ionic/angular";
-// import { DatabaseService } from "src/app/services/database.service";
+import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
 import { Auth } from "aws-amplify";
 
@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
   constructor(
     private router: Router,
     public auth: AuthService,
-    // private db: DatabaseService,
+    private db: DatabaseService,
     private apiService: ApiService,
     public utilities: UtilitiesService,
     private commonService: CommonService,
@@ -186,8 +186,6 @@ export class LoginPage implements OnInit {
                   "Registration successful, Please verify your email with the code which was sent to your email Id."
                 );
               }
-              a.dismiss();
-              this.resetRegisterFormValues();
             } catch (error) {
               console.log("error signing up:", error);
               this.utilities.presentToastWarning(error.message);
@@ -199,87 +197,6 @@ export class LoginPage implements OnInit {
     } else {
       this.utilities.presentToastWarning("Please enter Email and Password.");
     }
-    /*
-    console.log("About register");
-    console.log(this.registerForm.value);
-    let username = this.registerForm.get("username").value.trim();
-    let email = this.registerForm.get("email").value.trim();
-    let password = this.registerForm.get("password").value.trim();
-
-    if (username && email && password) {
-      const loading = await this.loadingController
-        .create({
-          message: "Please wait...",
-          translucent: true,
-        })
-        .then((a) => {
-          a.present().then(async (res) => {
-            this.apiService
-              .registerUser(username, email, password)
-              .subscribe((data) => {
-                a.dismiss();
-                console.log("Returned from Backend");
-                console.log(data);
-                if (this.utilities.isInvalidApiResponseData(data)) {
-                  console.log("Returned Error");
-                  // console.log(data[0][0]);
-                  if (data[0][0]["error"].includes(username)) {
-                    this.toastErrorMsg = "Username already exist";
-                  } else if (data[0][0]["error"].includes(email)) {
-                    this.toastErrorMsg = "Email already exist";
-                  } else {
-                    this.toastErrorMsg = "Something went wrong";
-                  }
-                  this.presentToastWarning();
-                } else {
-                  console.log("Returned Success");
-                  this.toastSuccessMsg = "Success, you can login now.";
-                  this.presentToastSuccess();
-                  this.loginTab();
-                  this.resetRegisterFormValues();
-                  this.resetLoginFormValues();
-
-                  let res = data[0];
-                  if (res["query"]) {
-                    let receivedQuery = res["query"];
-                    console.log(receivedQuery);
-
-                    this.db
-                      .crudOperations(receivedQuery)
-                      .then((res) => {
-                        a.dismiss();
-                        console.log("signup details saved successfully");
-                      })
-                      .catch((error) => {
-                        this.utilities.sqliteErrorDisplayer(
-                          "login * register",
-                          error
-                        );
-                        a.dismiss();
-                        console.error(
-                          "Error -> signup crudOperations function returned error." +
-                            JSON.stringify(error)
-                        );
-                      });
-                  } else {
-                    a.dismiss();
-                    this.utilities.sqliteErrorDisplayer(
-                      "login * register",
-                      "Query property is not received from backend SP"
-                    );
-                    console.log(
-                      "Query property is not received from backend SP"
-                    );
-                  }
-                }
-              });
-          });
-        });
-    } else {
-      this.toastErrorMsg = "Please enter username, email, and password.";
-      this.presentToastWarning();
-    }
-    */
   }
 
   async login() {
@@ -301,13 +218,167 @@ export class LoginPage implements OnInit {
               const user = await Auth.signIn(username, password);
               console.log({ user });
               let userRes = user;
+              let receivedToken =
+                userRes.signInUserSession.accessToken.jwtToken;
               if (userRes.signInUserSession.accessToken.jwtToken) {
-                this.utilities.presentToastSuccess("Login successful");
-                this.utilities.jwt =
-                  userRes.signInUserSession.accessToken.jwtToken;
+                // this.utilities.presentToastSuccess("Login successful");
+                // let userRes = user;
+                if (userRes.signInUserSession.accessToken.jwtToken) {
+                  this.utilities.presentToastSuccess("Login successful");
+
+                  this.db
+                    .getUserByEmail(username)
+                    .then(async (res: any[]) => {
+                      console.log(
+                        "Received getUserByEmail details are below -> "
+                      );
+                      console.log(res);
+                      let userDetails = res;
+                      if (userDetails) {
+                        let userId = userDetails[0]["user_id"];
+                      } else {
+                        let letSignup = await this.apiService
+                          .registerUser(username, password)
+                          .subscribe((data) => {
+                            console.log("Returned from Backend");
+                            console.log(data);
+                            if (this.utilities.isInvalidApiResponseData(data)) {
+                              a.dismiss();
+                              console.log("Returned Error");
+                              // console.log(data[0][0]);
+                              if (data[0][0]["error"].includes(username)) {
+                                this.toastErrorMsg = "Username already exist";
+                              } else if (
+                                data[0][0]["error"].includes(username)
+                              ) {
+                                this.toastErrorMsg = "Email already exist";
+                              } else {
+                                this.toastErrorMsg = "Something went wrong";
+                              }
+                              this.presentToastWarning();
+                              return;
+                            } else {
+                              console.log("Returned Success");
+                              this.toastSuccessMsg =
+                                "Success, you can login now.";
+                              this.presentToastSuccess();
+                              this.loginTab();
+                              this.resetRegisterFormValues();
+                              this.resetLoginFormValues();
+
+                              let res = data[0];
+                              if (res["query"]) {
+                                let receivedQuery = res["query"];
+                                console.log(receivedQuery);
+
+                                this.db
+                                  .crudOperations(receivedQuery)
+                                  .then((res) => {
+                                    a.dismiss();
+                                    console.log(
+                                      "signup details saved successfully"
+                                    );
+                                  })
+                                  .catch((error) => {
+                                    this.utilities.sqliteErrorDisplayer(
+                                      "login * register",
+                                      error
+                                    );
+                                    a.dismiss();
+                                    console.error(
+                                      "Error -> signup crudOperations function returned error." +
+                                        JSON.stringify(error)
+                                    );
+                                    return;
+                                  });
+                              } else {
+                                a.dismiss();
+                                this.utilities.sqliteErrorDisplayer(
+                                  "login * register",
+                                  "Query property is not received from backend SP"
+                                );
+                                console.log(
+                                  "Query property is not received from backend SP"
+                                );
+                              }
+                            }
+                          });
+                      }
+
+                      this.apiService
+                        .loginUser(username, password)
+                        .subscribe((data) => {
+                          console.log("Returned from Backend");
+                          console.log(data);
+                          if (
+                            typeof data != "undefined" &&
+                            typeof data[0] != "undefined"
+                          ) {
+                            if (this.utilities.isInvalidApiResponseData(data)) {
+                              a.dismiss();
+                              console.log("Returned Error");
+                              this.presentToastWarning();
+                            } else {
+                              let res = data[0];
+                              this.auth.isLoggedIn = true;
+                              console.log("Returned Success");
+                              this.toastSuccessMsg = "Login Success.";
+                              this.presentToastSuccess();
+                              this.utilities.isLoggedId = true;
+                              this.utilities.userId = res["user_id"];
+                              this.utilities.jwt = receivedToken;
+                              this.utilities.currentUserDetails[
+                                "userName"
+                              ] = res["name"] ? res["name"] : res["username"];
+                              this.utilities.currentUserDetails["photo"] =
+                                res["photo"];
+                              this.commonService.loadAppointmentsFromSqlite();
+
+                              this.commonService.loadAppointmentsInterval = setInterval(
+                                () =>
+                                  this.commonService.loadAppointmentsFromSqlite(),
+                                this.commonService.appointmentsLoadingInterval
+                              );
+
+                              this.router.navigate(["/home"]);
+                              a.dismiss();
+                              this.resetLoginFormValues();
+                              this.resetRegisterFormValues();
+                            }
+                          } else {
+                            a.dismiss();
+                            console.log("Returned from Backend");
+                            this.toastErrorMsg =
+                              "Invalid username or password entered. Please check and try again.";
+                            this.presentToastWarning();
+                          }
+                        });
+
+                      a.dismiss();
+                      this.resetLoginFormValues();
+                    })
+                    .catch((error) => {
+                      this.utilities.sqliteErrorDisplayer(
+                        "login * getUserByEmail",
+                        error
+                      );
+                      a.dismiss();
+                      this.utilities.presentToastWarning(
+                        "Something went wrong"
+                      );
+                      console.error(
+                        "Error -> getUserByEmail() function returned error." +
+                          JSON.stringify(error)
+                      );
+                    });
+                }
+              } else {
+                this.utilities.presentToastWarning("Something went wrong.");
+                this.utilities.sqliteErrorDisplayer(
+                  "login * login",
+                  "Token not found"
+                );
               }
-              a.dismiss();
-              this.resetLoginFormValues();
             } catch (error) {
               console.log("error signing in", error);
               if (error.code == "UserNotConfirmedException") {
@@ -331,72 +402,6 @@ export class LoginPage implements OnInit {
     } else {
       this.utilities.presentToastWarning("Please enter Email and Password.");
     }
-    /*
-    console.log("About Login");
-    console.log(this.loginForm.value);
-    let username = this.loginForm.get("username").value.trim();
-    let password = this.loginForm.get("password").value.trim();
-
-    // username = "manoj";
-    // password = "manoj";
-
-    // username = "manoz";
-    // password = "manoz";
-
-    if (username && password) {
-      const loading = await this.loadingController
-        .create({
-          message: "Please wait...",
-          translucent: true,
-        })
-        .then((a) => {
-          a.present().then(async (res) => {
-            this.apiService.loginUser(username, password).subscribe((data) => {
-              a.dismiss();
-              console.log("Returned from Backend");
-              console.log(data);
-              if (typeof data != "undefined" && typeof data[0] != "undefined") {
-                if (this.utilities.isInvalidApiResponseData(data)) {
-                  console.log("Returned Error");
-                  this.presentToastWarning();
-                } else {
-                  let res = data[0];
-                  this.auth.isLoggedIn = true;
-                  console.log("Returned Success");
-                  this.toastSuccessMsg = "Login Success.";
-                  this.presentToastSuccess();
-                  this.utilities.isLoggedId = true;
-                  this.utilities.userId = res["user_id"];
-                  this.utilities.jwt = res["user_id"];
-                  this.utilities.currentUserDetails["userName"] = res["name"]
-                    ? res["name"]
-                    : res["username"];
-                  this.utilities.currentUserDetails["photo"] = res["photo"];
-                  this.commonService.loadAppointmentsFromSqlite();
-
-                  this.commonService.loadAppointmentsInterval = setInterval(
-                    () => this.commonService.loadAppointmentsFromSqlite(),
-                    this.commonService.appointmentsLoadingInterval
-                  );
-
-                  this.router.navigate(["/home"]);
-                  this.resetLoginFormValues();
-                  this.resetRegisterFormValues();
-                }
-              } else {
-                console.log("Returned from Backend");
-                this.toastErrorMsg =
-                  "Invalid username or password entered. Please check and try again.";
-                this.presentToastWarning();
-              }
-            });
-          });
-        });
-    } else {
-      this.toastErrorMsg = "Please enter username and password.";
-      this.presentToastWarning();
-    }
-    */
   }
 
   //aws code
