@@ -435,7 +435,7 @@ export class LoginPage implements OnInit {
                   "Email verification successful, please login now."
                 );
                 this.showVerificationForm = false;
-                this.login();
+                this.loginTab();
                 this.verificationForm.patchValue({
                   verificationCode: "",
                 });
