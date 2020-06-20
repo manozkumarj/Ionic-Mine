@@ -185,6 +185,8 @@ export class LoginPage implements OnInit {
                 this.utilities.presentToastSuccess(
                   "Registration successful, Please verify your email with the code which was sent to your email Id."
                 );
+                this.resetRegisterFormValues();
+                this.resetLoginFormValues();
               }
             } catch (error) {
               console.log("error signing up:", error);
@@ -245,16 +247,14 @@ export class LoginPage implements OnInit {
                             console.log("Returned from Backend");
                             console.log(data);
                             if (this.utilities.isInvalidApiResponseData(data)) {
-                              a.dismiss();
                               console.log("Returned Error");
                               // console.log(data[0][0]);
                               if (data[0]["error"].includes(username)) {
                                 this.toastErrorMsg = "Username already exist";
-                              } else if (
-                                data[0][0]["error"].includes(username)
-                              ) {
+                              } else if (data[0]["error"].includes(username)) {
                                 this.toastErrorMsg = "Email already exist";
                               } else {
+                                a.dismiss();
                                 this.toastErrorMsg = "Something went wrong";
                               }
                               this.presentToastWarning();
@@ -276,7 +276,6 @@ export class LoginPage implements OnInit {
                                 this.db
                                   .crudOperations(receivedQuery)
                                   .then((res) => {
-                                    a.dismiss();
                                     console.log(
                                       "signup details saved successfully"
                                     );
@@ -286,7 +285,6 @@ export class LoginPage implements OnInit {
                                       "login * register",
                                       error
                                     );
-                                    a.dismiss();
                                     console.error(
                                       "Error -> signup crudOperations function returned error." +
                                         JSON.stringify(error)
@@ -302,6 +300,7 @@ export class LoginPage implements OnInit {
                                 console.log(
                                   "Query property is not received from backend SP"
                                 );
+                                return;
                               }
                             }
                           });
@@ -317,15 +316,15 @@ export class LoginPage implements OnInit {
                             typeof data[0] != "undefined"
                           ) {
                             if (this.utilities.isInvalidApiResponseData(data)) {
-                              a.dismiss();
                               console.log("Returned Error");
-                              this.presentToastWarning();
+                              // this.presentToastWarning();
                             } else {
                               let res = data[0];
                               this.auth.isLoggedIn = true;
                               console.log("Returned Success");
-                              this.toastSuccessMsg = "Login Success.";
-                              this.presentToastSuccess();
+                              // this.utilities.presentToastSuccess(
+                              //   "Login Success."
+                              // );
                               this.utilities.isLoggedId = true;
                               this.utilities.userId = res["user_id"];
                               this.utilities.currentUserDetails[
@@ -342,9 +341,9 @@ export class LoginPage implements OnInit {
                               );
 
                               this.router.navigate(["/home"]);
-                              a.dismiss();
                               this.resetLoginFormValues();
                               this.resetRegisterFormValues();
+                              a.dismiss();
                             }
                           } else {
                             a.dismiss();
@@ -354,9 +353,6 @@ export class LoginPage implements OnInit {
                             this.presentToastWarning();
                           }
                         });
-
-                      a.dismiss();
-                      this.resetLoginFormValues();
                     })
                     .catch((error) => {
                       this.utilities.sqliteErrorDisplayer(
@@ -431,6 +427,7 @@ export class LoginPage implements OnInit {
                   "Email verification successful, please login now."
                 );
                 this.showVerificationForm = false;
+                this.login();
                 this.verificationForm.patchValue({
                   verificationCode: "",
                 });
