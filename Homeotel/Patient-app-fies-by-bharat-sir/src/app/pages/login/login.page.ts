@@ -209,6 +209,7 @@ export class LoginPage implements OnInit {
 
     if (username && password) {
       this.verifiableEmail = username;
+      let errorsCount = 0;
       const loading = await this.loadingController
         .create({
           message: "Please wait...",
@@ -230,7 +231,7 @@ export class LoginPage implements OnInit {
                   console.log("receivedToken -> " + receivedToken);
                   this.utilities.jwt = receivedToken;
 
-                  this.db
+                  let letGetUserByEmail = await this.db
                     .getUserByEmail(username)
                     .then(async (res: any[]) => {
                       console.log(
@@ -240,6 +241,8 @@ export class LoginPage implements OnInit {
                       let userDetails = res;
                       if (userDetails.length > 0) {
                         let userId = userDetails[0]["user_id"];
+                        a.dismiss();
+                        this.proceedToLogin(username, password);
                       } else {
                         let letSignup = await this.apiService
                           .registerUser(username, username, password)
@@ -250,23 +253,20 @@ export class LoginPage implements OnInit {
                               console.log("Returned Error");
                               // console.log(data[0][0]);
                               if (data[0]["error"].includes(username)) {
-                                this.toastErrorMsg = "Username already exist";
-                              } else if (data[0]["error"].includes(username)) {
+                                ++errorsCount;
+                                errorsCount += 1;
                                 this.toastErrorMsg = "Email already exist";
+                                this.utilities.presentToastWarning(
+                                  "This user's data already imported to SQLite in other device, please import in this devices as well if you want to continue"
+                                );
                               } else {
-                                a.dismiss();
                                 this.toastErrorMsg = "Something went wrong";
                               }
-                              this.presentToastWarning();
-                              return;
+                              // this.presentToastWarning();
+                              a.dismiss();
+                              return false;
                             } else {
                               console.log("Returned Success");
-                              this.toastSuccessMsg =
-                                "Success, you can login now.";
-                              this.presentToastSuccess();
-                              this.loginTab();
-                              this.resetRegisterFormValues();
-                              this.resetLoginFormValues();
 
                               let res = data[0];
                               if (res["query"]) {
@@ -279,6 +279,8 @@ export class LoginPage implements OnInit {
                                     console.log(
                                       "signup details saved successfully"
                                     );
+                                    a.dismiss();
+                                    this.proceedToLogin(username, password);
                                   })
                                   .catch((error) => {
                                     this.utilities.sqliteErrorDisplayer(
@@ -306,53 +308,7 @@ export class LoginPage implements OnInit {
                           });
                       }
 
-                      this.apiService
-                        .loginUser(username, password)
-                        .subscribe((data) => {
-                          console.log("Returned from Backend");
-                          console.log(data);
-                          if (
-                            typeof data != "undefined" &&
-                            typeof data[0] != "undefined"
-                          ) {
-                            if (this.utilities.isInvalidApiResponseData(data)) {
-                              console.log("Returned Error");
-                              // this.presentToastWarning();
-                            } else {
-                              let res = data[0];
-                              this.auth.isLoggedIn = true;
-                              console.log("Returned Success");
-                              // this.utilities.presentToastSuccess(
-                              //   "Login Success."
-                              // );
-                              this.utilities.isLoggedId = true;
-                              this.utilities.userId = res["user_id"];
-                              this.utilities.currentUserDetails[
-                                "userName"
-                              ] = res["name"] ? res["name"] : res["username"];
-                              this.utilities.currentUserDetails["photo"] =
-                                res["photo"];
-                              this.commonService.loadAppointmentsFromSqlite();
-
-                              this.commonService.loadAppointmentsInterval = setInterval(
-                                () =>
-                                  this.commonService.loadAppointmentsFromSqlite(),
-                                this.commonService.appointmentsLoadingInterval
-                              );
-
-                              this.router.navigate(["/home"]);
-                              this.resetLoginFormValues();
-                              this.resetRegisterFormValues();
-                              a.dismiss();
-                            }
-                          } else {
-                            a.dismiss();
-                            console.log("Returned from Backend");
-                            this.toastErrorMsg =
-                              "Invalid username or password entered. Please check and try again.";
-                            this.presentToastWarning();
-                          }
-                        });
+                      console.log("errorsCount --> " + errorsCount);
                     })
                     .catch((error) => {
                       this.utilities.sqliteErrorDisplayer(
@@ -399,6 +355,58 @@ export class LoginPage implements OnInit {
     } else {
       this.utilities.presentToastWarning("Please enter Email and Password.");
     }
+  }
+
+  async proceedToLogin(username, password) {
+    const loading = await this.loadingController
+      .create({
+        message: "Please wait...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.loginUser(username, password).subscribe((data) => {
+            console.log("Returned from Backend");
+            console.log(data);
+            if (typeof data != "undefined" && typeof data[0] != "undefined") {
+              if (this.utilities.isInvalidApiResponseData(data)) {
+                console.log("Returned Error");
+                // this.presentToastWarning();
+              } else {
+                let res = data[0];
+                this.auth.isLoggedIn = true;
+                console.log("Returned Success");
+                // this.utilities.presentToastSuccess(
+                //   "Login Success."
+                // );
+                this.utilities.isLoggedId = true;
+                this.utilities.userId = res["user_id"];
+                this.utilities.currentUserDetails["userName"] = res["name"]
+                  ? res["name"]
+                  : res["username"];
+                this.utilities.currentUserDetails["photo"] = res["photo"];
+                this.commonService.loadAppointmentsFromSqlite();
+
+                this.commonService.loadAppointmentsInterval = setInterval(
+                  () => this.commonService.loadAppointmentsFromSqlite(),
+                  this.commonService.appointmentsLoadingInterval
+                );
+
+                this.router.navigate(["/home"]);
+                this.resetLoginFormValues();
+                this.resetRegisterFormValues();
+                a.dismiss();
+              }
+            } else {
+              a.dismiss();
+              console.log("Returned from Backend");
+              this.toastErrorMsg =
+                "Invalid username or password entered. Please check and try again.";
+              this.presentToastWarning();
+            }
+          });
+        });
+      });
   }
 
   //aws code
