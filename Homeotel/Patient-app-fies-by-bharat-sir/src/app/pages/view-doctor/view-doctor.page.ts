@@ -68,7 +68,58 @@ export class ViewDoctorPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.loadDoctorMasters();
+    if (this.utilities.isHybridApp) {
+      this.loadDoctorMasters();
+    } else {
+      this.loadMasters();
+    }
+  }
+
+  async loadMasters() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getDoctorMasters().subscribe((data) => {
+            a.dismiss();
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log(data);
+              this.utilities.presentToastWarning("Something went wrong");
+            } else {
+              console.log(data);
+              this.resetMasters();
+              data[0].forEach((data) => {
+                if (data.master_type == "specialisation") {
+                  this.specialisationMasters.push({
+                    id: data.id,
+                    name: data.name,
+                  });
+                } else if (data.master_type == "qualification") {
+                  this.qualificationMasters.push({
+                    id: data.id,
+                    name: data.name,
+                  });
+                } else if (data.master_type == "certification") {
+                  this.certificationMasters.push({
+                    id: data.id,
+                    name: data.name,
+                  });
+                } else if (data.master_type == "award") {
+                  this.awardMasters.push({
+                    id: data.id,
+                    name: data.name,
+                  });
+                }
+              });
+              this.loadProfile();
+              this.utilities.presentToastSuccess("data loaded successfully");
+            }
+          });
+        });
+      });
   }
 
   async loadDoctorMasters() {

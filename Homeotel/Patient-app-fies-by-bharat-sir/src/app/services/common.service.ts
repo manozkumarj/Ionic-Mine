@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { AuthService } from "./auth.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { DatabaseService } from "./database.service";
+import { ApiService } from "./api.service";
 
 @Injectable({
   providedIn: "root",
@@ -28,6 +29,7 @@ export class CommonService {
     private alertCtrl: AlertController,
     private router: Router,
     private db: DatabaseService,
+    private apiService: ApiService,
     private utilities: UtilitiesService,
     public auth: AuthService
   ) {
@@ -239,6 +241,124 @@ export class CommonService {
           alertEl.present();
         });
     }
+  }
+
+  loadAppointmentsFromServer() {
+    clearInterval(this.alertShowableInterval);
+    this.apiService.getAppointments().subscribe((data) => {
+      console.log("Returned from Backend");
+      console.log(data);
+      console.log(data[0]);
+      if (this.utilities.isInvalidApiResponseData(data)) {
+        console.log("Returned Error");
+      } else {
+        if (
+          typeof data != "undefined" &&
+          typeof data[0] != "undefined" &&
+          typeof data[0][0] != "undefined"
+        ) {
+          let loadedAllAppointments = data[0];
+          console.log("Appointments found - below they are");
+          console.log(loadedAllAppointments);
+
+          let todayMidnight = new Date();
+          todayMidnight.setHours(0, 0, 0, 0);
+          let todayMidnightMs = todayMidnight.getTime();
+
+          let tomorrowMidnight = new Date();
+          tomorrowMidnight.setHours(24, 0, 0, 0);
+          let tomorrowMidnightMs = tomorrowMidnight.getTime();
+
+          let current = new Date();
+          let getCurrentMilliseconds = current.getTime();
+
+          let getTodayAppointments = loadedAllAppointments.filter(
+            (appointment) => {
+              let getAppointmentDateTime = appointment["appointment_at"];
+              let convertAppointmentDateTimeToDate = new Date(
+                getAppointmentDateTime
+              );
+              let getAppointmentMilliseconds = convertAppointmentDateTimeToDate.getTime();
+              if (
+                getAppointmentMilliseconds >= todayMidnightMs &&
+                getAppointmentMilliseconds <= tomorrowMidnightMs
+              ) {
+                return appointment;
+              }
+            }
+          );
+
+          console.log("getTodayAppointments are");
+          console.log(getTodayAppointments);
+
+          // Mapping today's appointments
+          if (getTodayAppointments.length > 0) {
+            let getUpcomingAppointments = getTodayAppointments.map(
+              (appointment) => {
+                let date = new Date();
+                let getCurrentMilliseconds = date.getTime();
+
+                let getAppointmentDateTime = appointment["appointment_at"];
+                let convertAppointmentDateTimeToDate = new Date(
+                  getAppointmentDateTime
+                );
+                let getAppointmentStartMilliseconds = convertAppointmentDateTimeToDate.getTime();
+                let getAppointmentEndMilliseconds =
+                  getAppointmentStartMilliseconds + 30 * 1000 * 60;
+
+                console.log("*****************************************");
+                console.log(getCurrentMilliseconds);
+                console.log(getAppointmentStartMilliseconds);
+                console.log(getAppointmentEndMilliseconds);
+
+                if (
+                  getCurrentMilliseconds >= getAppointmentStartMilliseconds &&
+                  getCurrentMilliseconds <= getAppointmentEndMilliseconds
+                ) {
+                  let apmtntId = appointment["appointment_id"];
+                  let recentlyTriggeredAppointmentIds = this
+                    .recentlyTriggeredAppointmentIds;
+
+                  let isItShowable = true;
+                  let isRecentlyTriggered = recentlyTriggeredAppointmentIds.findIndex(
+                    (item) => item === apmtntId
+                  );
+
+                  if (isRecentlyTriggered > -1) {
+                    isItShowable = false;
+                  }
+                  return {
+                    ...appointment,
+                    getAppointmentStartMilliseconds,
+                    getAppointmentEndMilliseconds,
+                    showAlert: isItShowable,
+                    showCallNowButton: true,
+                  };
+                }
+              }
+            );
+
+            getUpcomingAppointments = getUpcomingAppointments.filter(
+              (appointment) => appointment
+            );
+
+            getUpcomingAppointments = getUpcomingAppointments.filter(
+              (appointment) => appointment
+            );
+
+            console.log("getUpcomingAppointments is below");
+            console.log(getUpcomingAppointments);
+
+            this.upcomingAppointment = { ...getUpcomingAppointments[0] };
+
+            this.alertShowableInterval = setInterval(
+              () => this.checkUpcomingAppointment(),
+              10000
+            );
+          }
+        }
+      }
+    });
   }
 
   loadAppointmentsFromSqlite() {

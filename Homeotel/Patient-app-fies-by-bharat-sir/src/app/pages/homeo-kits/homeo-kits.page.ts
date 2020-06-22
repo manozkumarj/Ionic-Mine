@@ -34,22 +34,22 @@ export class HomeoKitsPage implements OnInit {
       console.log("this.doctorId -> " + this.doctorId);
       if (this.doctorId) {
         if (this.utilities.isHybridApp) {
-          this.getCurrentDoctorsHomeokits(this.doctorId);
-        } else {
           this.loadCurrentDoctorsHomeokits(
             this.utilities.userId,
             this.doctorId
           );
           this.loadOrderedKits(this.utilities.userId, this.doctorId);
+        } else {
+          this.getCurrentDoctorsHomeokits(this.doctorId);
         }
       }
     } else {
       console.log("Need to show all Homeokits");
       if (this.utilities.isHybridApp) {
-        this.getCurrentDoctorsHomeokits(0);
-      } else {
         this.loadCurrentDoctorsHomeokits(this.utilities.userId, 0);
         this.loadOrderedKits(this.utilities.userId, 0);
+      } else {
+        this.getCurrentDoctorsHomeokits(0);
       }
     }
   }

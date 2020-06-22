@@ -327,10 +327,10 @@ export class LoginPage implements OnInit {
                             JSON.stringify(error)
                         );
                       });
+                  } else {
+                    a.dismiss();
+                    this.proceedToLogin(username, password);
                   }
-                } else {
-                  a.dismiss();
-                  this.proceedToLogin(username, password);
                 }
               } else {
                 this.utilities.presentToastWarning("Something went wrong.");
@@ -380,7 +380,7 @@ export class LoginPage implements OnInit {
                 console.log("Returned Error");
                 // this.presentToastWarning();
               } else {
-                let res = data[0];
+                let res = data[0][0];
                 this.auth.isLoggedIn = true;
                 console.log("Returned Success");
                 // this.utilities.presentToastSuccess(
@@ -392,12 +392,22 @@ export class LoginPage implements OnInit {
                   ? res["name"]
                   : res["username"];
                 this.utilities.currentUserDetails["photo"] = res["photo"];
-                this.commonService.loadAppointmentsFromSqlite();
 
-                this.commonService.loadAppointmentsInterval = setInterval(
-                  () => this.commonService.loadAppointmentsFromSqlite(),
-                  this.commonService.appointmentsLoadingInterval
-                );
+                if (this.utilities.isHybridApp) {
+                  this.commonService.loadAppointmentsFromSqlite();
+
+                  this.commonService.loadAppointmentsInterval = setInterval(
+                    () => this.commonService.loadAppointmentsFromSqlite(),
+                    this.commonService.appointmentsLoadingInterval
+                  );
+                } else {
+                  this.commonService.loadAppointmentsFromServer();
+
+                  this.commonService.loadAppointmentsInterval = setInterval(
+                    () => this.commonService.loadAppointmentsFromServer(),
+                    this.commonService.appointmentsLoadingInterval
+                  );
+                }
 
                 this.router.navigate(["/home"]);
                 this.resetLoginFormValues();
