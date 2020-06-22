@@ -194,89 +194,97 @@ export class AppointmentDetailsPage implements OnInit {
                             "Appointment cancelled successfully"
                           );
 
-                          // delete_appointment related
-                          let res = data[0];
-                          if (data[0] && data[0]["query1"]) {
-                            let receivedQuery = res["query1"];
-                            console.log(receivedQuery);
+                          if (this.utilities.isHybridApp) {
+                            // delete_appointment related
+                            let res = data[0];
+                            if (data[0] && data[0]["query1"]) {
+                              let receivedQuery = res["query1"];
+                              console.log(receivedQuery);
 
-                            this.db
-                              .crudOperations(receivedQuery)
-                              .then((res) => {
-                                a.dismiss();
-                                console.log(
-                                  "delete_appointment query executed successfully"
-                                );
-                                this.router.navigate(["/home"]);
-                              })
-                              .catch((error) => {
-                                this.utilities.sqliteErrorDisplayer(
-                                  "appointment-details * cancelSlot",
-                                  error
-                                );
-                                this.utilities.presentToastWarning(
-                                  "Something went wrong."
-                                );
-                                a.dismiss();
-                                console.error(
-                                  "Error -> cancelSlot function returned error." +
-                                    JSON.stringify(error)
-                                );
-                              });
+                              this.db
+                                .crudOperations(receivedQuery)
+                                .then((res) => {
+                                  a.dismiss();
+                                  console.log(
+                                    "delete_appointment query executed successfully"
+                                  );
+                                  this.router.navigate(["/home"]);
+                                })
+                                .catch((error) => {
+                                  this.utilities.sqliteErrorDisplayer(
+                                    "appointment-details * cancelSlot",
+                                    error
+                                  );
+                                  this.utilities.presentToastWarning(
+                                    "Something went wrong."
+                                  );
+                                  a.dismiss();
+                                  console.error(
+                                    "Error -> cancelSlot function returned error." +
+                                      JSON.stringify(error)
+                                  );
+                                });
+                            } else {
+                              a.dismiss();
+                              this.utilities.sqliteErrorDisplayer(
+                                "appointment-details * cancelSlot",
+                                "Query1 property is not received from backend SP"
+                              );
+                              this.utilities.presentToastWarning(
+                                "Something went wrong."
+                              );
+                              console.log(
+                                "Query1 property is not received from backend SP"
+                              );
+                            }
+
+                            // update_transaction
+                            if (data[0] && data[0]["query2"]) {
+                              let receivedQuery = res["query2"];
+                              console.log(receivedQuery);
+
+                              this.db
+                                .crudOperations(receivedQuery)
+                                .then((res) => {
+                                  a.dismiss();
+                                  console.log(
+                                    "update_transaction query executed successfully"
+                                  );
+                                  this.router.navigate(["/home"]);
+                                })
+                                .catch((error) => {
+                                  this.utilities.sqliteErrorDisplayer(
+                                    "appointment-details * cancelSlot",
+                                    error
+                                  );
+                                  this.utilities.presentToastWarning(
+                                    "Something went wrong."
+                                  );
+                                  a.dismiss();
+                                  console.error(
+                                    "Error -> cancelSlot function returned error." +
+                                      JSON.stringify(error)
+                                  );
+                                });
+                            } else {
+                              a.dismiss();
+                              this.utilities.sqliteErrorDisplayer(
+                                "appointment-details * cancelSlot",
+                                "Query2 property is not received from backend SP"
+                              );
+                              this.utilities.presentToastWarning(
+                                "Something went wrong."
+                              );
+                              console.log(
+                                "Query2 property is not received from backend SP"
+                              );
+                            }
                           } else {
                             a.dismiss();
-                            this.utilities.sqliteErrorDisplayer(
-                              "appointment-details * cancelSlot",
-                              "Query1 property is not received from backend SP"
-                            );
-                            this.utilities.presentToastWarning(
-                              "Something went wrong."
-                            );
                             console.log(
-                              "Query1 property is not received from backend SP"
+                              "update_transaction query executed successfully"
                             );
-                          }
-
-                          // update_transaction
-                          if (data[0] && data[0]["query2"]) {
-                            let receivedQuery = res["query2"];
-                            console.log(receivedQuery);
-
-                            this.db
-                              .crudOperations(receivedQuery)
-                              .then((res) => {
-                                a.dismiss();
-                                console.log(
-                                  "update_transaction query executed successfully"
-                                );
-                                this.router.navigate(["/home"]);
-                              })
-                              .catch((error) => {
-                                this.utilities.sqliteErrorDisplayer(
-                                  "appointment-details * cancelSlot",
-                                  error
-                                );
-                                this.utilities.presentToastWarning(
-                                  "Something went wrong."
-                                );
-                                a.dismiss();
-                                console.error(
-                                  "Error -> cancelSlot function returned error." +
-                                    JSON.stringify(error)
-                                );
-                              });
-                          } else {
-                            a.dismiss();
-                            this.utilities.sqliteErrorDisplayer(
-                              "appointment-details * cancelSlot",
-                              "Query2 property is not received from backend SP"
-                            );
-                            this.utilities.presentToastWarning(
-                              "Something went wrong."
-                            );
-                            console.log(
-                              "Query2 property is not received from backend SP"
-                            );
+                            this.router.navigate(["/home"]);
                           }
                         }
                       });

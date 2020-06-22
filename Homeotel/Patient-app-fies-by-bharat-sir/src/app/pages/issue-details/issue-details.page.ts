@@ -72,43 +72,52 @@ export class IssueDetailsPage implements OnInit {
                   console.log(data);
                   a.dismiss();
 
-                  let res = data[0];
-                  if (data[0]["query"]) {
-                    let receivedQuery = res["query"];
-                    console.log(receivedQuery);
+                  if (this.utilities.isHybridApp) {
+                    let res = data[0];
+                    if (data[0]["query"]) {
+                      let receivedQuery = res["query"];
+                      console.log(receivedQuery);
 
-                    this.db
-                      .crudOperations(receivedQuery)
-                      .then((res) => {
-                        a.dismiss();
-                        console.log("Issue added successfully");
-                        this.presentModal();
-                        this.router.navigate(["/help-center"]);
-                      })
-                      .catch((error) => {
-                        this.utilities.sqliteErrorDisplayer(
-                          "issue-details * submit",
-                          error
-                        );
-                        this.utilities.presentToastWarning(
-                          "Something went wrong."
-                        );
-                        a.dismiss();
-                        console.error(
-                          "Error -> SaveIssue function returned error." +
-                            JSON.stringify(error)
-                        );
-                      });
+                      this.db
+                        .crudOperations(receivedQuery)
+                        .then((res) => {
+                          a.dismiss();
+                          console.log("Issue added successfully");
+                          this.presentModal();
+                          this.router.navigate(["/help-center"]);
+                        })
+                        .catch((error) => {
+                          this.utilities.sqliteErrorDisplayer(
+                            "issue-details * submit",
+                            error
+                          );
+                          this.utilities.presentToastWarning(
+                            "Something went wrong."
+                          );
+                          a.dismiss();
+                          console.error(
+                            "Error -> SaveIssue function returned error." +
+                              JSON.stringify(error)
+                          );
+                        });
+                    } else {
+                      a.dismiss();
+                      this.utilities.sqliteErrorDisplayer(
+                        "issue-details * submit",
+                        "Query property is not received from backend SP"
+                      );
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      console.log(
+                        "Query property is not received from backend SP"
+                      );
+                    }
                   } else {
                     a.dismiss();
-                    this.utilities.sqliteErrorDisplayer(
-                      "issue-details * submit",
-                      "Query property is not received from backend SP"
-                    );
-                    this.utilities.presentToastWarning("Something went wrong.");
-                    console.log(
-                      "Query property is not received from backend SP"
-                    );
+                    console.log("Issue added successfully");
+                    this.presentModal();
+                    this.router.navigate(["/help-center"]);
                   }
                 }
               });

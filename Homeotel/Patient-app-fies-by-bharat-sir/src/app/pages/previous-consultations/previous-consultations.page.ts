@@ -26,8 +26,53 @@ export class PreviousConsultationsPage implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {
-    // this.getAppointments();
-    this.loadAppointments();
+    if (this.utilities.isHybridApp) {
+      this.loadAppointments();
+    } else {
+      this.getAppointments();
+    }
+  }
+
+  async getAppointments() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getAppointments().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            console.log(data[0]);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (
+                typeof data != "undefined" &&
+                typeof data[0] != "undefined" &&
+                typeof data[0][0] != "undefined"
+              ) {
+                this.allAppointments = data[0];
+
+                console.log(
+                  "***************************************************"
+                );
+
+                this.previousAppointments = this.allAppointments.filter(
+                  (appointment) => appointment["appointment_status"] == 1
+                );
+
+                console.log("this.previousAppointments showing below");
+                console.log(this.previousAppointments);
+              } else {
+                console.log("Backend returned error");
+              }
+            }
+          });
+        });
+      });
   }
 
   async loadAppointments() {

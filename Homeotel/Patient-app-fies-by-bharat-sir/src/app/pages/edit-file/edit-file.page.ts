@@ -90,50 +90,64 @@ export class EditFilePage implements OnInit {
                 } else {
                   console.log("Returned Success");
 
-                  let res = data[0];
-                  if (data[0]["query"]) {
-                    let receivedQuery = res["query"];
-                    console.log(receivedQuery);
+                  if (this.utilities.isHybridApp) {
+                    let res = data[0];
+                    if (data[0]["query"]) {
+                      let receivedQuery = res["query"];
+                      console.log(receivedQuery);
 
-                    this.db
-                      .crudOperations(receivedQuery)
-                      .then((res) => {
-                        a.dismiss();
-                        console.log("file is upserted successfully");
-                        if (this.utilities.filesPageState["type"] == "add")
-                          this.utilities.presentToastSuccess(
-                            "Added successfully"
+                      this.db
+                        .crudOperations(receivedQuery)
+                        .then((res) => {
+                          a.dismiss();
+                          console.log("file is upserted successfully");
+                          if (this.utilities.filesPageState["type"] == "add")
+                            this.utilities.presentToastSuccess(
+                              "Added successfully"
+                            );
+                          else
+                            this.utilities.presentToastSuccess(
+                              "Updated successfully"
+                            );
+                          this.router.navigate(["/files"]);
+                        })
+                        .catch((error) => {
+                          this.utilities.sqliteErrorDisplayer(
+                            "edit-file * save",
+                            error
                           );
-                        else
-                          this.utilities.presentToastSuccess(
-                            "Updated successfully"
+                          this.utilities.presentToastWarning(
+                            "Something went wrong."
                           );
-                        this.router.navigate(["/files"]);
-                      })
-                      .catch((error) => {
-                        this.utilities.sqliteErrorDisplayer(
-                          "edit-file * save",
-                          error
-                        );
-                        this.utilities.presentToastWarning(
-                          "Something went wrong."
-                        );
-                        a.dismiss();
-                        console.error(
-                          "Error -> upsertFile function returned error." +
-                            JSON.stringify(error)
-                        );
-                      });
+                          a.dismiss();
+                          console.error(
+                            "Error -> upsertFile function returned error." +
+                              JSON.stringify(error)
+                          );
+                        });
+                    } else {
+                      a.dismiss();
+                      this.utilities.sqliteErrorDisplayer(
+                        "edit-file * save",
+                        "Query property is not received from backend SP"
+                      );
+                      this.utilities.presentToastWarning(
+                        "Something went wrong."
+                      );
+                      console.log(
+                        "Query property is not received from backend SP"
+                      );
+                    }
                   } else {
                     a.dismiss();
-                    this.utilities.sqliteErrorDisplayer(
-                      "edit-file * save",
-                      "Query property is not received from backend SP"
-                    );
-                    this.utilities.presentToastWarning("Something went wrong.");
-                    console.log(
-                      "Query property is not received from backend SP"
-                    );
+                    console.log("file is upserted successfully");
+                    if (this.utilities.filesPageState["type"] == "add")
+                      this.utilities.presentToastSuccess("Added successfully");
+                    else
+                      this.utilities.presentToastSuccess(
+                        "Updated successfully"
+                      );
+                    this.router.navigate(["/files"]);
                   }
                 }
               });

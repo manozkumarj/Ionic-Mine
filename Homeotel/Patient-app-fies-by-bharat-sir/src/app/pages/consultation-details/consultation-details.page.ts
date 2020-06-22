@@ -63,7 +63,25 @@ export class ConsultationDetailsPage implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {
-    this.loadUserRelatives();
+    if (this.utilities.isHybridApp) {
+      this.loadUserRelatives();
+    } else {
+      this.getUserRelatives();
+    }
+  }
+
+  getUserRelatives() {
+    this.apiService.getUserRelatives().subscribe((data) => {
+      console.log("Returned from Backend");
+      console.log(data);
+      if (this.utilities.isInvalidApiResponseData(data)) {
+        console.log("Returned Error");
+      } else {
+        if (typeof data != "undefined" && typeof data[0] != "undefined") {
+          this.userRelatives = data[0];
+        }
+      }
+    });
   }
 
   async loadUserRelatives() {

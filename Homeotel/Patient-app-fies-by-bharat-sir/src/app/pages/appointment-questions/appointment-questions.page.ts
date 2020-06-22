@@ -156,45 +156,59 @@ export class AppointmentQuestionsPage implements OnInit {
               } else {
                 console.log("Returned Success");
 
-                let res = data[0];
-                if (data[0]["query"]) {
-                  let receivedQuery = res["query"];
-                  console.log(receivedQuery);
+                if (this.utilities.isHybridApp) {
+                  let res = data[0];
+                  if (data[0]["query"]) {
+                    let receivedQuery = res["query"];
+                    console.log(receivedQuery);
 
-                  this.db
-                    .crudOperations(receivedQuery)
-                    .then((res) => {
-                      a.dismiss();
-                      console.log("upsertComplaintDetails successfully");
-                      if (this.currentQuestion == "four")
-                        this.utilities.presentToastSuccess(
-                          "Updated successfully."
+                    this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        a.dismiss();
+                        console.log("upsertComplaintDetails successfully");
+                        if (this.currentQuestion == "four")
+                          this.utilities.presentToastSuccess(
+                            "Updated successfully."
+                          );
+                        if (this.currentQuestion == "one" && ansId == 2)
+                          this.router.navigate([
+                            "/appointment-questions/1/2/3",
+                          ]);
+                        this.router.navigate([this.forwardLink]);
+                      })
+                      .catch((error) => {
+                        this.utilities.sqliteErrorDisplayer(
+                          "appointment-questions * answered",
+                          error
                         );
-                      if (this.currentQuestion == "one" && ansId == 2)
-                        this.router.navigate(["/appointment-questions/1/2/3"]);
-                      this.router.navigate([this.forwardLink]);
-                    })
-                    .catch((error) => {
-                      this.utilities.sqliteErrorDisplayer(
-                        "appointment-questions * answered",
-                        error
-                      );
-                      this.utilities.presentToastWarning(
-                        "Something went wrong."
-                      );
-                      a.dismiss();
-                      console.error(
-                        "Error -> upsertComplaintDetails function returned error." +
-                          JSON.stringify(error)
-                      );
-                    });
+                        this.utilities.presentToastWarning(
+                          "Something went wrong."
+                        );
+                        a.dismiss();
+                        console.error(
+                          "Error -> upsertComplaintDetails function returned error." +
+                            JSON.stringify(error)
+                        );
+                      });
+                  } else {
+                    this.utilities.sqliteErrorDisplayer(
+                      "appointment-questions * answered",
+                      "Query property is not received from backend SP"
+                    );
+                    a.dismiss();
+                    console.log(
+                      "Query property is not received from backend SP"
+                    );
+                  }
                 } else {
-                  this.utilities.sqliteErrorDisplayer(
-                    "appointment-questions * answered",
-                    "Query property is not received from backend SP"
-                  );
                   a.dismiss();
-                  console.log("Query property is not received from backend SP");
+                  console.log("upsertComplaintDetails successfully");
+                  if (this.currentQuestion == "four")
+                    this.utilities.presentToastSuccess("Updated successfully.");
+                  if (this.currentQuestion == "one" && ansId == 2)
+                    this.router.navigate(["/appointment-questions/1/2/3"]);
+                  this.router.navigate([this.forwardLink]);
                 }
               }
             });

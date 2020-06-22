@@ -21,12 +21,14 @@ export class HomePage implements OnInit {
     private loadingController: LoadingController,
     private db: DatabaseService,
     private platform: Platform
-  ) {
-    // this.getAppointments();
-  }
+  ) {}
 
   ionViewWillEnter() {
-    this.loadAppointments();
+    if (this.utilities.isHybridApp) {
+      this.loadAppointments();
+    } else {
+      this.getAppointments();
+    }
   }
 
   async loadAppointments() {
@@ -58,6 +60,28 @@ export class HomePage implements OnInit {
           a.dismiss();
         });
       });
+  }
+
+  getAppointments() {
+    this.apiService.getAppointments().subscribe((data) => {
+      console.log("Returned from Backend");
+      console.log(data);
+      console.log(data[0]);
+      if (this.utilities.isInvalidApiResponseData(data)) {
+        console.log("Returned Error");
+      } else {
+        if (
+          typeof data != "undefined" &&
+          typeof data[0] != "undefined" &&
+          typeof data[0][0] != "undefined"
+        ) {
+          this.allAppointments = data[0];
+          console.log("Appointments found");
+        } else {
+          console.log("Backend returned error");
+        }
+      }
+    });
   }
 
   ngOnInit() {}

@@ -38,12 +38,77 @@ export class AppointmentsPage implements OnInit {
         "appointment_id"
       ];
     }
-    // this.getAppointments();
-    this.loadAppointments();
+    if (this.utilities.isHybridApp) {
+      this.loadAppointments();
+    } else {
+      this.getAppointments();
+    }
   }
 
   togglingTabs(tab) {
     this.selectedTab = tab;
+  }
+
+  async getAppointments() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getAppointments().subscribe((data) => {
+            console.log("Returned from Backend");
+            console.log(data);
+            console.log(data[0]);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              a.dismiss();
+              if (
+                typeof data != "undefined" &&
+                typeof data[0] != "undefined" &&
+                typeof data[0][0] != "undefined"
+              ) {
+                this.allAppointments = data[0];
+                console.log("Appointments found");
+                this.upcomingAppointments = this.allAppointments.filter(
+                  (appointment) => appointment["appointment_status"] == 0
+                );
+
+                this.upcomingAppointments = this.upcomingAppointments.map(
+                  (appointment) => {
+                    let isItUpcomingAppointment = false;
+                    if (
+                      appointment["appointment_id"] ==
+                      this.nextUpcomingAppointmentId
+                    ) {
+                      isItUpcomingAppointment = true;
+                    }
+                    return { ...appointment, isItUpcomingAppointment };
+                  }
+                );
+
+                console.log("this.upcomingAppointments showing below");
+                console.log(this.upcomingAppointments);
+
+                console.log(
+                  "***************************************************"
+                );
+
+                this.previousAppointments = this.allAppointments.filter(
+                  (appointment) => appointment["appointment_status"] == 1
+                );
+
+                console.log("this.previousAppointments showing below");
+                console.log(this.previousAppointments);
+              } else {
+                console.log("Backend returned error");
+              }
+            }
+          });
+        });
+      });
   }
 
   async loadAppointments() {

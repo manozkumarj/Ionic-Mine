@@ -33,15 +33,24 @@ export class HomeoKitsPage implements OnInit {
       console.log("Need to show specific doctor's Homeokits");
       console.log("this.doctorId -> " + this.doctorId);
       if (this.doctorId) {
-        // this.getCurrentDoctorsHomeokits(this.doctorId);
-        this.loadCurrentDoctorsHomeokits(this.utilities.userId, this.doctorId);
-        this.loadOrderedKits(this.utilities.userId, this.doctorId);
+        if (this.utilities.isHybridApp) {
+          this.getCurrentDoctorsHomeokits(this.doctorId);
+        } else {
+          this.loadCurrentDoctorsHomeokits(
+            this.utilities.userId,
+            this.doctorId
+          );
+          this.loadOrderedKits(this.utilities.userId, this.doctorId);
+        }
       }
     } else {
       console.log("Need to show all Homeokits");
-      // this.getCurrentDoctorsHomeokits(0);
-      this.loadCurrentDoctorsHomeokits(this.utilities.userId, 0);
-      this.loadOrderedKits(this.utilities.userId, 0);
+      if (this.utilities.isHybridApp) {
+        this.getCurrentDoctorsHomeokits(0);
+      } else {
+        this.loadCurrentDoctorsHomeokits(this.utilities.userId, 0);
+        this.loadOrderedKits(this.utilities.userId, 0);
+      }
     }
   }
 
@@ -49,6 +58,58 @@ export class HomeoKitsPage implements OnInit {
 
   togglingTabs(tab) {
     this.selectedTab = tab;
+  }
+
+  async getCurrentDoctorsHomeokits(doctorId) {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService
+            .getCurrentDoctorsHomeokits(doctorId)
+            .subscribe((data) => {
+              a.dismiss();
+              console.log("Returned from Backend");
+              console.log(data);
+              if (this.utilities.isInvalidApiResponseData(data)) {
+                console.log("Returned Error");
+              } else {
+                if (
+                  typeof data != "undefined" &&
+                  typeof data[0] != "undefined" &&
+                  typeof data[0][0] != "undefined"
+                ) {
+                  this.homeokits = data[0];
+                  if (this.homeokits.length > 0) {
+                    console.log("Has homeokits - Homeokits showing below");
+                    console.log(this.homeokits);
+                  } else {
+                    console.log("There are no homeokits");
+                  }
+
+                  console.log(
+                    "***********************************************"
+                  );
+
+                  this.orderedHomeokits = data[1];
+                  if (this.orderedHomeokits.length > 0) {
+                    console.log(
+                      "Has purchased homeokits - purchased Homeokits showing below"
+                    );
+                    console.log(this.orderedHomeokits);
+                  } else {
+                    console.log("There are no purchased homeokits");
+                  }
+                } else {
+                  console.log("No homeokits");
+                }
+              }
+            });
+        });
+      });
   }
 
   async loadCurrentDoctorsHomeokits(userId, doctorId) {

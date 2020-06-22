@@ -93,25 +93,33 @@ You can also create a new NgModule that exports and includes ModalPage in D:/My-
 
 
 
-* In AndroidManifest.xml file
----------------------------------------------------------------------------------------
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-	<uses-permission android:name="android.permission.USE_CREDENTIALS" />
-	<uses-permission android:name="android.permission.CAMERA" />
-	<uses-permission android:name="android.permission.VIDEO" />
-	<uses-permission android:name="android.permission.RECORD_AUDIO" />
-	<uses-permission android:name="android.permission.RECORD_VIDEO" />
-	<uses-feature android:name="android.hardware.camera" android:required="false" />
-	<uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
-	<uses-feature android:name="android.hardware.microphone" android:required="false" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-	<uses-feature android:name="android.hardware.camera" android:required="true" />
+* Useful permissions in AndroidManifest.xml file
+----------------------------------------------------------------------------------------------------
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIDEO" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECORD_VIDEO" />
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+----------------------------------------------------------------------------------------------------
 
-
-
-
+To run the App in mobile through cable connection:
+----------------------------------------------------
+* Connect the mobile to PC with USB cable
+* Make sure that 'developer options' settings are on your mobile
+* Then tun below commands in sequense
+	-> npm install npm-force-resolutions --save-dev
+	-> npm install
+	-> npx npm-force-resolutions
+	-> npm install
+	-> ionic cordova platform add android
+* Then open "AndroidManifest.xml" file which is located in 'platforms\android\app\src\main' path add below permissions at the bottom, 
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -125,4 +133,33 @@ You can also create a new NgModule that exports and includes ModalPage in D:/My-
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+
+* Then run below command
+	-> ionic cordova run android -l
     
+*******************************************************************************************************
+To generate APK file:
+----------------------------------------------------
+-> npm install npm-force-resolutions --save-dev
+-> npm install
+-> npx npm-force-resolutions
+-> npm install
+-> ionic cordova platform add android
+* Then open "AndroidManifest.xml" file which is located in 'platforms\android\app\src\main' path add below permissions at the bottom, 
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIDEO" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECORD_VIDEO" />
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+
+* Then run below command
+-> ionic cordova run android --device
+

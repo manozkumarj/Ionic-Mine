@@ -51,11 +51,38 @@ export class HealthRecordsPage {
         redirectUrl: "/previous-consultations",
       },
     ];
-    // this.getUserRelatives();
   }
 
   ionViewWillEnter() {
-    this.loadUserRelatives();
+    if (this.utilities.isHybridApp) {
+      this.loadUserRelatives();
+    } else {
+      this.getUserRelatives();
+    }
+  }
+
+  async getUserRelatives() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getUserRelatives().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (typeof data != "undefined" && typeof data[0] != "undefined") {
+                this.userRelatives = data[0];
+              }
+            }
+          });
+        });
+      });
   }
 
   async loadUserRelatives() {

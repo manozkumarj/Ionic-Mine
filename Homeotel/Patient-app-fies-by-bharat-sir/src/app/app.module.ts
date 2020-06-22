@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { RouteReuseStrategy } from "@angular/router";
 
-import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
+import { IonicModule, IonicRouteStrategy, Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 
@@ -62,17 +62,33 @@ import { IonicStorageModule } from "@ionic/storage";
   bootstrap: [AppComponent],
 })
 export class AppModule {
-  constructor(private db: DatabaseService) {
-    this.db
-      .createDb()
-      .then((res) => {
-        console.log("App module.ts - createDb - Database is ready");
-      })
-      .catch((error) => {
-        console.warn(
-          "App module.ts - createDb - Error -> " + JSON.stringify(error)
-        );
-        return false;
-      });
+  constructor(
+    private db: DatabaseService,
+    private platform: Platform,
+    private utilities: UtilitiesService
+  ) {
+    if (this.platform.is("hybrid")) {
+      // Do app stuff - sqlite, etc
+      console.log("hybrid");
+      this.utilities.isHybridApp = true;
+    } else {
+      // Do the regular browser stuff
+      console.log("web");
+      this.utilities.isHybridApp = false;
+    }
+
+    if (this.utilities.isHybridApp) {
+      this.db
+        .createDb()
+        .then((res) => {
+          console.log("App module.ts - createDb - Database is ready");
+        })
+        .catch((error) => {
+          console.warn(
+            "App module.ts - createDb - Error -> " + JSON.stringify(error)
+          );
+          return false;
+        });
+    }
   }
 }

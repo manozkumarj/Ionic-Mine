@@ -410,41 +410,54 @@ export class EditProfilePage implements OnInit {
                   }
                 } else {
                   console.log("Returned Success");
-                  let res = data[0];
-                  if (data[0]["query"]) {
-                    let receivedQuery = res["query"];
-                    console.log(receivedQuery);
 
-                    this.db
-                      .crudOperations(receivedQuery)
-                      .then((res) => {
-                        a.dismiss();
-                        console.log("ProfileData is saved successfully");
-                      })
-                      .catch((error) => {
-                        a.dismiss();
-                        this.utilities.sqliteErrorDisplayer(
-                          "edit-profile * answered",
-                          error
-                        );
-                        console.error(
-                          "Error -> Edit Profile save function returned error." +
-                            JSON.stringify(error)
-                        );
-                      });
+                  if (this.utilities.isHybridApp) {
+                    let res = data[0];
+                    if (data[0]["query"]) {
+                      let receivedQuery = res["query"];
+                      console.log(receivedQuery);
+
+                      this.db
+                        .crudOperations(receivedQuery)
+                        .then((res) => {
+                          a.dismiss();
+                          console.log("ProfileData is saved successfully");
+                          if (this.currentQuestion == "nine")
+                            this.utilities.presentToastSuccess(
+                              "Updated successfully."
+                            );
+                          this.router.navigate([this.forwardLink]);
+                        })
+                        .catch((error) => {
+                          a.dismiss();
+                          this.utilities.sqliteErrorDisplayer(
+                            "edit-profile * answered",
+                            error
+                          );
+                          console.error(
+                            "Error -> Edit Profile save function returned error." +
+                              JSON.stringify(error)
+                          );
+                        });
+                    } else {
+                      a.dismiss();
+                      this.utilities.sqliteErrorDisplayer(
+                        "edit-profile * answered",
+                        "Query property is not received from backend SP"
+                      );
+                      console.log(
+                        "Query property is not received from backend SP"
+                      );
+                    }
                   } else {
                     a.dismiss();
-                    this.utilities.sqliteErrorDisplayer(
-                      "edit-profile * answered",
-                      "Query property is not received from backend SP"
-                    );
-                    console.log(
-                      "Query property is not received from backend SP"
-                    );
+                    console.log("Profile photo updated successfully");
+                    if (this.currentQuestion == "nine")
+                      this.utilities.presentToastSuccess(
+                        "Updated successfully."
+                      );
+                    this.router.navigate([this.forwardLink]);
                   }
-                  if (this.currentQuestion == "nine")
-                    this.utilities.presentToastSuccess("Updated successfully.");
-                  this.router.navigate([this.forwardLink]);
                 }
               });
           });

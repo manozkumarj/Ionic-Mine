@@ -7,6 +7,7 @@ export class UtilitiesService {
   userId = null;
   jwt = null;
   isLoggedId = false;
+  isHybridApp = false;
 
   selectedRelativeId = 0;
 

@@ -200,85 +200,92 @@ export class MultiSelectionPage implements OnInit {
               } else {
                 console.log("Returned Success");
 
-                let res = data[0];
-                if (data[0]["query1"]) {
-                  let receivedQuery = res["query1"];
-                  console.log(receivedQuery);
+                if (this.utilities.isHybridApp) {
+                  let res = data[0];
+                  if (data[0]["query1"]) {
+                    let receivedQuery = res["query1"];
+                    console.log(receivedQuery);
 
-                  this.db
-                    .crudOperations(receivedQuery)
-                    .then((res) => {
-                      if (data[0]["query2"]) {
-                        let receivedQuery = data[0]["query2"];
-                        console.log(receivedQuery);
+                    this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        if (data[0]["query2"]) {
+                          let receivedQuery = data[0]["query2"];
+                          console.log(receivedQuery);
 
-                        this.db
-                          .crudOperations(receivedQuery)
-                          .then((res) => {
-                            a.dismiss();
-                            console.log("Medical history saved successfully");
-                            this.utilities.presentToastSuccess(
-                              "Updated successfully"
-                            );
-                            this.router.navigate(["/medical-history"]);
-                          })
-                          .catch((error) => {
-                            this.utilities.presentToastWarning(
-                              "Something went wrong."
-                            );
-                            a.dismiss();
-                            this.utilities.sqliteErrorDisplayer(
-                              "multi-selection * saveMedicalHistory",
-                              error
-                            );
-                            console.error(
-                              "Error -> saveMedicalHistory function returned error." +
-                                JSON.stringify(error)
-                            );
-                          });
-                      } else {
-                        a.dismiss();
-                        this.utilities.sqliteErrorDisplayer(
-                          "multi-selection * saveMedicalHistory",
-                          "Query2 property is not received from backend SP"
+                          this.db
+                            .crudOperations(receivedQuery)
+                            .then((res) => {
+                              a.dismiss();
+                              console.log("Medical history saved successfully");
+                              this.utilities.presentToastSuccess(
+                                "Updated successfully"
+                              );
+                              this.router.navigate(["/medical-history"]);
+                            })
+                            .catch((error) => {
+                              this.utilities.presentToastWarning(
+                                "Something went wrong."
+                              );
+                              a.dismiss();
+                              this.utilities.sqliteErrorDisplayer(
+                                "multi-selection * saveMedicalHistory",
+                                error
+                              );
+                              console.error(
+                                "Error -> saveMedicalHistory function returned error." +
+                                  JSON.stringify(error)
+                              );
+                            });
+                        } else {
+                          a.dismiss();
+                          this.utilities.sqliteErrorDisplayer(
+                            "multi-selection * saveMedicalHistory",
+                            "Query2 property is not received from backend SP"
+                          );
+                          this.utilities.presentToastWarning(
+                            "Something went wrong."
+                          );
+                          console.log(
+                            "Query2 property is not received from backend SP"
+                          );
+                        }
+
+                        console.log("Medical history saved successfully");
+                        this.utilities.presentToastSuccess(
+                          "Updated successfully"
                         );
+                      })
+                      .catch((error) => {
                         this.utilities.presentToastWarning(
                           "Something went wrong."
                         );
-                        console.log(
-                          "Query2 property is not received from backend SP"
+                        a.dismiss();
+                        this.utilities.sqliteErrorDisplayer(
+                          "multi-selection * saveMedicalHistory",
+                          error
                         );
-                      }
-
-                      console.log("Medical history saved successfully");
-                      this.utilities.presentToastSuccess(
-                        "Updated successfully"
-                      );
-                    })
-                    .catch((error) => {
-                      this.utilities.presentToastWarning(
-                        "Something went wrong."
-                      );
-                      a.dismiss();
-                      this.utilities.sqliteErrorDisplayer(
-                        "multi-selection * saveMedicalHistory",
-                        error
-                      );
-                      console.error(
-                        "Error -> saveMedicalHistory function returned error." +
-                          JSON.stringify(error)
-                      );
-                    });
+                        console.error(
+                          "Error -> saveMedicalHistory function returned error." +
+                            JSON.stringify(error)
+                        );
+                      });
+                  } else {
+                    a.dismiss();
+                    this.utilities.sqliteErrorDisplayer(
+                      "multi-selection * saveMedicalHistory",
+                      "Query1 property is not received from backend SP"
+                    );
+                    this.utilities.presentToastWarning("Something went wrong.");
+                    console.log(
+                      "Query1 property is not received from backend SP"
+                    );
+                  }
                 } else {
                   a.dismiss();
-                  this.utilities.sqliteErrorDisplayer(
-                    "multi-selection * saveMedicalHistory",
-                    "Query1 property is not received from backend SP"
-                  );
-                  this.utilities.presentToastWarning("Something went wrong.");
-                  console.log(
-                    "Query1 property is not received from backend SP"
-                  );
+                  console.log("Medical history saved successfully");
+                  this.utilities.presentToastSuccess("Updated successfully");
+                  this.router.navigate(["/medical-history"]);
                 }
               }
             });

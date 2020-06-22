@@ -216,40 +216,54 @@ export class EditLifestylePage implements OnInit {
               } else {
                 console.log("Returned Success");
                 let res = data[0];
-                if (data[0]["query"]) {
-                  let receivedQuery = res["query"];
-                  console.log(receivedQuery);
 
-                  this.db
-                    .crudOperations(receivedQuery)
-                    .then((res) => {
-                      a.dismiss();
-                      console.log("Lifestyle is saved successfully");
-                    })
-                    .catch((error) => {
-                      a.dismiss();
-                      this.utilities.sqliteErrorDisplayer(
-                        "edit-lifestyle * answered",
-                        error
-                      );
-                      console.error(
-                        "Error -> Edit lifestype save function returned error." +
-                          JSON.stringify(error)
-                      );
-                    });
+                if (this.utilities.isHybridApp) {
+                  if (data[0]["query"]) {
+                    let receivedQuery = res["query"];
+                    console.log(receivedQuery);
+
+                    this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        a.dismiss();
+                        console.log("Lifestyle is saved successfully");
+                      })
+                      .catch((error) => {
+                        a.dismiss();
+                        this.utilities.sqliteErrorDisplayer(
+                          "edit-lifestyle * answered",
+                          error
+                        );
+                        console.error(
+                          "Error -> Edit lifestype save function returned error." +
+                            JSON.stringify(error)
+                        );
+                      });
+                  } else {
+                    a.dismiss();
+                    this.utilities.sqliteErrorDisplayer(
+                      "edit-lifestyle * answered",
+                      "Query property is not received from backend SP"
+                    );
+                    console.log(
+                      "Query property is not received from backend SP"
+                    );
+                  }
+                  if (this.currentQuestion == "seven") {
+                    this.utilities.presentToastSuccess("Updated successfully");
+                    this.router.navigate(["/lifestyle"]);
+                  } else {
+                    this.router.navigate([this.forwardLink]);
+                  }
                 } else {
                   a.dismiss();
-                  this.utilities.sqliteErrorDisplayer(
-                    "edit-lifestyle * answered",
-                    "Query property is not received from backend SP"
-                  );
-                  console.log("Query property is not received from backend SP");
-                }
-                if (this.currentQuestion == "seven") {
-                  this.utilities.presentToastSuccess("Updated successfully");
-                  this.router.navigate(["/lifestyle"]);
-                } else {
-                  this.router.navigate([this.forwardLink]);
+                  console.log("Lifestyle is saved successfully");
+                  if (this.currentQuestion == "seven") {
+                    this.utilities.presentToastSuccess("Updated successfully");
+                    this.router.navigate(["/lifestyle"]);
+                  } else {
+                    this.router.navigate([this.forwardLink]);
+                  }
                 }
               }
             });

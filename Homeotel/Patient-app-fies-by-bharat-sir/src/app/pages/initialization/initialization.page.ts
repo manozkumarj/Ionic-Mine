@@ -3,6 +3,7 @@ import { LoadingController } from "@ionic/angular";
 import { Router } from "@angular/router";
 import { DatabaseService } from "./../../services/database.service";
 import { StorageService } from "./../../services/storage.service";
+import { UtilitiesService } from "src/app/services/utilities.service";
 
 @Component({
   selector: "app-initialization",
@@ -14,20 +15,25 @@ export class InitializationPage implements OnInit {
     private router: Router,
     private loadingController: LoadingController,
     private db: DatabaseService,
+    private utilities: UtilitiesService,
     private storageService: StorageService
   ) {
     // this.presentLoading();
   }
 
   ngOnInit() {
-    if (!this.db.isDbReady) {
-      console.log("Database is not ready... Initializing DB...");
-      // this.presentLoading();
-      this.prepareDatabase();
+    if (this.utilities.isHybridApp) {
+      if (!this.db.isDbReady) {
+        console.log("Database is not ready... Initializing DB...");
+        // this.presentLoading();
+        this.prepareDatabase();
+      } else {
+        this.presentLoading();
+        console.log("Database is ready... :)");
+        // this.redirector();
+      }
     } else {
-      this.presentLoading();
-      console.log("Database is ready... :)");
-      // this.redirector();
+      this.router.navigate(["/login"]);
     }
   }
 

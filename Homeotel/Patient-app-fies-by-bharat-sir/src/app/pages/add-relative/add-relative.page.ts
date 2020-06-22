@@ -50,15 +50,44 @@ export class AddRelativePage implements OnInit {
       relativeName: new FormControl("", Validators.required),
       relationId: new FormControl("", Validators.required),
     });
-
-    this.redirectTo = this.activatedRoute.snapshot.paramMap.get("redirect-to");
-    console.log("redirectTo -> " + this.redirectTo);
-
-    // this.getRelationsMasters();
-    this.getLocalRelationsMasters();
   }
 
   ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.redirectTo = this.activatedRoute.snapshot.paramMap.get("redirect-to");
+    console.log("redirectTo -> " + this.redirectTo);
+
+    if (this.utilities.isHybridApp) {
+      this.getRelationsMasters();
+    } else {
+      this.getLocalRelationsMasters();
+    }
+  }
+
+  async getRelationsMasters() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getRelationsMasters().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (typeof data != "undefined" && typeof data[0] != "undefined") {
+                this.relationsMaster = data[0];
+              }
+            }
+          });
+        });
+      });
+  }
 
   async getLocalRelationsMasters() {
     const loading = await this.loadingController
@@ -195,42 +224,50 @@ export class AddRelativePage implements OnInit {
                   "Relative added successfully."
                 );
 
-                let res = data[0];
-                if (data[0]["query"]) {
-                  let receivedQuery = res["query"];
-                  console.log(receivedQuery);
+                if (this.utilities.isHybridApp) {
+                  let res = data[0];
+                  if (data[0]["query"]) {
+                    let receivedQuery = res["query"];
+                    console.log(receivedQuery);
 
-                  this.db
-                    .crudOperations(receivedQuery)
-                    .then((res) => {
-                      a.dismiss();
-                      console.log("Relative added successfully");
-                    })
-                    .catch((error) => {
-                      this.utilities.sqliteErrorDisplayer(
-                        "add-relative * submit",
-                        error
-                      );
-                      this.utilities.presentToastWarning(
-                        "Something went wrong."
-                      );
-                      a.dismiss();
-                      console.error(
-                        "Error -> addRelative function returned error." +
-                          JSON.stringify(error)
-                      );
-                    });
+                    this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        a.dismiss();
+                        console.log("Relative added successfully");
+                        this.router.navigate([this.redirectTo]);
+                      })
+                      .catch((error) => {
+                        this.utilities.sqliteErrorDisplayer(
+                          "add-relative * submit",
+                          error
+                        );
+                        this.utilities.presentToastWarning(
+                          "Something went wrong."
+                        );
+                        a.dismiss();
+                        console.error(
+                          "Error -> addRelative function returned error." +
+                            JSON.stringify(error)
+                        );
+                      });
+                  } else {
+                    this.utilities.sqliteErrorDisplayer(
+                      "add-relative * submit",
+                      "Query property is not received from backend SP"
+                    );
+                    a.dismiss();
+                    console.log(
+                      "Query property is not received from backend SP"
+                    );
+                  }
+
+                  // this.utilities.selectedRelativeId = relationId;
                 } else {
-                  this.utilities.sqliteErrorDisplayer(
-                    "add-relative * submit",
-                    "Query property is not received from backend SP"
-                  );
                   a.dismiss();
-                  console.log("Query property is not received from backend SP");
+                  console.log("Relative added successfully");
+                  this.router.navigate([this.redirectTo]);
                 }
-
-                // this.utilities.selectedRelativeId = relationId;
-                this.router.navigate([this.redirectTo]);
               }
             });
         });

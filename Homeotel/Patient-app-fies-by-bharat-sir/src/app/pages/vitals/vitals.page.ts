@@ -20,14 +20,47 @@ export class VitalsPage implements OnInit {
     private db: DatabaseService,
     private loadingController: LoadingController,
     private utilities: UtilitiesService
-  ) {
-    // this.getVitals();
-  }
+  ) {}
 
   ngOnInit() {}
 
   ionViewWillEnter() {
-    this.getLocalVitals();
+    if (this.utilities.isHybridApp) {
+      this.getLocalVitals();
+    } else {
+      this.getVitals();
+    }
+  }
+
+  async getVitals() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getVitals().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (
+                typeof data != "undefined" &&
+                typeof data[0] != "undefined" &&
+                typeof data[0][0] != "undefined"
+              ) {
+                console.log("Data returned from backend");
+                this.vitals = data[0];
+              } else {
+                console.log("Something went wrong in backend");
+              }
+            }
+          });
+        });
+      });
   }
 
   async getLocalVitals() {

@@ -17,12 +17,39 @@ export class HelpCenterPage implements OnInit {
     private loadingController: LoadingController,
     private db: DatabaseService,
     private apiService: ApiService
-  ) {
-    // this.getIssues();
-    this.loadIssues();
-  }
+  ) {}
 
   ngOnInit() {}
+  ionViewWillEnter() {
+    if (this.utilities.isHybridApp) {
+      this.loadIssues();
+    } else {
+      this.getIssues();
+    }
+  }
+
+  getIssues() {
+    this.apiService.getIssues().subscribe((data) => {
+      console.log("Returned from Backend");
+      console.log(data);
+      if (this.utilities.isInvalidApiResponseData(data)) {
+        console.log("Returned Error");
+      } else {
+        if (
+          typeof data != "undefined" &&
+          typeof data[0] != "undefined" &&
+          typeof data[0][0] != "undefined"
+        ) {
+          console.log("Data returned from backend");
+          this.issues = data[0];
+          console.log("this.issues are showing below");
+          console.log(this.issues);
+        } else {
+          console.log("Something went wrong in backend");
+        }
+      }
+    });
+  }
 
   async loadIssues() {
     const loading = await this.loadingController

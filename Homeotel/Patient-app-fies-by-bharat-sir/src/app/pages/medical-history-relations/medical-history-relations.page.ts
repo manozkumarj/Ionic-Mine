@@ -29,8 +29,72 @@ export class MedicalHistoryRelationsPage {
   }
 
   ionViewWillEnter() {
-    this.loadRelationsMedicalHistoryData();
-    // this.getRelationsMedicalHistories();
+    if (this.utilities.isHybridApp) {
+      this.loadRelationsMedicalHistoryData();
+    } else {
+      this.getRelationsMedicalHistories();
+    }
+  }
+
+  async getRelationsMedicalHistories() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getRelationsMedicalHistories().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (
+                typeof data != "undefined" &&
+                typeof data[0] != "undefined" &&
+                typeof data[0][0] != "undefined"
+              ) {
+                this.diseases = data[0];
+                let relations = data[1];
+                this.existingData = data[2];
+                let i = 0;
+                relations.forEach((relation) => {
+                  let tempObj = {};
+                  let selectedDiseaseIds = [];
+
+                  let list = "Select";
+                  let getCurrentDiseaseData = this.existingData.filter(
+                    (item) => item.relation_id == relation.relation_id
+                  );
+                  if (getCurrentDiseaseData.length > 0) {
+                    let diseasesNames = getCurrentDiseaseData.map(
+                      (disease) => disease.diseaseName
+                    );
+
+                    selectedDiseaseIds = getCurrentDiseaseData.map(
+                      (disease) => disease.disease_id
+                    );
+
+                    list = diseasesNames.join(", ");
+                  }
+
+                  tempObj["id"] = i++;
+                  tempObj["relation_id"] = relation["relation_id"];
+                  tempObj["relation_name"] = relation["name"];
+                  tempObj["list"] = list;
+                  tempObj["selectedDiseaseIds"] = selectedDiseaseIds;
+
+                  this.relationsWithData.push(tempObj);
+                });
+
+                console.log("Data returned from backend");
+              }
+            }
+          });
+        });
+      });
   }
 
   async loadRelationsMedicalHistoryMasters() {

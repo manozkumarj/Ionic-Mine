@@ -40,12 +40,50 @@ export class FilesPage {
     private apiService: ApiService,
     private utilities: UtilitiesService,
     private db: DatabaseService
-  ) {
-    // this.getFiles();
-  }
+  ) {}
 
   ionViewWillEnter() {
-    this.getLocalFiles();
+    if (this.utilities.isHybridApp) {
+      this.getLocalFiles();
+    } else {
+      this.getFiles();
+    }
+  }
+
+  async getFiles() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getFiles().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (typeof data != "undefined" && typeof data[0] != "undefined") {
+                console.log("Data returned from backend");
+                this.files = data[0];
+                console.log("this.files are showing below");
+                console.log(this.files);
+
+                let fileTypesMasters = data[1];
+                this.utilities.filesPageState[
+                  "fileTypesMasters"
+                ] = fileTypesMasters;
+                console.log("this.fileTypesMasters are showing below");
+                console.log(fileTypesMasters);
+              } else {
+                console.log("Something went wrong in backend");
+              }
+            }
+          });
+        });
+      });
   }
 
   async getLocalFiles() {
@@ -144,40 +182,45 @@ export class FilesPage {
                             (file) => file.file_id !== id
                           );
 
-                          let res = data[0];
-                          if (data[0]["query"]) {
-                            let receivedQuery = res["query"];
-                            console.log(receivedQuery);
+                          if (this.utilities.isHybridApp) {
+                            let res = data[0];
+                            if (data[0]["query"]) {
+                              let receivedQuery = res["query"];
+                              console.log(receivedQuery);
 
-                            this.db
-                              .crudOperations(receivedQuery)
-                              .then((res) => {
-                                a.dismiss();
-                                console.log("file is deleted successfully");
-                              })
-                              .catch((error) => {
-                                this.utilities.presentToastWarning(
-                                  "Something went wrong."
-                                );
-                                a.dismiss();
-                                console.error(
-                                  "Error -> deleteFile function returned error." +
-                                    JSON.stringify(error)
-                                );
-                              });
+                              this.db
+                                .crudOperations(receivedQuery)
+                                .then((res) => {
+                                  a.dismiss();
+                                  console.log("file is deleted successfully");
+                                })
+                                .catch((error) => {
+                                  this.utilities.presentToastWarning(
+                                    "Something went wrong."
+                                  );
+                                  a.dismiss();
+                                  console.error(
+                                    "Error -> deleteFile function returned error." +
+                                      JSON.stringify(error)
+                                  );
+                                });
+                            } else {
+                              a.dismiss();
+                              this.utilities.presentToastWarning(
+                                "Something went wrong."
+                              );
+                              console.log(
+                                "Query property is not received from backend SP"
+                              );
+                            }
+
+                            this.utilities.presentToastSuccess(
+                              "Success, file is deleted."
+                            );
                           } else {
                             a.dismiss();
-                            this.utilities.presentToastWarning(
-                              "Something went wrong."
-                            );
-                            console.log(
-                              "Query property is not received from backend SP"
-                            );
+                            console.log("file is deleted successfully");
                           }
-
-                          this.utilities.presentToastSuccess(
-                            "Success, file is deleted."
-                          );
                         } else {
                           console.log("Something went wrong in backend");
                           this.utilities.presentToastSuccess(

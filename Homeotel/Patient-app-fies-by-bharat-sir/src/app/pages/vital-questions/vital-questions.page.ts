@@ -392,44 +392,55 @@ export class VitalQuestionsPage implements OnInit {
               } else {
                 console.log("Returned Success");
 
-                let res = data[0];
-                if (data[0]["query"]) {
-                  let receivedQuery = res["query"];
-                  console.log(receivedQuery);
+                if (this.utilities.isHybridApp) {
+                  let res = data[0];
+                  if (data[0]["query"]) {
+                    let receivedQuery = res["query"];
+                    console.log(receivedQuery);
 
-                  this.db
-                    .crudOperations(receivedQuery)
-                    .then((res) => {
-                      a.dismiss();
-                      console.log("vitals is saved successfully");
+                    this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        a.dismiss();
+                        console.log("vitals is saved successfully");
 
-                      if (this.currentQuestion == "four")
-                        this.utilities.presentToastSuccess(
-                          "Updated successfully."
+                        if (this.currentQuestion == "four")
+                          this.utilities.presentToastSuccess(
+                            "Updated successfully."
+                          );
+                        this.router.navigate([this.forwardLink]);
+                      })
+                      .catch((error) => {
+                        this.utilities.sqliteErrorDisplayer(
+                          "vital-questions * save",
+                          error
                         );
-                      this.router.navigate([this.forwardLink]);
-                    })
-                    .catch((error) => {
-                      this.utilities.sqliteErrorDisplayer(
-                        "vital-questions * save",
-                        error
-                      );
-                      this.utilities.presentToastWarning(
-                        "Something went wrong."
-                      );
-                      a.dismiss();
-                      console.error(
-                        "Error -> vital save function returned error." +
-                          JSON.stringify(error)
-                      );
-                    });
+                        this.utilities.presentToastWarning(
+                          "Something went wrong."
+                        );
+                        a.dismiss();
+                        console.error(
+                          "Error -> vital save function returned error." +
+                            JSON.stringify(error)
+                        );
+                      });
+                  } else {
+                    a.dismiss();
+                    this.utilities.sqliteErrorDisplayer(
+                      "vital-questions * save",
+                      "Query property is not received from backend SP"
+                    );
+                    console.log(
+                      "Query property is not received from backend SP"
+                    );
+                  }
                 } else {
                   a.dismiss();
-                  this.utilities.sqliteErrorDisplayer(
-                    "vital-questions * save",
-                    "Query property is not received from backend SP"
-                  );
-                  console.log("Query property is not received from backend SP");
+                  console.log("vitals is saved successfully");
+
+                  if (this.currentQuestion == "four")
+                    this.utilities.presentToastSuccess("Updated successfully.");
+                  this.router.navigate([this.forwardLink]);
                 }
               }
             });

@@ -26,6 +26,7 @@
           class="input-group"
           [ngStyle]="{'left': loginLeftValue }"
           [formGroup]="loginForm"
+          *ngIf="focusedForm === 'login'"
         >
           <input
             type="text"
@@ -46,6 +47,7 @@
           class="input-group"
           [ngStyle]="{'left': registerLeftValue }"
           [formGroup]="registerForm"
+          *ngIf="focusedForm === 'register'"
         >
           <input
             type="text"
