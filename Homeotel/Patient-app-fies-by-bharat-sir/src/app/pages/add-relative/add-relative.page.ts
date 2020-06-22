@@ -59,9 +59,9 @@ export class AddRelativePage implements OnInit {
     console.log("redirectTo -> " + this.redirectTo);
 
     if (this.utilities.isHybridApp) {
-      this.getRelationsMasters();
-    } else {
       this.getLocalRelationsMasters();
+    } else {
+      this.getRelationsMasters();
     }
   }
 

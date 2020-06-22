@@ -298,7 +298,7 @@ export class ApiService {
   getMedicalHistories() {
     var body = {
       access_token: this.utilities.jwt,
-      request_type: "USER_ISSUE_SAVE",
+      request_type: "MEDICAL_HISTORY_MASTERS_AND_DATA_GET",
       userId: this.utilities.userId,
       relativeId: this.utilities.selectedRelativeId,
     };

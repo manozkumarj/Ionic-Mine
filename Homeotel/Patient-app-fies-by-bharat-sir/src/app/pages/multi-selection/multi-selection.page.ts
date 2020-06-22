@@ -34,6 +34,8 @@ export class MultiSelectionPage implements OnInit {
       this.utilities.medicalHistoryPageState["selectedMedicalHistory"]
     );
 
+    console.log(this.utilities.medicalHistoryPageState);
+
     let master = this.utilities.medicalHistoryPageState[
       "selectedMedicalHistory"
     ]["masterDataTag"];

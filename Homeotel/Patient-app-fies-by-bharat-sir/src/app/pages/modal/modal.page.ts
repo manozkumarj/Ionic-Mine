@@ -468,7 +468,7 @@ export class ModalPage implements OnInit {
             } else {
               if (typeof data != "undefined" && typeof data[0] != "undefined") {
                 console.log("Doctor found");
-                this.doctorDetails = data[0];
+                this.doctorDetails = data[0][0];
                 console.log(this.doctorDetails);
               } else {
                 console.log("No doctor found");
