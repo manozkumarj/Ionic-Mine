@@ -255,7 +255,7 @@ export class LoginPage implements OnInit {
                               ) {
                                 console.log("Returned Error");
                                 // console.log(data[0][0]);
-                                if (data[0]["error"].includes(username)) {
+                                if (data[0][0]["error"].includes(username)) {
                                   ++errorsCount;
                                   errorsCount += 1;
                                   this.toastErrorMsg = "Email already exist";
@@ -271,7 +271,7 @@ export class LoginPage implements OnInit {
                               } else {
                                 console.log("Returned Success");
 
-                                let res = data[0];
+                                let res = data[0][0];
                                 if (res["query"]) {
                                   let receivedQuery = res["query"];
                                   console.log(receivedQuery);

@@ -148,11 +148,11 @@ export class EditRelationMedicalHistoryPage implements OnInit {
             .subscribe((data) => {
               a.dismiss();
               console.log("Returned from Backend");
-              console.log(JSON.stringify(data));
+              console.log(data);
               if (this.utilities.isInvalidApiResponseData(data)) {
                 console.log("Returned Error");
                 console.log(data);
-                if (data["error"]) {
+                if (data[0]["error"]) {
                   console.log("Something went wrong");
                   this.utilities.presentToastWarning("Something went wrong");
                 }
@@ -160,16 +160,16 @@ export class EditRelationMedicalHistoryPage implements OnInit {
                 console.log("Returned Success");
 
                 if (this.utilities.isHybridApp) {
-                  let res = data[0];
-                  if (data[0]["query1"]) {
+                  let res = data[0][0];
+                  if (data[0][0]["query1"]) {
                     let receivedQuery = res["query1"];
                     console.log(receivedQuery);
 
                     this.db
                       .crudOperations(receivedQuery)
                       .then((res) => {
-                        if (data[0]["query2"]) {
-                          let receivedQuery = data[0]["query2"];
+                        if (data[0][0]["query2"]) {
+                          let receivedQuery = data[0][0]["query2"];
                           console.log(receivedQuery);
 
                           this.db

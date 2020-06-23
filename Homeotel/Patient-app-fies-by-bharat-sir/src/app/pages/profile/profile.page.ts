@@ -444,6 +444,7 @@ export class ProfilePage implements OnInit {
         // If it's base64 (DATA_URL):
         let base64Image = "data:image/jpeg;base64," + imageData;
         this.profilePhoto = base64Image;
+        console.log("triggering this.updateProfilePhoto func");
         this.updateProfilePhoto(this.profilePhoto);
       },
       (err) => {
@@ -464,12 +465,12 @@ export class ProfilePage implements OnInit {
         a.present().then(async (res) => {
           this.apiService.upsertUserPhoto(0, photo).subscribe((data) => {
             console.log("Returned from Backend");
-            console.log(JSON.stringify(data));
+            console.log(data);
             if (this.utilities.isInvalidApiResponseData(data)) {
               a.dismiss();
               console.log("Returned Error");
               console.log(data);
-              if (data["error"]) {
+              if (data[0]["error"]) {
                 console.log("Something went wrong");
               }
             } else {
@@ -480,8 +481,8 @@ export class ProfilePage implements OnInit {
               );
 
               if (this.utilities.isHybridApp) {
-                let res = data[0];
-                if (data[0]["query"]) {
+                let res = data[0][0];
+                if (data[0][0]["query"]) {
                   let receivedQuery = res["query"];
                   console.log(receivedQuery);
 

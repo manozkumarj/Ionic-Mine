@@ -190,8 +190,8 @@ export class MultiSelectionPage implements OnInit {
               a.dismiss();
               console.log("Returned from Backend");
               console.log(data);
-              console.log(data[0]["query1"]);
-              console.log(data[0]["query2"]);
+              console.log(data[0][0]["query1"]);
+              console.log(data[0][0]["query2"]);
               if (this.utilities.isInvalidApiResponseData(data)) {
                 console.log("Returned Error");
                 console.log(data);
@@ -203,16 +203,16 @@ export class MultiSelectionPage implements OnInit {
                 console.log("Returned Success");
 
                 if (this.utilities.isHybridApp) {
-                  let res = data[0];
-                  if (data[0]["query1"]) {
+                  let res = data[0][0];
+                  if (data[0][0]["query1"]) {
                     let receivedQuery = res["query1"];
                     console.log(receivedQuery);
 
                     this.db
                       .crudOperations(receivedQuery)
                       .then((res) => {
-                        if (data[0]["query2"]) {
-                          let receivedQuery = data[0]["query2"];
+                        if (data[0][0]["query2"]) {
+                          let receivedQuery = data[0][0]["query2"];
                           console.log(receivedQuery);
 
                           this.db

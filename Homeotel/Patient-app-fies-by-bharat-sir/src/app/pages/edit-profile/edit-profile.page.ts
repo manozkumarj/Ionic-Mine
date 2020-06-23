@@ -400,7 +400,7 @@ export class EditProfilePage implements OnInit {
               .updateUserProfileDetails(this.columnName, value)
               .subscribe((data) => {
                 console.log("Returned from Backend");
-                console.log(JSON.stringify(data));
+                console.log(data);
                 if (this.utilities.isInvalidApiResponseData(data)) {
                   a.dismiss();
                   console.log("Returned Error");
@@ -412,8 +412,8 @@ export class EditProfilePage implements OnInit {
                   console.log("Returned Success");
 
                   if (this.utilities.isHybridApp) {
-                    let res = data[0];
-                    if (data[0]["query"]) {
+                    let res = data[0][0];
+                    if (data[0][0]["query"]) {
                       let receivedQuery = res["query"];
                       console.log(receivedQuery);
 

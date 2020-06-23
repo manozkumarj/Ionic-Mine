@@ -103,7 +103,7 @@ export class ModalPage implements OnInit {
                 a.dismiss();
                 console.log("Returned Error");
               } else {
-                if (data["error"]) {
+                if (data[0]["error"]) {
                   a.dismiss();
                   console.log("Homeokit purchase payment failed");
                 } else {
@@ -111,8 +111,8 @@ export class ModalPage implements OnInit {
 
                   if (this.utilities.isHybridApp) {
                     // insert_kit related
-                    let res = data[0];
-                    if (data[0]["query1"]) {
+                    let res = data[0][0];
+                    if (data[0][0]["query1"]) {
                       let receivedQuery = res["query1"];
                       console.log(receivedQuery);
 
@@ -148,8 +148,8 @@ export class ModalPage implements OnInit {
                     }
 
                     // insert_transaction  related
-                    if (data[0]["query2"]) {
-                      let receivedQuery = data[0]["query2"];
+                    if (data[0][0]["query2"]) {
+                      let receivedQuery = data[0][0]["query2"];
                       console.log(receivedQuery);
 
                       this.db
@@ -227,7 +227,7 @@ export class ModalPage implements OnInit {
               if (this.utilities.isInvalidApiResponseData(data)) {
                 a.dismiss();
                 console.log("Returned Error");
-                console.log(data[0]);
+                console.log(data[0][0]);
                 if (data[0]["error"]) {
                   console.log("Something went wrong");
                 }
@@ -236,8 +236,8 @@ export class ModalPage implements OnInit {
 
                 if (this.utilities.isHybridApp) {
                   // d_appointment related
-                  let res = data[0];
-                  if (data[0] && data[0]["query1"]) {
+                  let res = data[0][0];
+                  if (data[0][0] && data[0][0]["query1"]) {
                     let receivedQuery = res["query1"];
                     console.log(receivedQuery);
 
@@ -275,7 +275,7 @@ export class ModalPage implements OnInit {
                   }
 
                   // da_log related
-                  if (data[0] && data[0]["query2"]) {
+                  if (data[0][0] && data[0][0]["query2"]) {
                     let receivedQuery = res["query2"];
                     console.log(receivedQuery);
 
@@ -313,7 +313,7 @@ export class ModalPage implements OnInit {
                   }
 
                   // da_log related
-                  if (data[0] && data[0]["query3"]) {
+                  if (data[0][0] && data[0][0]["query3"]) {
                     let receivedQuery = res["query3"];
                     console.log(receivedQuery);
 

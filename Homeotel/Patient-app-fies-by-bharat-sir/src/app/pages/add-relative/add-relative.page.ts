@@ -209,12 +209,12 @@ export class AddRelativePage implements OnInit {
             .addUserRelative(relativeName, relationId, this.selectedPhoto)
             .subscribe((data) => {
               console.log("Returned from Backend");
-              console.log(JSON.stringify(data));
+              console.log(data);
               if (this.utilities.isInvalidApiResponseData(data)) {
                 a.dismiss();
                 console.log("Returned Error");
                 console.log(data);
-                if (data["error"]) {
+                if (data[0]["error"]) {
                   a.dismiss();
                   console.log("Something went wrong");
                 }
@@ -225,8 +225,8 @@ export class AddRelativePage implements OnInit {
                 );
 
                 if (this.utilities.isHybridApp) {
-                  let res = data[0];
-                  if (data[0]["query"]) {
+                  let res = data[0][0];
+                  if (data[0][0]["query"]) {
                     let receivedQuery = res["query"];
                     console.log(receivedQuery);
 

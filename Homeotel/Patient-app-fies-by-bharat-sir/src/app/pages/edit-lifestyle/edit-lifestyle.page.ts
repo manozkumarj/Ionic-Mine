@@ -215,10 +215,10 @@ export class EditLifestylePage implements OnInit {
                 }
               } else {
                 console.log("Returned Success");
-                let res = data[0];
+                let res = data[0][0];
 
                 if (this.utilities.isHybridApp) {
-                  if (data[0]["query"]) {
+                  if (data[0][0]["query"]) {
                     let receivedQuery = res["query"];
                     console.log(receivedQuery);
 

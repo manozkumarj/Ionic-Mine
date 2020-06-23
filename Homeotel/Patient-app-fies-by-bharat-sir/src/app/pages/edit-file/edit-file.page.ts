@@ -84,15 +84,15 @@ export class EditFilePage implements OnInit {
                   a.dismiss();
                   console.log("Returned Error");
                   console.log(data);
-                  if (data["error"]) {
+                  if (data[0]["error"]) {
                     console.log("Something went wrong");
                   }
                 } else {
                   console.log("Returned Success");
 
                   if (this.utilities.isHybridApp) {
-                    let res = data[0];
-                    if (data[0]["query"]) {
+                    let res = data[0][0];
+                    if (data[0][0]["query"]) {
                       let receivedQuery = res["query"];
                       console.log(receivedQuery);
 

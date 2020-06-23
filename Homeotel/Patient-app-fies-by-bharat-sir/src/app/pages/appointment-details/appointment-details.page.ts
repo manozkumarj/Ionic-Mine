@@ -177,15 +177,15 @@ export class AppointmentDetailsPage implements OnInit {
                       .cancelAppointment(appointmentId)
                       .subscribe((data) => {
                         console.log("Returned from Backend");
-                        console.log(JSON.stringify(data));
+                        console.log(data);
                         if (this.utilities.isInvalidApiResponseData(data)) {
                           a.dismiss();
                           this.utilities.presentToastWarning(
                             "Something went wrong."
                           );
                           console.log("Returned Error");
-                          console.log(data[0]);
-                          if (data[0]["error"]) {
+                          console.log(data[0][0]);
+                          if (data[0][0]["error"]) {
                             console.log("Something went wrong");
                           }
                         } else {
@@ -196,8 +196,8 @@ export class AppointmentDetailsPage implements OnInit {
 
                           if (this.utilities.isHybridApp) {
                             // delete_appointment related
-                            let res = data[0];
-                            if (data[0] && data[0]["query1"]) {
+                            let res = data[0][0];
+                            if (data[0][0] && data[0][0]["query1"]) {
                               let receivedQuery = res["query1"];
                               console.log(receivedQuery);
 
@@ -239,7 +239,7 @@ export class AppointmentDetailsPage implements OnInit {
                             }
 
                             // update_transaction
-                            if (data[0] && data[0]["query2"]) {
+                            if (data[0][0] && data[0][0]["query2"]) {
                               let receivedQuery = res["query2"];
                               console.log(receivedQuery);
 
