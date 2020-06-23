@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Lifestyle</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="lifestyles.length > 0; else noLifestyles">
+    <ion-item
+      *ngFor="let lifestyle of lifestyles"
+      (click)="redirect(lifestyle.id)"
+      detail
+    >
+      <ion-grid>
+        <ion-row
+          style="font-size: 16px;"
+          class="ion-justify-content-end ion-align-content-end"
+        >
+          <ion-col>
+            {{lifestyle.name}}
+          </ion-col>
+          <ion-col size="auto">
+            {{lifestyle.list}}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+  <ng-template #noLifestyles>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> There are no Lifestyles </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+</ion-content>

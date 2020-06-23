@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{action}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="height: 50%; padding: 0;">
+    <ion-row
+      style="height: 100%;"
+      class="ion-justify-content-center ion-align-items-center"
+    >
+      <img class="fileImage" [src]="photo" height="100%" width="100%" />
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row class="dashedBorderBottom" style="padding: 6px;">
+      <ion-col
+        *ngFor="let fileType of fileTypesMasters"
+        class="person"
+        (click)="selectFile(fileType.file_type_id)"
+        [style.border]="selectedFile == fileType.file_type_id ? '2px solid #0a9f28' : '2px solid #fff' "
+      >
+        <div class="add">
+          <ion-icon [name]="fileType.icon"></ion-icon>
+        </div>
+        <p>{{fileType.name}}</p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-row>
+    <ion-col class="continue" (click)="save()">
+      <button>Save</button>
+    </ion-col>
+  </ion-row>
+</ion-content>

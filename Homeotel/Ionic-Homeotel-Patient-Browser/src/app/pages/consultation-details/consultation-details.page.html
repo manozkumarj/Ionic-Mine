@@ -1,0 +1,122 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Consultation details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="padding: 0px;" align-items-center justify-content-center>
+    <ion-row
+      class="dashedBorderBottom"
+      style="color: #000; background: #fff; padding: 8px 0px;"
+    >
+      <ion-col size="3.5" align-items-center justify-content-center>
+        <p style="margin: 0;">
+          <img
+            [src]="utilities.getPhotoDataUrl(doctorPhoto)"
+            height="80px"
+            width="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+      <ion-col style="padding-top: 25px;" size="6">
+        <p class="docName">{{doctorName}}</p>
+        <p class="designation">{{doctorSpecialisation}}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="dashedBorderBottom" style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Consultation Type: </span>
+          <span>{{slotName}}</span>
+        </p>
+        <p>
+          <span class="heading">Slot Booked: </span>
+          <span>{{slotBookedTimestamp}}</span>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Consultation is for: </span>
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="dashedBorderBottom">
+      <div class="container" style="padding: 6px;">
+        <div class="scroll" scrollX="true">
+          <div
+            class="individ"
+            [style.border]="selectedPerson == -1 ? '2px solid #0a9f28' : '2px solid #fff' "
+          >
+            <div class="person" (click)="person(-1)">
+              <div class="add">
+                <ion-icon class="plusIcon" name="add-outline"></ion-icon>
+              </div>
+              <div class="name-holder three-dots">Add</div>
+            </div>
+          </div>
+          <div
+            class="individ"
+            [style.border]="selectedPerson == 0 ? '2px solid #0a9f28' : '2px solid #fff' "
+          >
+            <div class="person" (click)="person(0)">
+              <div class="add">
+                <img
+                  [src]="utilities.getPhotoDataUrl(utilities.currentUserDetails['photo'])"
+                  height="70px"
+                  width="70px"
+                  style="border-radius: 100%;"
+                />
+              </div>
+              <div class="name-holder three-dots">Self</div>
+            </div>
+          </div>
+
+          <div
+            *ngFor="let relative of userRelatives"
+            class="individ"
+            [style.border]="selectedPerson == relative.relative_id ? '2px solid #0a9f28' : '2px solid #fff' "
+          >
+            <div class="person" (click)="person(relative.relative_id)">
+              <div class="add">
+                <img
+                  [src]="utilities.getPhotoDataUrl(relative.photo)"
+                  height="70px"
+                  width="70px"
+                  style="border-radius: 100%;"
+                />
+              </div>
+              <div class="name-holder three-dots">
+                {{relative.relative_name}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-row>
+
+    <ion-row class="dashedBorderBottom" style="padding: 6px;">
+      <ion-col>
+        <ion-textarea
+          class="complaintDescription"
+          value=""
+          placeholder="Compaint description..."
+          [(ngModel)]="description"
+        >
+        </ion-textarea>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="continue" (click)="goToPaymentgateways()">
+        <button>Continue</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

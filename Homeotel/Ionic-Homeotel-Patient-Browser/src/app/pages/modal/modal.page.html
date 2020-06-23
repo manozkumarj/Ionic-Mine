@@ -1,0 +1,318 @@
+<ion-content class="signInModal">
+  <ion-grid *ngIf="(action == 'findDoctor')" class="grid appointmentsGrid">
+    <div *ngIf="(doctorDetails); else noDoctorFound">
+      <ion-row>
+        <ion-col class="card-heading">
+          <ion-icon name="checkmark-outline"></ion-icon> Doctor Found
+        </ion-col>
+      </ion-row>
+      <ion-row align-items-center justify-content-center>
+        <ion-col>
+          <ion-grid style="padding: 0px;">
+            <ion-row style="color: #000; background: #fff;">
+              <ion-col size="4">
+                <p
+                  style="
+                    margin: 0;
+                    margin-top: 15px;
+                    padding: 6px;
+                    text-align: center;
+                  "
+                >
+                  <img
+                    [src]="utilities.getPhotoDataUrl(doctorDetails.photo)"
+                    height="80px"
+                    width="80px"
+                    style="border-radius: 100%;"
+                  />
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p class="docName">
+                  {{doctorDetails.doctorName ? doctorDetails.doctorName :
+                  doctorDetails.username}}
+                </p>
+                <p>{{doctorDetails.specialisation}}</p>
+                <p>{{doctorDetails.experience}} years experience</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <button class="cancelButton" (click)="onCancel()">
+                  Cancel
+                </button>
+              </ion-col>
+              <ion-col>
+                <button
+                  class="okayButton"
+                  (click)="addDoctor(doctorDetails.id)"
+                >
+                  Add
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <ng-template #noDoctorFound>
+      <h2>No doctor found</h2>
+      <ion-row>
+        <ion-col>
+          <button class="cancelButton" (click)="onCancel()">
+            Close
+          </button>
+        </ion-col>
+      </ion-row>
+    </ng-template>
+  </ion-grid>
+
+  <ion-grid
+    *ngIf="action == 'contactDoctor'"
+    class="grid appointmentsGrid"
+    id="contactDoctor"
+  >
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <ion-grid
+          style="padding: 0px;"
+          align-items-center
+          justify-content-center
+        >
+          <ion-row
+            style="
+              color: #000;
+              background: #fff;
+              border-bottom: 2px dashed #000;
+              padding: 8px 0px;
+            "
+          >
+            <ion-col size="3.5" align-items-center justify-content-center>
+              <p style="margin: 0;">
+                <img
+                  [src]="utilities.getPhotoDataUrl(doctorDetails[1] && doctorDetails[1].doctorPhoto)"
+                  height="80px"
+                  width="80px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col style="padding-top: 25px;" size="6">
+              <p class="docName">
+                {{doctorDetails[0] && (doctorDetails[0].doctorName ?
+                doctorDetails[0].doctorName : doctorDetails[0].username)}}
+              </p>
+              <p>{{doctorDetails[0] && doctorDetails[0].specialisation}}</p>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            style="
+              color: #000;
+              background: #fff;
+              border-bottom: 2px dashed #000;
+              padding: 8px 0px;
+            "
+          >
+            <ion-col>
+              <h2 style="margin: 0;">Select an option to book</h2>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            style="
+              color: #000;
+              background: #fff;
+              border-bottom: 2px dashed #000;
+              padding: 8px 0px;
+            "
+          >
+            <ion-col size="3">
+              <p style="margin: 0;">
+                <img
+                  src="assets/icons/video-icon.png"
+                  height="65px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col
+              style="padding-top: 20px;"
+              (click)="selectConsultation(doctorConsultationModesAndDetails[0] &&
+              doctorConsultationModesAndDetails[0].id, doctorConsultationModesAndDetails[0] &&
+              doctorConsultationModesAndDetails[0].price)"
+            >
+              <p class="docName">
+                {{doctorConsultationModesAndDetails[0] &&
+                doctorConsultationModesAndDetails[0].consultationMode}}
+              </p>
+              <p>
+                Min. session {{doctorConsultationModesAndDetails[0] &&
+                doctorConsultationModesAndDetails[0].time}}
+                ${{doctorConsultationModesAndDetails[0] &&
+                doctorConsultationModesAndDetails[0].price}}/min
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            style="
+              color: #000;
+              background: #fff;
+              border-bottom: 2px dashed #000;
+              padding: 8px 0px;
+            "
+          >
+            <ion-col size="3">
+              <p style="margin: 0;">
+                <img
+                  src="assets/icons/whatsapp-icon.png"
+                  height="65px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col
+              style="padding-top: 20px;"
+              (click)="selectConsultation(doctorConsultationModesAndDetails[1] &&
+              doctorConsultationModesAndDetails[1].id, doctorConsultationModesAndDetails[1] &&
+              doctorConsultationModesAndDetails[1].price)"
+            >
+              <p class="docName">
+                {{doctorConsultationModesAndDetails[1] &&
+                doctorConsultationModesAndDetails[1].consultationMode}}
+              </p>
+              <p>
+                Min. session {{doctorConsultationModesAndDetails[1] &&
+                doctorConsultationModesAndDetails[1].time}}
+                ${{doctorConsultationModesAndDetails[1] &&
+                doctorConsultationModesAndDetails[1].price}}/min
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            style="
+              color: #000;
+              background: #fff;
+              border-bottom: 2px dashed #000;
+              padding: 8px 0px;
+            "
+          >
+            <ion-col size="3">
+              <p style="margin: 0;">
+                <img
+                  src="assets/icons/chat-icon.jpg"
+                  height="65px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col
+              style="padding-top: 20px;"
+              (click)="selectConsultation(doctorConsultationModesAndDetails[2] &&
+              doctorConsultationModesAndDetails[2].id, doctorConsultationModesAndDetails[2] &&
+              doctorConsultationModesAndDetails[2].price)"
+            >
+              <p class="docName">
+                {{doctorConsultationModesAndDetails[2] &&
+                doctorConsultationModesAndDetails[2].consultationMode}}
+              </p>
+              <p>
+                Valid for {{doctorConsultationModesAndDetails[2] &&
+                doctorConsultationModesAndDetails[2].time}}
+                ${{doctorConsultationModesAndDetails[2] &&
+                doctorConsultationModesAndDetails[2].price}}
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row
+            style="
+              color: #000;
+              background: #fff;
+              border-bottom: 2px dashed #000;
+              padding: 8px 0px;
+            "
+          >
+            <ion-col size="3">
+              <p style="margin: 0;">
+                <img
+                  src="assets/icons/todo-icon.png"
+                  height="65px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col
+              style="padding-top: 20px;"
+              (click)="selectConsultation(doctorConsultationModesAndDetails[3] &&
+              doctorConsultationModesAndDetails[3].id, doctorConsultationModesAndDetails[3] &&
+              doctorConsultationModesAndDetails[3].price)"
+            >
+              <p class="docName">
+                {{doctorConsultationModesAndDetails[3] &&
+                doctorConsultationModesAndDetails[3].consultationMode}}
+              </p>
+              <p>
+                Regular consultation ${{doctorConsultationModesAndDetails[3] &&
+                doctorConsultationModesAndDetails[3].price}}
+              </p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col style="text-align: center;">
+        <button class="cancelButton" (click)="onCancel()">Close</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="action == 'makePayment'" class="grid appointmentsGrid">
+    <ion-row>
+      <ion-col>
+        <img src="assets/images/payment-success.png" width="100%" />
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <h2>Payment Successful</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <p style="font-size: 18px;">
+          Your payment has been successfully processed.
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button class="okayButton" (click)="onCancel(true)">Okay</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="action == 'submition'" class="grid appointmentsGrid">
+    <ion-row>
+      <ion-col>
+        <img src="assets/images/payment-success.png" width="100%" />
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <h2>Successfully submitted</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center justify-content-center>
+      <ion-col>
+        <p style="font-size: 18px;">
+          Your issue has been successfully submitted.
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button class="okayButton" (click)="onCancel(true)">Okay</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,112 @@
+.grid {
+  height: 140px;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 0;
+  border-radius: 0 10px 10px;
+}
+
+.docName {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.designation {
+  font-size: 20px;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+.heading {
+  font-size: 22px;
+  font-weight: bold;
+  padding: 5px;
+  padding: 13px 0 8px 12px;
+}
+
+.slotsStatus {
+  padding: 5px;
+}
+
+.slotsAvailable {
+  color: #0a9f28;
+}
+
+.noSlots {
+  color: #000;
+}
+
+.boldBlack {
+  font-weight: bold;
+  color: #000;
+}
+
+.forecast_container {
+  overflow-x: scroll !important;
+  overflow-y: hidden;
+  word-wrap: break-word;
+}
+
+.data > ion-col {
+  min-width: 250px !important;
+  padding: 10px 15px;
+  text-align: center;
+  border-bottom: 2px solid #ccc;
+}
+
+.container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  .scroll {
+    display: flex;
+    overflow: auto;
+  }
+  .wrap {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .scroll .individ {
+    float: left;
+    margin: 0px 5px;
+    border-radius: 3px;
+    border: 1px solid #000;
+    margin: 5px;
+    border-radius: 5px;
+    width: 300px;
+    padding: 10px;
+    text-align: center;
+  }
+}
+
+.indicationsGrid {
+  padding: 10px;
+  border-bottom: 2px dashed #000;
+}
+
+.indicationsRow {
+  margin: 5px 0px;
+}
+
+.bookedSlotsIndication {
+  padding: 15px;
+  background: red;
+  border-radius: 100px;
+}
+
+.editingSlotIndication {
+  padding: 15px;
+  background: green;
+  border-radius: 100px;
+}
+
+.bookedSlotsIndicationTitle,
+.editingSlotIndicationTitle {
+  font-size: 18px;
+}

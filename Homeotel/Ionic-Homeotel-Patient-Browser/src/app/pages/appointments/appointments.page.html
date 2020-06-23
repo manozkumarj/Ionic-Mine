@@ -1,0 +1,175 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Appointments</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-tabs>
+    <ion-tab-bar slot="top">
+      <ion-tab-button
+        (click)="togglingTabs(1)"
+        [style.border-bottom]="selectedTab ==1 ? '4px solid white' : '4px solid #0a9f28'"
+      >
+        <ion-label><span class="tabItem">Upcoming</span></ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button
+        (click)="togglingTabs(2)"
+        [style.border-bottom]="selectedTab ==2 ? '4px solid white' : '4px solid #0a9f28'"
+      >
+        <ion-label><span class="tabItem">Previous</span></ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+
+  <div style="margin-top: 70px;">
+    <div *ngIf="selectedTab == 1">
+      <div *ngIf="upcomingAppointments.length > 0; else noUpcomingAppointments">
+        <ion-grid
+          *ngFor="let upcomingAppointment of upcomingAppointments"
+          class="grid doctorGrid"
+        >
+          <ion-row style="color: #000; background: #fff;">
+            <ion-col
+              size="2"
+              [routerLink]="['/view-doctor/' + upcomingAppointment.doctor_id]"
+            >
+              <p style="margin: 0; text-align: center;">
+                <img
+                  [src]="utilities.getPhotoDataUrl(upcomingAppointment.photo)"
+                  height="50px"
+                  width="50px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col size="6">
+              <p class="docName">
+                {{upcomingAppointment.doctorName | uppercase}}
+              </p>
+              <p>
+                {{upcomingAppointment.mode_id == 1 ? "Video consultation" :
+                (upcomingAppointment.mode_id == 2 ? "Audio consultation" :
+                (upcomingAppointment.mode_id == 3 ? "Chat consultation" :
+                "Personal visit"))}} for {{upcomingAppointment.username |
+                uppercase}}
+              </p>
+              <p style="color: #999;">{{upcomingAppointment.appointment_at}}</p>
+            </ion-col>
+
+            <ion-col
+              *ngIf="!upcomingAppointment.is_recurring || !upcomingAppointment.recurring_freq || !upcomingAppointment.severity_id || !upcomingAppointment.complaint_description"
+              size="3"
+              (click)="addDetails(upcomingAppointment.appointment_id, false)"
+            >
+              <button class="btn appoinmentButton">
+                Add Details
+              </button>
+            </ion-col>
+
+            <ion-col
+              *ngIf="upcomingAppointment.is_recurring && upcomingAppointment.recurring_freq && upcomingAppointment.severity_id && upcomingAppointment.complaint_description"
+              size="3"
+              (click)="addDetails(upcomingAppointment.appointment_id, true)"
+            >
+              <button class="btn appoinmentButton">
+                View EHR
+              </button>
+            </ion-col>
+
+            <ion-col
+              *ngIf="upcomingAppointment.isItUpcomingAppointment"
+              size="3"
+            >
+              <button class="btn callNowButton" [routerLink]="['/video-call']">
+                Call Now
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <ng-template #noUpcomingAppointments>
+        <ion-grid class="noResultsGrid">
+          <ion-row style="border: none;">
+            <ion-col>
+              There are no Upcoming appointments
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
+    </div>
+
+    <div *ngIf="selectedTab == 2">
+      <div *ngIf="previousAppointments.length > 0; else noPreviousAppointments">
+        <ion-grid
+          *ngFor="let previousAppointment of previousAppointments"
+          class="grid doctorGrid"
+        >
+          <ion-row style="color: #000; background: #fff;">
+            <ion-col
+              size="2"
+              [routerLink]="['/view-doctor/' + previousAppointment.doctor_id]"
+            >
+              <p style="margin: 0; text-align: center;">
+                <img
+                  [src]="utilities.getPhotoDataUrl(previousAppointment.photo)"
+                  height="50px"
+                  width="50px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col size="6">
+              <p class="docName">
+                {{previousAppointment.doctorName | uppercase}}
+              </p>
+              <p>
+                {{previousAppointment.mode_id == 1 ? "Video consultation" :
+                (previousAppointment.mode_id == 2 ? "Audio consultation" :
+                (previousAppointment.mode_id == 3 ? "Chat consultation" :
+                "Personal visit"))}} for {{previousAppointment.username |
+                uppercase}}
+              </p>
+              <p style="color: #999;">{{previousAppointment.appointment_at}}</p>
+            </ion-col>
+
+            <ion-col
+              *ngIf="!previousAppointment.is_recurring || !previousAppointment.recurring_freq || !previousAppointment.severity_id || !previousAppointment.complaint_description"
+              size="3"
+              (click)="addDetails(previousAppointment.appointment_id, false)"
+            >
+              <button class="btn appoinmentButton">
+                Add Details
+              </button>
+            </ion-col>
+
+            <ion-col
+              *ngIf="previousAppointment.is_recurring && previousAppointment.recurring_freq && previousAppointment.severity_id && previousAppointment.complaint_description"
+              size="3"
+              (click)="addDetails(previousAppointment.appointment_id, false)"
+            >
+              <button class="btn appoinmentButton">
+                View Details
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <ng-template #noPreviousAppointments>
+        <ion-grid class="noResultsGrid">
+          <ion-row style="border: none;">
+            <ion-col>
+              There are no previous appointments
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
+    </div>
+  </div>
+</ion-content>

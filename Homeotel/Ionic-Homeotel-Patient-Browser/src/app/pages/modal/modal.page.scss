@@ -1,0 +1,49 @@
+.grid{
+    height: 140px;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 0;
+    border-radius: 0 10px 10px;
+}
+
+.appointmentsGrid{
+    height: 178px;
+}
+
+.card-heading{
+    font-size: 20px;
+    padding: 12px;
+    color: #fff;
+    background-color: #0a9f28;
+    font-weight: bold;
+}
+
+.docName{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.okayButton, .cancelButton{
+    font-size: 18px;
+    padding: 12px 22px;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #0a9f28;
+    font-weight: bold;
+    -webkit-box-shadow: -1px 2px 7px -1px rgba(128,128,128,1);
+    -moz-box-shadow: -1px 2px 7px -1px rgba(128,128,128,1);
+    box-shadow: -1px 2px 7px -1px rgba(128,128,128,1);
+}
+.cancelButton{
+    color: #fff;
+    background-color: red;
+}
+
+#contactDoctor{
+    text-align: left;
+}
+
+#contactDoctor p{
+    padding: 0;
+    margin: 0;
+}

@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="primary" (click)="save()">
+      <ion-button>
+        Save
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid *ngIf="arrayOfObjects.length > 0" class="selectedItemsGrid">
+    <span *ngFor="let object of arrayOfObjects">
+      <ion-row *ngIf="object.isSelected == true">
+        <ion-col size="auto" class="optionsList" (click)="remover(object.id)">
+          <span class="selectedOption">
+            {{object.name}}
+          </span>
+        </ion-col>
+      </ion-row>
+    </span>
+  </ion-grid>
+
+  <ion-list style="margin: 0px; padding: 5px; background: #999;">
+    <ion-input
+      placeholder="Type to Search..."
+      style="background: #999; color: #fff; padding: 5px;"
+      (keyup)="onChange(search.value)"
+      #search
+    >
+    </ion-input>
+  </ion-list>
+  <ion-list *ngIf="clonedArrayOfObjects.length > 0; else noarrayOfObjects">
+    <div *ngFor="let object of clonedArrayOfObjects">
+      <div *ngIf="object.isSelected == false">
+        <ion-item (click)="chooser(object.id)">
+          <div style="font-size: 18px;">{{object.name}}</div>
+        </ion-item>
+      </div>
+    </div>
+  </ion-list>
+
+  <ng-template #noarrayOfObjects>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> There are no items </ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </ng-template>
+</ion-content>

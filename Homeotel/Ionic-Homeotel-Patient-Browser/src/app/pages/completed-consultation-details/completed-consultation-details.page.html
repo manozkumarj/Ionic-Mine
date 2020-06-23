@@ -1,0 +1,154 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Consultation Details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid style="padding: 0px;" align-items-center justify-content-center>
+    <ion-row
+      class="solidBorderBottom"
+      style="color: #000; background: #fff; padding: 8px 0px;"
+    >
+      <ion-col size="3.5" align-items-center justify-content-center>
+        <p style="margin: 0;">
+          <img
+            [src]="utilities.getPhotoDataUrl(doctorPhoto)"
+            height="80px"
+            width="80px"
+            style="border-radius: 100%;"
+          />
+        </p>
+      </ion-col>
+      <ion-col style="padding-top: 10px;" size="6">
+        <p class="docName">{{doctorName | uppercase}}</p>
+        <p class="designation">{{doctorUsername}}</p>
+        <p class="designation">{{appointmentAt}}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Complaint</span>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="solidBorderBottom" style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span style="padding: 13px 0 8px 12px;"
+            >{{complaintDescription}}</span
+          >
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Complaint details</span>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="solidBorderBottom">
+      <ion-col>
+        <ion-item>
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Is it recurring?
+              </ion-col>
+              <ion-col>
+                {{recurring}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item>
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Recurring since?
+              </ion-col>
+              <ion-col>
+                Recurring Since {{recurringSince}} years
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item>
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Aggravated by?
+              </ion-col>
+              <ion-col>
+                {{aggravatedBy}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        <ion-item>
+          <ion-grid class="complaintDetailsList">
+            <ion-row>
+              <ion-col>
+                Pain description?
+              </ion-col>
+              <ion-col>
+                {{description}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Diagnosis</span>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="solidBorderBottom" style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span style="padding: 13px 0 8px 12px;">Acid Reflux</span>
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span class="heading">Prescription</span>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row style="padding: 6px;">
+      <ion-col>
+        <p>
+          <span style="padding: 13px 0 8px 12px;">Paracetamol 500 mg</span>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row style="padding-left: 6px;">
+      <ion-col>
+        <p>
+          <span style="padding: 13px 0 8px 12px;">Twice daily, After food</span>
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row style="padding-left: 6px;">
+      <ion-col>
+        <p>
+          <span style="padding: 13px 0 8px 12px;">For 5 days</span>
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

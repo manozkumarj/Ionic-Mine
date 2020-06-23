@@ -30,6 +30,10 @@ karma.conf.js
 */dist
 */node_modules
 */*/node_modules
+*/*/*/node_modules
+*/*/*/platforms
+*/*/*/plugins
+*/*/*/www
 */platforms
 */plugins
 */www

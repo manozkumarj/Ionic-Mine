@@ -1,0 +1,71 @@
+.grid {
+  height: 140px;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 0;
+  border-radius: 0 10px 10px;
+}
+
+.docName {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.designation {
+  font-size: 20px;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+.solidBorderBottom {
+  border-bottom: 2px solid #999;
+}
+
+.heading {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 5px;
+  padding: 13px 0 8px 12px;
+}
+
+.complaintDetailsList {
+  font-size: 17px;
+}
+
+.continue {
+  text-align: center;
+  padding: 20px;
+  // position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.btn {
+  padding: 10px 12px;
+  border: 2px solid #0a9f28;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 3px;
+  -webkit-box-shadow: -1px 2px 7px -1px rgba(128, 128, 128, 1);
+  -moz-box-shadow: -1px 2px 7px -1px rgba(128, 128, 128, 1);
+  box-shadow: -1px 2px 7px -1px rgba(128, 128, 128, 1);
+}
+
+.buyButton {
+  background: #fff;
+  color: #000;
+}
+
+.appoinmentButton {
+  background: #0a9f28;
+  color: #fff;
+}
+
+.callNowButton {
+  background: orangered;
+  color: #fff;
+}

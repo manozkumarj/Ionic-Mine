@@ -1,0 +1,7 @@
+{
+  "name": "homeotel",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

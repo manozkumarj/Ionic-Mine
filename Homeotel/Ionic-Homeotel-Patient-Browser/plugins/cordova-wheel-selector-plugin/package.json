@@ -1,0 +1,61 @@
+{
+  "_args": [
+    [
+      "cordova-wheel-selector-plugin@1.1.7",
+      "D:\\My-Practice-things\\Ionic\\Ionic-Mine\\Homeotel\\Ionic-Homeotel-Patient-Browser"
+    ]
+  ],
+  "_from": "cordova-wheel-selector-plugin@1.1.7",
+  "_id": "cordova-wheel-selector-plugin@1.1.7",
+  "_inBundle": false,
+  "_integrity": "sha512-/IAr+mIz4YDbXGe8W+9LoitbHMvgxHBC+TlJM5cLXF9jHz1L7MSbQQ2t/hCTMddS2H78PG93Z4QIpEvoSzCM6g==",
+  "_location": "/cordova-wheel-selector-plugin",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "cordova-wheel-selector-plugin@1.1.7",
+    "name": "cordova-wheel-selector-plugin",
+    "escapedName": "cordova-wheel-selector-plugin",
+    "rawSpec": "1.1.7",
+    "saveSpec": null,
+    "fetchSpec": "1.1.7"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-wheel-selector-plugin/-/cordova-wheel-selector-plugin-1.1.7.tgz",
+  "_spec": "1.1.7",
+  "_where": "D:\\My-Practice-things\\Ionic\\Ionic-Mine\\Homeotel\\Ionic-Homeotel-Patient-Browser",
+  "author": {
+    "name": "Jason Amy"
+  },
+  "bugs": {
+    "url": "https://github.com/jasonmamy/cordova-wheel-selector-plugin/issues"
+  },
+  "cordova": {
+    "id": "cordova-wheel-selector-plugin",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "description": "A native Android/iOS wheel selector plugin for Cordova or Ionic projects (pick numbers, strings, etc)",
+  "homepage": "https://github.com/jasonmamy/cordova-wheel-selector-plugin#readme",
+  "keywords": [
+    "picker",
+    "numberpicker",
+    "stringpicker",
+    "wheelpicker",
+    "ios",
+    "android",
+    "wheelselector"
+  ],
+  "license": "MIT",
+  "name": "cordova-wheel-selector-plugin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasonmamy/cordova-wheel-selector-plugin.git"
+  },
+  "version": "1.1.7"
+}

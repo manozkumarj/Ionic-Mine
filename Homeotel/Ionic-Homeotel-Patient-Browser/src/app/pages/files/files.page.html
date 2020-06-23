@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Files</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="files.length > 0; else noFiles" style="margin-bottom: 150px;">
+    <ion-grid class="grid doctorGrid" *ngFor="let file of files">
+      <ion-item detail>
+        <ion-row
+          style="color: #000; background: #fff;"
+          (click)="openOptionsMenu(file.file_id)"
+        >
+          <ion-col size="4">
+            <p style="margin: 0; padding: 6px; text-align: center;">
+              <img
+                class="fileImage"
+                [src]="getPhotoDataUrl(file.photo)"
+                height="70px"
+              />
+            </p>
+          </ion-col>
+          <ion-col class="fileInfoCol">
+            <p class="fileName">{{file.name}}</p>
+            <p>{{file.file_date}}</p>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-grid>
+  </div>
+
+  <ng-template #noFiles>
+    <ion-grid class="noResultsGrid">
+      <ion-row style="border: none;">
+        <ion-col>
+          There are no Files
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
+
+  <ion-row class="fixed">
+    <ion-col (click)="openMenu()">
+      <button>Add File</button>
+    </ion-col>
+  </ion-row>
+</ion-content>

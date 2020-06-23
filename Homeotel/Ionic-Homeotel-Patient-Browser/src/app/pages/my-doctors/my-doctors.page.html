@@ -1,0 +1,151 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Doctors</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="(myDoctors.length > 0); else noDoctors">
+    <ion-grid *ngFor="let doctor of myDoctors" class="grid doctorGrid">
+      <ion-row style="color: #000; background: #fff;">
+        <ion-col size="4">
+          <p
+            style="
+              margin: 0;
+              margin-top: 15px;
+              padding: 6px;
+              text-align: center;
+            "
+          >
+            <img
+              [src]="utilities.getPhotoDataUrl(doctor.photo)"
+              height="80px"
+              width="80px"
+              style="border-radius: 100%;"
+            />
+          </p>
+        </ion-col>
+        <ion-col size="6">
+          <p class="docName">
+            {{doctor.doctorName ? doctor.doctorName : doctor.username}}
+          </p>
+          <p>{{doctor.specialisation}}</p>
+          <p>{{doctor.experience}} years experience</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <button class="btn buyButton" (click)="buyHomeokit(doctor.id)">
+            Buy Homeo Kits
+          </button>
+        </ion-col>
+        <ion-col>
+          <button
+            class="btn appoinmentButton"
+            (click)="presentDoctorContactModal(doctor.id)"
+          >
+            Book Appoinment
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ng-template #noDoctors>
+    <ion-grid class="grid appointmentsGrid">
+      <ion-row>
+        <ion-col class="card-heading">
+          <div>Add Your Doctor</div>
+        </ion-col>
+      </ion-row>
+      <ion-row align-items-center justify-content-center>
+        <ion-col>
+          <p>You haven't added any doctors yet.</p>
+          <p>Add your trusted doctor here by</p>
+          <p>entering the doctor's unique ID.</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
+
+  <ion-grid class="center" style="margin-bottom: 150px;">
+    <ion-row>
+      <ion-col class="normalHeading">
+        <div>Doctor UID</div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <input
+                class="inputField"
+                type="number"
+                pattern="[0-9]{1}"
+                min="1"
+                max="1"
+                id="0"
+                maxlength="1"
+                (keyup)="inputKeyUp($event)"
+              />
+              <input
+                class="inputField"
+                type="number"
+                pattern="[0-9]{1}"
+                min="1"
+                max="1"
+                id="1"
+                maxlength="1"
+                (keyup)="inputKeyUp($event)"
+              />
+              <input
+                class="inputField"
+                type="number"
+                pattern="[0-9]{1}"
+                min="1"
+                max="1"
+                id="2"
+                maxlength="1"
+                (keyup)="inputKeyUp($event)"
+              />
+              <input
+                class="inputField"
+                type="number"
+                pattern="[0-9]{1}"
+                min="1"
+                max="1"
+                id="3"
+                maxlength="1"
+                (keyup)="inputKeyUp($event)"
+              />
+              <input
+                class="inputField"
+                type="number"
+                pattern="[0-9]{1}"
+                min="1"
+                max="1"
+                id="4"
+                maxlength="1"
+                (keyup)="inputKeyUp($event)"
+              />
+              <input
+                class="inputField"
+                type="number"
+                pattern="[0-9]{1}"
+                min="1"
+                max="1"
+                id="5"
+                maxlength="1"
+                (keyup)="lastInputKeyUp($event)"
+              />
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

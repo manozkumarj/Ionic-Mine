@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Homeo Kits</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-tabs>
+    <ion-tab-bar slot="top">
+      <ion-tab-button
+        (click)="togglingTabs(1)"
+        [style.border-bottom]="selectedTab ==1 ? '4px solid white' : '4px solid #0a9f28'"
+      >
+        <ion-label><span class="tabItem">Buy</span></ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button
+        (click)="togglingTabs(2)"
+        [style.border-bottom]="selectedTab ==2 ? '4px solid white' : '4px solid #0a9f28'"
+      >
+        <ion-label><span class="tabItem">Orders</span></ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+
+  <div style="margin-top: 70px;">
+    <div *ngIf="selectedTab == 1">
+      <div *ngIf="homeokits.length > 0; else noHomeokits">
+        <ion-grid *ngFor="let homeokit of homeokits" class="grid doctorGrid">
+          <ion-row style="color: #000; background: #fff; padding: 8px 0px;">
+            <ion-col size="2">
+              <p class="picHolder">
+                <img
+                  [src]="getKitPhoto(homeokit.photo)"
+                  height="36px"
+                  width="36px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col>
+              <p class="docName">{{homeokit.name}}</p>
+              <p>{{homeokit.description}}</p>
+            </ion-col>
+            <ion-col size="3">
+              <p>${{homeokit.price}}</p>
+              <button
+                class="btn appoinmentButton"
+                (click)="buyKit(homeokit.doctor_id, homeokit.kit_id, homeokit.price)"
+              >
+                Buy Now
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <ng-template #noHomeokits>
+        <ion-grid class="noResultsGrid">
+          <ion-row style="border: none;">
+            <ion-col>
+              No Homeokits found
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
+    </div>
+
+    <div *ngIf="selectedTab == 2">
+      <div *ngIf="orderedHomeokits.length > 0; else noOrderedHomeokits">
+        <ion-grid
+          *ngFor="let orderedHomeokit of orderedHomeokits"
+          class="grid doctorGrid"
+        >
+          <ion-row style="color: #000; background: #fff; padding: 8px 0px;">
+            <ion-col size="2">
+              <p class="picHolder">
+                <img
+                  [src]="getKitPhoto(orderedHomeokit.photo)"
+                  height="36px"
+                  width="36px"
+                  style="border-radius: 100%;"
+                />
+              </p>
+            </ion-col>
+            <ion-col>
+              <p class="docName">{{orderedHomeokit.name}}</p>
+              <p>{{orderedHomeokit.description}}</p>
+            </ion-col>
+            <ion-col size="3">
+              <p>${{orderedHomeokit.price}}</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <ng-template #noOrderedHomeokits>
+        <ion-grid class="noResultsGrid">
+          <ion-row style="border: none;">
+            <ion-col>
+              There are no ordered Homeokits
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
+    </div>
+  </div>
+</ion-content>
