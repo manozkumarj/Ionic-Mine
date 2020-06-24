@@ -132,12 +132,12 @@ export class VideoCallPage implements OnInit {
     console.log("makeCall func triggered");
     // Initialize Session Object
     this.session = OT.initSession("46720142", this.sessionId);
-    this.publisher = OT.initPublisher("publisher");
+    this.publisher = OT.initPublisher("publisher", {width:100%, height:100%});
 
     this.session.on({
       streamCreated: (event: any) => {
         console.log("detect stream creation elsewhere 22");
-        this.session.subscribe(event.stream, "subscriber");
+        this.session.subscribe(event.stream, "subscriber", {width: 20%, height: 20%});
         OT.updateViews();
       },
       streamDestroyed: (event: any) => {

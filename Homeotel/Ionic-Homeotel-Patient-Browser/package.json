@@ -32,7 +32,6 @@
     "@ionic/angular": "^5.2.2",
     "@ionic/storage": "^2.2.0",
     "aws-amplify": "^3.0.18",
-    "aws-amplify-angular": "^5.0.18",
     "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
     "cordova-plugin-android-permissions": "^1.0.2",
@@ -75,7 +74,7 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "^3.9.5"
+    "typescript": "^3.5.3"
   },
   "description": "An Ionic project",
   "cordova": {

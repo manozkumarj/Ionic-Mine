@@ -65,7 +65,7 @@ export class AppModule {
     private platform: Platform,
     private utilities: UtilitiesService
   ) {
-    if (this.platform.is("hybrid")) {
+    if (!this.platform.url().startsWith('http')) {
       // Do app stuff - sqlite, etc
       console.log("hybrid");
       this.utilities.isHybridApp = true;
