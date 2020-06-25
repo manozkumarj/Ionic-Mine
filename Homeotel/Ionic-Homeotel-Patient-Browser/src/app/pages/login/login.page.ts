@@ -10,6 +10,7 @@ import { LoadingController } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
 import { Auth } from "aws-amplify";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-login",
@@ -17,6 +18,7 @@ import { Auth } from "aws-amplify";
   styleUrls: ["./login.page.scss"],
 })
 export class LoginPage implements OnInit {
+  faArrowRight = faArrowRight;
   backButtonSubscription;
   registerForm: FormGroup;
   loginForm: FormGroup;

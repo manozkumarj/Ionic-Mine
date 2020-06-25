@@ -28,6 +28,8 @@ import { AuthGuard } from "./services/auth-guard.service";
 import { DatabaseService } from "./services/database.service";
 import { IonicStorageModule } from "@ionic/storage";
 
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [ModalPage],
@@ -41,6 +43,7 @@ import { IonicStorageModule } from "@ionic/storage";
     HttpClientModule,
     ModalPageModule,
     IonicStorageModule.forRoot(),
+    FontAwesomeModule,
   ],
   providers: [
     StatusBar,
@@ -65,7 +68,7 @@ export class AppModule {
     private platform: Platform,
     private utilities: UtilitiesService
   ) {
-    if (!this.platform.url().startsWith('http')) {
+    if (!this.platform.url().startsWith("http")) {
       // Do app stuff - sqlite, etc
       console.log("hybrid");
       this.utilities.isHybridApp = true;

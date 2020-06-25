@@ -19,9 +19,6 @@
     "cordova-plugin-splashscreen": {
       "PACKAGE_NAME": "com.zoltglobal.devhomeoteluser"
     },
-    "cordova-plugin-ionic-webview": {
-      "PACKAGE_NAME": "com.zoltglobal.devhomeoteluser"
-    },
     "cordova-plugin-ionic-keyboard": {
       "PACKAGE_NAME": "com.zoltglobal.devhomeoteluser"
     },
@@ -41,6 +38,9 @@
       "PACKAGE_NAME": "com.zoltglobal.devhomeoteluser"
     },
     "cordova-plugin-android-permissions": {
+      "PACKAGE_NAME": "com.zoltglobal.devhomeoteluser"
+    },
+    "cordova-plugin-ionic-webview": {
       "PACKAGE_NAME": "com.zoltglobal.devhomeoteluser"
     }
   },

@@ -1,0 +1,14 @@
+* Change if condition in app.module.ts file
+* remove google-plus & amplify-angular plugins
+* downgrade typescript package to 3.5.3 version
+* 
+
+
+
+
+
+
+
+
+* https://stackoverflow.com/questions/54324300/how-do-you-add-font-awesome-to-ionic-4
+* https://github.com/FortAwesome/angular-fontawesome

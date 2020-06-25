@@ -1,32 +1,31 @@
 {
   "_args": [
     [
-      "cordova-plugin-ionic-webview@4.2.1",
+      "cordova-plugin-ionic-webview@5.0.0",
       "D:\\My-Practice-things\\Ionic\\Ionic-Mine\\Homeotel\\Ionic-Homeotel-Patient-Browser"
     ]
   ],
-  "_development": true,
-  "_from": "cordova-plugin-ionic-webview@4.2.1",
-  "_id": "cordova-plugin-ionic-webview@4.2.1",
+  "_from": "cordova-plugin-ionic-webview@5.0.0",
+  "_id": "cordova-plugin-ionic-webview@5.0.0",
   "_inBundle": false,
-  "_integrity": "sha512-7KrmqLaOGq1RP8N2z1ezN1kqkWFzTwwMvQ3/qAkd+exxFZuOe3DIN4eaU1gdNphsxdirI8Ajnr9q4So5vQbWqw==",
+  "_integrity": "sha512-Wq0kCanxubK/JroTW4Mp5soayScnRyiY1eCkbwiz1Dyt1xHOiOW/v+1miqtBHtnZhcXw25TulCKAVJzkNBdmyg==",
   "_location": "/cordova-plugin-ionic-webview",
   "_phantomChildren": {},
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "cordova-plugin-ionic-webview@4.2.1",
+    "raw": "cordova-plugin-ionic-webview@5.0.0",
     "name": "cordova-plugin-ionic-webview",
     "escapedName": "cordova-plugin-ionic-webview",
-    "rawSpec": "4.2.1",
+    "rawSpec": "5.0.0",
     "saveSpec": null,
-    "fetchSpec": "4.2.1"
+    "fetchSpec": "5.0.0"
   },
   "_requiredBy": [
-    "#DEV:/"
+    "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-ionic-webview/-/cordova-plugin-ionic-webview-4.2.1.tgz",
-  "_spec": "4.2.1",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-ionic-webview/-/cordova-plugin-ionic-webview-5.0.0.tgz",
+  "_spec": "5.0.0",
   "_where": "D:\\My-Practice-things\\Ionic\\Ionic-Mine\\Homeotel\\Ionic-Homeotel-Patient-Browser",
   "author": {
     "name": "Ionic Team"
@@ -106,5 +105,5 @@
     "sync_plugin_xml": "sync-cordova-xml package.json plugin.xml --output=plugin.xml",
     "version": "npm run sync_plugin_xml && git add plugin.xml"
   },
-  "version": "4.2.1"
+  "version": "5.0.0"
 }

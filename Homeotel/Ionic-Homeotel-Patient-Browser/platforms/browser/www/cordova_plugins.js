@@ -43,14 +43,6 @@ module.exports = [
         "runs": true
     },
     {
-        "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
-        "id": "cordova-plugin-ionic-webview.IonicWebView",
-        "pluginId": "cordova-plugin-ionic-webview",
-        "clobbers": [
-            "Ionic.WebView"
-        ]
-    },
-    {
         "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
         "id": "cordova-plugin-camera.Camera",
         "pluginId": "cordova-plugin-camera",
@@ -282,6 +274,14 @@ module.exports = [
         "clobbers": [
             "cordova.plugins.permissions"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-ionic-webview/src/www/util.js",
+        "id": "cordova-plugin-ionic-webview.IonicWebView",
+        "pluginId": "cordova-plugin-ionic-webview",
+        "clobbers": [
+            "Ionic.WebView"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -291,14 +291,14 @@ module.exports.metadata =
     "cordova-plugin-statusbar": "2.4.3",
     "cordova-plugin-device": "2.0.3",
     "cordova-plugin-splashscreen": "5.0.4",
-    "cordova-plugin-ionic-webview": "4.2.1",
     "cordova-plugin-ionic-keyboard": "2.2.0",
     "cordova-plugin-camera": "4.1.0",
     "cordova-plugin-file": "6.0.2",
     "cordova-wheel-selector-plugin": "1.0.0",
     "cordova-sqlite-storage": "5.0.0",
     "uk.co.workingedge.cordova.plugin.sqliteporter": "1.1.1",
-    "cordova-plugin-android-permissions": "1.0.2"
+    "cordova-plugin-android-permissions": "1.0.2",
+    "cordova-plugin-ionic-webview": "5.0.0"
 }
 // BOTTOM OF METADATA
 });
