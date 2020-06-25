@@ -3,7 +3,8 @@
     <div *ngIf="(doctorDetails); else noDoctorFound">
       <ion-row>
         <ion-col class="card-heading">
-          <ion-icon name="checkmark-outline"></ion-icon> Doctor Found
+          <!-- <ion-icon name="checkmark-outline"></ion-icon> Doctor Found -->
+          <fa-icon [icon]="faCheckSquare"></fa-icon> Doctor Found
         </ion-col>
       </ion-row>
       <ion-row align-items-center justify-content-center>

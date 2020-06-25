@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { faCircle } from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: "app-family-members",
@@ -6,6 +7,7 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./family-members.page.scss"],
 })
 export class FamilyMembersPage implements OnInit {
+  faCircle = faCircle;
   constructor() {}
 
   ngOnInit() {}

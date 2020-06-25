@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { ApiService } from "src/app/services/api.service";
 import { LoadingController } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
+import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: "app-health-records",
@@ -11,6 +12,7 @@ import { DatabaseService } from "src/app/services/database.service";
   styleUrls: ["./health-records.page.scss"],
 })
 export class HealthRecordsPage {
+  faPlusSquare = faPlusSquare;
   healthRecords;
 
   selectedPerson = this.utilities.selectedRelativeId;

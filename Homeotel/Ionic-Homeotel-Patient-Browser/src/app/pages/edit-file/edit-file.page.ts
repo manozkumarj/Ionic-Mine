@@ -4,6 +4,7 @@ import { ApiService } from "src/app/services/api.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { LoadingController } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
+import { faFile } from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: "app-edit-file",
@@ -16,6 +17,8 @@ export class EditFilePage implements OnInit {
   photo;
 
   fileTypesMasters;
+
+  faFile = faFile;
 
   constructor(
     private router: Router,

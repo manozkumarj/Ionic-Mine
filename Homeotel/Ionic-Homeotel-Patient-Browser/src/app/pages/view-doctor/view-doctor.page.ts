@@ -5,6 +5,9 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { LoadingController } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
+import { faBuilding } from "@fortawesome/free-regular-svg-icons";
+import { faIdBadge } from "@fortawesome/free-regular-svg-icons";
+import { faPlayCircle } from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: "app-view-doctor",
@@ -12,6 +15,10 @@ import { DatabaseService } from "src/app/services/database.service";
   styleUrls: ["./view-doctor.page.scss"],
 })
 export class ViewDoctorPage implements OnInit {
+  faBuilding = faBuilding;
+  faIdBadge = faIdBadge;
+  faPlayCircle = faPlayCircle;
+
   selectedDoctorId;
 
   selectedGender = null;

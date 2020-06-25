@@ -4,6 +4,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { LoadingController } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
+import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: "app-consultation-details",
@@ -24,6 +25,7 @@ export class ConsultationDetailsPage implements OnInit {
   description;
 
   userRelatives: any[] = [];
+  faPlusSquare = faPlusSquare;
 
   constructor(
     private router: Router,

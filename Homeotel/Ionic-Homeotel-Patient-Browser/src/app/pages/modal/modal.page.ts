@@ -7,6 +7,7 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { LoadingController } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
+import { faCheckSquare } from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: "app-modal",
@@ -14,6 +15,7 @@ import { DatabaseService } from "src/app/services/database.service";
   styleUrls: ["./modal.page.scss"],
 })
 export class ModalPage implements OnInit {
+  faCheckSquare = faCheckSquare;
   action;
   uuid;
   doctorDetails: any[] = [];

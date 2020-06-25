@@ -26,7 +26,8 @@
         [style.border]="selectedFile == fileType.file_type_id ? '2px solid #0a9f28' : '2px solid #fff' "
       >
         <div class="add">
-          <ion-icon [name]="fileType.icon"></ion-icon>
+          <!-- <ion-icon [name]="fileType.icon"></ion-icon> -->
+          <fa-icon [icon]="faFile"></fa-icon>
         </div>
         <p>{{fileType.name}}</p>
       </ion-col>

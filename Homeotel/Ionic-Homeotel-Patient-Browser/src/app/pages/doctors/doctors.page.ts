@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonService } from "./../../services/common.service";
+import { faCommentDots } from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: "app-doctors",
@@ -8,6 +9,7 @@ import { CommonService } from "./../../services/common.service";
 })
 export class DoctorsPage implements OnInit {
   doctors;
+  faCommentDots = faCommentDots;
 
   constructor(private commonService: CommonService) {}
 

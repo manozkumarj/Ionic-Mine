@@ -41,11 +41,14 @@
     <ion-row style="border-bottom: 1.8px dotted grey; margin-top: -20px;">
       <ion-col>
         <p *ngIf="qualification">
-          <ion-icon name="school"></ion-icon>
+          <!-- <ion-icon name="school"></ion-icon> -->
+          <fa-icon [icon]="faBuilding"></fa-icon>
           &nbsp;&nbsp;&nbsp;{{qualification}}
         </p>
         <p *ngIf="certification">
-          <ion-icon name="medal"></ion-icon> &nbsp;&nbsp;&nbsp;{{certification}}
+          <!-- <ion-icon name="medal"></ion-icon> -->
+          <fa-icon [icon]="faIdBadge"></fa-icon>
+          &nbsp;&nbsp;&nbsp;{{certification}}
         </p>
       </ion-col>
     </ion-row>
@@ -65,7 +68,8 @@
         *ngFor="let clinic of clinics"
       >
         <ion-col size="1">
-          <p><ion-icon name="locate"></ion-icon></p>
+          <!-- <p><ion-icon name="locate"></ion-icon></p> -->
+          <p><fa-icon [icon]="faPlayCircle"></fa-icon></p>
         </ion-col>
 
         <ion-col size="auto">

@@ -5,6 +5,8 @@ import { UtilitiesService } from "src/app/services/utilities.service";
 import { ApiService } from "src/app/services/api.service";
 import { LoadingController } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
+import { faCommentDots } from "@fortawesome/free-regular-svg-icons";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: "app-vitals",
@@ -12,6 +14,8 @@ import { DatabaseService } from "src/app/services/database.service";
   styleUrls: ["./vitals.page.scss"],
 })
 export class VitalsPage implements OnInit {
+  faCommentDots = faCommentDots;
+  faCalendar = faCalendar;
   vitals: any[] = [];
   constructor(
     public actShtCtr: ActionSheetController,

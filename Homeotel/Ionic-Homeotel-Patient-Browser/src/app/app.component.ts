@@ -7,6 +7,25 @@ import { MenuController } from "@ionic/angular";
 import { UtilitiesService } from "./services/utilities.service";
 import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faUserFriends } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-regular-svg-icons";
+import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
+import { faFlag } from "@fortawesome/free-regular-svg-icons";
+import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
+import { faStickyNote } from "@fortawesome/free-regular-svg-icons";
+import { faArrowAltCircleLeft } from "@fortawesome/free-regular-svg-icons";
+
+// import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
+// import { faCommentDots } from "@fortawesome/free-regular-svg-icons";
+// import { faFile } from "@fortawesome/free-regular-svg-icons";
+// import { faCircle } from "@fortawesome/free-regular-svg-icons";
+// import { faArrowAltCircleRight } from "@fortawesome/free-regular-svg-icons";
+// import { faCheckSquare } from "@fortawesome/free-regular-svg-icons";
+// import { faBuilding } from "@fortawesome/free-regular-svg-icons";
+// import { faIdBadge } from "@fortawesome/free-regular-svg-icons";
+// import { faPlayCircle } from "@fortawesome/free-regular-svg-icons";
+// import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: "app-root",
@@ -16,6 +35,14 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 export class AppComponent {
   appPages;
   faBars = faBars;
+  faUserFriends = faUserFriends;
+  faPaperPlane = faPaperPlane;
+  faBell = faBell;
+  faEnvelope = faEnvelope;
+  faFlag = faFlag;
+  faNewspaper = faNewspaper;
+  faStickyNote = faStickyNote;
+  faArrowAltCircleLeft = faArrowAltCircleLeft;
 
   constructor(
     private platform: Platform,
@@ -43,42 +70,42 @@ export class AppComponent {
       {
         title: "My Doctors",
         url: "/my-doctors",
-        icon: "heart-outline",
+        icon: faUserFriends,
       },
       {
         title: "Appointments",
         url: "/appointments",
-        icon: "send-outline",
+        icon: faPaperPlane,
       },
       {
         title: "Homeo Kits",
         url: "/homeo-kits",
-        icon: "alarm-outline",
+        icon: faBell,
       },
       {
         title: "Health Records",
         url: "/health-records",
-        icon: "chatbubbles-outline",
+        icon: faEnvelope,
       },
       {
         title: "Payments",
         url: "/payments",
-        icon: "flag-outline",
+        icon: faFlag,
       },
       {
         title: "Settings",
         url: "/settings",
-        icon: "pricetag-outline",
+        icon: faNewspaper,
       },
       {
         title: "Help Center",
         url: "/help-center",
-        icon: "cart-outline",
+        icon: faStickyNote,
       },
       {
         title: "Logout",
         url: "/logout",
-        icon: "log-out",
+        icon: faArrowAltCircleLeft,
       },
     ];
     console.log(this.appPages[0].title);

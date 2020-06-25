@@ -13,13 +13,15 @@
       <div *ngFor="let vital of vitals" class="dashedBorderBottom pad5">
         <ion-row style="font-size: 20px; font-weight: bold;">
           <ion-col size="auto">
-            <ion-icon name="calendar-outline"></ion-icon>
+            <!-- <ion-icon name="calendar-outline"></ion-icon> -->
+            <fa-icon [icon]="faCalendar"></fa-icon>
           </ion-col>
           <ion-col>
             {{vital.created_at}}
           </ion-col>
           <ion-col size="auto" (click)="openMenu(vital.vital_id)">
-            <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+            <!-- <ion-icon name="ellipsis-vertical-outline"></ion-icon> -->
+            <fa-icon [icon]="faCommentDots"></fa-icon>
           </ion-col>
         </ion-row>
 

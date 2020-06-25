@@ -1,20 +1,22 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from "@ionic/angular";
 
-import { ConsultationDetailsPageRoutingModule } from './consultation-details-routing.module';
+import { ConsultationDetailsPageRoutingModule } from "./consultation-details-routing.module";
 
-import { ConsultationDetailsPage } from './consultation-details.page';
+import { ConsultationDetailsPage } from "./consultation-details.page";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ConsultationDetailsPageRoutingModule
+    ConsultationDetailsPageRoutingModule,
+    FontAwesomeModule,
   ],
-  declarations: [ConsultationDetailsPage]
+  declarations: [ConsultationDetailsPage],
 })
 export class ConsultationDetailsPageModule {}

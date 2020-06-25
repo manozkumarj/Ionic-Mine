@@ -6,17 +6,22 @@
     <ion-title>Doctors</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="moreOptions()">
-        <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+        <!-- <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon> -->
+        <fa-icon [icon]="faCommentDots"></fa-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
   <ion-list *ngIf="doctors.length > 0; else noDoctors">
-    <ion-item *ngFor="let doctor of doctors" [routerLink]="['/view-doctor/' + doctor.id]" detail>
-      #{{doctor.id}} - <img [src]="doctor.img" height="30px" style="padding: 0px 10px;" />
+    <ion-item
+      *ngFor="let doctor of doctors"
+      [routerLink]="['/view-doctor/' + doctor.id]"
+      detail
+    >
+      #{{doctor.id}} -
+      <img [src]="doctor.img" height="30px" style="padding: 0px 10px;" />
       {{doctor.name}}
     </ion-item>
   </ion-list>
@@ -28,5 +33,4 @@
       </ion-card-header>
     </ion-card>
   </ng-template>
-
 </ion-content>

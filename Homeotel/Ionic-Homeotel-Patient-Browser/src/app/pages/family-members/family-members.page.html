@@ -12,7 +12,8 @@
         </ion-col>
         <ion-col size="2" (click)="search()">
           <div>
-            <ion-icon name="search-outline"></ion-icon>
+            <!-- <ion-icon name="search-outline"></ion-icon> -->
+            <fa-icon [icon]="faCircle"></fa-icon>
           </div>
         </ion-col>
       </ion-row>
@@ -21,10 +22,15 @@
 </ion-header>
 
 <ion-content>
-
   <ion-grid class="secondHeader" style="padding: 0px;">
-    <ion-row style="height: 40px; text-align: center; background-color: #0a9f28;
-    color: #FFF;">
+    <ion-row
+      style="
+        height: 40px;
+        text-align: center;
+        background-color: #0a9f28;
+        color: #fff;
+      "
+    >
       <ion-col [routerLink]="['/home']">
         <div>Home</div>
       </ion-col>
@@ -40,7 +46,6 @@
     </ion-row>
   </ion-grid>
 
-
   <ion-grid class="childGrid">
     <ion-row>
       <ion-col class="card-heading">
@@ -51,7 +56,11 @@
       <ion-col class="card-col">
         <ion-row>
           <ion-col size="auto">
-            <img src="assets/images/milinda.jpg" height="50px" class="roundBorder" />
+            <img
+              src="assets/images/milinda.jpg"
+              height="50px"
+              class="roundBorder"
+            />
           </ion-col>
           <ion-col style="line-height: 50px; font-weight: bold;">
             <span>Wife</span>
@@ -61,7 +70,11 @@
       <ion-col class="card-col">
         <ion-row>
           <ion-col size="auto">
-            <img src="assets/images/sergey.jpg" height="50px" class="roundBorder" />
+            <img
+              src="assets/images/sergey.jpg"
+              height="50px"
+              class="roundBorder"
+            />
           </ion-col>
           <ion-col style="line-height: 50px; font-weight: bold;">
             <span>Son</span>
@@ -70,5 +83,4 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>

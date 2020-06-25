@@ -1,20 +1,22 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from "@ionic/angular";
 
-import { FamilyMembersPageRoutingModule } from './family-members-routing.module';
+import { FamilyMembersPageRoutingModule } from "./family-members-routing.module";
 
-import { FamilyMembersPage } from './family-members.page';
+import { FamilyMembersPage } from "./family-members.page";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    FamilyMembersPageRoutingModule
+    FamilyMembersPageRoutingModule,
+    FontAwesomeModule,
   ],
-  declarations: [FamilyMembersPage]
+  declarations: [FamilyMembersPage],
 })
 export class FamilyMembersPageModule {}
