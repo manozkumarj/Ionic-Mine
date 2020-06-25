@@ -4,6 +4,7 @@ import { ApiService } from "src/app/services/api.service";
 import { UtilitiesService } from "src/app/services/utilities.service";
 import { Platform, LoadingController } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-home",
@@ -11,6 +12,7 @@ import { DatabaseService } from "src/app/services/database.service";
   styleUrls: ["./home.page.scss"],
 })
 export class HomePage implements OnInit {
+  faBars = faBars;
   backButtonSubscription; // for storing the returned subscription
   allAppointments: any[] = [];
 

@@ -6,6 +6,7 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { MenuController } from "@ionic/angular";
 import { UtilitiesService } from "./services/utilities.service";
 import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-root",
@@ -14,6 +15,7 @@ import { AndroidPermissions } from "@ionic-native/android-permissions/ngx";
 })
 export class AppComponent {
   appPages;
+  faBars = faBars;
 
   constructor(
     private platform: Platform,
