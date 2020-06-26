@@ -21,7 +21,67 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid class="grid appointmentsGrid" [routerLink]="['/my-doctors']">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-md="4">
+        <ion-card [routerLink]="['/my-doctors']">
+          <ion-card-header>
+            <ion-card-title>Book Appointment</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>Schedule an Audio or Video call</p>
+            <p>Schedule a physical visit</p>
+            <p>Send a message</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="4">
+        <ion-card [routerLink]="['/homeo-kits']">
+          <ion-card-header>
+            <ion-card-title>Homeo Kits</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p>Kits made by your trusted doctor</p>
+            <p>to keep you and your family</p>
+            <p>safe and healthy</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12" size-md="4">
+        <ion-card [routerLink]="['/appointments']">
+          <ion-card-header>
+            <ion-card-title>Scheduled Appointments</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content
+            *ngIf="allAppointments.length > 0; else noAppointments"
+            align-items-center
+            justify-content-center
+          >
+            <ion-col>
+              <p>View scheduled appointments</p>
+            </ion-col>
+          </ion-card-content>
+
+          <ng-template #noAppointments>
+            <ion-row align-items-center justify-content-center>
+              <ion-col>
+                <p>You don't have any</p>
+                <p>appointments scheduled</p>
+              </ion-col>
+            </ion-row>
+          </ng-template>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!--  OLD code is below -->
+  <!-- <ion-grid class="grid appointmentsGrid" [routerLink]="['/my-doctors']">
     <ion-row>
       <ion-col class="card-heading">
         <div>Book Appointment</div>
@@ -78,5 +138,5 @@
         </ion-col>
       </ion-row>
     </ng-template>
-  </ion-grid>
+  </ion-grid> -->
 </ion-content>
