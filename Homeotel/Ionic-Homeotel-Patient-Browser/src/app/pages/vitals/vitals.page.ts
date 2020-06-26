@@ -150,40 +150,45 @@ export class VitalsPage implements OnInit {
                             "Success, Vital is deleted."
                           );
 
-                          let res = data[0][0];
-                          if (data[0][0]["query"]) {
-                            let receivedQuery = res["query"];
-                            console.log(receivedQuery);
+                          if (this.utilities.isHybridApp) {
+                            let res = data[0][0];
+                            if (data[0][0]["query"]) {
+                              let receivedQuery = res["query"];
+                              console.log(receivedQuery);
 
-                            this.db
-                              .crudOperations(receivedQuery)
-                              .then((res) => {
-                                a.dismiss();
-                                console.log("vitals is deleted successfully");
-                              })
-                              .catch((error) => {
-                                this.utilities.sqliteErrorDisplayer(
-                                  "vital * deleteVital",
-                                  error
-                                );
-                                this.utilities.presentToastWarning(
-                                  "Something went wrong."
-                                );
-                                a.dismiss();
-                                console.error(
-                                  "Error -> vital save function returned error." +
-                                    JSON.stringify(error)
-                                );
-                              });
+                              this.db
+                                .crudOperations(receivedQuery)
+                                .then((res) => {
+                                  a.dismiss();
+                                  console.log("vitals is deleted successfully");
+                                })
+                                .catch((error) => {
+                                  this.utilities.sqliteErrorDisplayer(
+                                    "vital * deleteVital",
+                                    error
+                                  );
+                                  this.utilities.presentToastWarning(
+                                    "Something went wrong."
+                                  );
+                                  a.dismiss();
+                                  console.error(
+                                    "Error -> vital save function returned error." +
+                                      JSON.stringify(error)
+                                  );
+                                });
+                            } else {
+                              a.dismiss();
+                              this.utilities.sqliteErrorDisplayer(
+                                "vital * deleteVital",
+                                "Query property is not received from backend SP"
+                              );
+                              console.log(
+                                "Query property is not received from backend SP"
+                              );
+                            }
                           } else {
                             a.dismiss();
-                            this.utilities.sqliteErrorDisplayer(
-                              "vital * deleteVital",
-                              "Query property is not received from backend SP"
-                            );
-                            console.log(
-                              "Query property is not received from backend SP"
-                            );
+                            console.log("Vital is deleted successfully");
                           }
                         } else {
                           a.dismiss();

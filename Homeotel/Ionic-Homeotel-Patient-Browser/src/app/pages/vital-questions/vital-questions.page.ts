@@ -59,10 +59,13 @@ export class VitalQuestionsPage implements OnInit {
     private utilities: UtilitiesService
   ) {}
 
-  ngOnInit() {
+  ionViewWillEnter() {
     console.clear();
     console.log("this.utilities.vitalPageState is below");
     console.log(this.utilities.vitalPageState);
+  }
+
+  ngOnInit() {
     this.currentQuestion = null;
     let paramOne = parseInt(this.activatedRoute.snapshot.paramMap.get("one"));
     let paramTwo = parseInt(this.activatedRoute.snapshot.paramMap.get("two"));
@@ -103,7 +106,9 @@ export class VitalQuestionsPage implements OnInit {
       console.log(this.systolicOptions);
       console.log("diastolicOptions are below");
       console.log(this.diastolicOptions);
-      this.selectBP();
+      if (this.utilities.isHybridApp) {
+        this.selectBP();
+      }
     } else if (paramThree) {
       console.log("paramThree");
       this.title = `${paramThree} of 4`;
@@ -356,31 +361,73 @@ export class VitalQuestionsPage implements OnInit {
       );
   }
 
+  continue() {
+    if (this.currentQuestion == "one") {
+      this.utilities.vitalPageState["temperature"] =
+        this.temperatureLeftValue.toString() +
+        "." +
+        this.temperatureRightValue.toString();
+    }
+
+    if (this.currentQuestion == "two") {
+      this.utilities.vitalPageState["pulserate"] = this.selectedPulserate;
+    }
+
+    if (this.currentQuestion == "three") {
+      this.utilities.vitalPageState[
+        "respiratoryrate"
+      ] = this.selectedRespiratoryrate;
+    }
+
+    if (this.currentQuestion == "four") {
+      this.utilities.vitalPageState["bp_systolic"] = this.selectedSystolic;
+      this.utilities.vitalPageState["bp_diastolic"] = this.selectedDiastolic;
+    }
+
+    this.router.navigate([this.forwardLink]);
+  }
+
   async save() {
     console.log("About to upsert Vital's data into DB");
+
+    if (this.currentQuestion == "four") {
+      this.utilities.vitalPageState["bp_systolic"] = this.selectedSystolic;
+      this.utilities.vitalPageState["bp_diastolic"] = this.selectedDiastolic;
+    }
+
+    // if (this.utilities.vitalPageState["temperature"]) {
+    //   let selectedTemperature = this.utilities.vitalPageState[
+    //     "temperature"
+    //   ].toString();
+    //   console.log("temperature value -> " + selectedTemperature);
+    //   let splitTemperature = selectedTemperature.split(".");
+    //   this.temperatureLeftValue = splitTemperature[0].toString();
+    //   this.temperatureRightValue = splitTemperature[1].toString();
+    // }
+    // if (this.utilities.vitalPageState["pulserate"]) {
+    //   let getPulserate = this.utilities.vitalPageState["pulserate"];
+    //   this.selectedPulserate = getPulserate;
+    // }
+    // if (this.utilities.vitalPageState["respiratoryrate"]) {
+    //   let getRespiratoryrate = this.utilities.vitalPageState["respiratoryrate"];
+    //   this.selectedRespiratoryrate = getRespiratoryrate;
+    // }
+    // if (this.utilities.vitalPageState["bp_systolic"]) {
+    //   let getSystolic = this.utilities.vitalPageState["bp_systolic"];
+    //   this.selectedSystolic = getSystolic;
+    // }
+    // if (this.utilities.vitalPageState["bp_diastolic"]) {
+    //   let getDiastolic = this.utilities.vitalPageState["bp_diastolic"];
+    //   this.selectedDiastolic = getDiastolic;
+    // }
+
     console.log("this.utilities.vitalPageState is below");
     console.log(this.utilities.vitalPageState);
 
     let vitalId = this.utilities.vitalPageState["vitalId"];
     let relativeId = this.utilities.selectedRelativeId;
 
-    let temperature;
-
-    if (!this.utilities.isHybridApp) {
-      if (+this.temperatureLeftValue < 0 && +this.temperatureLeftValue > 99) {
-        alert("value showuld be between 0-99");
-        return false;
-      } else if (
-        +this.temperatureRightValue < 0 &&
-        +this.temperatureRightValue > 200
-      ) {
-        alert("value showuld be between 0-200");
-        return false;
-      }
-      temperature = this.temperatureLeftValue + this.temperatureRightValue;
-    } else {
-      temperature = this.utilities.vitalPageState["temperature"];
-    }
+    let temperature = this.utilities.vitalPageState["temperature"];
     let pulserate = this.utilities.vitalPageState["pulserate"];
     let respiratoryrate = this.utilities.vitalPageState["respiratoryrate"];
     let bpSystolic = this.utilities.vitalPageState["bp_systolic"];
