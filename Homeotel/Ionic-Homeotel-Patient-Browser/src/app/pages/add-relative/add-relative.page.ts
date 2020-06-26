@@ -178,6 +178,23 @@ export class AddRelativePage implements OnInit {
     );
   }
 
+  triggerHiddenFileButton() {
+    let element: HTMLElement = document.querySelector('input[type="file"]');
+    element.click();
+  }
+
+  uploadImageFromWeb(photo) {
+    let base64Image;
+    var myReader: FileReader = new FileReader();
+
+    myReader.readAsDataURL(photo.target.files[0]);
+    myReader.onloadend = (e) => {
+      base64Image = myReader.result;
+      this.selectedPhoto = base64Image;
+      console.log(base64Image);
+    };
+  }
+
   async submit(values) {
     console.log("Form is submitted, below are the values");
     console.log(values);

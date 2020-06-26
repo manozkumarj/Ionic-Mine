@@ -15,6 +15,7 @@ import { faFlag } from "@fortawesome/free-regular-svg-icons";
 import { faNewspaper } from "@fortawesome/free-regular-svg-icons";
 import { faStickyNote } from "@fortawesome/free-regular-svg-icons";
 import { faArrowAltCircleLeft } from "@fortawesome/free-regular-svg-icons";
+import { AuthService } from "./services/auth.service";
 
 // import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
 // import { faCommentDots } from "@fortawesome/free-regular-svg-icons";
@@ -50,6 +51,7 @@ export class AppComponent {
     private statusBar: StatusBar,
     private androidPermissions: AndroidPermissions,
     public menuCtrl: MenuController,
+    public authService: AuthService,
     public utilities: UtilitiesService
   ) {
     platform.ready().then(() => {

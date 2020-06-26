@@ -148,8 +148,8 @@
     </ion-row>
   </ion-grid>
 
-  <!-- paramNine - nine -->
-  <ion-grid *ngIf="currentQuestion == 'nine'">
+  <!-- paramNine - nine - for Android -->
+  <ion-grid *ngIf="utilities.isHybridApp && currentQuestion == 'nine'">
     <ion-row>
       <ion-col>
         <ion-grid class="btnsGrid">
@@ -170,6 +170,28 @@
           <ion-row>
             <ion-col (click)="selectWeight()" class="btn-success">
               Select weight
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramNine - nine - for web -->
+  <ion-grid *ngIf="!utilities.isHybridApp && currentQuestion == 'nine'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              <ion-input
+                class="inputField"
+                [(ngModel)]="inputField"
+                [value]="selectedWeight"
+                placeholder="Please enter weight..."
+                style="border: none;"
+              >
+              </ion-input>
             </ion-col>
           </ion-row>
         </ion-grid>
