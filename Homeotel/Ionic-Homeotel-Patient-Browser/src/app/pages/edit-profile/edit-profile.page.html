@@ -57,8 +57,8 @@
     </ion-row>
   </ion-grid>
 
-  <!-- paramFive - five -->
-  <ion-grid *ngIf="currentQuestion == 'five'">
+  <!-- paramFive - five - for Android -->
+  <ion-grid *ngIf="utilities.isHybridApp && currentQuestion == 'five'">
     <ion-row>
       <ion-col>
         <ion-grid class="btnsGrid">
@@ -79,6 +79,62 @@
           <ion-row>
             <ion-col (click)="selectDob()" class="btn-success">
               Select Date of birth
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramFive - five - for web -->
+  <ion-grid *ngIf="!utilities.isHybridApp && currentQuestion == 'five'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              Date of birth (YYYY-MM-DD)
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col class="showValue">{{selectedDob}} </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              <ion-input
+                class="inputField"
+                [(ngModel)]="dobYearInputField"
+                [value]="dobYearInputField"
+                placeholder="Enter Birth year..."
+                style="border: none;"
+              >
+              </ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input
+                class="inputField"
+                [(ngModel)]="dobMonthInputField"
+                [value]="dobMonthInputField"
+                placeholder="Enter Birth month..."
+                style="border: none;"
+              >
+              </ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input
+                class="inputField"
+                [(ngModel)]="dobDateInputField"
+                [value]="dobDateInputField"
+                placeholder="Enter Birth date..."
+                style="border: none;"
+              >
+              </ion-input>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -113,8 +169,8 @@
     </ion-row>
   </ion-grid>
 
-  <!-- paramEight - height -->
-  <ion-grid *ngIf="currentQuestion == 'eight'">
+  <!-- paramEight - height - for Android -->
+  <ion-grid *ngIf="utilities.isHybridApp && currentQuestion == 'eight'">
     <ion-row>
       <ion-col>
         <ion-grid class="btnsGrid">
@@ -141,6 +197,49 @@
           <ion-row>
             <ion-col (click)="selectHeight()" class="btn-success">
               Select Feet & Inches
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramEight - height - for web -->
+  <ion-grid *ngIf="!utilities.isHybridApp && currentQuestion == 'eight'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col style="margin: 20px;">
+              Feet
+            </ion-col>
+            <ion-col style="margin: 20px;">
+              Inches
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              <ion-input
+                class="inputField"
+                [(ngModel)]="hightFeetInputField"
+                [value]="selectedWeight"
+                placeholder="Enter Feet..."
+                style="border: none;"
+              >
+              </ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input
+                class="inputField"
+                [(ngModel)]="hightInchesInputField"
+                [value]="selectedWeight"
+                placeholder="Enter Inches..."
+                style="border: none;"
+              >
+              </ion-input>
             </ion-col>
           </ion-row>
         </ion-grid>

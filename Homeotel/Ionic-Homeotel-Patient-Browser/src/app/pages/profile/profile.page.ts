@@ -111,8 +111,12 @@ export class ProfilePage implements OnInit {
                   "marital_status_id"
                 ];
 
-                this.height = this.utilities.profilePageDetails["height"];
-                this.height = this.height ? this.height + " Feet" : "Select";
+                this.height = this.utilities.profilePageDetails[
+                  "height"
+                ].toString();
+                this.height = this.height
+                  ? this.height[0] + "." + this.height[1] + " Feet"
+                  : "Select";
 
                 this.weight = this.utilities.profilePageDetails["weight"];
                 this.weight = this.weight ? this.weight + " Kgs" : "Select";
@@ -287,7 +291,14 @@ export class ProfilePage implements OnInit {
                 //   ? this.maritalStatus
                 //   : "Select";
 
-                this.height = this.utilities.profilePageDetails["height"];
+                this.height = this.utilities.profilePageDetails[
+                  "height"
+                ].toString();
+
+                this.height = this.height
+                  ? this.height[0] + "." + this.height[1]
+                  : "Select";
+
                 this.height = this.height ? this.height + " Feet" : "Select";
 
                 this.weight = this.utilities.profilePageDetails["weight"];

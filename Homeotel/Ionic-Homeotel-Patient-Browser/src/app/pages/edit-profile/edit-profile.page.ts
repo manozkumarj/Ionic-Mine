@@ -13,6 +13,13 @@ import { DatabaseService } from "src/app/services/database.service";
 })
 export class EditProfilePage implements OnInit {
   inputField = "";
+  hightFeetInputField = 0;
+  hightInchesInputField = 0;
+
+  dobYearInputField = 2020;
+  dobMonthInputField = 6;
+  dobDateInputField = 26;
+
   columnName = "";
   title;
   backwardLink;
@@ -57,6 +64,9 @@ export class EditProfilePage implements OnInit {
     private loadingController: LoadingController,
     private selector: WheelSelector
   ) {
+    console.log("this.utilities.profilePageDetails is below");
+    console.log(this.utilities.profilePageDetails);
+
     this.currentQuestion = null;
     let paramOne = parseInt(this.activatedRoute.snapshot.paramMap.get("one"));
     let paramTwo = parseInt(this.activatedRoute.snapshot.paramMap.get("two"));
@@ -88,13 +98,16 @@ export class EditProfilePage implements OnInit {
       for (let i = 40; i <= 150; i++) {
         this.weightOptions.push({ description: i.toString() });
       }
-      this.selectWeight();
+
       console.log("WeightOptions are below");
       console.log(this.weightOptions);
 
       this.weightValue = this.utilities.profilePageDetails["weight"];
 
       console.log(this.weightValue);
+      if (this.utilities.isHybridApp) {
+        this.selectWeight();
+      }
     } else if (paramEight) {
       console.log("paramEight");
       this.title = `${paramEight} of 9`;
@@ -103,12 +116,20 @@ export class EditProfilePage implements OnInit {
       this.question = "Please select your height";
       this.currentQuestion = "eight";
       this.columnName = "height";
-      this.inputField = this.utilities.profilePageDetails["height"];
+      this.inputField = this.utilities.profilePageDetails["height"].toString();
       this.inputField = this.inputField ? this.inputField : "0.0";
+
+      this.inputField = this.inputField[0] + "." + this.inputField[1];
 
       let splitHeightValue = this.inputField.split(".");
       this.feetValue = +splitHeightValue[0];
       this.inchesValue = +splitHeightValue[1];
+
+      this.selectedFeet = splitHeightValue[0];
+      this.selectedInches = splitHeightValue[1];
+
+      this.hightFeetInputField = +splitHeightValue[0];
+      this.hightInchesInputField = +splitHeightValue[1];
 
       // Generating Feet options
       for (let i = 0; i <= 10; i++) {
@@ -118,7 +139,6 @@ export class EditProfilePage implements OnInit {
       for (let i = 0; i <= 11; i++) {
         this.inchesOptions.push({ description: i.toString() });
       }
-      this.selectHeight();
 
       console.log("feetOptions are below");
       console.log(this.feetOptions);
@@ -126,6 +146,9 @@ export class EditProfilePage implements OnInit {
       console.log(this.inchesOptions);
 
       console.log(this.feetValue + " - " + this.inchesValue);
+      if (this.utilities.isHybridApp) {
+        this.selectHeight();
+      }
     } else if (paramSeven) {
       console.log("paramSeven");
       this.title = `${paramSeven} of 9`;
@@ -162,6 +185,10 @@ export class EditProfilePage implements OnInit {
       let yearValue = +splitDobValue[0];
       let monthValue = +splitDobValue[1];
       let dateValue = +splitDobValue[2];
+
+      this.dobYearInputField = +splitDobValue[0];
+      this.dobMonthInputField = +splitDobValue[1];
+      this.dobDateInputField = +splitDobValue[2];
 
       // Generating DOB date options
       for (let i = 1; i <= 30; i++) {
@@ -200,8 +227,6 @@ export class EditProfilePage implements OnInit {
       console.log("dobYearOptions are below");
       console.log(this.dobYearOptions);
 
-      this.selectDob();
-
       console.log(
         this.dobYearValue +
           " - " +
@@ -209,6 +234,10 @@ export class EditProfilePage implements OnInit {
           " - " +
           this.dobDateValue
       );
+
+      if (this.utilities.isHybridApp) {
+        this.selectDob();
+      }
     } else if (paramFour) {
       console.log("paramFour");
       this.title = `${paramFour} of 9`;
@@ -376,6 +405,33 @@ export class EditProfilePage implements OnInit {
 
   answered = async (value?) => {
     console.log("answered -> " + this.currentQuestion);
+
+    if (!this.utilities.isHybridApp && this.currentQuestion == "eight") {
+      if (this.hightFeetInputField < 0) {
+        alert("Enter feet");
+      } else if (this.hightInchesInputField < 0) {
+        alert("Enter inches");
+      } else {
+        value =
+          this.hightFeetInputField.toString() +
+          this.hightInchesInputField.toString();
+      }
+    } else if (!this.utilities.isHybridApp && this.currentQuestion == "five") {
+      if (!this.dobYearInputField) {
+        alert("Enter birth year");
+      } else if (!this.dobMonthInputField) {
+        alert("Enter birth month");
+      } else if (!this.dobDateInputField) {
+        alert("Enter birth date");
+      } else {
+        value =
+          this.dobYearInputField.toString() +
+          "-" +
+          this.dobMonthInputField.toString() +
+          "-" +
+          this.dobDateInputField.toString();
+      }
+    }
 
     if (!value) {
       value = this.inputField.trim();

@@ -129,7 +129,10 @@ export class VitalQuestionsPage implements OnInit {
       }
       console.log("respiratoryrateOptions are below");
       console.log(this.respiratoryrateOptions);
-      this.selectRespiratoryrate();
+
+      if (this.utilities.isHybridApp) {
+        this.selectRespiratoryrate();
+      }
     } else if (paramTwo) {
       console.log("paramTwo");
       this.title = `${paramTwo} of 4`;
@@ -149,7 +152,10 @@ export class VitalQuestionsPage implements OnInit {
       }
       console.log("pulserateOptions are below");
       console.log(this.pulserateOptions);
-      this.selectPulserate();
+
+      if (this.utilities.isHybridApp) {
+        this.selectPulserate();
+      }
     } else if (paramOne) {
       console.log("paramOne");
       this.title = `${paramOne} of 4`;
@@ -182,7 +188,10 @@ export class VitalQuestionsPage implements OnInit {
 
       console.log("temperatureRightSideOptions are below");
       console.log(this.temperatureRightSideOptions);
-      this.selectTemperature();
+
+      if (this.utilities.isHybridApp) {
+        this.selectTemperature();
+      }
     }
   }
 
@@ -355,7 +364,23 @@ export class VitalQuestionsPage implements OnInit {
     let vitalId = this.utilities.vitalPageState["vitalId"];
     let relativeId = this.utilities.selectedRelativeId;
 
-    let temperature = this.utilities.vitalPageState["temperature"];
+    let temperature;
+
+    if (!this.utilities.isHybridApp) {
+      if (+this.temperatureLeftValue < 0 && +this.temperatureLeftValue > 99) {
+        alert("value showuld be between 0-99");
+        return false;
+      } else if (
+        +this.temperatureRightValue < 0 &&
+        +this.temperatureRightValue > 200
+      ) {
+        alert("value showuld be between 0-200");
+        return false;
+      }
+      temperature = this.temperatureLeftValue + this.temperatureRightValue;
+    } else {
+      temperature = this.utilities.vitalPageState["temperature"];
+    }
     let pulserate = this.utilities.vitalPageState["pulserate"];
     let respiratoryrate = this.utilities.vitalPageState["respiratoryrate"];
     let bpSystolic = this.utilities.vitalPageState["bp_systolic"];

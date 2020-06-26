@@ -35,8 +35,8 @@
     </ion-row>
   </ion-grid>
 
-  <!-- paramOne - one -->
-  <ion-grid *ngIf="currentQuestion == 'one'">
+  <!-- paramOne - one - for Android -->
+  <ion-grid *ngIf="utilities.isHybridApp && currentQuestion == 'one'">
     <ion-row>
       <ion-col>
         <ion-grid class="btnsGrid">
@@ -57,6 +57,52 @@
           <ion-row>
             <ion-col (click)="selectTemperature()" class="btn-success">
               Select Temperature
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- paramOne - one - for web -->
+  <ion-grid *ngIf="!utilities.isHybridApp && currentQuestion == 'one'">
+    <ion-row>
+      <ion-col>
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              Temperature
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="optionsGrid">
+          <ion-row>
+            <ion-col class="showValue">{{selectedTemperature}} &#8457;</ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <ion-grid class="btnsGrid">
+          <ion-row>
+            <ion-col>
+              <ion-input
+                class="inputField"
+                [(ngModel)]="temperatureLeftValue"
+                [value]="temperatureLeftValue"
+                placeholder="Enter temperature..."
+                style="border: none;"
+              >
+              </ion-input>
+            </ion-col>
+            <ion-col>
+              <ion-input
+                class="inputField"
+                [(ngModel)]="temperatureRightValue"
+                [value]="temperatureRightValue"
+                placeholder="Enter temperature..."
+                style="border: none;"
+              >
+              </ion-input>
             </ion-col>
           </ion-row>
         </ion-grid>
