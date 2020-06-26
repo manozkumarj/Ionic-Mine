@@ -455,6 +455,24 @@ export class ProfilePage implements OnInit {
     );
   }
 
+  triggerHiddenFileButton() {
+    let element: HTMLElement = document.querySelector('input[type="file"]');
+    element.click();
+  }
+
+  uploadImageFromWeb(photo) {
+    let base64Image;
+    var myReader: FileReader = new FileReader();
+
+    myReader.readAsDataURL(photo.target.files[0]);
+    myReader.onloadend = (e) => {
+      base64Image = myReader.result;
+      this.profilePhoto = base64Image;
+      console.log(base64Image);
+      this.updateProfilePhoto(base64Image);
+    };
+  }
+
   async updateProfilePhoto(photo) {
     const loading = await this.loadingController
       .create({

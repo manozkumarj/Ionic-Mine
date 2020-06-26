@@ -20,7 +20,7 @@
         <p>{{name}}</p>
       </ion-col>
 
-      <ion-col size="auto" (click)="openMenu()">
+      <ion-col *ngIf="utilities.isHybridApp" size="auto" (click)="openMenu()">
         <p style="margin: 0; padding: 6px; text-align: center;">
           <img
             [src]="utilities.getPhotoDataUrl(profilePhoto)"
@@ -29,6 +29,27 @@
             style="border-radius: 100%; border: 2px solid #999;"
           />
         </p>
+      </ion-col>
+
+      <ion-col
+        *ngIf="!utilities.isHybridApp"
+        size="auto"
+        (click)="triggerHiddenFileButton()"
+      >
+        <p style="margin: 0; padding: 6px; text-align: center;">
+          <img
+            [src]="utilities.getPhotoDataUrl(profilePhoto)"
+            height="80px"
+            width="80px"
+            style="border-radius: 100%; border: 2px solid #999;"
+          />
+        </p>
+        <ion-input
+          type="file"
+          accept="image/*"
+          style="display: none;"
+          (change)="uploadImageFromWeb($event)"
+        ></ion-input>
       </ion-col>
     </ion-row>
 
