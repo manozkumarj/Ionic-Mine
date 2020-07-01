@@ -86,7 +86,7 @@ export class AppComponent {
       },
       {
         title: "Health Records",
-        url: "/health-records",
+        url: this.utilities.isHybridApp ? "/health-records" : "/vitals",
         icon: faEnvelope,
       },
       {
@@ -102,6 +102,11 @@ export class AppComponent {
       {
         title: "Help Center",
         url: "/help-center",
+        icon: faStickyNote,
+      },
+      {
+        title: "Previous Consultations",
+        url: "/previous-consultations",
         icon: faStickyNote,
       },
       {

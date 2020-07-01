@@ -56,58 +56,345 @@
         </p>
       </ion-col>
     </ion-row>
-    <ion-row class="solidBorderBottom">
-      <ion-col>
-        <ion-item detail [routerLink]="['/appointment-questions', 1]">
-          <ion-grid class="complaintDetailsList">
-            <ion-row>
-              <ion-col>
-                Is it recurring?
-              </ion-col>
-              <ion-col size="auto">
-                {{recurring}}
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-item>
-        <ion-item detail [routerLink]="['/appointment-questions', 1,2]">
-          <ion-grid class="complaintDetailsList">
-            <ion-row>
-              <ion-col>
-                Recurring Frequency?
-              </ion-col>
-              <ion-col size="auto">
-                {{recurringFrequency}}
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-item>
-        <ion-item detail [routerLink]="['/appointment-questions', 1,2,3]">
-          <ion-grid class="complaintDetailsList">
-            <ion-row>
-              <ion-col>
-                Aggravated by?
-              </ion-col>
-              <ion-col size="auto">
-                {{aggravatedBy}}
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-item>
-        <ion-item detail [routerLink]="['/appointment-questions', 1,2,3,4]">
-          <ion-grid class="complaintDetailsList">
-            <ion-row>
-              <ion-col>
-                Pain description?
-              </ion-col>
-              <ion-col size="auto">
-                {{description}}
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-item>
-      </ion-col>
-    </ion-row>
+    <form [formGroup]="appointmentDetailsForm">
+      <ion-row class="solidBorderBottom">
+        <ion-col>
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  Is it recurring?
+                </ion-col>
+
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{recurring}}
+                </ion-col>
+
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <mat-form-field>
+                    <mat-label>Is it recurring?</mat-label>
+                    <mat-select
+                      (selectionChange)="selectedColumn('is_recurring')"
+                      formControlName="is_recurring"
+                    >
+                      <mat-option
+                        *ngFor="let item of yesOrNoMasterData"
+                        [value]="item.id"
+                      >
+                        {{item.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1/2')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  Recurring Frequency?
+                </ion-col>
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{recurringFrequency}}
+                </ion-col>
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <ion-input
+                    formControlName="recurring_freq"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('recurring_freq')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1/2/3')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  Aggravated by?
+                </ion-col>
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{aggravatedBy}}
+                </ion-col>
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <ion-input
+                    formControlName="aggravation"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('aggravation')"
+                    placeholder="Enter Aggravation"
+                    value=""
+                  ></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1/2/3/4')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  Severity
+                </ion-col>
+
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{severity}}
+                </ion-col>
+
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <mat-form-field>
+                    <mat-label>Severity?</mat-label>
+                    <mat-select
+                      (selectionChange)="selectedColumn('severity_id')"
+                      formControlName="severity_id"
+                    >
+                      <mat-option
+                        *ngFor="let item of severityMasterData"
+                        [value]="item.id"
+                      >
+                        {{item.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1/2/3/4')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  Pain description?
+                </ion-col>
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{description}}
+                </ion-col>
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <ion-input
+                    formControlName="complaint_description"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('complaint_description')"
+                    placeholder="Enter complaint description"
+                    value=""
+                  ></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1/2/3/4/5')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  duration?
+                </ion-col>
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{duration}}
+                </ion-col>
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <ion-input
+                    formControlName="duration"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('duration')"
+                    placeholder="Enter duration"
+                    value=""
+                  ></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1/2/3/4/5/6')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  Onset id
+                </ion-col>
+
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{onset_id}}
+                </ion-col>
+
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <mat-form-field>
+                    <mat-label>Severity?</mat-label>
+                    <mat-select
+                      (selectionChange)="selectedColumn('onset_id')"
+                      formControlName="onset_id"
+                    >
+                      <mat-option
+                        *ngFor="let item of onsetMasterData"
+                        [value]="item.id"
+                      >
+                        {{item.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1/2/3/4/5/6/7')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  characteristics?
+                </ion-col>
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{characteristics}}
+                </ion-col>
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <ion-input
+                    formControlName="characteristics"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('characteristics')"
+                    placeholder="Enter characteristics"
+                    value=""
+                  ></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1/2/3/4/5/6/7/8')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  sensation?
+                </ion-col>
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{sensation}}
+                </ion-col>
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <ion-input
+                    formControlName="sensation"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('sensation')"
+                    placeholder="Enter sensation"
+                    value=""
+                  ></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1/2/3/4/5/6/7/8/9')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  amelioration?
+                </ion-col>
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{amelioration}}
+                </ion-col>
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <ion-input
+                    formControlName="amelioration"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('amelioration')"
+                    placeholder="Enter amelioration"
+                    value=""
+                  ></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1/2/3/4/5/6/7/8/9/10')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  modality?
+                </ion-col>
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{modality}}
+                </ion-col>
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <ion-input
+                    formControlName="modality"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('modality')"
+                    placeholder="Enter modality"
+                    value=""
+                  ></ion-input>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+
+          <ion-item
+            [detail]="utilities.isHybridApp ? true : false"
+            (click)="navigater('1/2/3/4/5/6/7/8/9/10/11')"
+          >
+            <ion-grid class="complaintDetailsList">
+              <ion-row>
+                <ion-col>
+                  Associateds symptoms
+                </ion-col>
+
+                <ion-col size="auto" *ngIf="utilities.isHybridApp">
+                  {{associated_symptoms_id}}
+                </ion-col>
+
+                <ion-col size="auto" *ngIf="!utilities.isHybridApp">
+                  <mat-form-field>
+                    <mat-label>Associateds symptoms?</mat-label>
+                    <mat-select
+                      (selectionChange)="selectedColumn('associated_symptoms_id')"
+                      formControlName="associated_symptoms_id"
+                    >
+                      <mat-option
+                        *ngFor="let item of associatedSymptomsMasterData"
+                        [value]="item.id"
+                      >
+                        {{item.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </form>
     <ion-row class="continue">
       <ion-col>
         <button (click)="cancelSlot()" class="btn buyButton">

@@ -1,20 +1,23 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
-import { IonicModule } from '@ionic/angular';
+import { IonicModule } from "@ionic/angular";
 
-import { AppointmentDetailsPageRoutingModule } from './appointment-details-routing.module';
+import { AppointmentDetailsPageRoutingModule } from "./appointment-details-routing.module";
 
-import { AppointmentDetailsPage } from './appointment-details.page';
+import { AppointmentDetailsPage } from "./appointment-details.page";
+import { MaterialModule } from "src/app/material.module";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
-    AppointmentDetailsPageRoutingModule
+    AppointmentDetailsPageRoutingModule,
+    MaterialModule,
   ],
-  declarations: [AppointmentDetailsPage]
+  declarations: [AppointmentDetailsPage],
 })
 export class AppointmentDetailsPageModule {}

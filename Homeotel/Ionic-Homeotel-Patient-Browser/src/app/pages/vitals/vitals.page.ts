@@ -7,6 +7,7 @@ import { LoadingController } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
 import { faCommentDots } from "@fortawesome/free-regular-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import { faPlusSquare } from "@fortawesome/free-regular-svg-icons";
 
 @Component({
   selector: "app-vitals",
@@ -15,8 +16,14 @@ import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 })
 export class VitalsPage implements OnInit {
   faCommentDots = faCommentDots;
+  faPlusSquare = faPlusSquare;
   faCalendar = faCalendar;
   vitals: any[] = [];
+
+  selectedPerson = this.utilities.selectedRelativeId;
+
+  userRelatives: any[] = [];
+
   constructor(
     public actShtCtr: ActionSheetController,
     private router: Router,
@@ -30,10 +37,66 @@ export class VitalsPage implements OnInit {
 
   ionViewWillEnter() {
     if (this.utilities.isHybridApp) {
+      this.loadUserRelatives();
       this.getLocalVitals();
     } else {
+      this.getUserRelatives();
       this.getVitals();
     }
+  }
+
+  async getUserRelatives() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getUserRelatives().subscribe((data) => {
+            a.dismiss();
+            console.log("Returned from Backend");
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (typeof data != "undefined" && typeof data[0] != "undefined") {
+                this.userRelatives = data[0];
+              }
+            }
+          });
+        });
+      });
+  }
+
+  async loadUserRelatives() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.db
+            .getUserRelatives(this.utilities.userId)
+            .then((res: any[]) => {
+              console.log(res);
+              this.userRelatives = res;
+            })
+            .catch((error) => {
+              this.utilities.sqliteErrorDisplayer(
+                "health-records * loadUserRelatives",
+                error
+              );
+              this.utilities.presentToastWarning("Something went wrong");
+              console.error(
+                "Error -> loadAppointments() function returned error." +
+                  JSON.stringify(error)
+              );
+            });
+          a.dismiss();
+        });
+      });
   }
 
   async getVitals() {

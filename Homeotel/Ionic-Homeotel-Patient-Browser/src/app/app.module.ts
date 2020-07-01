@@ -29,6 +29,8 @@ import { DatabaseService } from "./services/database.service";
 import { IonicStorageModule } from "@ionic/storage";
 
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MaterialModule } from "./material.module";
 
 @NgModule({
   declarations: [AppComponent],
@@ -44,6 +46,8 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     ModalPageModule,
     IonicStorageModule.forRoot(),
     FontAwesomeModule,
+    BrowserAnimationsModule,
+    MaterialModule,
   ],
   providers: [
     StatusBar,

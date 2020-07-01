@@ -8,6 +8,82 @@
 </ion-header>
 
 <ion-content>
+  <ion-row
+    *ngIf="!utilities.isHybridApp"
+    style="cursor: pointer; border: 1px solid #999; line-height: 40px;"
+  >
+    <ion-col style="background-color: #0a9f28;"
+      ><p style="vertical-align: middle; text-align: center; color: white;">
+        Vitals
+      </p></ion-col
+    >
+    <ion-col
+      [routerLink]="['/medical-history']"
+      style="border-right: 1px solid #999;"
+      ><p style="vertical-align: middle; text-align: center;">
+        Medical History
+      </p></ion-col
+    >
+    <ion-col [routerLink]="['/lifestyle']" style="border-right: 1px solid #999;"
+      ><p style="vertical-align: middle; text-align: center;">
+        Lifestyle
+      </p></ion-col
+    >
+    <ion-col [routerLink]="['/files']" style="border-right: 1px solid #999;"
+      ><p style="vertical-align: middle; text-align: center;">Files</p></ion-col
+    >
+  </ion-row>
+  <div class="container dashedBorderBottom" style="padding: 6px;">
+    <div class="scroll" scrollX="true">
+      <div
+        class="individ"
+        [style.border]="selectedPerson == -1 ? '2px solid #0a9f28' : '2px solid #fff' "
+      >
+        <div class="person" (click)="person(-1)">
+          <div class="add">
+            <!-- <ion-icon class="plusIcon" name="add-outline"></ion-icon> -->
+            <fa-icon [icon]="faPlusSquare"></fa-icon>
+          </div>
+          <div class="name-holder three-dots">Add</div>
+        </div>
+      </div>
+      <div
+        class="individ"
+        [style.border]="selectedPerson == 0 ? '2px solid #0a9f28' : '2px solid #fff' "
+      >
+        <div class="person" (click)="person(0)">
+          <div class="add">
+            <img
+              [src]="utilities.getPhotoDataUrl(utilities.currentUserDetails['photo'])"
+              height="70px"
+              width="70px"
+              style="border-radius: 100%;"
+            />
+          </div>
+          <div class="name-holder three-dots">Self</div>
+        </div>
+      </div>
+
+      <div
+        *ngFor="let relative of userRelatives"
+        class="individ"
+        [style.border]="selectedPerson == relative.relative_id ? '2px solid #0a9f28' : '2px solid #fff' "
+      >
+        <div class="person" (click)="person(relative.relative_id)">
+          <div class="add">
+            <img
+              [src]="utilities.getPhotoDataUrl(relative.photo)"
+              height="70px"
+              width="70px"
+              style="border-radius: 100%;"
+            />
+          </div>
+          <div class="name-holder three-dots">{{relative.relative_name}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div *ngIf="vitals.length > 0; else noVitals" style="margin-bottom: 150px;">
     <ion-grid>
       <div *ngFor="let vital of vitals" class="dashedBorderBottom pad5">

@@ -47,11 +47,6 @@ export class HealthRecordsPage {
         name: "Files",
         redirectUrl: "/files",
       },
-      {
-        id: 4,
-        name: "Previous Consultations",
-        redirectUrl: "/previous-consultations",
-      },
     ];
   }
 

@@ -7,6 +7,7 @@ import { AlertController } from "@ionic/angular";
 import { ApiService } from "src/app/services/api.service";
 import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
+import { Validators, FormGroup, FormControl } from "@angular/forms";
 
 @Component({
   selector: "app-appointment-details",
@@ -14,6 +15,7 @@ import { CommonService } from "src/app/services/common.service";
   styleUrls: ["./appointment-details.page.scss"],
 })
 export class AppointmentDetailsPage implements OnInit {
+  appointmentDetailsForm: FormGroup;
   doctorName;
   doctorUsername;
   complaintDescription;
@@ -24,9 +26,67 @@ export class AppointmentDetailsPage implements OnInit {
   recurringFrequency;
   aggravatedBy;
   description;
+  severity;
+  duration;
+  onset_id;
+  characteristics;
+  sensation;
+  aggravation;
+  amelioration;
+  modality;
+  associated_symptoms_id;
   doctorId;
   isThisUpcomingAppointment = false;
   commonServiceUpcomingAppointment;
+
+  // Masters data
+  yesOrNoMasterData: any[] = [
+    {
+      id: 1,
+      name: "Yes",
+    },
+    {
+      id: 2,
+      name: "No",
+    },
+  ];
+
+  severityMasterData: any[] = [
+    {
+      id: 1,
+      name: "Mild",
+    },
+    {
+      id: 2,
+      name: "Moderate",
+    },
+    {
+      id: 3,
+      name: "Severe",
+    },
+  ];
+
+  onsetMasterData: any[] = [
+    {
+      id: 1,
+      name: "Sudden",
+    },
+    {
+      id: 2,
+      name: "Gradual",
+    },
+  ];
+
+  associatedSymptomsMasterData: any[] = [
+    {
+      id: 1,
+      name: "Symptom 1",
+    },
+    {
+      id: 2,
+      name: "Symptom 2",
+    },
+  ];
 
   constructor(
     private alertCtrl: AlertController,
@@ -38,6 +98,21 @@ export class AppointmentDetailsPage implements OnInit {
     private loadingController: LoadingController,
     private db: DatabaseService
   ) {
+    this.appointmentDetailsForm = new FormGroup({
+      is_recurring: new FormControl("", Validators.required),
+      recurring_freq: new FormControl("", Validators.required),
+      severity_id: new FormControl("", Validators.required),
+      duration: new FormControl("", Validators.required),
+      onset_id: new FormControl("", Validators.required),
+      characteristics: new FormControl("", Validators.required),
+      sensation: new FormControl("", Validators.required),
+      aggravation: new FormControl("", Validators.required),
+      amelioration: new FormControl("", Validators.required),
+      modality: new FormControl("", Validators.required),
+      associated_symptoms_id: new FormControl("", Validators.required),
+      complaint_description: new FormControl("", Validators.required),
+    });
+
     this.commonServiceUpcomingAppointment = this.commonService.upcomingAppointment;
     if (this.commonServiceUpcomingAppointment) {
       let getId = this.commonServiceUpcomingAppointment["appointment_id"];
@@ -146,6 +221,19 @@ export class AppointmentDetailsPage implements OnInit {
       },
     });
     return await modal.present();
+  }
+
+  navigater(param) {
+    if (this.utilities.isHybridApp) {
+      this.router.navigate(["/appointment-questions/" + param]);
+    } else {
+      console.log("This is web");
+    }
+  }
+
+  selectedColumn(columnName) {
+    let columnValue = this.appointmentDetailsForm.get(columnName).value;
+    console.log("columnValue --> " + columnValue);
   }
 
   cancelSlot() {

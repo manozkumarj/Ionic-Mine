@@ -471,4 +471,13 @@ export class ApiService {
     };
     return this.http.post(this.doctorApiUrl, body);
   }
+
+  getPayments(userId) {
+    var body = {
+      access_token: this.utilities.jwt,
+      request_type: "USER_PAYMENTS_GET",
+      userId,
+    };
+    return this.http.post(this.apiUrl, body);
+  }
 }

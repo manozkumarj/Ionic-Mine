@@ -1009,4 +1009,58 @@ export class DatabaseService {
       return doctorModesDetails;
     });
   }
+
+  getTotalNetAmount(IN_user_id) {
+    let sql = `select (SELECT case when sum(net_amount) is null then 0 else sum(net_amount) end as debit FROM d_transaction where transaction_type_id in (1, 3) and user_id = ${IN_user_id}) - (SELECT case when sum(net_amount) is null then 0 else sum(net_amount) end as debit FROM d_transaction where transaction_type_id in (2, 4) and user_id = ${IN_user_id})as total_net_amount;`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      let totalNetAmount;
+      console.log(res);
+      if (res.rows.length > 0) {
+        totalNetAmount = res.rows.item(0).total_net_amount;
+      }
+      return totalNetAmount;
+    });
+  }
+
+  getPayments(IN_IN_user_id_id) {
+    let sql = `SELECT dt.*,case when dt.kit_id is null then 'appointment' else 'kit' end as 'transaction_for' , dk.name as kit_name, du.name as user_name , m.name as mode_name , da.relative_id , dr.relative_name ,dup.photo as user_photo , dkp.photo as kit_image FROM d_transaction dt
+    left join dd_kit dk on dt.kit_id = dk.kit_id and dt.doctor_id = dk.doctor_id
+    left join d_user du on du.user_id = dt.user_id
+    left join d_appointment da on da.appointment_id = dt.appointment_id
+    left join m_mode m on da.mode_id = m.mode_id
+    left join du_relative dr on dr.relative_id = da.relative_id
+    left join du_photo dup on dup.user_id = dt.user_id
+    left join dk_photo dkp on dkp.kit_id = dt.kit_id
+    where dt.IN_user_id_id= ${IN_IN_user_id_id}`;
+
+    return this.dbObject.executeSql(sql, []).then((res) => {
+      var transactionType;
+      var image;
+      let payments = [];
+      console.log(res);
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          if (res.rows.item(i).transaction_for == "kit") {
+            transactionType = res.rows.item(i).kit_name;
+            image = res.rows.item(i).kit_image
+              ? res.rows.item(i).kit_image
+              : "assets/images/homeokit-1.jpg";
+          } else {
+            transactionType = res.rows.item(i).mode_name;
+            image = res.rows.item(i).user_photo;
+          }
+          payments.push({
+            displayName: res.rows.item(i).user_name,
+            transactionType: transactionType,
+            transactionDate: res.rows.item(i).transaction_at,
+            transactionTypeId: res.rows.item(i).transaction_type_id,
+            netAmount: res.rows.item(i).net_amount.toFixed(2),
+            image: image,
+          });
+        }
+      }
+      return payments;
+    });
+  }
 }
