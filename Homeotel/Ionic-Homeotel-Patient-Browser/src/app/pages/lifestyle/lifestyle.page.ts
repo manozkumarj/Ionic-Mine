@@ -38,6 +38,46 @@ export class LifestylePage {
   m_profession: any[] = [];
   m_food: any[] = [];
   m_heat: any[] = [];
+  m_memory: any[] = [];
+  m_appetite: any[] = [];
+  m_thirst: any[] = [];
+  m_intolerance: any[] = [];
+  m_sleep: any[] = [];
+  m_postureOfSleep: any[] = [];
+  m_sweatQuantity: any[] = [];
+  m_sweatSmell: any[] = [];
+  m_urineQty: any[] = [];
+  m_urineSmell: any[] = [];
+  m_urineFlow: any[] = [];
+  m_bowelsPeriodicity: any[] = [];
+  m_bowelsConsistency: any[] = [];
+  m_tongueStatus: any[] = [];
+  m_bathingPreference: any[] = [];
+  m_seasonPreference: any[] = [];
+  m_coveringPreference: any[] = [];
+  m_airType: any[] = [];
+  m_openAirPreference: any[] = [];
+  m_symptomsMensis: any[] = [];
+  m_menopause: any[] = [
+    {
+      id: 1,
+      name: "Yes",
+    },
+    {
+      id: 2,
+      name: "No",
+    },
+  ];
+  m_pregnant: any[] = [
+    {
+      id: 1,
+      name: "Yes",
+    },
+    {
+      id: 2,
+      name: "No",
+    },
+  ];
 
   constructor(
     private utilities: UtilitiesService,
@@ -54,7 +94,6 @@ export class LifestylePage {
       profession_id: new FormControl("", Validators.required),
       food_id: new FormControl("", Validators.required),
       heat_id: new FormControl("", Validators.required),
-      activity_id: new FormControl("", Validators.required),
       memory_id: new FormControl("", Validators.required),
       appetite_id: new FormControl("", Validators.required),
       habits: new FormControl("", Validators.required),
@@ -116,7 +155,18 @@ export class LifestylePage {
       this.loadLifestyleMasters();
       this.loadLifestyleData();
     } else {
-      this.getLifestyles();
+      // this.getLifestyles();
+      console.log("Need to make an API call");
+    }
+  }
+
+  selectedColumn(columnName) {
+    let columnValue = this.lifestyleForm.get(columnName).value;
+    columnValue = columnValue.toString();
+    console.log("columnName --> " + columnName);
+    console.log("columnValue --> " + columnValue);
+    if (columnValue.trim()) {
+      console.log("Can upsert this column");
     }
   }
 
@@ -360,12 +410,12 @@ export class LifestylePage {
       .then((a) => {
         a.present().then(async (res) => {
           this.apiService.getLifestylesMasters().subscribe((data) => {
-            a.dismiss();
             console.log(
               "Received loadLifestyleMastersForWeb details are below -> "
             );
             console.log(data);
             if (this.utilities.isInvalidApiResponseData(data)) {
+              a.dismiss();
               console.log("Returned Error");
             } else {
               if (
@@ -374,11 +424,184 @@ export class LifestylePage {
                 typeof data[0][0] != "undefined"
               ) {
                 console.log("Backend success");
-                const masterData = data[0][0];
+                const masterData = data[0];
+                console.log(masterData);
+                masterData.forEach((data) => {
+                  if (data["MASTER_TYPE"].toLowerCase() === "smoking") {
+                    this.m_smoking.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data["MASTER_TYPE"].toLowerCase() === "alcohol") {
+                    this.m_alcohol.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "excercise"
+                  ) {
+                    this.m_excercise.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "activity_level"
+                  ) {
+                    this.m_activity.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "profession"
+                  ) {
+                    this.m_profession.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data["MASTER_TYPE"].toLowerCase() === "food") {
+                    this.m_food.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data["MASTER_TYPE"].toLowerCase() === "heat") {
+                    this.m_heat.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data["MASTER_TYPE"].toLowerCase() === "memory") {
+                    this.m_memory.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data["MASTER_TYPE"].toLowerCase() === "appetite") {
+                    this.m_appetite.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data["MASTER_TYPE"].toLowerCase() === "thirst") {
+                    this.m_thirst.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "intolerance"
+                  ) {
+                    this.m_intolerance.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data["MASTER_TYPE"].toLowerCase() === "sleep") {
+                    this.m_sleep.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "posture_of_sleep"
+                  ) {
+                    this.m_postureOfSleep.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "sweat_quantity"
+                  ) {
+                    this.m_sweatQuantity.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "sweat_smell"
+                  ) {
+                    this.m_sweatSmell.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "urine_qty"
+                  ) {
+                    this.m_urineQty.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "urine_smell"
+                  ) {
+                    this.m_urineSmell.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "urine_flow"
+                  ) {
+                    this.m_urineFlow.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "bowels_periodicity"
+                  ) {
+                    this.m_bowelsPeriodicity.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "bowels_consistency"
+                  ) {
+                    this.m_bowelsConsistency.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "tongue_type"
+                  ) {
+                    this.m_tongueStatus.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "bathing_reference"
+                  ) {
+                    this.m_bathingPreference.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "season_preference"
+                  ) {
+                    this.m_seasonPreference.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "covering_preference"
+                  ) {
+                    this.m_coveringPreference.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data["MASTER_TYPE"].toLowerCase() === "air_type") {
+                    this.m_airType.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data["MASTER_TYPE"].toLowerCase() === "open_air") {
+                    this.m_openAirPreference.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (
+                    data["MASTER_TYPE"].toLowerCase() === "symptoms_mensis"
+                  ) {
+                    this.m_symptomsMensis.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  }
+                });
+                a.dismiss();
               }
             }
           });
-          a.dismiss();
         });
       });
   }

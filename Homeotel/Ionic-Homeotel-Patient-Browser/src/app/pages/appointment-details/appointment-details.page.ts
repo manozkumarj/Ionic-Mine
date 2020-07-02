@@ -220,7 +220,6 @@ export class AppointmentDetailsPage implements OnInit {
               }
             }
           });
-          a.dismiss();
         });
       });
   }
@@ -255,6 +254,7 @@ export class AppointmentDetailsPage implements OnInit {
 
   selectedColumn(columnName) {
     let columnValue = this.appointmentDetailsForm.get(columnName).value;
+    columnValue = columnValue.toString();
     console.log("columnName --> " + columnName);
     console.log("columnValue --> " + columnValue);
     if (columnValue.trim()) {

@@ -7,6 +7,7 @@ import { IonicModule } from "@ionic/angular";
 import { LifestylePageRoutingModule } from "./lifestyle-routing.module";
 
 import { LifestylePage } from "./lifestyle.page";
+import { MaterialModule } from "src/app/material.module";
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { LifestylePage } from "./lifestyle.page";
     IonicModule,
     LifestylePageRoutingModule,
     ReactiveFormsModule,
+    MaterialModule,
   ],
   declarations: [LifestylePage],
 })

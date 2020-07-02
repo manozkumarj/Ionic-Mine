@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list *ngIf="lifestyles.length > 0; else noLifestyles">
+  <ion-list *ngIf="(utilities.isHybridApp) && (lifestyles.length > 0)">
     <ion-item
       *ngFor="let lifestyle of lifestyles"
       (click)="redirect(lifestyle.id)"
@@ -29,6 +29,1575 @@
       </ion-grid>
     </ion-item>
   </ion-list>
+
+  <!-- For browser -->
+  <form [formGroup]="lifestyleForm">
+    <ion-grid *ngIf="!utilities.isHybridApp">
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Smoking
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Smoking</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('smoking_id')"
+                    formControlName="smoking_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_smoking"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Alcohol
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Alcohol</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('alcohol_id')"
+                    formControlName="alcohol_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_alcohol"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Excercise
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Excercise</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('excercise_id')"
+                    formControlName="excercise_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_excercise"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Activity level
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>activity level</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('activity_level_id')"
+                    formControlName="activity_level_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_activity"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Profession
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Profession</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('profession_id')"
+                    formControlName="profession_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_profession"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Food
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Food</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('food_id')"
+                    formControlName="food_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_food"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Heat
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Heat</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('heat_id')"
+                    formControlName="heat_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_heat"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Memory
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Memory</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('memory_id')"
+                    formControlName="memory_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_memory"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Appetite
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Appetite</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('appetite_id')"
+                    formControlName="appetite_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_appetite"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Habits
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="habits"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('habits')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Thirst
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Thirst</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('thirst_id')"
+                    formControlName="thirst_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_thirst"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Aversions
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="aversions"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('aversions')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Desires
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="desires"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('desires')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Intolerance
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Intolerance</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('intolerance_id')"
+                    formControlName="intolerance_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_intolerance"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Desires during childhood
+              </ion-col>
+                <ion-col size="auto">
+                  <ion-input
+                    formControlName="desires_during_childhood"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('desires_during_childhood')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Sleep
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Sleep</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('sleep_id')"
+                    formControlName="sleep_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_sleep"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Posture of sleep
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Posture of sleep</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('posture_of_sleep_id')"
+                    formControlName="posture_of_sleep_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_postureOfSleep"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Other sleep posture
+              </ion-col>
+                <ion-col size="auto">
+                  <ion-input
+                    formControlName="other_sleep_posture"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('other_sleep_posture')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Dreams
+              </ion-col>
+                <ion-col size="auto">
+                  <ion-input
+                    formControlName="dreams"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('dreams')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Sweat
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="sweat"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('sweat')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Sweat quantity
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Sweat quantity</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('sweat_quantity')"
+                    formControlName="sweat_quantity"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_sweatQuantity"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Sweat smell
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Sweat smell</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('sweat_smell_id')"
+                    formControlName="sweat_smell_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_sweatSmell"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Life situation
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="life_situation"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('life_situation')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Urine quantity
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Urine quantity</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('urine_qty_id')"
+                    formControlName="urine_qty_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_urineQty"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Urine smell
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Urine smell</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('urine_smell_id')"
+                    formControlName="urine_smell_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_urineSmell"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Urine flow
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Urine flow</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('urine_flow_id')"
+                    formControlName="urine_flow_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_urineFlow"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Urine colour
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="urine_color"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('urine_color')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Urine times in day
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="urine_times_in_day"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('urine_times_in_day')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Urine times in night
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="urine_times_in_night"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('urine_times_in_night')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Bowels times in day
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="bowels_times_in_day"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('bowels_times_in_day')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Bowels times in night
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="bowels_times_in_night"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('bowels_times_in_night')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Bowels periodicity
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Bowels periodicity</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('bowels_periodicity_id')"
+                    formControlName="bowels_periodicity_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_bowelsPeriodicity"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Bowels consistency
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Bowels consistency</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('bowels_consistency_id')"
+                    formControlName="bowels_consistency_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_bowelsConsistency"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Bowels colour of stool
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="bowels_color_of_stool"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('bowels_color_of_stool')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Tongue colour
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="tongue_color"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('tongue_color')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Tongue back coating
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="tongue_back_coating"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('tongue_back_coating')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Tongue front coating
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="tongue_front_coating"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('tongue_front_coating')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Tongue entire coating
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="tongue_entire_coating"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('tongue_entire_coating')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                tongue type
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>tongue type</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('tongue_tyep_id')"
+                    formControlName="tongue_tyep_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_tongueStatus"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Bathing preference
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Bathing preference</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('bathing_preference_id')"
+                    formControlName="bathing_preference_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_bathingPreference"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Season preference
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Season preference</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('season_preference_id')"
+                    formControlName="season_preference_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_seasonPreference"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Covering preference
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Covering preference</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('covering_preference_id')"
+                    formControlName="covering_preference_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_coveringPreference"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Air type
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Air type</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('air_type_id')"
+                    formControlName="air_type_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_airType"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Open air
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Open air</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('open_air_id')"
+                    formControlName="open_air_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_openAirPreference"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Menarche
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="menarche"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('menarche')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Mensis
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="mensis"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('mensis')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Lmp date
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="lmp"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('lmp')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Symptoms before mensis
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Symptoms before mensis</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('symptoms_before_mensis_id')"
+                    formControlName="symptoms_before_mensis_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_symptomsMensis"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Symptoms during mensis
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Symptoms during mensis</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('symptoms_during_mensis_id')"
+                    formControlName="symptoms_during_mensis_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_symptomsMensis"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Symptoms after mensis
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Symptoms after mensis</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('symptoms_after_mensis_id')"
+                    formControlName="symptoms_after_mensis_id"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_symptomsMensis"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                menopause
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>menopause</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('menopause')"
+                    formControlName="menopause"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_menopause"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Pregnant
+              </ion-col>
+              <ion-col size="auto">
+                <mat-form-field>
+                  <mat-label>Pregnant</mat-label>
+                  <mat-select
+                    (selectionChange)="selectedColumn('pregnant')"
+                    formControlName="pregnant"
+                  >
+                    <mat-option
+                      *ngFor="let item of m_pregnant"
+                      [value]="item.id"
+                    >
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+      
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                No of deliveries
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="no_of_deliveries"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('no_of_deliveries')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                No of children
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="no_of_children"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('no_of_children')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Intra uterine deaths
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="intra_uterine_deaths"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('intra_uterine_deaths')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+      <ion-list>
+        <ion-item>
+          <ion-grid>
+            <ion-row
+              style="font-size: 16px;"
+              class="ion-justify-content-end ion-align-content-end"
+            >
+              <ion-col>
+                Abortions
+              </ion-col>
+              <ion-col size="auto">
+                  <ion-input
+                    formControlName="abortions"
+                    class="field-input"
+                    (ionBlur)="selectedColumn('abortions')"
+                    placeholder="Enter Recurring Frequency"
+                    value=""
+                  ></ion-input>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-list>
+
+
+    </ion-grid>
+  </form>
 
   <ng-template #noLifestyles>
     <ion-card>
