@@ -206,8 +206,8 @@ export class LoginPage implements OnInit {
   async login() {
     let username = this.loginForm.get("username").value.trim();
     let password = this.loginForm.get("password").value.trim();
-    // username = "maheshkumarj1432@gmail.com";
-    // password = "Zolt123$";
+    username = "maheshkumarj1432@gmail.com";
+    password = "Zolt123$";
     console.log(username);
     console.log(password);
 
@@ -305,7 +305,6 @@ export class LoginPage implements OnInit {
     }
   }
 
-
   // proceedToRegister
   async proceedToRegister(username, password) {
     const loading = await this.loadingController
@@ -315,82 +314,76 @@ export class LoginPage implements OnInit {
       })
       .then((a) => {
         a.present().then(async (res) => {
-          
           let letSignup = await this.apiService
-          .registerUser(username, username, password)
-          .subscribe((data) => {
-            console.log("Returned from Backend");
-            console.log(data);
-            if (
-              this.utilities.isInvalidApiResponseData(data)
-            ) {
-              console.log("Returned Error");
-              // console.log(data[0][0]);
-              if (data[0][0]["error"].includes(username)) {
-                this.toastErrorMsg = "Email already exist";
-                this.utilities.presentToastWarning(
-                  "This user's data already imported to SQLite in other device, please import in this devices as well if you want to continue"
-                );
+            .registerUser(username, username, password)
+            .subscribe((data) => {
+              console.log("Returned from Backend");
+              console.log(data);
+              if (this.utilities.isInvalidApiResponseData(data)) {
+                console.log("Returned Error");
+                // console.log(data[0][0]);
+                if (data[0][0]["error"].includes(username)) {
+                  this.toastErrorMsg = "Email already exist";
+                  this.utilities.presentToastWarning(
+                    "This user's data already imported to SQLite in other device, please import in this devices as well if you want to continue"
+                  );
+                } else {
+                  this.toastErrorMsg = "Something went wrong";
+                }
+                // this.presentToastWarning();
+                a.dismiss();
+                return false;
               } else {
-                this.toastErrorMsg = "Something went wrong";
-              }
-              // this.presentToastWarning();
-              a.dismiss();
-              return false;
-            } else {
-              console.log("Returned Success");
+                console.log("Returned Success");
 
-              if (this.utilities.isHybridApp) {
-              let res = data[0][0];
-              if (res["query"]) {
-                let receivedQuery = res["query"];
-                console.log(receivedQuery);
+                if (this.utilities.isHybridApp) {
+                  let res = data[0][0];
+                  if (res["query"]) {
+                    let receivedQuery = res["query"];
+                    console.log(receivedQuery);
 
-                this.db
-                  .crudOperations(receivedQuery)
-                  .then((res) => {
-                    console.log(
-                      "signup details saved successfully"
-                    );
+                    this.db
+                      .crudOperations(receivedQuery)
+                      .then((res) => {
+                        console.log("signup details saved successfully");
+                        a.dismiss();
+                        this.proceedToLogin(username, password);
+                        return true;
+                      })
+                      .catch((error) => {
+                        this.utilities.sqliteErrorDisplayer(
+                          "login * register",
+                          error
+                        );
+                        console.error(
+                          "Error -> signup crudOperations function returned error." +
+                            JSON.stringify(error)
+                        );
+                        return false;
+                      });
+                  } else {
                     a.dismiss();
-                    this.proceedToLogin(username, password);
-                    return true;
-                  })
-                  .catch((error) => {
                     this.utilities.sqliteErrorDisplayer(
                       "login * register",
-                      error
+                      "Query property is not received from backend SP"
                     );
-                    console.error(
-                      "Error -> signup crudOperations function returned error." +
-                        JSON.stringify(error)
+                    console.log(
+                      "Query property is not received from backend SP"
                     );
                     return false;
-                  });
-              } else {
-                a.dismiss();
-                this.utilities.sqliteErrorDisplayer(
-                  "login * register",
-                  "Query property is not received from backend SP"
-                );
-                console.log(
-                  "Query property is not received from backend SP"
-                );
-                return false;
+                  }
+                } else {
+                  a.dismiss();
+                  this.proceedToLogin(username, password);
+                  return true;
+                }
               }
-            }else{
-              a.dismiss();
-              this.proceedToLogin(username, password);
-              return true;
-            }
-            }
-          });
+            });
         });
       });
   }
 
-
-// proceedToLogin
+  // proceedToLogin
   async proceedToLogin(username, password) {
     const loading = await this.loadingController
       .create({

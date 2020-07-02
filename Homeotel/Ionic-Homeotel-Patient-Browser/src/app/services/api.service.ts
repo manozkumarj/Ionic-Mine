@@ -335,6 +335,24 @@ export class ApiService {
     return this.http.post(this.apiUrl, body);
   }
 
+  // Getting Lifestyle masters
+  getLifestylesMasters() {
+    var body = {
+      access_token: this.utilities.jwt,
+      request_type: "USER_LIFESTYLE_MASTER_GET",
+    };
+    return this.http.post(this.apiUrl, body);
+  }
+
+  // Getting Complaints masters
+  getComplaintsMasters() {
+    var body = {
+      access_token: this.utilities.jwt,
+      request_type: "USER_COMPLAINT_MASTER_GET",
+    };
+    return this.http.post(this.apiUrl, body);
+  }
+
   // Upserting lifestyle
   updateUserLifestyleDetails(
     smokingId,

@@ -4,6 +4,7 @@ import { ApiService } from "src/app/services/api.service";
 import { Router } from "@angular/router";
 import { LoadingController } from "@ionic/angular";
 import { DatabaseService } from "src/app/services/database.service";
+import { Validators, FormGroup, FormControl } from "@angular/forms";
 
 @Component({
   selector: "app-lifestyle",
@@ -11,6 +12,7 @@ import { DatabaseService } from "src/app/services/database.service";
   styleUrls: ["./lifestyle.page.scss"],
 })
 export class LifestylePage {
+  lifestyleForm;
   lifestyles;
 
   smoking = "Select";
@@ -44,10 +46,72 @@ export class LifestylePage {
     private db: DatabaseService,
     private router: Router
   ) {
+    this.lifestyleForm = new FormGroup({
+      smoking_id: new FormControl("", Validators.required),
+      alcohol_id: new FormControl("", Validators.required),
+      excercise_id: new FormControl("", Validators.required),
+      activity_level_id: new FormControl("", Validators.required),
+      profession_id: new FormControl("", Validators.required),
+      food_id: new FormControl("", Validators.required),
+      heat_id: new FormControl("", Validators.required),
+      activity_id: new FormControl("", Validators.required),
+      memory_id: new FormControl("", Validators.required),
+      appetite_id: new FormControl("", Validators.required),
+      habits: new FormControl("", Validators.required),
+      thirst_id: new FormControl("", Validators.required),
+      aversions: new FormControl("", Validators.required),
+      desires: new FormControl("", Validators.required),
+      intolerance_id: new FormControl("", Validators.required),
+      desires_during_childhood: new FormControl("", Validators.required),
+      sleep_id: new FormControl("", Validators.required),
+      posture_of_sleep_id: new FormControl("", Validators.required),
+      other_sleep_posture: new FormControl("", Validators.required),
+      dreams: new FormControl("", Validators.required),
+      sweat: new FormControl("", Validators.required),
+      sweat_quantity: new FormControl("", Validators.required),
+      sweat_smell_id: new FormControl("", Validators.required),
+      life_situation: new FormControl("", Validators.required),
+      urine_qty_id: new FormControl("", Validators.required),
+      urine_smell_id: new FormControl("", Validators.required),
+      urine_flow_id: new FormControl("", Validators.required),
+      urine_color: new FormControl("", Validators.required),
+      urine_times_in_day: new FormControl("", Validators.required),
+      urine_times_in_night: new FormControl("", Validators.required),
+      bowels_times_in_day: new FormControl("", Validators.required),
+      bowels_times_in_night: new FormControl("", Validators.required),
+      bowels_periodicity_id: new FormControl("", Validators.required),
+      bowels_consistency_id: new FormControl("", Validators.required),
+      bowels_color_of_stool: new FormControl("", Validators.required),
+      tongue_color: new FormControl("", Validators.required),
+      tongue_back_coating: new FormControl("", Validators.required),
+      tongue_front_coating: new FormControl("", Validators.required),
+      tongue_entire_coating: new FormControl("", Validators.required),
+      tongue_tyep_id: new FormControl("", Validators.required),
+      bathing_preference_id: new FormControl("", Validators.required),
+      season_preference_id: new FormControl("", Validators.required),
+      covering_preference_id: new FormControl("", Validators.required),
+      air_type_id: new FormControl("", Validators.required),
+      open_air_id: new FormControl("", Validators.required),
+      menarche: new FormControl("", Validators.required),
+      mensis: new FormControl("", Validators.required),
+      lmp: new FormControl("", Validators.required),
+      symptoms_before_mensis_id: new FormControl("", Validators.required),
+      symptoms_during_mensis_id: new FormControl("", Validators.required),
+      symptoms_after_mensis_id: new FormControl("", Validators.required),
+      menopause: new FormControl("", Validators.required),
+      pregnant: new FormControl("", Validators.required),
+      no_of_deliveries: new FormControl("", Validators.required),
+      no_of_children: new FormControl("", Validators.required),
+      intra_uterine_deaths: new FormControl("", Validators.required),
+      abortions: new FormControl("", Validators.required),
+    });
+
     this.loadLifestyles();
   }
 
   ionViewWillEnter() {
+    console.clear();
+    this.loadLifestyleMastersForWeb();
     if (this.utilities.isHybridApp) {
       this.loadLifestyleMasters();
       this.loadLifestyleData();
@@ -283,6 +347,38 @@ export class LifestylePage {
               }
             }
           });
+        });
+      });
+  }
+
+  async loadLifestyleMastersForWeb() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getLifestylesMasters().subscribe((data) => {
+            a.dismiss();
+            console.log(
+              "Received loadLifestyleMastersForWeb details are below -> "
+            );
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              console.log("Returned Error");
+            } else {
+              if (
+                typeof data != "undefined" &&
+                typeof data[0] != "undefined" &&
+                typeof data[0][0] != "undefined"
+              ) {
+                console.log("Backend success");
+                const masterData = data[0][0];
+              }
+            }
+          });
+          a.dismiss();
         });
       });
   }

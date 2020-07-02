@@ -51,42 +51,9 @@ export class AppointmentDetailsPage implements OnInit {
     },
   ];
 
-  severityMasterData: any[] = [
-    {
-      id: 1,
-      name: "Mild",
-    },
-    {
-      id: 2,
-      name: "Moderate",
-    },
-    {
-      id: 3,
-      name: "Severe",
-    },
-  ];
-
-  onsetMasterData: any[] = [
-    {
-      id: 1,
-      name: "Sudden",
-    },
-    {
-      id: 2,
-      name: "Gradual",
-    },
-  ];
-
-  associatedSymptomsMasterData: any[] = [
-    {
-      id: 1,
-      name: "Symptom 1",
-    },
-    {
-      id: 2,
-      name: "Symptom 2",
-    },
-  ];
+  severityMasterData: any[] = [];
+  onsetMasterData: any[] = [];
+  associatedSymptomsMasterData: any[] = [];
 
   constructor(
     private alertCtrl: AlertController,
@@ -201,7 +168,62 @@ export class AppointmentDetailsPage implements OnInit {
     ];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.clear();
+    this.loadComplaintsMastersForWeb();
+  }
+
+  async loadComplaintsMastersForWeb() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService.getComplaintsMasters().subscribe((data) => {
+            console.log(
+              "Received loadComplaintsMastersForWeb details are below -> "
+            );
+            console.log(data);
+            if (this.utilities.isInvalidApiResponseData(data)) {
+              a.dismiss();
+              console.log("Returned Error");
+            } else {
+              if (
+                typeof data != "undefined" &&
+                typeof data[0] != "undefined" &&
+                typeof data[0][0] != "undefined"
+              ) {
+                console.log("Backend success");
+                const masterData = data[0];
+                console.log(masterData);
+                masterData.forEach((data) => {
+                  if (data["MASTER_TYPE"] == "SEVERITY") {
+                    this.severityMasterData.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data["MASTER_TYPE"] == "ONSET") {
+                    this.onsetMasterData.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  } else if (data["MASTER_TYPE"] == "SYMPTOMS") {
+                    this.associatedSymptomsMasterData.push({
+                      id: data.id,
+                      name: data.name,
+                    });
+                  }
+                });
+                a.dismiss();
+              }
+            }
+          });
+          a.dismiss();
+        });
+      });
+  }
 
   async presentDoctorContactModal(doctorId) {
     console.log("doctorId -> " + doctorId);
@@ -233,7 +255,11 @@ export class AppointmentDetailsPage implements OnInit {
 
   selectedColumn(columnName) {
     let columnValue = this.appointmentDetailsForm.get(columnName).value;
+    console.log("columnName --> " + columnName);
     console.log("columnValue --> " + columnValue);
+    if (columnValue.trim()) {
+      console.log("Can upsert this column");
+    }
   }
 
   cancelSlot() {
