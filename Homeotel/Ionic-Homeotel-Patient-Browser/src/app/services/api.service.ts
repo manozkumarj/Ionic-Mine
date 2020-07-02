@@ -208,6 +208,30 @@ export class ApiService {
     return this.http.post(this.apiUrl, body);
   }
 
+  // Upserting single complaint detail
+  getComplaintDetail(doctorId, relativeId, appointmentId) {
+    var body = {
+      access_token: this.utilities.jwt,
+      request_type: "COMPLAINT_DATA_GET",
+      appointmentId,
+      userId: this.utilities.userId,
+      doctorId,
+      relativeId,
+    };
+    return this.http.post(this.apiUrl, body);
+  }
+
+  // Upserting single complaint detail
+  getLifestyleDetails(relativeId) {
+    var body = {
+      access_token: this.utilities.jwt,
+      request_type: "LIFESTYLE_DATA_GET",
+      userId: this.utilities.userId,
+      relativeId,
+    };
+    return this.http.post(this.apiUrl, body);
+  }
+
   // Update user profile details
   updateUserProfileDetails(columnName, value) {
     var body = {

@@ -58,6 +58,8 @@ export class AppointmentDetailsPage implements OnInit {
   onsetMasterData: any[] = [];
   associatedSymptomsMasterData: any[] = [];
 
+  showRecurringFrequencyField = true;
+
   constructor(
     private alertCtrl: AlertController,
     private router: Router,
@@ -177,9 +179,14 @@ export class AppointmentDetailsPage implements OnInit {
     ];
   }
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter() {
     console.clear();
-    this.loadComplaintsMastersForWeb();
+    if (!this.utilities.isHybridApp) {
+      this.loadComplaintsMastersForWeb();
+      this.getComplaintDetailsForWeb();
+    }
   }
 
   async loadComplaintsMastersForWeb() {
@@ -233,6 +240,68 @@ export class AppointmentDetailsPage implements OnInit {
       });
   }
 
+  async getComplaintDetailsForWeb() {
+    const loading = await this.loadingController
+      .create({
+        message: "Loading...",
+        translucent: true,
+      })
+      .then((a) => {
+        a.present().then(async (res) => {
+          this.apiService
+            .getComplaintDetail(
+              this.doctorId,
+              this.relativeId,
+              this.appointmentId
+            )
+            .subscribe((data) => {
+              console.log(
+                "Received Current appointment Complaints details are below -> "
+              );
+              console.log(data);
+              if (this.utilities.isInvalidApiResponseData(data)) {
+                a.dismiss();
+                console.log("Returned Error");
+              } else {
+                if (
+                  typeof data != "undefined" &&
+                  typeof data[0] != "undefined" &&
+                  typeof data[0][0] != "undefined"
+                ) {
+                  console.log("Backend success");
+                  console.log(data);
+                  let receivedData = data[0][0];
+
+                  this.appointmentDetailsForm.patchValue({
+                    aggravation: receivedData["aggravation"],
+                    amelioration: receivedData["amelioration"],
+                    associated_symptoms_id: +receivedData[
+                      "associated_symptoms_id"
+                    ],
+                    characteristics: receivedData["characteristics"],
+                    complaint_description:
+                      receivedData["complaint_description"],
+                    duration: receivedData["duration"],
+                    is_recurring: +receivedData["is_recurring"],
+                    modality: receivedData["modality"],
+                    onset_id: +receivedData["onset_id"],
+                    recurring_freq: receivedData["recurring_freq"],
+                    sensation: receivedData["sensation"],
+                    severity_id: +receivedData["severity_id"],
+                  });
+
+                  if (receivedData["is_recurring"] == 2) {
+                    this.showRecurringFrequencyField = false;
+                  }
+
+                  a.dismiss();
+                }
+              }
+            });
+        });
+      });
+  }
+
   async presentDoctorContactModal(doctorId) {
     console.log("doctorId -> " + doctorId);
     this.utilities.bookAppointmentDoctorDetails["id"] = doctorId;
@@ -268,6 +337,12 @@ export class AppointmentDetailsPage implements OnInit {
     console.log("columnName --> " + columnName);
     console.log("columnValue --> " + columnValue);
     if (columnValue.trim()) {
+      if (columnName === "is_recurring" && columnValue == 1) {
+        this.showRecurringFrequencyField = true;
+      } else if (columnName === "is_recurring" && columnValue == 2) {
+        this.showRecurringFrequencyField = false;
+      }
+
       console.log("Can upsert this column");
       console.log("this.doctorId --> " + this.doctorId);
       console.log("this.relativeId --> " + this.relativeId);

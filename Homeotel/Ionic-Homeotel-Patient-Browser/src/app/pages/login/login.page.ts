@@ -206,8 +206,8 @@ export class LoginPage implements OnInit {
   async login() {
     let username = this.loginForm.get("username").value.trim();
     let password = this.loginForm.get("password").value.trim();
-    username = "maheshkumarj1432@gmail.com";
-    password = "Zolt123$";
+    // username = "maheshkumarj1432@gmail.com";
+    // password = "Zolt123$";
     console.log(username);
     console.log(password);
 
