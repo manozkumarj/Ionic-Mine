@@ -187,6 +187,27 @@ export class ApiService {
     return this.http.post(this.apiUrl, body);
   }
 
+  // Upserting single complaint detail
+  upsertSingleComplaintDetail(
+    doctorId,
+    relativeId,
+    appointmentId,
+    fieldName,
+    fieldValue
+  ) {
+    var body = {
+      access_token: this.utilities.jwt,
+      request_type: "USER_COMPLAINT_INSERT",
+      appointmentId,
+      userId: this.utilities.userId,
+      doctorId,
+      relativeId,
+      fieldName,
+      fieldValue,
+    };
+    return this.http.post(this.apiUrl, body);
+  }
+
   // Update user profile details
   updateUserProfileDetails(columnName, value) {
     var body = {
@@ -375,6 +396,19 @@ export class ApiService {
       professionId,
       foodId,
       heatId,
+    };
+    return this.http.post(this.apiUrl, body);
+  }
+
+  // Upserting single Lifestyle Field
+  upsertSingleLifestyleField(relativeId, fieldName, fieldValue) {
+    var body = {
+      access_token: this.utilities.jwt,
+      request_type: "USER_LIFESTYLE_INSERT",
+      userId: this.utilities.userId,
+      relativeId,
+      fieldName,
+      fieldValue,
     };
     return this.http.post(this.apiUrl, body);
   }

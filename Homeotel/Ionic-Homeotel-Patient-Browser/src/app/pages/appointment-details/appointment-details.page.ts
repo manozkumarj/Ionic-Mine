@@ -35,6 +35,9 @@ export class AppointmentDetailsPage implements OnInit {
   amelioration;
   modality;
   associated_symptoms_id;
+
+  appointmentId;
+  relativeId;
   doctorId;
   isThisUpcomingAppointment = false;
   commonServiceUpcomingAppointment;
@@ -166,6 +169,12 @@ export class AppointmentDetailsPage implements OnInit {
     this.doctorId = this.utilities.selectedAppointmentComplaintDetails[
       "doctor_id"
     ];
+    this.appointmentId = this.utilities.selectedAppointmentComplaintDetails[
+      "appointment_id"
+    ];
+    this.relativeId = this.utilities.selectedAppointmentComplaintDetails[
+      "relative_id"
+    ];
   }
 
   ngOnInit() {
@@ -252,13 +261,51 @@ export class AppointmentDetailsPage implements OnInit {
     }
   }
 
-  selectedColumn(columnName) {
+  async selectedColumn(columnName) {
+    console.clear();
     let columnValue = this.appointmentDetailsForm.get(columnName).value;
     columnValue = columnValue.toString();
     console.log("columnName --> " + columnName);
     console.log("columnValue --> " + columnValue);
     if (columnValue.trim()) {
       console.log("Can upsert this column");
+      console.log("this.doctorId --> " + this.doctorId);
+      console.log("this.relativeId --> " + this.relativeId);
+      console.log("this.appointmentId --> " + this.appointmentId);
+
+      const loading = await this.loadingController
+        .create({
+          message: "Saving...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
+            this.apiService
+              .upsertSingleComplaintDetail(
+                this.doctorId,
+                this.relativeId,
+                this.appointmentId,
+                columnName,
+                columnValue
+              )
+              .subscribe((data) => {
+                console.log("Returned from Backend");
+                console.log(data);
+                if (this.utilities.isInvalidApiResponseData(data)) {
+                  a.dismiss();
+                  this.utilities.presentToastWarning("Something went wrong");
+                  console.log("Returned Error");
+                  console.log(data[0][0]);
+                  if (data[0][0]["error"]) {
+                    console.log("Something went wrong");
+                  }
+                } else {
+                  console.log("Returned Success");
+                  a.dismiss();
+                }
+              });
+          });
+        });
     }
   }
 

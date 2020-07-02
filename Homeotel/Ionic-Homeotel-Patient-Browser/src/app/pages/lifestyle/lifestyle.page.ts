@@ -160,13 +160,43 @@ export class LifestylePage {
     }
   }
 
-  selectedColumn(columnName) {
+  async selectedColumn(columnName) {
     let columnValue = this.lifestyleForm.get(columnName).value;
     columnValue = columnValue.toString();
     console.log("columnName --> " + columnName);
     console.log("columnValue --> " + columnValue);
     if (columnValue.trim()) {
       console.log("Can upsert this column");
+      let relativeId = this.utilities.selectedRelativeId;
+      console.log("this.relativeId --> " + relativeId);
+
+      const loading = await this.loadingController
+        .create({
+          message: "Saving...",
+          translucent: true,
+        })
+        .then((a) => {
+          a.present().then(async (res) => {
+            this.apiService
+              .upsertSingleLifestyleField(relativeId, columnName, columnValue)
+              .subscribe((data) => {
+                console.log("Returned from Backend");
+                console.log(data);
+                if (this.utilities.isInvalidApiResponseData(data)) {
+                  a.dismiss();
+                  this.utilities.presentToastWarning("Something went wrong");
+                  console.log("Returned Error");
+                  console.log(data[0][0]);
+                  if (data[0][0]["error"]) {
+                    console.log("Something went wrong");
+                  }
+                } else {
+                  console.log("Returned Success");
+                  a.dismiss();
+                }
+              });
+          });
+        });
     }
   }
 
@@ -559,7 +589,7 @@ export class LifestylePage {
                       name: data.name,
                     });
                   } else if (
-                    data["MASTER_TYPE"].toLowerCase() === "bathing_reference"
+                    data["MASTER_TYPE"].toLowerCase() === "bathing_preference"
                   ) {
                     this.m_bathingPreference.push({
                       id: data.id,
