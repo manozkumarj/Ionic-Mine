@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>Payment gateways</ion-title>
+    <ion-title>Payment</ion-title>
     <ion-buttons slot="end">
       <ion-button>
         Amount : ${{amount}}
@@ -14,7 +14,37 @@
 
 <ion-content>
 
-  <ion-list *ngIf="paymentGateways.length > 0; else noPaymentGatewayss">
+  <!DOCTYPE html>
+  <!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<!-- target="payment_popup" onsubmit="window.open('about:blank','payment_popup','width=900,height=500');" -->
+  <div style="margin: 50px;">
+    Check and confirm payment
+
+    <form #paymentForm ngNoForm action="https://sandboxsecure.payu.in/_payment" name="payuform" method="POST" target="_blank">
+      <input type="hidden" name="key" value="Anx36vZB" />
+      <input type="hidden" name="hash_string" value="" />
+      <input type="hidden" name="hash" value="" />
+      <input type="hidden" name="txnid" value="" />
+      <input type="hidden" name="amount" value="" />
+      <input type="hidden" name="firstname" value="" />
+      <input type="hidden" name="email" value="" />
+      <input type="hidden" name="phone" value="" />
+      <input type="hidden" name="productinfo" value="" />
+      <input type="hidden" name="surl" size="64" value="" />
+      <input type="hidden" name="furl" size="64" value="" />
+      <input type="hidden" name="service_provider" value="payu_paisa" />
+      <ion-button class="field" type="submit" value="Submit" color="primary"
+    >Confirm and pay</ion-button>
+      <!-- <input style type="submit" value="Submit" /> -->
+    </form>
+  </div>
+
+  <!-- <ion-list *ngIf="paymentGateways.length > 0; else noPaymentGatewayss">
     <ion-item *ngFor="let paymentGateway of paymentGateways" (click)="makePayment(paymentGateway.id)" detail>
       <div style="font-size: 18px; font-weight: bold;"> {{paymentGateway.name}} </div>
     </ion-item>
@@ -27,5 +57,5 @@
       </ion-card-header>
     </ion-card>
   </ng-template>
-
+ -->
 </ion-content>

@@ -219,7 +219,7 @@ export class AppointmentsPage implements OnInit {
       selectedAppointment["photo"];
 
     console.log(this.utilities.selectedAppointmentComplaintDetails);
-    if (!isViewEHR) {
+    if (!isViewEHR && this.utilities.isHybridApp) {
       this.router.navigate(["/appointment-questions", 1]);
     } else {
       this.router.navigate(["/appointment-details"]);

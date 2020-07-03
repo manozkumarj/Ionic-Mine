@@ -459,94 +459,103 @@ export class LifestylePage {
               } else {
                 if (
                   typeof data != "undefined" &&
-                  typeof data[0] != "undefined" &&
-                  typeof data[0][0] != "undefined"
+                  typeof data[0] != "undefined"
                 ) {
                   console.log("Backend success");
                   console.log(data);
-                  let receivedData = data[0][0];
 
-                  this.lifestyleForm.patchValue({
-                    smoking_id: +receivedData["smoking_id"],
-                    alcohol_id: +receivedData["alcohol_id"],
-                    excercise_id: +receivedData["excercise_id"],
-                    activity_level_id: +receivedData["activity_level_id"],
-                    profession_id: +receivedData["profession_id"],
-                    food_id: +receivedData["food_id"],
-                    heat_id: +receivedData["heat_id"],
-                    memory_id: +receivedData["memory_id"],
-                    appetite_id: +receivedData["appetite_id"],
-                    habits: receivedData["habits"],
-                    thirst_id: +receivedData["thirst_id"],
-                    aversions: receivedData["aversions"],
-                    desires: receivedData["desires"],
-                    intolerance_id: +receivedData["intolerance_id"],
-                    desires_during_childhood:
-                      receivedData["desires_during_childhood"],
-                    sleep_id: receivedData["sleep_id"],
-                    posture_of_sleep_id: +receivedData["posture_of_sleep_id"],
-                    other_sleep_posture: receivedData["other_sleep_posture"],
-                    dreams: receivedData["dreams"],
-                    sweat: receivedData["sweat"],
-                    sweat_quantity: receivedData["sweat_quantity"],
-                    sweat_smell_id: +receivedData["sweat_smell_id"],
-                    life_situation: receivedData["life_situation"],
-                    urine_qty_id: +receivedData["urine_qty_id"],
-                    urine_smell_id: +receivedData["urine_smell_id"],
-                    urine_flow_id: +receivedData["urine_flow_id"],
-                    urine_color: receivedData["urine_color"],
-                    urine_times_in_day: receivedData["urine_times_in_day"],
-                    urine_times_in_night: receivedData["urine_times_in_night"],
-                    bowels_times_in_day: receivedData["bowels_times_in_day"],
-                    bowels_times_in_night:
-                      receivedData["bowels_times_in_night"],
-                    bowels_periodicity_id: +receivedData[
-                      "bowels_periodicity_id"
-                    ],
-                    bowels_consistency_id: +receivedData[
-                      "bowels_consistency_id"
-                    ],
-                    bowels_color_of_stool:
-                      receivedData["bowels_color_of_stool"],
-                    tongue_color: receivedData["tongue_color"],
-                    tongue_back_coating: receivedData["tongue_back_coating"],
-                    tongue_front_coating: receivedData["tongue_front_coating"],
-                    tongue_entire_coating:
-                      receivedData["tongue_entire_coating"],
-                    tongue_tyep_id: +receivedData["tongue_tyep_id"],
-                    bathing_preference_id: +receivedData[
-                      "bathing_preference_id"
-                    ],
-                    season_preference_id: +receivedData["season_preference_id"],
-                    covering_preference_id: +receivedData[
-                      "covering_preference_id"
-                    ],
-                    air_type_id: +receivedData["air_type_id"],
-                    open_air_id: +receivedData["open_air_id"],
-                    menarche: receivedData["menarche"],
-                    mensis: receivedData["mensis"],
-                    lmp: receivedData["lmp"],
-                    symptoms_before_mensis_id: +receivedData[
-                      "symptoms_before_mensis_id"
-                    ],
-                    symptoms_during_mensis_id: +receivedData[
-                      "symptoms_during_mensis_id"
-                    ],
-                    symptoms_after_mensis_id: +receivedData[
-                      "symptoms_after_mensis_id"
-                    ],
-                    menopause: receivedData["menopause"],
-                    pregnant: receivedData["pregnant"],
-                    no_of_deliveries: receivedData["no_of_deliveries"],
-                    no_of_children: receivedData["no_of_children"],
-                    intra_uterine_deaths: receivedData["intra_uterine_deaths"],
-                    abortions: receivedData["abortions"],
-                  });
+                  if (data[0].length > 0) {
+                    let receivedData = data[0][0];
 
-                  if (receivedData["posture_of_sleep_id"] == 5) {
-                    this.showOtherSleepPostureField = false;
+                    this.lifestyleForm.patchValue({
+                      smoking_id: +receivedData["smoking_id"],
+                      alcohol_id: +receivedData["alcohol_id"],
+                      excercise_id: +receivedData["excercise_id"],
+                      activity_level_id: +receivedData["activity_level_id"],
+                      profession_id: +receivedData["profession_id"],
+                      food_id: +receivedData["food_id"],
+                      heat_id: +receivedData["heat_id"],
+                      memory_id: +receivedData["memory_id"],
+                      appetite_id: +receivedData["appetite_id"],
+                      habits: receivedData["habits"],
+                      thirst_id: +receivedData["thirst_id"],
+                      aversions: receivedData["aversions"],
+                      desires: receivedData["desires"],
+                      intolerance_id: +receivedData["intolerance_id"],
+                      desires_during_childhood:
+                        receivedData["desires_during_childhood"],
+                      sleep_id: +receivedData["sleep_id"],
+                      posture_of_sleep_id: +receivedData["posture_of_sleep_id"],
+                      other_sleep_posture: receivedData["other_sleep_posture"],
+                      dreams: receivedData["dreams"],
+                      sweat: receivedData["sweat"],
+                      sweat_quantity: +receivedData["sweat_quantity"],
+                      sweat_smell_id: +receivedData["sweat_smell_id"],
+                      life_situation: receivedData["life_situation"],
+                      urine_qty_id: +receivedData["urine_qty_id"],
+                      urine_smell_id: +receivedData["urine_smell_id"],
+                      urine_flow_id: +receivedData["urine_flow_id"],
+                      urine_color: receivedData["urine_color"],
+                      urine_times_in_day: receivedData["urine_times_in_day"],
+                      urine_times_in_night:
+                        receivedData["urine_times_in_night"],
+                      bowels_times_in_day: receivedData["bowels_times_in_day"],
+                      bowels_times_in_night:
+                        receivedData["bowels_times_in_night"],
+                      bowels_periodicity_id: +receivedData[
+                        "bowels_periodicity_id"
+                      ],
+                      bowels_consistency_id: +receivedData[
+                        "bowels_consistency_id"
+                      ],
+                      bowels_color_of_stool:
+                        receivedData["bowels_color_of_stool"],
+                      tongue_color: receivedData["tongue_color"],
+                      tongue_back_coating: receivedData["tongue_back_coating"],
+                      tongue_front_coating:
+                        receivedData["tongue_front_coating"],
+                      tongue_entire_coating:
+                        receivedData["tongue_entire_coating"],
+                      tongue_tyep_id: +receivedData["tongue_tyep_id"],
+                      bathing_preference_id: +receivedData[
+                        "bathing_preference_id"
+                      ],
+                      season_preference_id: +receivedData[
+                        "season_preference_id"
+                      ],
+                      covering_preference_id: +receivedData[
+                        "covering_preference_id"
+                      ],
+                      air_type_id: +receivedData["air_type_id"],
+                      open_air_id: +receivedData["open_air_id"],
+                      menarche: receivedData["menarche"],
+                      mensis: receivedData["mensis"],
+                      lmp: receivedData["lmp"],
+                      symptoms_before_mensis_id: +receivedData[
+                        "symptoms_before_mensis_id"
+                      ],
+                      symptoms_during_mensis_id: +receivedData[
+                        "symptoms_during_mensis_id"
+                      ],
+                      symptoms_after_mensis_id: +receivedData[
+                        "symptoms_after_mensis_id"
+                      ],
+                      menopause: +receivedData["menopause"],
+                      pregnant: +receivedData["pregnant"],
+                      no_of_deliveries: receivedData["no_of_deliveries"],
+                      no_of_children: receivedData["no_of_children"],
+                      intra_uterine_deaths:
+                        receivedData["intra_uterine_deaths"],
+                      abortions: receivedData["abortions"],
+                    });
+
+                    if (receivedData["posture_of_sleep_id"] == 5) {
+                      this.showOtherSleepPostureField = false;
+                    }
                   }
 
+                  a.dismiss();
+                } else {
                   a.dismiss();
                 }
               }

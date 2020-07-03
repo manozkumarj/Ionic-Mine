@@ -11,6 +11,7 @@ import { DatabaseService } from "src/app/services/database.service";
 import { CommonService } from "src/app/services/common.service";
 import { Auth } from "aws-amplify";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { BroadcastChannel } from 'broadcast-channel';
 
 @Component({
   selector: "app-login",
@@ -48,6 +49,10 @@ export class LoginPage implements OnInit {
     private loadingController: LoadingController,
     private platform: Platform
   ) {
+    //temp
+    const channel = new BroadcastChannel('foobar');    
+    channel.onmessage = msg => console.dir(msg);
+
     this.registerForm = new FormGroup({
       username: new FormControl("", Validators.required),
       email: new FormControl("", Validators.required),
@@ -140,7 +145,7 @@ export class LoginPage implements OnInit {
     });
   }
 
-  submit() {
+  submit() {    
     console.clear();
     // alert("You can only login with Gmail");
     let focused;
@@ -157,6 +162,9 @@ export class LoginPage implements OnInit {
   }
 
   async register() {
+    const channel = new BroadcastChannel('foobar');        
+    channel.postMessage('register is clicked in tab 2');
+
     let username = this.registerForm.get("username").value.trim();
     let email = username;
     let password = this.registerForm.get("password").value.trim();
@@ -265,7 +273,7 @@ export class LoginPage implements OnInit {
                         );
                         console.error(
                           "Error -> getUserByEmail() function returned error." +
-                            JSON.stringify(error)
+                          JSON.stringify(error)
                         );
                       });
                   } else {
@@ -405,8 +413,7 @@ export class LoginPage implements OnInit {
                 console.log("Returned Success");
                 // this.utilities.presentToastSuccess(
                 //   "Login Success."
-                // );
-                this.utilities.isLoggedId = true;
+                // );                
                 this.utilities.userId = res["user_id"];
                 this.utilities.currentUserDetails["userName"] = res["name"]
                   ? res["name"]

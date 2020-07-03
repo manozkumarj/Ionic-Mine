@@ -265,35 +265,39 @@ export class AppointmentDetailsPage implements OnInit {
               } else {
                 if (
                   typeof data != "undefined" &&
-                  typeof data[0] != "undefined" &&
-                  typeof data[0][0] != "undefined"
+                  typeof data[0] != "undefined"
                 ) {
                   console.log("Backend success");
                   console.log(data);
-                  let receivedData = data[0][0];
 
-                  this.appointmentDetailsForm.patchValue({
-                    aggravation: receivedData["aggravation"],
-                    amelioration: receivedData["amelioration"],
-                    associated_symptoms_id: +receivedData[
-                      "associated_symptoms_id"
-                    ],
-                    characteristics: receivedData["characteristics"],
-                    complaint_description:
-                      receivedData["complaint_description"],
-                    duration: receivedData["duration"],
-                    is_recurring: +receivedData["is_recurring"],
-                    modality: receivedData["modality"],
-                    onset_id: +receivedData["onset_id"],
-                    recurring_freq: receivedData["recurring_freq"],
-                    sensation: receivedData["sensation"],
-                    severity_id: +receivedData["severity_id"],
-                  });
+                  if (data[0].length > 0) {
+                    let receivedData = data[0][0];
 
-                  if (receivedData["is_recurring"] == 2) {
-                    this.showRecurringFrequencyField = false;
+                    this.appointmentDetailsForm.patchValue({
+                      aggravation: receivedData["aggravation"],
+                      amelioration: receivedData["amelioration"],
+                      associated_symptoms_id: +receivedData[
+                        "associated_symptoms_id"
+                      ],
+                      characteristics: receivedData["characteristics"],
+                      complaint_description:
+                        receivedData["complaint_description"],
+                      duration: receivedData["duration"],
+                      is_recurring: +receivedData["is_recurring"],
+                      modality: receivedData["modality"],
+                      onset_id: +receivedData["onset_id"],
+                      recurring_freq: receivedData["recurring_freq"],
+                      sensation: receivedData["sensation"],
+                      severity_id: +receivedData["severity_id"],
+                    });
+
+                    if (receivedData["is_recurring"] == 2) {
+                      this.showRecurringFrequencyField = false;
+                    }
                   }
 
+                  a.dismiss();
+                } else {
                   a.dismiss();
                 }
               }
